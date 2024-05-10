@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" th:href="@{/}">Hotel Application</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/allRoomTypes}">Our Rooms</a>
+            </li>
+
+<!--            <li class="nav-item" sec:authorize="hasRole('MODERATOR')">-->
+<!--                <a class="nav-link" th:href="@{/guests/add}">Add Guest</a>-->
+<!--            </li>-->
+
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <a class="nav-link" href="#">Admin Panel</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="hasRole('MODERATOR')">
+                <a class="nav-link" th:href="@{/moderatorPanel}">Moderator Panel</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" th:href="@{/users/register}">Register</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <a class="nav-link" th:href="@{/users/login}">Login</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <div class="form-inline my-2 my-lg-0 border px-3">
+                    <div class="logged-user">
+                        Welcome, <a th:href="@{/users/profile}"><th:block sec:authentication="name"></th:block></a> !
+                    </div>
+
+                    <form th:method="post" th:action="@{/users/logout}">
+                        <input type="submit" class="btn btn-link" value="Logout"></input>
+                    </form>
+
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+</body>
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</html>

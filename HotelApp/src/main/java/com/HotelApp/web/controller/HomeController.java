@@ -15,9 +15,15 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String index(Model model) {
 
         model.addAttribute("imageUrls", new String[] {"/images/hotel.jpg", "/images/hotel1.jpg","/images/hotel2.jpg"});
         return "index";
     }
+
+//    @GetMapping("/home")
+//    public String home() {
+//        return "home";
+//    }
+
 }

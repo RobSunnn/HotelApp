@@ -37,3 +37,11 @@ spring:
   #api-key: 
   #api-secret: 
   #cloud-name: 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

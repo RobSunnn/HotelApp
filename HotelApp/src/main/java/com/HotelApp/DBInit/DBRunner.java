@@ -7,7 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DBInitRunner implements CommandLineRunner {
+public class DBRunner implements CommandLineRunner {
 
     private final RoomService roomService;
 
@@ -15,7 +15,7 @@ public class DBInitRunner implements CommandLineRunner {
 
     private final AdminService adminService;
 
-    public DBInitRunner(RoomService roomService, CategoryService categoryService, AdminService adminService) {
+    public DBRunner(RoomService roomService, CategoryService categoryService, AdminService adminService) {
         this.roomService = roomService;
         this.categoryService = categoryService;
         this.adminService = adminService;

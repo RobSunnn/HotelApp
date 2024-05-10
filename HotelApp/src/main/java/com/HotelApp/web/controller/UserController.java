@@ -61,7 +61,7 @@ public class UserController {
 
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel); //TODO: fix the strings to be in constant
+            redirectAttributes.addFlashAttribute(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel);
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + USER_REGISTER_BINDING_MODEL, bindingResult);
 
             return "redirect:/users/register";
@@ -77,6 +77,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public String profile() {
         return "profile";

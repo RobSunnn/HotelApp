@@ -2,6 +2,7 @@ package com.HotelApp.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,9 @@ public class UserEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<RoleEntity> role;
+
+    @Column(nullable = false)
+    private LocalDateTime created;
 
     public UserEntity() {
     }
@@ -84,6 +88,15 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setRole(List<RoleEntity> role) {
         this.role = role;
+        return this;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public UserEntity setCreated(LocalDateTime created) {
+        this.created = created;
         return this;
     }
 

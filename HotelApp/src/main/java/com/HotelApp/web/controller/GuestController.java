@@ -3,6 +3,7 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.entity.GuestEntity;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
+import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.service.GuestService;
 import com.HotelApp.service.RoomService;
 import com.HotelApp.validation.constants.BindingConstants;
@@ -38,9 +39,6 @@ public class GuestController {
         CategoriesEnum[] categories = CategoriesEnum.values();
         model.addAttribute("categories", categories);
 
-//        List<RoomView> availableRooms = roomService.getAvailableRooms();
-//        model.addAttribute("availableRooms", availableRooms);
-
         return "add-guest";
     }
 
@@ -75,7 +73,7 @@ public class GuestController {
     @GetMapping("/leave")
     public String leave(Model model) {
 
-        List<GuestEntity> guests = guestService.getAllGuests();
+        List<GuestView> guests = guestService.getAllGuests();
         model.addAttribute("guests", guests);
 
         return "guest-leave";
@@ -85,7 +83,7 @@ public class GuestController {
     @PostMapping("/leave")
     public String leave(@RequestParam("roomNumber") Integer roomNumber) {
         guestService.guestWantToLeave(roomNumber);
-        return "redirect:/"; // Redirect to home or any other page after processing
+        return "redirect:/";
     }
 
 }

@@ -31,7 +31,7 @@ public class RoomServiceImpl implements RoomService {
         List<RoomView> allRoomViews = new ArrayList<>();
 
         for (RoomEntity room : allNotReservedRooms) {
-            allRoomViews.add(mapRoom(room));
+            allRoomViews.add(map(room));
         }
 
         return allRoomViews;
@@ -48,7 +48,7 @@ public class RoomServiceImpl implements RoomService {
 
         for (RoomEntity room : roomByCategoryId) {
             if (!room.isReserved()) {
-                availableRooms.add(mapRoom(room));
+                availableRooms.add(map(room));
             }
         }
 
@@ -56,7 +56,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
 
-    private RoomView mapRoom(RoomEntity room) {
+    private RoomView map(RoomEntity room) {
         return new RoomView()
                 .setRoomNumber(room.getRoomNumber())
                 .setCategory(room.getCategory());

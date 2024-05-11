@@ -1,6 +1,8 @@
 package com.HotelApp.service;
 
 import com.HotelApp.domain.entity.GuestEntity;
+import com.HotelApp.domain.entity.UserEntity;
+import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.domain.models.view.RoomView;
 
 import java.math.BigDecimal;
@@ -9,8 +11,10 @@ import java.util.List;
 public interface AdminService {
 
     void takeMoney(BigDecimal roomPrice);
-//TODO: create guestView to get necessary info not directly from db
-    List<GuestEntity> seeAllGuests();
+
+    List<GuestView> seeAllGuests();
+
+    BigDecimal getTotalProfit();
 
     void makeAnotherUserAdmin();
 
@@ -20,4 +24,5 @@ public interface AdminService {
 
     List<RoomView> seeAllFreeRooms();
 
+    List<UserEntity> findAllUsers();
 }

@@ -24,6 +24,10 @@ public class AddGuestBindingModel {
     @NotNull(message = "Room number is required")
     private Integer roomNumber;
 
+    @NotNull(message = "You should enter the days that guest want to stay.")
+    @Positive(message = "No negative days")
+    private Integer daysToStay;
+
     public AddGuestBindingModel() {}
 
     public String getFirstName() {
@@ -77,6 +81,15 @@ public class AddGuestBindingModel {
 
     public AddGuestBindingModel setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
+        return this;
+    }
+
+    public Integer getDaysToStay() {
+        return daysToStay;
+    }
+
+    public AddGuestBindingModel setDaysToStay(Integer daysToStay) {
+        this.daysToStay = daysToStay;
         return this;
     }
 }

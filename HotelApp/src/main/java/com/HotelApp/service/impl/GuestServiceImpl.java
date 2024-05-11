@@ -10,17 +10,17 @@ import com.HotelApp.repository.RoomRepository;
 import com.HotelApp.service.AdminService;
 import com.HotelApp.service.GuestService;
 import com.HotelApp.service.HappyGuestService;
-import io.micrometer.observation.Observation;
-import io.micrometer.observation.ObservationRegistry;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Primary
 public class GuestServiceImpl implements GuestService {
 
     private final GuestRepository guestRepository;
@@ -33,15 +33,17 @@ public class GuestServiceImpl implements GuestService {
 
     private final ModelMapper modelMapper;
 
-    private final ObservationRegistry observationRegistry;
 
-    public GuestServiceImpl(GuestRepository guestRepository, RoomRepository roomRepository, HappyGuestService happyGuestService, AdminService adminService, ModelMapper modelMapper, ObservationRegistry observationRegistry) {
+    public GuestServiceImpl(GuestRepository guestRepository,
+                            RoomRepository roomRepository,
+                            HappyGuestService happyGuestService,
+                            AdminService adminService,
+                            ModelMapper modelMapper) {
         this.guestRepository = guestRepository;
         this.roomRepository = roomRepository;
         this.happyGuestService = happyGuestService;
         this.adminService = adminService;
         this.modelMapper = modelMapper;
-        this.observationRegistry = observationRegistry;
     }
 
     @Override
@@ -52,8 +54,6 @@ public class GuestServiceImpl implements GuestService {
         RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber()).setReserved(true);
         room.setReserved(true);
         roomRepository.save(room);
-        Observation.createNotStarted("guestRegister", observationRegistry).observe(() -> guest);
-        Observation.createNotStarted("roomRegister", observationRegistry).observe(() -> room);
 
         return guest.getDocumentId() != null;
     }
@@ -70,17 +70,19 @@ public class GuestServiceImpl implements GuestService {
         if (happyGuest.isPresent()) {
             happyGuest.get()
                     .setTimesThatGuestHaveBeenToHotel(happyGuest.get().getTimesThatGuestHaveBeenToHotel() + 1)
-                    .setLastStay(LocalDate.now());
+                    .setLastCheckIn(guest.getCheckInTime())
+                    .setLastCheckOut(LocalDateTime.now());
 
             happyGuestService.saveHappyGuest(happyGuest.get());
         } else {
             HappyGuestEntity happyGuestEntity = modelMapper.map(guest, HappyGuestEntity.class);
             happyGuestEntity.setLastRoomUsed(guest.getRoomNumber());
             happyGuestEntity.setTimesThatGuestHaveBeenToHotel(1);
-            happyGuestEntity.setLastStay(LocalDate.now());
+            happyGuestEntity.setLastCheckIn(guest.getCheckInTime());
+            happyGuestEntity.setLastCheckOut(LocalDateTime.now());
             happyGuestService.saveHappyGuest(happyGuestEntity);
         }
-        Observation.createNotStarted("happyGuest", observationRegistry).observe(() -> happyGuest);
+
         guestRepository.delete(guest);
 
         room.setReserved(false);
@@ -107,7 +109,9 @@ public class GuestServiceImpl implements GuestService {
                 .setAge(addGuestBindingModel.getAge())
                 .setEmail(addGuestBindingModel.getEmail())
                 .setDocumentId(addGuestBindingModel.getDocumentId())
-                .setRoomNumber(addGuestBindingModel.getRoomNumber());
+                .setRoomNumber(addGuestBindingModel.getRoomNumber())
+                .setCheckInTime(LocalDateTime.now())
+                .setCheckOutTime(LocalDateTime.now().plusDays(addGuestBindingModel.getDaysToStay()));//todo: make days dynamic
     }
 
     private GuestView map(GuestEntity guest) {

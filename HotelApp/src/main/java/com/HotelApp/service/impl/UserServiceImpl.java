@@ -7,13 +7,12 @@ import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
 import com.HotelApp.validation.constants.ValidationConstants;
-import io.micrometer.observation.Observation;
-import io.micrometer.observation.ObservationRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.HotelApp.config.SecurityConfiguration.passwordEncoder;
@@ -25,12 +24,9 @@ public class UserServiceImpl implements UserService {
 
     private final RoleService roleService;
 
-    private final ObservationRegistry observationRegistry;
-    
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService, ObservationRegistry observationRegistry) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
-        this.observationRegistry = observationRegistry;
     }
 
     @Override
@@ -41,7 +37,6 @@ public class UserServiceImpl implements UserService {
         }
 
         UserEntity user = userRepository.save(mapUser(userRegisterBindingModel));
-        Observation.createNotStarted("userRegister", observationRegistry).observe(() -> user);
 
         return user.getEmail() != null;
     }
@@ -78,5 +73,15 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> user = userRepository.findByEmail(userRegisterBindingModel.getEmail());
 
         return user.isPresent();
+    }
+
+    @Override
+    public List<UserEntity> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public UserEntity findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(RuntimeException::new);
     }
 }

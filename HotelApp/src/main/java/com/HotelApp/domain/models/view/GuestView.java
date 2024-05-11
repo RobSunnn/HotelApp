@@ -71,4 +71,9 @@ public class GuestView {
         this.roomNumber = roomNumber;
         return this;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
 }

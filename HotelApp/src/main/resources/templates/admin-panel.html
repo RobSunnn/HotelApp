@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .buttons{
+        display: flex;
+        gap: 1em;
+    }
+</style>
+</head>
+<body>
+
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+
+<div class="card">
+
+    <div class="card-body">
+        <h5 class="card-title">Rooms Overview</h5>
+        <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span></p>
+        <a th:href="@{/admin/freeRooms}" class="btn btn-primary">Check Free Rooms</a>
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <h5 class="card-title">Guests Overview & User Management</h5>
+
+        <p class="card-text">Total Guests: <span th:text="${allGuestsCount}" id="total-guests-count">XX</span></p>
+
+        <a th:href="@{/admin/allGuests}" class="btn btn-primary">See All Guests</a>
+
+        <br><br>
+        <h5>User Management</h5>
+        <br>
+        <div class="form-group">
+
+            <h6>You can find user by email</h6>
+
+            <label for="userSearch">Search User by Email:</label>
+            <input type="text" class="form-control" id="userSearch" placeholder="Enter user email">
+            <br>
+            <a href="#" class="btn btn-primary" id="userFindBtn">Find user by email</a>
+
+
+            <br>
+            <br>
+
+            <h6 id="titleDropdown">Or you can select user from dropdown</h6>
+
+            <label for="userSelect"></label>
+            <select class="form-control" id="userSelect">
+                <option selected disabled>Select User:</option>
+            </select>
+
+
+        </div>
+
+     <div class="buttons" >
+
+         <form th:action="@{/admin/makeUserAdmin}" th:method="POST" >
+             <button type="button" class="btn btn-success" >Make Admin</button>
+         </form>
+
+         <form action="">
+             <button type="button" class="btn btn-warning">Make Moderator</button>
+         </form>
+
+         <form action="">
+             <button type="button" class="btn btn-danger">Make User</button>
+         </form>
+
+     </div>
+
+
+
+        <br><br>
+
+        <h2 class="card-text">Total Profit: <span th:text="${totalProfit} + ' $'" id="total-profit">$XXX</span></h2>
+
+    </div>
+
+</div>
+
+<div th:insert="~{/fragments/footer}"></div>
+
+<!-- Bootstrap JS may be you can put them locally do research -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/usersFetch.js"></script>
+</body>
+</html>

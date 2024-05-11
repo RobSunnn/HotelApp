@@ -4,7 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "happy_guests")
@@ -31,8 +31,11 @@ public class HappyGuestEntity extends BaseEntity {
     @Column(nullable = false, name = "times_that_guest_have_been_to_hotel")
     private Integer timesThatGuestHaveBeenToHotel;
 
-    @Column(nullable = false, name = "last_stay")
-    private LocalDate lastStay;
+    @Column(nullable = false, name = "last_check_in")
+    private LocalDateTime lastCheckIn;
+
+    @Column(nullable = false, name = "last_check_out")
+    private LocalDateTime lastCheckOut;
 
     public HappyGuestEntity() {}
 
@@ -99,12 +102,21 @@ public class HappyGuestEntity extends BaseEntity {
         return this;
     }
 
-    public LocalDate getLastStay() {
-        return lastStay;
+    public LocalDateTime getLastCheckIn() {
+        return lastCheckIn;
     }
 
-    public HappyGuestEntity setLastStay(LocalDate lastStay) {
-        this.lastStay = lastStay;
+    public HappyGuestEntity setLastCheckIn(LocalDateTime lastCheckIn) {
+        this.lastCheckIn = lastCheckIn;
+        return this;
+    }
+
+    public LocalDateTime getLastCheckOut() {
+        return lastCheckOut;
+    }
+
+    public HappyGuestEntity setLastCheckOut(LocalDateTime lastCheckOut) {
+        this.lastCheckOut = lastCheckOut;
         return this;
     }
 }

@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
+//todo: you have some work here :)
     @ExceptionHandler({Throwable.class})
     public ModelAndView handleException(Throwable e) {
         ModelAndView modelAndView = new ModelAndView("error");

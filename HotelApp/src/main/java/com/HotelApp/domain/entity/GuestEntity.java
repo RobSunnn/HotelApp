@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "guests")
 public class GuestEntity extends BaseEntity {
@@ -25,6 +27,12 @@ public class GuestEntity extends BaseEntity {
 
     @Column(nullable = false, name = "room_number")
     private Integer roomNumber;
+
+    @Column(nullable = false, name = "check_in_time")
+    private LocalDateTime checkInTime;
+
+    @Column(nullable = false, name = "check_out_time")
+    private LocalDateTime checkOutTime;
 
     public GuestEntity() {}
 
@@ -79,6 +87,24 @@ public class GuestEntity extends BaseEntity {
 
     public GuestEntity setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
+        return this;
+    }
+
+    public LocalDateTime getCheckInTime() {
+        return checkInTime;
+    }
+
+    public GuestEntity setCheckInTime(LocalDateTime checkInTime) {
+        this.checkInTime = checkInTime;
+        return this;
+    }
+
+    public LocalDateTime getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public GuestEntity setCheckOutTime(LocalDateTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
         return this;
     }
 }

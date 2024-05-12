@@ -2,6 +2,7 @@ package com.HotelApp.domain.models.binding;
 
 
 import jakarta.validation.constraints.*;
+
 import static com.HotelApp.validation.constants.ValidationConstants.*;
 
 public class UserRegisterBindingModel {

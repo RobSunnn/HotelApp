@@ -1,7 +1,9 @@
 package com.HotelApp.domain.entity;
 
-import com.HotelApp.domain.entity.enums.CategoriesEnum;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "room_types")
@@ -22,7 +24,8 @@ public class RoomTypeEntity extends BaseEntity {
     @ManyToOne
     private CategoryEntity category;
 
-    public RoomTypeEntity() {}
+    public RoomTypeEntity() {
+    }
 
     public RoomTypeEntity(String name, String description,
                           int capacity, String pictureUrl, CategoryEntity category) {

@@ -1,15 +1,12 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.domain.models.view.RoomView;
 import com.HotelApp.service.AdminService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -55,13 +52,5 @@ public class AdminController {
 
         return "all-guests";
     }
-
-//    @PostMapping("/makeUserAdmin")
-//    public String makeUserAdmin(@RequestParam("userEmail") String userEmail) {
-//
-//        UserEntity user1 = adminService.findAllUsers().stream().filter(user -> user.getEmail().equals(userEmail)).findFirst().orElseThrow();
-//        System.out.println();
-//        return "admin-panel";
-//    }
 
 }

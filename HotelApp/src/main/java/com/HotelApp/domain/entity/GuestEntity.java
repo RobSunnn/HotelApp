@@ -34,7 +34,8 @@ public class GuestEntity extends BaseEntity {
     @Column(nullable = false, name = "check_out_time")
     private LocalDateTime checkOutTime;
 
-    public GuestEntity() {}
+    public GuestEntity() {
+    }
 
     public String getFirstName() {
         return firstName;

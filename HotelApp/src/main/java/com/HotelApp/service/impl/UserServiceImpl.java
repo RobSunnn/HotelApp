@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
     @Override
     public boolean checkIfEmailExist(UserRegisterBindingModel userRegisterBindingModel) {
         Optional<UserEntity> user = userRepository.findByEmail(userRegisterBindingModel.getEmail());
@@ -103,6 +104,7 @@ public class UserServiceImpl implements UserService {
 
             boolean isAdmin = user.getRole().stream()
                     .anyMatch(role -> role.getName().name().equals("ADMIN"));
+
             // Check if the user already has the ADMIN role
             if (!isAdmin) {
                 // Add the ADMIN role to the user

@@ -2,7 +2,6 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.service.UserService;
-import static com.HotelApp.validation.constants.BindingConstants.*;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static com.HotelApp.validation.constants.BindingConstants.*;
 
 
 @Controller

@@ -8,7 +8,8 @@ public class RoomView {
 
     private CategoryEntity category;
 
-    public RoomView() {}
+    public RoomView() {
+    }
 
     public int getRoomNumber() {
         return roomNumber;

@@ -28,7 +28,8 @@ public class AddGuestBindingModel {
     @Positive(message = "No negative days")
     private Integer daysToStay;
 
-    public AddGuestBindingModel() {}
+    public AddGuestBindingModel() {
+    }
 
     public String getFirstName() {
         return firstName;

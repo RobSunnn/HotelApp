@@ -2,7 +2,6 @@ package com.HotelApp.config;
 
 import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.impl.AppUserDetailsService;
-import io.micrometer.observation.ObservationRegistry;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

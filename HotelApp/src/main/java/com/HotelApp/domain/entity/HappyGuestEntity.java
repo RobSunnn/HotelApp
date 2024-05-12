@@ -37,7 +37,8 @@ public class HappyGuestEntity extends BaseEntity {
     @Column(nullable = false, name = "last_check_out")
     private LocalDateTime lastCheckOut;
 
-    public HappyGuestEntity() {}
+    public HappyGuestEntity() {
+    }
 
     public String getFirstName() {
         return firstName;

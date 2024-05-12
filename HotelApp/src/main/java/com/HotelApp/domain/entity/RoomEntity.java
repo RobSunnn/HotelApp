@@ -1,6 +1,5 @@
 package com.HotelApp.domain.entity;
 
-import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -10,7 +9,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "rooms")
-public class RoomEntity extends BaseEntity{
+public class RoomEntity extends BaseEntity {
 
     @Column(nullable = false, unique = true, name = "room_number")
     private Integer roomNumber;
@@ -24,7 +23,8 @@ public class RoomEntity extends BaseEntity{
     @ManyToOne
     private CategoryEntity category;
 
-    public RoomEntity() {}
+    public RoomEntity() {
+    }
 
     public RoomEntity(Integer roomNumber, boolean isReserved, BigDecimal price, CategoryEntity category) {
 

@@ -14,7 +14,8 @@ public class RoomTypeView {
 
     private String pictureUrl;
 
-    public RoomTypeView() {}
+    public RoomTypeView() {
+    }
 
     public String getName() {
         return name;

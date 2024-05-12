@@ -1,7 +1,5 @@
 package com.HotelApp.domain.models.view;
 
-import jakarta.persistence.Column;
-
 public class GuestView {
 
     private String firstName;
@@ -16,7 +14,8 @@ public class GuestView {
 
     private Integer roomNumber;
 
-    public GuestView() {}
+    public GuestView() {
+    }
 
     public String getFirstName() {
         return firstName;

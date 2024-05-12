@@ -3,8 +3,6 @@ package com.HotelApp.domain.entity;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "room_categories")
 public class CategoryEntity extends BaseEntity {

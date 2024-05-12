@@ -1,12 +1,22 @@
-const baseUrl = 'http://localhost:8080/admin/allUsers';
+const baseUrl = 'http://localhost:8080/admin';
 
+const allUsersBtn = document.getElementById('getAllUsersBtn');
 const usersDropdown = document.getElementById('userSelect');
 const userSearchBar = document.getElementById('userSearch');
 const findUserBtn = document.getElementById('userFindBtn');
+const makeAdminBtn = document.getElementById('makeAdmin');
+const makeModeratorBtn = document.getElementById('makeModerator');
+const makeOnlyUserBtn = document.getElementById('makeUser');
 
+let selectedUserId; // Variable to store the selected user ID
+let counter = 0;
 
-usersDropdown.addEventListener('click', () => {
-    fetch(baseUrl, {
+// Click event listener for fetching all users
+allUsersBtn.addEventListener('click', () => {
+
+    usersDropdown.innerText = '';
+
+    fetch(`${baseUrl}/allUsers`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -14,51 +24,155 @@ usersDropdown.addEventListener('click', () => {
     })
         .then(res => res.json())
         .then(result => {
-            usersDropdown.innerText = "";
-
             Object.values(result).forEach(e => {
+
                 let htmlOptionElement = document.createElement("option");
 
                 htmlOptionElement.append(`User with email: ${e.email}`);
                 htmlOptionElement.value = e.email;
+
+                // Generate a unique ID for each user and set it as the ID of the option element
+                const dynamicId = 'email_' + counter++;
+                selectedUserId = dynamicId;
+                htmlOptionElement.setAttribute('id', dynamicId);
+
+                // Append the option element to the dropdown
                 usersDropdown.appendChild(htmlOptionElement);
             });
 
+            document.getElementById('usersDropdown').hidden = false;
         })
         .catch(error => {
             console.error('Error:', error);
         });
 });
 
-usersDropdown.addEventListener('change', () => {
-    usersDropdown.removeEventListener('click',ev => console.log(ev));
-})
-
 findUserBtn.addEventListener('click', () => {
-    const userEmail = userSearchBar.value;
+    const userEmail = userSearchBar;
+    usersDropdown.innerText = '';
+    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
 
-    fetch(`${baseUrl}/${userEmail}`, {
+    fetch(`${baseUrl}/${userEmail.value}`, {
         method: 'GET',
         headers: {
+            'X-CSRF-TOKEN': csrfTokenElement.value,
             'Content-Type': 'application/json',
         },
     })
-        .then(res => res.json())
-        .then(res => {
-            usersDropdown.innerText = '';
-
+        .then(response => response.json())
+        .then(result => {
             let htmlOptionElement = document.createElement("option");
 
-            htmlOptionElement.append(`User with email: ${res.email}`);
-            htmlOptionElement.value = res.email;
+            htmlOptionElement.append(`User with email: ${result.email}`);
+            htmlOptionElement.value = result.email;
+
+            // Generate a unique ID for the user and set it as the ID of the option element
+            const dynamicId = 'email_' + Date.now();
+            htmlOptionElement.setAttribute('id', dynamicId);
+
+            // Store the generated ID in the selectedUserId variable
+            selectedUserId = dynamicId;
 
             usersDropdown.appendChild(htmlOptionElement);
             usersDropdown.setAttribute("disabled", '');
-
-            let titleOfDropdown = document.getElementById('titleDropdown');
-            titleOfDropdown.style.display = 'none';
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.log('Error:', error);
         });
+
+    document.getElementById('usersDropdown').hidden = false;
+});
+
+makeAdminBtn.addEventListener('click', () => {
+    // Retrieve the selected user's ID using the stored variable
+    const selectedUserIdElement = document.getElementById(selectedUserId);
+
+    // Ensure the selected user's ID is valid
+    if (selectedUserIdElement) {
+        const userEmail = selectedUserIdElement.value;
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const emailObj = {
+            email: userEmail
+        };
+
+        fetch(`${baseUrl}/makeUserAdmin/${userEmail}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfTokenElement.value,
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(emailObj)
+        })
+            .then(location.reload())
+            .catch(err => {
+                console.log('Error:', err);
+                // Handle error
+            });
+    } else {
+        console.log('Selected user ID not found');
+    }
+});
+
+makeModeratorBtn.addEventListener('click', () => {
+    const selectedUserIdElement = document.getElementById(selectedUserId);
+
+    if (selectedUserIdElement) {
+        const userEmail = selectedUserIdElement.value;
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const emailObj = {
+            email: userEmail
+        };
+
+        fetch(`${baseUrl}/makeUserModerator/${userEmail}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfTokenElement.value,
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(emailObj)
+        })
+            .then(location.reload())
+            .catch(err => {
+                console.log('Error:', err);
+                // Handle error
+            });
+
+    } else {
+        console.log('Selected user ID not found');
+    }
+})
+
+makeOnlyUserBtn.addEventListener('click', () => {
+    const selectedUserIdElement = document.getElementById(selectedUserId);
+
+    if (selectedUserIdElement) {
+        const userEmail = selectedUserIdElement.value;
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const emailObj = {
+            email: userEmail
+        };
+
+        fetch(`${baseUrl}/takeRights/${userEmail}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfTokenElement.value,
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(emailObj)
+        })
+            .then(location.reload())
+            .catch(err => {
+                console.log('Error:', err);
+                // Handle error
+            });
+
+    } else {
+        console.log('Selected user ID not found');
+    }
+});
+
+// Event listener for selecting a user from the dropdown
+usersDropdown.addEventListener('change', (event) => {
+    // Store the selected user's ID in the variable
+    selectedUserId = event.target.selectedOptions[0].id;
 });

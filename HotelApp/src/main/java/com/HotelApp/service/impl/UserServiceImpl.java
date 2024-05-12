@@ -1,5 +1,6 @@
 package com.HotelApp.service.impl;
 
+import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
@@ -83,5 +84,89 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public void makeUserAdmin(String email) {
+        // Fetch the ADMIN role
+        RoleEntity adminRole = roleService.getAllRoles()
+                .stream()
+                .filter(role -> role.getName().name().equals("ADMIN"))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("ADMIN role not found"));
+
+        List<RoleEntity> allRoles = roleService.getAllRoles();
+        // Find the user by email
+        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            UserEntity user = userOptional.get();
+
+            boolean isAdmin = user.getRole().stream()
+                    .anyMatch(role -> role.getName().name().equals("ADMIN"));
+            // Check if the user already has the ADMIN role
+            if (!isAdmin) {
+                // Add the ADMIN role to the user
+                user.setRole(allRoles);
+                userRepository.save(user);
+            } else {
+                System.out.println("User is already an admin.");
+            }
+
+        } else {
+            // User not found
+            throw new IllegalArgumentException("User not found for email: " + email);
+        }
+    }
+
+    @Override
+    public void makeUserModerator(String email) {
+        RoleEntity moderatorRole = roleService.getAllRoles()
+                .stream()
+                .filter(role -> role.getName().name().equals("MODERATOR"))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
+
+        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            UserEntity user = userOptional.get();
+
+            boolean isModerator = user.getRole().stream()
+                    .anyMatch(role -> role.getName().name().equals("MODERATOR"));
+
+            if (!isModerator) {
+                user.getRole().add(moderatorRole);
+                userRepository.save(user);
+            } else {
+                System.out.println("User is already a moderator.");
+            }
+
+        } else {
+            throw new IllegalArgumentException("User not found for email: " + email);
+        }
+
+    }
+
+    @Override
+    public void takeRights(String email) {
+        RoleEntity userRole = roleService.getAllRoles()
+                .stream()
+                .filter(role -> role.getName().name().equals("USER"))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("USER role not found"));
+
+        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            UserEntity user = userOptional.get();
+
+            user.setRole(List.of(userRole));
+            userRepository.save(user);
+
+        } else {
+            throw new IllegalArgumentException("User not found for email: " + email);
+
+        }
+
     }
 }

@@ -41,44 +41,50 @@
         <br>
         <div class="form-group">
 
-            <h6>You can find user by email</h6>
+            <h6>You can find user by email, or you can list all users</h6>
 
             <label for="userSearch">Search User by Email:</label>
             <input type="text" class="form-control" id="userSearch" placeholder="Enter user email">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
             <br>
             <a href="#" class="btn btn-primary" id="userFindBtn">Find user by email</a>
+            <a href="#" class="btn btn-primary" id="getAllUsersBtn">List all users</a>
 
 
             <br>
             <br>
 
-            <h6 id="titleDropdown">Or you can select user from dropdown</h6>
+           <div id="usersDropdown" hidden>
 
-            <label for="userSelect"></label>
-            <select class="form-control" id="userSelect">
-                <option selected disabled>Select User:</option>
-            </select>
+               <label for="userSelect"></label>
+               <select class="form-control" id="userSelect">
+                   <option selected disabled>Select User:</option>
+               </select>
 
+               <br>
+
+               <div class="buttons" >
+
+                   <form th:action="@{/admin/makeUserAdmin}" th:method="POST" >
+                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                       <button type="button" class="btn btn-success" id="makeAdmin">Make Admin</button>
+                   </form>
+
+                   <form th:action="@{/admin/makeUserModerator}" th:method="POST">
+                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                       <button type="button" class="btn btn-warning" id="makeModerator">Make Moderator</button>
+                   </form>
+
+                   <form th:action="@{/admin/takeRights}" th:method="POST">
+                       <button type="button" class="btn btn-danger" id="makeUser">Make User</button>
+                   </form>
+
+               </div>
+
+           </div>
 
         </div>
-
-     <div class="buttons" >
-
-         <form th:action="@{/admin/makeUserAdmin}" th:method="POST" >
-             <button type="button" class="btn btn-success" >Make Admin</button>
-         </form>
-
-         <form action="">
-             <button type="button" class="btn btn-warning">Make Moderator</button>
-         </form>
-
-         <form action="">
-             <button type="button" class="btn btn-danger">Make User</button>
-         </form>
-
-     </div>
-
-
 
         <br><br>
 

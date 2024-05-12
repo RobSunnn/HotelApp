@@ -67,6 +67,7 @@ checkboxes.forEach(checkbox => {
                                 roomDropdown.appendChild(htmlOptionElement);
                             });
                         }
+                        const freeRoomsDropdown = document.getElementById("freeRooms").hidden = false;
                     })
                     .catch(error => {
                         console.error('Error:', error);

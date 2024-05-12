@@ -2,14 +2,12 @@ package com.HotelApp.web.controller.rest;
 
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.service.UserService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/admin")
 public class UsersRestController {
 
     private final UserService userService;
@@ -18,15 +16,43 @@ public class UsersRestController {
         this.userService = userService;
     }
 
-    @GetMapping("/admin/allUsers")
+    @GetMapping("/allUsers")
     public List<UserEntity> allUsers() {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/admin/allUsers/{userEmail}")
+
+    @GetMapping("/{userEmail}")
     public UserEntity userByEmail(@PathVariable String userEmail) {
 
         return userService.findUserByEmail(userEmail);
+    }
+
+
+    @PostMapping("/makeUserAdmin/{email}")
+    public String makeUserAdmin(@PathVariable String email) {
+
+        userService.makeUserAdmin(email);
+
+        return "redirect:/admin";
+    }
+
+
+    @PostMapping("/makeUserModerator/{email}")
+    public String makeUserModerator(@PathVariable String email) {
+
+        userService.makeUserModerator(email);
+
+        return "redirect:/admin";
+    }
+
+
+    @PostMapping("/takeRights/{email}")
+    public String takeRightsOfUser(@PathVariable String email) {
+
+        userService.takeRights(email);
+
+        return "redirect:/admin";
     }
 
 

@@ -16,4 +16,9 @@ public interface UserService {
 
     UserEntity findUserByEmail(String email);
 
+    void makeUserAdmin(String email);
+
+    void makeUserModerator(String email);
+
+    void takeRights(String email);
 }

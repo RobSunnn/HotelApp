@@ -29,7 +29,7 @@ public class AppUserDetailsService implements UserDetailsService {
         return User
                 .withUsername(userEntity.getEmail())
                 .password(userEntity.getPassword())
-                .authorities(userEntity.getRole().stream().map(AppUserDetailsService::map).toList())
+                .authorities(userEntity.getRoles().stream().map(AppUserDetailsService::map).toList())
                 .username(userEntity.getFullName())
                 .build();
     }

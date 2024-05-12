@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,21 @@
   <!-- Custom CSS -->
   <style>
     /* Add custom styles here */
+
+    .card {
+      width: 100%; /* Make each card take up full width within the flex container */
+      max-width: 300px; /* Set a maximum width for each card */
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 3em;
+      margin: 3em auto;
+      max-width: 1200px;
+    }
+
+
   </style>
 </head>
 <body>
@@ -16,26 +31,35 @@
 <!-- Navigation -->
 <div th:insert="~{/fragments/nav-bar}"></div>
 
+<section>
+  <div class="cards">
 
-<!-- Page Content -->
-<div class="container-fluid mt-3">
-  <div class="row">
-    <!-- Sidebar -->
+    <div class="card">
 
-    <div class="col-lg-3">
-      <!-- Sidebar content here -->
-    </div>
-    <!-- Main Content -->
-    <div class="col-lg-9">
-      <!-- Main content here -->
+      <div class="card-body">
+        <h5 class="card-title">Add Guest to Hotel</h5>
+        <p class="card-text">Here you can add guest to hotel, <br> so you are going to be albe to see <br> the free rooms in the hotel later,
+          <br> and also to save some data about the guest <br>  to be easier in future.</p>
 
-      <a th:href="@{/guests/add}">Add guest</a>
-
-      <a th:href="@{/guests/leave}">Guest want to leave</a>
+        <a th:href="@{/guests/add}" class="btn btn-primary">Add guest</a>
+      </div>
 
     </div>
+
+    <div class="card">
+
+      <div class="card-body">
+        <h5 class="card-title">CHECK OUT</h5>
+        <p class="card-text">Here you need to check out the Guest, <br>take money for the stay and to wish <br>  the Guest a Happy New Year :D</p>
+
+        <a th:href="@{/guests/leave}" class="btn btn-primary">Guest want to leave</a>
+      </div>
+      <!-- Make fetch for quote here to make moderator happy :)-->
+
+    </div>
+
   </div>
-</div>
+</section>
 
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

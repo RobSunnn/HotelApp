@@ -62,9 +62,9 @@ public class UserServiceImpl implements UserService {
         }
 
         if (userRepository.count() == 0) {
-            user.setRole(roleService.getAllRoles());
+            user.setRoles(roleService.getAllRoles());
         } else {
-            user.setRole(roleService.getAllRoles().stream().filter(r -> r.getName().equals(RoleEnum.USER)).toList());
+            user.setRoles(roleService.getAllRoles().stream().filter(r -> r.getName().equals(RoleEnum.USER)).toList());
         }
 
         return user;
@@ -86,7 +86,8 @@ public class UserServiceImpl implements UserService {
     public UserEntity findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(RuntimeException::new);
     }
-
+//todo: add hotelInfoEntity to this service to save logs, like when
+    // user is made admin to save a message with date and who is making the post if it is possible
     @Override
     public void makeUserAdmin(String email) {
         // Fetch the ADMIN role
@@ -102,13 +103,13 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
 
-            boolean isAdmin = user.getRole().stream()
+            boolean isAdmin = user.getRoles().stream()
                     .anyMatch(role -> role.getName().name().equals("ADMIN"));
 
             // Check if the user already has the ADMIN role
             if (!isAdmin) {
                 // Add the ADMIN role to the user
-                user.setRole(allRoles);
+                user.setRoles(allRoles);
                 userRepository.save(user);
             } else {
                 System.out.println("User is already an admin.");
@@ -133,11 +134,11 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
 
-            boolean isModerator = user.getRole().stream()
+            boolean isModerator = user.getRoles().stream()
                     .anyMatch(role -> role.getName().name().equals("MODERATOR"));
 
             if (!isModerator) {
-                user.getRole().add(moderatorRole);
+                user.getRoles().add(moderatorRole);
                 userRepository.save(user);
             } else {
                 System.out.println("User is already a moderator.");
@@ -162,12 +163,11 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
 
-            user.setRole(List.of(userRole));
+            user.setRoles(List.of(userRole));
             userRepository.save(user);
 
         } else {
             throw new IllegalArgumentException("User not found for email: " + email);
-
         }
 
     }

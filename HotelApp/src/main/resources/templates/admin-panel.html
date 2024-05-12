@@ -4,93 +4,137 @@
     <meta charset="UTF-8">
     <title>Admin</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    .buttons{
+    <style>
+
+    body {
+        margin: 0 auto;
+    }
+
+    .card {
+        margin-bottom: 3em;
+    }
+
+    .cards {
+        display: flex;
+        margin: 3em auto;
+
+    }
+
+    .buttons {
         display: flex;
         gap: 1em;
     }
-</style>
+
+    .userManagement {
+        margin:0 auto;
+    }
+
+    .roomsAndGuests {
+        display: flex;
+        flex-direction: column;
+        margin: 2em auto;
+    }
+
+    </style>
 </head>
 <body>
 
 <div th:insert="~{/fragments/nav-bar}"></div>
 
+<div class="cards">
 
-<div class="card">
+    <div class="roomsAndGuests">
 
-    <div class="card-body">
-        <h5 class="card-title">Rooms Overview</h5>
-        <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span></p>
-        <a th:href="@{/admin/freeRooms}" class="btn btn-primary">Check Free Rooms</a>
-    </div>
+        <div class="card">
 
-</div>
-
-<div class="card">
-
-    <div class="card-body">
-
-        <h5 class="card-title">Guests Overview & User Management</h5>
-
-        <p class="card-text">Total Guests: <span th:text="${allGuestsCount}" id="total-guests-count">XX</span></p>
-
-        <a th:href="@{/admin/allGuests}" class="btn btn-primary">See All Guests</a>
-
-        <br><br>
-        <h5>User Management</h5>
-        <br>
-        <div class="form-group">
-
-            <h6>You can find user by email, or you can list all users</h6>
-
-            <label for="userSearch">Search User by Email:</label>
-            <input type="text" class="form-control" id="userSearch" placeholder="Enter user email">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-            <br>
-            <a href="#" class="btn btn-primary" id="userFindBtn">Find user by email</a>
-            <a href="#" class="btn btn-primary" id="getAllUsersBtn">List all users</a>
-
-
-            <br>
-            <br>
-
-           <div id="usersDropdown" hidden>
-
-               <label for="userSelect"></label>
-               <select class="form-control" id="userSelect">
-                   <option selected disabled>Select User:</option>
-               </select>
-
-               <br>
-
-               <div class="buttons" >
-
-                   <form th:action="@{/admin/makeUserAdmin}" th:method="POST" >
-                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                       <button type="button" class="btn btn-success" id="makeAdmin">Make Admin</button>
-                   </form>
-
-                   <form th:action="@{/admin/makeUserModerator}" th:method="POST">
-                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                       <button type="button" class="btn btn-warning" id="makeModerator">Make Moderator</button>
-                   </form>
-
-                   <form th:action="@{/admin/takeRights}" th:method="POST">
-                       <button type="button" class="btn btn-danger" id="makeUser">Make User</button>
-                   </form>
-
-               </div>
-
-           </div>
+            <div class="card-body">
+                <h5 class="card-title">Rooms Overview</h5>
+                <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span>
+                </p>
+                <a th:href="@{/admin/freeRooms}" class="btn btn-primary">Check Free Rooms</a>
+            </div>
 
         </div>
 
-        <br><br>
 
-        <h2 class="card-text">Total Profit: <span th:text="${totalProfit} + ' $'" id="total-profit">$XXX</span></h2>
+        <div class="card">
+
+            <div class="card-body">
+                <h5 class="card-title">Guests Overview</h5>
+                <p class="card-text">Total Guests: <span th:text="${allGuestsCount}" id="totalGuestsCount">XX</span></p>
+                <a th:href="@{/admin/allGuests}" class="btn btn-primary">See All Guests</a>
+            </div>
+
+        </div>
 
     </div>
+
+    <div class="userManagement">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h5>User Management</h5>
+                <br>
+                <div class="form-group">
+
+                    <h6>You can find user by email, or you can list all users</h6>
+
+                    <label for="userSearch">Search User by Email:</label>
+                    <input type="text" class="form-control" id="userSearch" placeholder="Enter user email">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                    <br>
+                    <a href="#" class="btn btn-primary" id="userFindBtn">Find user by email</a>
+                    <a href="#" class="btn btn-primary" id="getAllUsersBtn">List all users</a>
+
+
+                    <br>
+                    <br>
+
+                    <div id="usersDropdown" hidden>
+
+                        <label for="userSelect"></label>
+                        <select class="form-control" id="userSelect">
+                            <option selected disabled>Select User:</option>
+                        </select>
+
+                        <br>
+
+                        <div class="buttons">
+
+                            <form th:action="@{/admin/makeUserAdmin}" th:method="POST">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <button type="button" class="btn btn-success" id="makeAdmin">Make Admin</button>
+                            </form>
+
+                            <form th:action="@{/admin/makeUserModerator}" th:method="POST">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <button type="button" class="btn btn-warning" id="makeModerator">Make Moderator</button>
+                            </form>
+
+                            <form th:action="@{/admin/takeRights}" th:method="POST">
+                                <button type="button" class="btn btn-danger" id="makeUser">Make User</button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <br><br>
+
+                <h2 class="card-text">Total Profit: <span th:text="${totalProfit} + ' $'" id="total-profit">$XXX</span>
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
 
 </div>
 

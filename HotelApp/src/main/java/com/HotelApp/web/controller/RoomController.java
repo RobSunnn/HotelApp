@@ -1,7 +1,6 @@
 package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.view.RoomTypeView;
-import com.HotelApp.service.RoomService;
 import com.HotelApp.service.RoomTypesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +13,8 @@ public class RoomController {
 
     private final RoomTypesService roomTypesService;
 
-    private final RoomService roomService;
-
-    public RoomController(RoomTypesService roomTypesService, RoomService roomService) {
+    public RoomController(RoomTypesService roomTypesService) {
         this.roomTypesService = roomTypesService;
-        this.roomService = roomService;
     }
 
     @GetMapping("/allRoomTypes")

@@ -1,19 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Free Rooms</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  .buttons {
+    margin-top:2em;
+  }
+
+  .container {
+  margin: 5em auto;
+    width: 100%;
+  }
+</style>
 </head>
 <body>
-<div>
+
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+<div class="container">
   <div class="form-group">
     <label for="allGuests">Select guest</label>
     <select id="allGuests" name="allGuests" class="custom-select">
       <option value="" selected disabled>Check all guests in hotel</option>
       <option th:each="guest : ${allGuests}" th:text="${guest.getFullName()} + ' - Room number: ' + ${guest.getRoomNumber()}"></option>
     </select>
+
+    <div class="buttons">
+      <a th:href="@{/admin}" class="btn btn-primary" >Go back <br> to you panel</a>
+      <a th:href="@{/admin}" class="btn btn-success" >Make Guest <br> User</a>
+      <a th:href="@{/admin}" class="btn btn-secondary" >See Guest <br> Profile</a>
+      <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>
+    </div>
+
   </div>
 </div>
+
+<div th:insert="~{/fragments/footer}"></div>
 
 </body>
 </html>

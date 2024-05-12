@@ -29,7 +29,7 @@ public class UserEntity extends BaseEntity {
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private List<RoleEntity> role;
+    private List<RoleEntity> roles;
 
     @Column(nullable = false)
     private LocalDateTime created;
@@ -82,12 +82,12 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    public List<RoleEntity> getRole() {
-        return role;
+    public List<RoleEntity> getRoles() {
+        return roles;
     }
 
-    public UserEntity setRole(List<RoleEntity> role) {
-        this.role = role;
+    public UserEntity setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
         return this;
     }
 

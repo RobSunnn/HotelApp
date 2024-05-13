@@ -23,6 +23,7 @@
     .buttons {
         display: flex;
         gap: 1em;
+        flex-wrap: no-wrap;
     }
 
     .userManagement {
@@ -117,6 +118,11 @@
                             <form th:action="@{/admin/takeRights}" th:method="POST">
                                 <button type="button" class="btn btn-danger" id="makeUser">Make User</button>
                             </form>
+
+                            <form th:action="@{/admin/banUser}" th:method="POST">
+                                <button type="button" class="btn btn-danger" id="banUser">BAN User</button>
+                            </form>
+                            <a th:href="@{/admin}" class="btn btn-success" id="clearBtn">Clear</a>
 
                         </div>
 

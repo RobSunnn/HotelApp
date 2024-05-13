@@ -10,6 +10,7 @@ const findUserBtn = document.getElementById('userFindBtn');
 const makeAdminBtn = document.getElementById('makeAdmin');
 const makeModeratorBtn = document.getElementById('makeModerator');
 const makeOnlyUserBtn = document.getElementById('makeUser');
+const clearBtn = document.getElementById('clearBtn');
 
 let selectedUserId; // Variable to store the selected user ID
 let counter = 0;
@@ -71,11 +72,20 @@ findUserBtn.addEventListener('click', () => {
         },
     })
         .then(response => {
-
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
             return response.json();
+
         })
         .then(result => {
-
+                if (result === undefined) {
+                 let htmlOptionElement = document.createElement("option");
+                            htmlOptionElement.append('User with this email does not exist');
+                            usersDropdown.appendChild(htmlOptionElement);
+                            usersDropdown.style.background = "red";
+                            usersDropdown.style.color = "white";
+                }
                 let htmlOptionElement = document.createElement("option");
 
                 htmlOptionElement.append(`User with email: ${result.email}`);
@@ -93,7 +103,6 @@ findUserBtn.addEventListener('click', () => {
 
         })
         .catch(error => {
-            console.log('Error:', error);
             // Handle the case where the user is not found
 
             let htmlOptionElement = document.createElement("option");
@@ -217,6 +226,10 @@ makeOnlyUserBtn.addEventListener('click', () => {
         console.log('Selected user ID not found');
     }
 });
+
+clearBtn.addEventListener('click', () => {
+    location.reload();
+})
 
 // Event listener for selecting a user from the dropdown
 usersDropdown.addEventListener('change', (event) => {

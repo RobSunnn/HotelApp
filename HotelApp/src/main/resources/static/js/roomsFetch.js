@@ -60,10 +60,15 @@ checkboxes.forEach(checkbox => {
 
                             Object.values(data).forEach(e => {
 
+                                let htmlFirstOptionElement = document.createElement("option");
+
+                                htmlFirstOptionElement.textContent = 'Select Room';
+
                                 let htmlOptionElement = document.createElement("option");
 
                                 htmlOptionElement.append(`Room number: ${e.roomNumber}`);
                                 htmlOptionElement.value = e.roomNumber;
+                                roomDropdown.appendChild(htmlFirstOptionElement)
                                 roomDropdown.appendChild(htmlOptionElement);
                             });
                         }

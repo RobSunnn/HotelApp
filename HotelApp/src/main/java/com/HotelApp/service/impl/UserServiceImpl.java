@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
             UserEntity user = userOptional.get();
 
             boolean isAdmin = user.getRoles().stream()
-                    .anyMatch(role -> role.getName().name().equals("ADMIN"));
+                    .anyMatch(role -> role.getName().name().equals(adminRole.getName().name()));
 
             // Check if the user already has the ADMIN role
             if (!isAdmin) {

@@ -1,9 +1,12 @@
 const baseUrl = 'http://localhost:8080/admin';
 
-const allUsersBtn = document.getElementById('getAllUsersBtn');
 const usersDropdown = document.getElementById('userSelect');
 const userSearchBar = document.getElementById('userSearch');
+let result = document.getElementById('result');
+
+const allUsersBtn = document.getElementById('getAllUsersBtn');
 const findUserBtn = document.getElementById('userFindBtn');
+
 const makeAdminBtn = document.getElementById('makeAdmin');
 const makeModeratorBtn = document.getElementById('makeModerator');
 const makeOnlyUserBtn = document.getElementById('makeUser');
@@ -11,10 +14,13 @@ const makeOnlyUserBtn = document.getElementById('makeUser');
 let selectedUserId; // Variable to store the selected user ID
 let counter = 0;
 
-// Click event listener for fetching all users
+
 allUsersBtn.addEventListener('click', () => {
 
     usersDropdown.innerText = '';
+    usersDropdown.removeAttribute("disabled");
+    usersDropdown.style.background = 'none';
+    usersDropdown.style.color = "black";
 
     fetch(`${baseUrl}/allUsers`, {
         method: 'GET',
@@ -51,6 +57,11 @@ findUserBtn.addEventListener('click', () => {
     const userEmail = userSearchBar;
     usersDropdown.innerText = '';
     const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+    usersDropdown.removeAttribute("disabled");
+    usersDropdown.style.background = 'none';
+    usersDropdown.style.color = "black";
+    findUserBtn.disabled = true;
+    usersDropdown.disabled = true;
 
     fetch(`${baseUrl}/${userEmail.value}`, {
         method: 'GET',
@@ -59,25 +70,43 @@ findUserBtn.addEventListener('click', () => {
             'Content-Type': 'application/json',
         },
     })
-        .then(response => response.json())
+        .then(response => {
+
+            return response.json();
+        })
         .then(result => {
-            let htmlOptionElement = document.createElement("option");
 
-            htmlOptionElement.append(`User with email: ${result.email}`);
-            htmlOptionElement.value = result.email;
+                let htmlOptionElement = document.createElement("option");
 
-            // Generate a unique ID for the user and set it as the ID of the option element
-            const dynamicId = 'email_' + Date.now();
-            htmlOptionElement.setAttribute('id', dynamicId);
+                htmlOptionElement.append(`User with email: ${result.email}`);
+                htmlOptionElement.value = result.email;
 
-            // Store the generated ID in the selectedUserId variable
-            selectedUserId = dynamicId;
+                // Generate a unique ID for the user and set it as the ID of the option element
+                const dynamicId = 'email_' + Date.now();
+                htmlOptionElement.setAttribute('id', dynamicId);
 
-            usersDropdown.appendChild(htmlOptionElement);
-            usersDropdown.setAttribute("disabled", '');
+                // Store the generated ID in the selectedUserId variable
+                selectedUserId = dynamicId;
+
+                usersDropdown.appendChild(htmlOptionElement);
+                usersDropdown.setAttribute("disabled", '');
+
         })
         .catch(error => {
             console.log('Error:', error);
+            // Handle the case where the user is not found
+
+            let htmlOptionElement = document.createElement("option");
+            htmlOptionElement.append('User with this email does not exist');
+            usersDropdown.appendChild(htmlOptionElement);
+            usersDropdown.style.background = "red";
+            usersDropdown.style.color = "white";
+
+        })
+        .finally(() => {
+            // Enable buttons after completing the request (whether successful or not)
+            findUserBtn.disabled = false;
+            usersDropdown.disabled = false;
         });
 
     document.getElementById('usersDropdown').hidden = false;
@@ -86,7 +115,7 @@ findUserBtn.addEventListener('click', () => {
 makeAdminBtn.addEventListener('click', () => {
     // Retrieve the selected user's ID using the stored variable
     const selectedUserIdElement = document.getElementById(selectedUserId);
-
+    result.innerText = '';
     // Ensure the selected user's ID is valid
     if (selectedUserIdElement) {
         const userEmail = selectedUserIdElement.value;
@@ -103,7 +132,13 @@ makeAdminBtn.addEventListener('click', () => {
             },
             body: JSON.stringify(emailObj)
         })
-            .then(location.reload())
+            .then(() => {
+
+                let htmlParagraphElement = document.createElement('p');
+                htmlParagraphElement.textContent = 'User have all the rights!'
+
+                result.appendChild(htmlParagraphElement);
+            })
             .catch(err => {
                 console.log('Error:', err);
                 // Handle error
@@ -115,6 +150,7 @@ makeAdminBtn.addEventListener('click', () => {
 
 makeModeratorBtn.addEventListener('click', () => {
     const selectedUserIdElement = document.getElementById(selectedUserId);
+    result.innerText = '';
 
     if (selectedUserIdElement) {
         const userEmail = selectedUserIdElement.value;
@@ -131,7 +167,12 @@ makeModeratorBtn.addEventListener('click', () => {
             },
             body: JSON.stringify(emailObj)
         })
-            .then(location.reload())
+            .then(() => {
+                let htmlParagraphElement = document.createElement('p');
+                htmlParagraphElement.textContent = 'User have the right to be Moderator!'
+
+                result.appendChild(htmlParagraphElement);
+            })
             .catch(err => {
                 console.log('Error:', err);
                 // Handle error
@@ -144,6 +185,7 @@ makeModeratorBtn.addEventListener('click', () => {
 
 makeOnlyUserBtn.addEventListener('click', () => {
     const selectedUserIdElement = document.getElementById(selectedUserId);
+    result.innerText = '';
 
     if (selectedUserIdElement) {
         const userEmail = selectedUserIdElement.value;
@@ -160,7 +202,12 @@ makeOnlyUserBtn.addEventListener('click', () => {
             },
             body: JSON.stringify(emailObj)
         })
-            .then(location.reload())
+            .then(() => {
+                let htmlParagraphElement = document.createElement('p');
+                htmlParagraphElement.textContent = 'You have taken all the rights of the user!'
+
+                result.appendChild(htmlParagraphElement);
+            })
             .catch(err => {
                 console.log('Error:', err);
                 // Handle error

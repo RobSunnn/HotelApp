@@ -23,7 +23,7 @@
 <div th:insert="~{/fragments/nav-bar}"></div>
 
 
-<div class="container" th:each="room : ${allRooms}" >
+<div class="container" th:each="room : ${allRooms.getContent()}">
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
@@ -36,14 +36,44 @@
                             <h5 class="card-title" th:text="${room.getName()}">Name</h5>
                             <p class="card-text" th:text="${room.getDescription()}">Description</p>
                         </div>
+                        <a href="#">Details</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Page counter -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p>
+                Page <span th:text="${allRooms.getNumber() + 1}"></span>
+                of <span th:text="${allRooms.getTotalPages()}"></span>
+            </p>
+        </div>
+    </div>
+</div>
 
-<!--<div th:insert="~{/fragments/footer}"></div>-->
+<div class="row">
+    <div class="col-md-12 text-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- Previous button -->
+                <li class="page-item" th:classappend="${allRooms.number == 0} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{${'/allRoomTypes'}(page=${allRooms.number - 1})}">Previous</a>
+                </li>
+
+                <!-- Next button -->
+                <li class="page-item" th:classappend="${allRooms.number == allRooms.totalPages - 1} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{${'/allRoomTypes'}(page=${allRooms.number + 1})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div th:insert="~{/fragments/footer}"></div>
 
 </body>
 </html>

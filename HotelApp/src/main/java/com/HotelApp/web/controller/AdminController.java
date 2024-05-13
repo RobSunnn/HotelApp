@@ -3,8 +3,11 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.domain.models.view.RoomView;
 import com.HotelApp.service.AdminService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 

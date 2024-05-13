@@ -6,14 +6,15 @@ import com.HotelApp.domain.models.view.RoomTypeView;
 import com.HotelApp.repository.CategoriesRepository;
 import com.HotelApp.repository.RoomTypeRepository;
 import com.HotelApp.service.RoomTypesService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RoomTypesTypesServiceImpl implements RoomTypesService {
-
     private final RoomTypeRepository roomTypeRepository;
 
     private final CategoriesRepository categoriesRepository;
@@ -22,6 +23,12 @@ public class RoomTypesTypesServiceImpl implements RoomTypesService {
                                      CategoriesRepository categoriesRepository) {
         this.roomTypeRepository = roomTypeRepository;
         this.categoriesRepository = categoriesRepository;
+    }
+
+    @Override
+    public Page<RoomTypeView> getRoomTypes(Pageable pageable) {
+     return roomTypeRepository.findAll((org.springframework.data.domain.Pageable) pageable)
+                .map(RoomTypesTypesServiceImpl::map);
     }
 
     @Override
@@ -36,7 +43,7 @@ public class RoomTypesTypesServiceImpl implements RoomTypesService {
         return allRoomTypesView;
     }
 
-    private RoomTypeView map(RoomTypeEntity roomTypeEntity) {
+    private static RoomTypeView map(RoomTypeEntity roomTypeEntity) {
         return new RoomTypeView()
                 .setName(roomTypeEntity.getName())
                 .setDescription(roomTypeEntity.getDescription())

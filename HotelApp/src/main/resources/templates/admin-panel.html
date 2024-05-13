@@ -83,7 +83,7 @@
 
                     <label for="userSearch">Search User by Email:</label>
                     <input type="text" class="form-control" id="userSearch" placeholder="Enter user email">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<!--                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
 
                     <br>
                     <a href="#" class="btn btn-primary" id="userFindBtn">Find user by email</a>
@@ -96,7 +96,7 @@
                     <div id="usersDropdown" hidden>
 
                         <label for="userSelect"></label>
-                        <select class="form-control" id="userSelect">
+                        <select class="form-control" id="userSelect" >
                             <option selected disabled>Select User:</option>
                         </select>
 
@@ -105,12 +105,12 @@
                         <div class="buttons">
 
                             <form th:action="@{/admin/makeUserAdmin}" th:method="POST">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<!--                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
                                 <button type="button" class="btn btn-success" id="makeAdmin">Make Admin</button>
                             </form>
 
                             <form th:action="@{/admin/makeUserModerator}" th:method="POST">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+<!--                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
                                 <button type="button" class="btn btn-warning" id="makeModerator">Make Moderator</button>
                             </form>
 
@@ -123,6 +123,8 @@
                     </div>
 
                 </div>
+
+                <div id="result"></div>
 
                 <br><br>
 

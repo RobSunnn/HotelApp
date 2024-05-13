@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminRepository extends JpaRepository<HotelInfoEntity, Long> {
+
+    //todo: maybe it is better to be named hotelInfoRepository
 }

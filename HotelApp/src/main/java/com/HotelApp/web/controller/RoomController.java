@@ -2,11 +2,15 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.view.RoomTypeView;
 import com.HotelApp.service.RoomTypesService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+
 
 @Controller
 public class RoomController {
@@ -18,15 +22,25 @@ public class RoomController {
     }
 
     @GetMapping("/allRoomTypes")
-    public String rooms(Model model) {
+    public String rooms(Model model,
+                        @PageableDefault(
+                                size = 3,
+                                sort = "id"
+                        )
+                        Pageable pageable) {
 
         if (roomTypesService.getRoomTypesCount() == 0) {
             roomTypesService.initRoomTypes();
         }
+//
+//        List<RoomTypeView> allRooms = roomTypesService.getAllRoomTypes();
+//        model.addAttribute("allRooms", allRooms);
+        Page<RoomTypeView> roomTypes = roomTypesService.getRoomTypes(pageable);
+        int totalPages = roomTypes.getTotalPages();
+        Page<RoomTypeView> lastPage = roomTypesService.getRoomTypes(PageRequest.of(totalPages - 1, pageable.getPageSize(), pageable.getSort()));
 
-        List<RoomTypeView> allRooms = roomTypesService.getAllRoomTypes();
-        model.addAttribute("allRooms", allRooms);
-
+        model.addAttribute("allRooms", roomTypes);
+        model.addAttribute("lastPageRooms", lastPage);
         return "rooms";
     }
 

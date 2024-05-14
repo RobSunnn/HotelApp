@@ -5,6 +5,7 @@ import com.HotelApp.domain.models.view.RoomView;
 import com.HotelApp.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String adminPanel(Model model) {
         int freeRoomsCount = adminService.seeAllFreeRooms().size();

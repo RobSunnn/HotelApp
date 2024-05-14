@@ -2,7 +2,7 @@ const baseUrl = 'http://localhost:8080/admin';
 
 const userSearchBar = document.getElementById('userSearch');
 const usersDropdown = document.getElementById('userSelect');
-let result = document.getElementById('result');
+const result = document.getElementById('result');
 
 const allUsersBtn = document.getElementById('getAllUsersBtn');
 const findUserBtn = document.getElementById('userFindBtn');

@@ -139,6 +139,7 @@ public class UserServiceImpl implements UserService {
                     .anyMatch(role -> role.getName().name().equals("MODERATOR"));
 
             if (!isModerator) {
+                //todo: if user is admin and we want to be only moderator it is not working properly
                 user.getRoles().add(moderatorRole);
                 userRepository.save(user);
             } else {

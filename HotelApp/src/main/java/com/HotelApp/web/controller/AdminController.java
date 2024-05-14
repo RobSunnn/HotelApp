@@ -26,7 +26,6 @@ public class AdminController {
 
     @GetMapping
     public String adminPanel(Model model) {
-
         int freeRoomsCount = adminService.seeAllFreeRooms().size();
         int allGuestsCount = adminService.seeAllGuests().size();
         BigDecimal totalProfit = adminService.getTotalProfit();
@@ -40,7 +39,6 @@ public class AdminController {
 
     @GetMapping("/freeRooms")
     public String freeRooms(Model model) {
-
         List<RoomView> freeRooms = adminService.seeAllFreeRooms();
         model.addAttribute("freeRooms", freeRooms);
 
@@ -49,7 +47,6 @@ public class AdminController {
 
     @GetMapping("/allGuests")
     public String allGuests(Model model) {
-
         List<GuestView> allGuests = adminService.seeAllGuests();
         model.addAttribute("allGuests", allGuests);
 

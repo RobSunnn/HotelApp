@@ -1,7 +1,5 @@
-
 const baseUrl = '/api/rooms/';
 const roomDropdown = document.getElementById("roomNumber");
-
 
 // Get all the checkboxes
 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -10,7 +8,6 @@ checkboxes.forEach(checkbox => {
 
 
     checkbox.addEventListener('change', function() {
-
 
             // Uncheck all checkboxes except the one that was just clicked
             checkboxes.forEach(cb => {
@@ -58,21 +55,23 @@ checkboxes.forEach(checkbox => {
 
                         } else {
 
+                            let htmlFirstOptionElement = document.createElement("option");
+                            htmlFirstOptionElement.textContent = 'Select Room';
+                            htmlFirstOptionElement.disabled = true;
+                            htmlFirstOptionElement.selected = true;
+
+                            roomDropdown.appendChild(htmlFirstOptionElement);
+
                             Object.values(data).forEach(e => {
 
-                                let htmlFirstOptionElement = document.createElement("option");
-
-                                htmlFirstOptionElement.textContent = 'Select Room';
-
                                 let htmlOptionElement = document.createElement("option");
-
                                 htmlOptionElement.append(`Room number: ${e.roomNumber}`);
                                 htmlOptionElement.value = e.roomNumber;
-                                roomDropdown.appendChild(htmlFirstOptionElement)
+
                                 roomDropdown.appendChild(htmlOptionElement);
                             });
                         }
-                        const freeRoomsDropdown = document.getElementById("freeRooms").hidden = false;
+                        document.getElementById("freeRooms").hidden = false;
                     })
                     .catch(error => {
                         console.error('Error:', error);

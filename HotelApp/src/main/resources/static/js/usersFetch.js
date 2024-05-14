@@ -1,27 +1,41 @@
 const baseUrl = 'http://localhost:8080/admin';
 
-const usersDropdown = document.getElementById('userSelect');
 const userSearchBar = document.getElementById('userSearch');
+const usersDropdown = document.getElementById('userSelect');
 let result = document.getElementById('result');
 
 const allUsersBtn = document.getElementById('getAllUsersBtn');
 const findUserBtn = document.getElementById('userFindBtn');
 
+const allButtonsContainer = document.getElementsByClassName('buttons')[0];
 const makeAdminBtn = document.getElementById('makeAdmin');
 const makeModeratorBtn = document.getElementById('makeModerator');
 const makeOnlyUserBtn = document.getElementById('makeUser');
 const clearBtn = document.getElementById('clearBtn');
 
+const buttonsArr = [document.getElementById('makeAdmin'),
+    document.getElementById('makeModerator'),
+    document.getElementById('makeUser'),
+    document.getElementById('makeUser')];
+
+buttonsArr.forEach(b => b.addEventListener('click', () => {
+    console.log(b) //TODO: make the three buttons in 1 function here not 3 different...
+}))
+
 let selectedUserId; // Variable to store the selected user ID
 let counter = 0;
 
-
 allUsersBtn.addEventListener('click', () => {
+    userSearchBar.style.background = 'none';
+    userSearchBar.style.color = 'black';
+    userSearchBar.innerText = '';
 
     usersDropdown.innerText = '';
     usersDropdown.removeAttribute("disabled");
     usersDropdown.style.background = 'none';
     usersDropdown.style.color = "black";
+
+    allButtonsContainer.hidden = false;
 
     fetch(`${baseUrl}/allUsers`, {
         method: 'GET',
@@ -56,66 +70,76 @@ allUsersBtn.addEventListener('click', () => {
 
 findUserBtn.addEventListener('click', () => {
     const userEmail = userSearchBar;
+    allButtonsContainer.hidden = true;
+    document.getElementById('usersDropdown').hidden = true;
+
+    if (userEmail.value === '') {
+        userEmail.style.background = 'red';
+        userEmail.setAttribute('placeholder', 'You should enter user email..');
+        userEmail.classList.add("white-placeholder");
+
+        userSearchBar.style.color = 'white';
+        return;
+    }
+
     usersDropdown.innerText = '';
-    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-    usersDropdown.removeAttribute("disabled");
     usersDropdown.style.background = 'none';
     usersDropdown.style.color = "black";
-    findUserBtn.disabled = true;
     usersDropdown.disabled = true;
+
+    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
 
     fetch(`${baseUrl}/${userEmail.value}`, {
         method: 'GET',
         headers: {
             'X-CSRF-TOKEN': csrfTokenElement.value,
             'Content-Type': 'application/json',
-        },
+        }
     })
         .then(response => {
             if (!response.ok) {
+                allButtonsContainer.hidden = true;
+                userSearchBar.style.background = "red";
+                userSearchBar.style.color = "white";
                 throw new Error(response.statusText);
             }
             return response.json();
 
         })
         .then(result => {
-                if (result === undefined) {
-                 let htmlOptionElement = document.createElement("option");
-                            htmlOptionElement.append('User with this email does not exist');
-                            usersDropdown.appendChild(htmlOptionElement);
-                            usersDropdown.style.background = "red";
-                            usersDropdown.style.color = "white";
-                }
-                let htmlOptionElement = document.createElement("option");
+            if (result === undefined) {
+                userSearchBar.style.background = "blue";
+                userSearchBar.style.color = "white";
 
-                htmlOptionElement.append(`User with email: ${result.email}`);
-                htmlOptionElement.value = result.email;
+                return;
+            }
+            let htmlOptionElement = document.createElement("option");
 
-                // Generate a unique ID for the user and set it as the ID of the option element
-                const dynamicId = 'email_' + Date.now();
-                htmlOptionElement.setAttribute('id', dynamicId);
+            htmlOptionElement.append(`User with email: ${result.email}`);
+            htmlOptionElement.value = result.email;
 
-                // Store the generated ID in the selectedUserId variable
-                selectedUserId = dynamicId;
+            // Generate a unique ID for the user and set it as the ID of the option element
+            const dynamicId = 'email_' + Date.now();
+            htmlOptionElement.setAttribute('id', dynamicId);
 
-                usersDropdown.appendChild(htmlOptionElement);
-                usersDropdown.setAttribute("disabled", '');
+            // Store the generated ID in the selectedUserId variable
+            selectedUserId = dynamicId;
+
+            allButtonsContainer.hidden = false;
+
+            usersDropdown.appendChild(htmlOptionElement);
+            usersDropdown.setAttribute('disabled', '');
 
         })
-        .catch(error => {
+        .catch(() => {
             // Handle the case where the user is not found
 
             let htmlOptionElement = document.createElement("option");
-            htmlOptionElement.append('User with this email does not exist');
+            htmlOptionElement.append(`User with email: "${userEmail.value}" - does not exist`);
             usersDropdown.appendChild(htmlOptionElement);
             usersDropdown.style.background = "red";
             usersDropdown.style.color = "white";
 
-        })
-        .finally(() => {
-            // Enable buttons after completing the request (whether successful or not)
-            findUserBtn.disabled = false;
-            usersDropdown.disabled = false;
         });
 
     document.getElementById('usersDropdown').hidden = false;

@@ -7,6 +7,7 @@ import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
+import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.validation.constants.ValidationConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(RuntimeException::new);
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
     }
 //todo: add hotelInfoEntity to this service to save logs, like when
     // user is made admin to save a message with date and who is making the post if it is possible
@@ -117,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
         } else {
             // User not found
-            throw new IllegalArgumentException("User not found for email: " + email);
+            throw new UserNotFoundException("User not found for email: " + email);
         }
     }
 

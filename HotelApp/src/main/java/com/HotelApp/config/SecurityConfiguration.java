@@ -1,6 +1,7 @@
 package com.HotelApp.config;
 
 import com.HotelApp.repository.UserRepository;
+import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.service.impl.AppUserDetailsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -14,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+
+import java.util.Properties;
 
 @Configuration
 @EnableWebSecurity
@@ -65,6 +69,19 @@ public class SecurityConfiguration {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+
+    @Bean
+    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
+        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
+
+        Properties properties = new Properties();
+        properties.setProperty(UserNotFoundException.class.getSimpleName(), "404");
+
+        resolver.setExceptionMappings(properties);
+
+        return resolver;
     }
 
 }

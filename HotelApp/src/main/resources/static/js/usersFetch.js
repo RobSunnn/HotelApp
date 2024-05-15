@@ -8,77 +8,15 @@ const allUsersBtn = document.getElementById('getAllUsersBtn');
 const findUserBtn = document.getElementById('userFindBtn');
 
 const allButtonsContainer = document.getElementsByClassName('buttons')[0];
-//const makeAdminBtn = document.getElementById('makeAdmin');
-//const makeModeratorBtn = document.getElementById('makeModerator');
-//const makeOnlyUserBtn = document.getElementById('makeUser');
+const makeAdminBtn = document.getElementById('makeAdmin');
+const makeModeratorBtn = document.getElementById('makeModerator');
+const makeOnlyUserBtn = document.getElementById('makeUser');
 const clearBtn = document.getElementById('clearBtn');
 
-const buttonsArr = [document.getElementById('makeAdmin'),
-    document.getElementById('makeModerator'),
-    document.getElementById('makeUser')];
+const buttonsArr = [makeAdminBtn, makeModeratorBtn, makeOnlyUserBtn];
 
 let selectedUserId; // Variable to store the selected user ID
 let counter = 0;
-
-buttonsArr.forEach(b => b.addEventListener('click', (e) => {
-    const command = e.target.textContent;
-
-    let urlForPostRequest;
-    let message;
-
-    switch(command) {
-        case "Make Admin":
-            urlForPostRequest = 'makeUserAdmin';
-            message = 'User have all the rights!';
-            break;
-        case"Make Moderator":
-            urlForPostRequest = 'makeUserModerator';
-            message = 'User have the right to be Moderator!';
-            break;
-        case"Make User":
-            urlForPostRequest = 'takeRights';
-            message = 'You have taken all the rights of the user!';
-            break;
-    }
-
-   const selectedUserIdElement = document.getElementById(selectedUserId);
-   result.innerText = '';
-
-       // Ensure the selected user's ID is valid
-       if (selectedUserIdElement) {
-           const userEmail = selectedUserIdElement.value;
-           const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-           const emailObj = {
-               email: userEmail
-           };
-
-              fetch(`${baseUrl}/${urlForPostRequest}/${userEmail}`, {
-                       method: 'POST',
-                       headers: {
-                           'X-CSRF-TOKEN': csrfTokenElement.value,
-                           'Content-type': 'application/json'
-                       },
-                       body: JSON.stringify(emailObj)
-                   })
-                       .then(() => {
-
-                           let htmlParagraphElement = document.createElement('p');
-                           htmlParagraphElement.textContent = message;
-
-                           result.appendChild(htmlParagraphElement);
-                       })
-                       .catch(err => {
-                           console.log('Error:', err);
-                           // Handle error
-                       });
-               } else {
-                   console.log('Selected user ID not found');
-               }
-
-
-}))
-
-
 
 allUsersBtn.addEventListener('click', () => {
     userSearchBar.style.background = 'none';
@@ -200,111 +138,63 @@ findUserBtn.addEventListener('click', () => {
     document.getElementById('usersDropdown').hidden = false;
 });
 
-//makeAdminBtn.addEventListener('click', () => {
-//    // Retrieve the selected user's ID using the stored variable
-//    const selectedUserIdElement = document.getElementById(selectedUserId);
-//    result.innerText = '';
-//    // Ensure the selected user's ID is valid
-//    if (selectedUserIdElement) {
-//        const userEmail = selectedUserIdElement.value;
-//        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-//        const emailObj = {
-//            email: userEmail
-//        };
-//
-//        fetch(`${baseUrl}/makeUserAdmin/${userEmail}`, {
-//            method: 'POST',
-//            headers: {
-//                'X-CSRF-TOKEN': csrfTokenElement.value,
-//                'Content-type': 'application/json'
-//            },
-//            body: JSON.stringify(emailObj)
-//        })
-//            .then(() => {
-//
-//                let htmlParagraphElement = document.createElement('p');
-//                htmlParagraphElement.textContent = 'User have all the rights!'
-//
-//                result.appendChild(htmlParagraphElement);
-//            })
-//            .catch(err => {
-//                console.log('Error:', err);
-//                // Handle error
-//            });
-//    } else {
-//        console.log('Selected user ID not found');
-//    }
-//});
-//
-//makeModeratorBtn.addEventListener('click', () => {
-//    const selectedUserIdElement = document.getElementById(selectedUserId);
-//    result.innerText = '';
-//
-//    if (selectedUserIdElement) {
-//        const userEmail = selectedUserIdElement.value;
-//        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-//        const emailObj = {
-//            email: userEmail
-//        };
-//
-//        fetch(`${baseUrl}/makeUserModerator/${userEmail}`, {
-//            method: 'POST',
-//            headers: {
-//                'X-CSRF-TOKEN': csrfTokenElement.value,
-//                'Content-type': 'application/json'
-//            },
-//            body: JSON.stringify(emailObj)
-//        })
-//            .then(() => {
-//                let htmlParagraphElement = document.createElement('p');
-//                htmlParagraphElement.textContent = 'User have the right to be Moderator!';
-//
-//                result.appendChild(htmlParagraphElement);
-//            })
-//            .catch(err => {
-//                console.log('Error:', err);
-//                // Handle error
-//            });
-//
-//    } else {
-//        console.log('Selected user ID not found');
-//    }
-//})
-//
-//makeOnlyUserBtn.addEventListener('click', () => {
-//    const selectedUserIdElement = document.getElementById(selectedUserId);
-//    result.innerText = '';
-//
-//    if (selectedUserIdElement) {
-//        const userEmail = selectedUserIdElement.value;
-//        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-//        const emailObj = {
-//            email: userEmail
-//        };
-//
-//        fetch(`${baseUrl}/takeRights/${userEmail}`, {
-//            method: 'POST',
-//            headers: {
-//                'X-CSRF-TOKEN': csrfTokenElement.value,
-//                'Content-type': 'application/json'
-//            },
-//            body: JSON.stringify(emailObj)
-//        })
-//            .then(() => {
-//                let htmlParagraphElement = document.createElement('p');
-//                htmlParagraphElement.textContent = message;
-//
-//                result.appendChild(htmlParagraphElement);
-//            })
-//            .catch(err => {
-//                console.log('Error:', err);
-//                // Handle error
-//            });
-//
-//    } else {
-//        console.log('Selected user ID not found');
-//    }
-//});
+buttonsArr.forEach(b => b.addEventListener('click', (e) => {
+    const command = e.target.textContent;
+
+    let urlForPostRequest;
+    let message;
+
+    switch(command) {
+        case "Make Admin":
+            urlForPostRequest = 'makeUserAdmin';
+            message = 'User have all the rights!';
+            break;
+        case"Make Moderator":
+            urlForPostRequest = 'makeUserModerator';
+            message = 'User have the right to be Moderator!';
+            break;
+        case"Make User":
+            urlForPostRequest = 'takeRights';
+            message = 'You have taken all the rights of the user!';
+            break;
+    }
+
+    const selectedUserIdElement = document.getElementById(selectedUserId);
+    result.innerText = '';
+
+    // Ensure the selected user's ID is valid
+    if (selectedUserIdElement) {
+        const userEmail = selectedUserIdElement.value;
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const emailObj = {
+            email: userEmail
+        };
+
+        fetch(`${baseUrl}/${urlForPostRequest}/${userEmail}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfTokenElement.value,
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(emailObj)
+        })
+            .then(() => {
+
+                let htmlParagraphElement = document.createElement('p');
+                htmlParagraphElement.textContent = message;
+
+                result.appendChild(htmlParagraphElement);
+            })
+            .catch(err => {
+                console.log('Error:', err);
+                // Handle error
+            });
+    } else {
+        console.log('Selected user ID not found');
+    }
+
+
+}))
 
 clearBtn.addEventListener('click', () => {
     location.reload();

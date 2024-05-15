@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .container {
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-Custom 404 error page!
-<a href="/" class="btn btn-primary">Go back</a>
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+<div class="container">
+    <img src="/images/not-found.png" alt="">
+    <p>Sorry, the page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+
+    <h1 class="error-heading" >We are sorry, and we are working on the problem!</h1>
+    <a href="/" class="btn btn-primary">Go back</a>
+</div>
 
 </body>
 </html>

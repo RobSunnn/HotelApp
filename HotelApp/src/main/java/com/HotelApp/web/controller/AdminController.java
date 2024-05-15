@@ -39,6 +39,7 @@ public class AdminController {
         return "admin-panel";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/freeRooms")
     public String freeRooms(Model model) {
         List<RoomView> freeRooms = adminService.seeAllFreeRooms();
@@ -47,6 +48,7 @@ public class AdminController {
         return "free-rooms";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/allGuests")
     public String allGuests(Model model) {
         List<GuestView> allGuests = adminService.seeAllGuests();

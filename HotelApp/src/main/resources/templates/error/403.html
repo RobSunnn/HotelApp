@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .container {
+            margin:0 auto;
+        }
+    </style>
 </head>
 <body>
-Sorry, but you don't have rights to see this page
-<a href="/" class="btn btn-primary">Go back</a>
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+<div class="container">
+    <img src="/images/forbidden.jpg" alt="">
+    <h1>Sorry, but you don't have rights to see this page</h1>
+    <a href="/" class="btn btn-primary">Go back</a>
+</div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.HotelApp.config;
 
 import com.HotelApp.repository.UserRepository;
+import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.service.impl.AppUserDetailsService;
 import org.modelmapper.ModelMapper;
@@ -70,15 +71,16 @@ public class SecurityConfiguration {
         return new ModelMapper();
     }
 
-
     @Bean
     public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
         SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
 
         Properties properties = new Properties();
         properties.setProperty(UserNotFoundException.class.getSimpleName(), "404");
+        properties.setProperty(ForbiddenUserException.class.getSimpleName(), "403");
 
         resolver.setExceptionMappings(properties);
+        resolver.setDefaultErrorView("error");
 
         return resolver;
     }

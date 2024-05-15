@@ -2,6 +2,7 @@ package com.HotelApp.service;
 
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
+import com.HotelApp.domain.models.view.UserView;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface UserService {
     void makeUserModerator(String email);
 
     void takeRights(String email);
+
+    UserView findUserProfile(String userId);
+
+//    void displayUserInfo(String username);
 }

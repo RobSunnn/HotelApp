@@ -4,18 +4,26 @@ import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
+import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
+import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.validation.constants.ValidationConstants;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.HotelApp.config.SecurityConfiguration.passwordEncoder;
 
@@ -24,10 +32,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+//    private final UserDetailsService userDetailsService;
     private final RoleService roleService;
 
     public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
+//        this.userDetailsService = userDetailsService;
         this.roleService = roleService;
     }
 
@@ -80,28 +90,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserEntity> findAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll().stream().skip(1).collect(Collectors.toList());
     }
 
     @Override
     public UserEntity findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+
+//        if (user.getId() == 1) {
+//            throw new ForbiddenUserException("You can't see this user :)");
+//        }
+//
+//        if (user.getEmail().equals(email)) {
+//            throw new ForbiddenUserException("Don't search for yourself :)");
+//        }
+
+        return user;
     }
 //todo: add hotelInfoEntity to this service to save logs, like when
     // user is made admin to save a message with date and who is making the post if it is possible
     @Override
     public void makeUserAdmin(String email) {
-        // Fetch the ADMIN role
-        RoleEntity adminRole = roleService.getAllRoles()
-                .stream()
-                .filter(role -> role.getName().name().equals("ADMIN"))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("ADMIN role not found"));
-
-        List<RoleEntity> allRoles = roleService.getAllRoles();
         // Find the user by email
         Optional<UserEntity> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
+            // Fetch the ADMIN role
+            RoleEntity adminRole = roleService.getAllRoles()
+                    .stream()
+                    .filter(role -> role.getName().name().equals("ADMIN"))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("ADMIN role not found"));
+
+            List<RoleEntity> allRoles = roleService.getAllRoles();
+
             UserEntity user = userOptional.get();
 
             boolean isAdmin = user.getRoles().stream()
@@ -124,27 +146,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void makeUserModerator(String email) {
-        RoleEntity moderatorRole = roleService.getAllRoles()
-                .stream()
-                .filter(role -> role.getName().name().equals("MODERATOR"))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
-
         Optional<UserEntity> userOptional = userRepository.findByEmail(email);
 
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
 
+            RoleEntity userRole = roleService.getAllRoles()
+                    .stream()
+                    .filter(role -> role.getName().name().equals("USER"))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("USER role not found"));
+
+            RoleEntity moderatorRole = roleService.getAllRoles()
+                    .stream()
+                    .filter(role -> role.getName().name().equals("MODERATOR"))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
+
             boolean isModerator = user.getRoles().stream()
                     .anyMatch(role -> role.getName().name().equals("MODERATOR"));
 
-            if (!isModerator) {
+//            if (!isModerator) {
                 //todo: if user is admin and we want to be only moderator it is not working properly
-                user.getRoles().add(moderatorRole);
+                user.setRoles(List.of(userRole, moderatorRole));
                 userRepository.save(user);
-            } else {
-                System.out.println("User is already a moderator.");
-            }
+//            } else {
+//                System.out.println("User is already a moderator.");
+//            }
 
         } else {
             throw new IllegalArgumentException("User not found for email: " + email);
@@ -173,4 +201,29 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    @Override
+    public UserView findUserProfile(String userId) {
+        UserEntity user = userRepository
+                .findById(Long.valueOf(userId))
+                .orElseThrow(() -> new UsernameNotFoundException("Could not find user"));
+
+        return mapAsUserView(user);
+    }
+
+    private UserView mapAsUserView(UserEntity user) {
+        return new UserView().setFullName(user.getFullName())
+                .setAge(user.getAge())
+                .setEmail(user.getEmail());
+    }
+
+//    @Override
+//    public void displayUserInfo(String username) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+//        // Access user details and display them
+//
+//        String email = userDetails.getUsername();
+//        List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
+//        // Display other user details as needed
+//    }
 }

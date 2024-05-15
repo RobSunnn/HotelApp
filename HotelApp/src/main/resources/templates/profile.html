@@ -10,12 +10,16 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
+<style>
+    span {
+        margin: 1em;
+    }
+</style>
 <body>
 <div th:insert="~{/fragments/nav-bar}"></div>
 
 
-<main class="p-5 align-content-center bg-blur my-register-div">
+<main class="p-5 align-content-center bg-blur my-register-div" >
     <div class="container mt-5">
         <div class="row d-flex justify-content-center">
             <div class="col-md-7">
@@ -24,15 +28,22 @@
                     <div class="text-center"><img src="/images/profile.jpg" width="100" class="rounded-circle" alt="pic"></div>
 
                     <div class="text-center mt-3">
-                        <span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
-                        <h5 class="mt-4 mb-0" sec:authentication="name">Full name</h5>
+
+                        <h4 th:text="'Name: ' + ${userDetails.getFullName()}">Roles of User</h4>
+                        <br>
+                        <h4>Roles</h4>
+                        <span class="bg-primary p-1 px-4 rounded text-white" th:each="role : ${userDetails.getRoles()}" th:text="${role.getName()}">Pro</span>
+                        <br>
+                        <br>
 <!--                        <span>UI/UX Designer</span>-->
 <!--                        <h5 class="mt-2 mb-0">Username</h5>-->
 <!--                        <span>UI/UX Designer</span>-->
-                        <h5 class="mt-2 mb-0" >Age</h5>
+                        <h5 class="mt-2 mb-0" th:text="'Age: ' + ${userDetails.getAge()}">Age</h5>
+                        <br>
+                        <h5 class="mt-2 mb-0" th:text="'Email: ' + ${userDetails.getEmail()}">Email</h5>
 <!--                        <span>33</span>-->
 
-
+                        <br>
                         <div class="buttons">
                             <a th:href="@{/}" class="btn btn-outline-primary px-4">Back</a>
 <!--                            <button type="submit" th:href="@{/}" class="btn btn-outline-primary px-4">Back</button>-->

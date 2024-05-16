@@ -24,7 +24,7 @@ public class RoomController {
     @GetMapping("/allRoomTypes")
     public String rooms(Model model,
                         @PageableDefault(
-                                size = 3,
+                                size = 2,
                                 sort = "id"
                         )
                         Pageable pageable) {

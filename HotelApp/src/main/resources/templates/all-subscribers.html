@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Subscribers</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+
+<div class="container">
+    <div class="form-group">
+        <label for="allSubscribers">Select subscriber</label>
+        <select id="allSubscribers" name="allSubscribers" class="custom-select">
+            <option value="" selected disabled>Check all subscribers</option>
+            <option th:each="subscriber : ${allSubscribers}" th:text="${subscriber.getEmail()}"></option>
+        </select>
+
+        <div class="buttons">
+            <a th:href="@{/admin}" class="btn btn-primary" >Go back <br> to your panel</a>
+<!--            <a th:href="@{/admin}" class="btn btn-success" >Make Guest <br> User</a>-->
+<!--            <a th:href="@{/admin}" class="btn btn-secondary" >See Guest <br> Profile</a>-->
+<!--            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>-->
+        </div>
+
+    </div>
+</div>
+
+<div th:insert="~{/fragments/footer}"></div>
+
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.domain.models.view.RoomView;
+import com.HotelApp.domain.models.view.SubscriberView;
 import com.HotelApp.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +31,13 @@ public class AdminController {
     public String adminPanel(Model model) {
         int freeRoomsCount = adminService.seeAllFreeRooms().size();
         int allGuestsCount = adminService.seeAllGuests().size();
+        int totalSubscribers = adminService.seeAllSubscribers().size();
         BigDecimal totalProfit = adminService.getTotalProfit();
 
         model.addAttribute("freeRoomsCount", freeRoomsCount);
         model.addAttribute("allGuestsCount", allGuestsCount);
         model.addAttribute("totalProfit", totalProfit);
+        model.addAttribute("totalSubscribers", totalSubscribers);
 
         return "admin-panel";
     }
@@ -55,6 +58,15 @@ public class AdminController {
         model.addAttribute("allGuests", allGuests);
 
         return "all-guests";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/allSubscribers")
+    public String allSubscribers(Model model) {
+        List<SubscriberView> allSubscribers = adminService.seeAllSubscribers();
+        model.addAttribute("allSubscribers", allSubscribers);
+
+        return "all-subscribers";
     }
 
 }

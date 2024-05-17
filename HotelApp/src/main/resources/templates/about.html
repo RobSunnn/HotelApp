@@ -1,16 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>About us</title>
 </head>
+
+<style>
+
+    .text {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .forms-container {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .btn-primary {
+        margin: 2em auto;
+
+    }
+
+    .container {
+        text-align: center;
+    }
+
+    #contact {
+        background-color: grey;
+        width: 30rem;
+        max-width: 100%;
+        border: 3px solid black;
+        border-radius: 20%;
+
+    }
+
+    #comments {
+        background-color: blue;
+        border: 3px solid black;
+        border-radius: 20%;
+        width: 25rem;
+
+    }
+
+    #subscribeForm {
+        margin: 1em auto 7em auto;
+        background-color: green;
+        border: 3px solid black;
+        display: flex;
+        flex-direction: column;
+        padding: 3em;
+        width: 30rem;
+        max-width: 100%;
+        border-radius: 20%;
+
+    }
+
+
+
+</style>
+
 <body>
+
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+
 <section id="about" class="py-5">
-  <div class="container">
-    <h1 class="mb-4">About us</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis lobortis suscipit velit, nec vehicula justo lobortis a. In hac habitasse platea dictumst. Nullam et tristique nulla. Sed fringilla, justo eget tristique vehicula, ex quam volutpat nisi, id placerat ipsum velit vel felis. Integer interdum lacus eu eros aliquet, at tincidunt ex efficitur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer vitae volutpat nisi. Nullam rutrum risus eget est consectetur ultricies. Mauris efficitur ante ac consectetur commodo. Proin suscipit condimentum turpis, at tempor lacus mollis sed. Proin placerat, magna et fermentum vehicula, odio eros cursus lorem, vel fringilla risus nunc a odio. Proin sit amet ante id arcu ultrices luctus sed vel ex. In at ligula nec urna varius vulputate.</p>
-    <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed nec lacinia turpis. Proin et lacus vehicula, ultricies lacus eget, vehicula elit. Nullam dignissim tellus et libero malesuada, eget dignissim nunc accumsan. Duis pharetra metus et augue facilisis aliquam. Proin bibendum mauris ut justo ultricies, a tincidunt felis bibendum. Integer vel massa quis odio fermentum suscipit. Suspendisse vitae dolor nec dui vehicula venenatis non at nulla. Integer ultrices augue quis justo mattis, et tincidunt neque efficitur. Duis id erat ligula.</p>
-  </div>
+
+    <div class="container">
+
+        <h1 class="mb-4">Welcome to Our Hotel</h1>
+
+       <div class="text">
+           <p><b>Nestled in the heart of [City Name], [Hotel Name] is your oasis of luxury and comfort. Whether you're here
+               for business, pleasure, or a bit of both, our hotel offers a seamless blend of modern sophistication and
+               timeless elegance. From our elegantly appointed rooms to our top-notch amenities, every detail has been
+               thoughtfully designed to ensure your stay is nothing short of extraordinary.</b></p>
+
+           <p>At [Hotel Name], we pride ourselves on our exceptional service and warm hospitality. Our dedicated staff is
+               always at your service, ready to cater to your every need and ensure your stay is as comfortable as
+               possible. Start your day with a sumptuous breakfast at our gourmet restaurant, relax in our tranquil spa, or
+               take a dip in our sparkling pool. For those looking to explore, our prime location puts you just steps away
+               from [City’s Major Attractions].</p>
+       </div>
+
+<!--        <p>Experience the perfect blend of style, comfort, and convenience at [Hotel Name]. Book your stay today and-->
+<!--            discover why we are the preferred choice for discerning travelers.</p>-->
+
+    </div>
+
 </section>
+
+<div class="forms-container">
+
+    <section id="contact" class="py-5">
+
+        <div class="container">
+
+            <h2 class="mb-4">Contact us</h2>
+
+            <label for="name">Your Name</label>
+            <input type="text" class="form-control" id="name"
+                   name="name" placeholder="Enter your name...">
+
+            <label for="email">Your email</label>
+            <input type="text" class="form-control" id="email"
+                   name="email" placeholder="Enter your email address...">
+
+            <label for="message">Your message</label>
+            <textarea class="form-control" id="message" rows="5"
+                      name="message" placeholder="If you want you can leave us a message..."></textarea>
+
+            <form action="">
+                <button type="submit" class="btn btn-primary">Send Mail</button>
+            </form>
+
+        </div>
+
+
+    </section>
+
+    <section id="comments" class="py-5">
+
+        <div class="container">
+
+            <h2 class="mb-4">Leave a comment</h2>
+
+            <label for="nickname">Your Name or Nickname</label>
+            <input type="text" class="form-control" id="nickname"
+                   name="nickname" placeholder="Enter your name...">
+
+
+            <label for="comment">Your comment</label>
+            <textarea class="form-control" id="comment" rows="5"
+                      name="comment" placeholder="Your comment here."></textarea>
+
+            <form action="">
+                <button type="submit" class="btn btn-primary">Leave a comment</button>
+            </form>
+
+        </div>
+
+
+    </section>
+
+</div>
+
+<div class="container">
+
+    <form th:action="@{/about/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
+
+        <div class="py-5" id="subscribeForm">
+            <h3 class="mb-4">Subscribe to our newsletter</h3>
+
+            <label for="subscriberEmail"></label>
+            <input type="text" id="subscriberEmail"  th:field="*{subscriberEmail}" th:errorclass="is-invalid" class="form-control"
+                   placeholder="Enter your email">
+
+            <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
+                   class="invalid-feedback text-white  bg-danger rounded"></small>
+
+            <small th:if="${successMessage}" th:text="${successMessage}" class="success-message">
+                                <!-- put some decoration after successful subscribe -->
+            </small>
+
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+<div th:insert="~{/fragments/footer}"></div>
+
 </body>
 </html>

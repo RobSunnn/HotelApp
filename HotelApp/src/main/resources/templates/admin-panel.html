@@ -70,6 +70,16 @@
 
         </div>
 
+        <div class="card">
+
+            <div class="card-body">
+                <h5 class="card-title">Subscribers Overview</h5>
+                <p class="card-text">Total Subscribers: <span th:text="${totalSubscribers}" id="totalSubscribersCount">XX</span></p>
+                <a th:href="@{/admin/allSubscribers}" class="btn btn-primary">See All Subscribers</a>
+            </div>
+
+        </div>
+
     </div>
 
     <div class="userManagement">

@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.config.SecurityConfiguration.modelMapper;
+
 @Service
 @Primary
 public class GuestServiceImpl implements GuestService {
@@ -31,19 +33,14 @@ public class GuestServiceImpl implements GuestService {
 
     private final AdminService adminService;
 
-    private final ModelMapper modelMapper;
-
-
     public GuestServiceImpl(GuestRepository guestRepository,
                             RoomRepository roomRepository,
                             HappyGuestService happyGuestService,
-                            AdminService adminService,
-                            ModelMapper modelMapper) {
+                            AdminService adminService) {
         this.guestRepository = guestRepository;
         this.roomRepository = roomRepository;
         this.happyGuestService = happyGuestService;
         this.adminService = adminService;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -75,7 +72,7 @@ public class GuestServiceImpl implements GuestService {
 
             happyGuestService.saveHappyGuest(happyGuest.get());
         } else {
-            HappyGuestEntity happyGuestEntity = modelMapper.map(guest, HappyGuestEntity.class);
+            HappyGuestEntity happyGuestEntity = modelMapper().map(guest, HappyGuestEntity.class);
             happyGuestEntity.setLastRoomUsed(guest.getRoomNumber());
             happyGuestEntity.setTimesThatGuestHaveBeenToHotel(1);
             happyGuestEntity.setLastCheckIn(guest.getCheckInTime());

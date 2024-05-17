@@ -1,17 +1,16 @@
 window.addEventListener("load", sendMail);
 
 function sendMail(e) {
-//
-// let token = '';
-//
-//       fetch('http://localhost:8080/token')
-//       .then(res => res.json())
-//       .then(result => {
-//       token = result;
-//       console.log(token)
-//      const tokenElement = document.getElementById('token');
-//      tokenElement.value = result;
-//       })
+
+    // let token = '';
+    //
+    //     fetch('http://localhost:8080/token')
+    //
+    //         .then(response => response.json())
+    //         .then(result => {
+    //             Object.values(result).forEach(r => console.log(r))
+    //         })
+
 
 
 // fetch('http://localhost:8080/js/info/' + token)
@@ -32,7 +31,6 @@ function sendMail(e) {
           const serviceID = result[1];
           const templateID = result[2];
 
-console.log(publicKey + ' ' + serviceID + ' ' + templateID);
         emailjs.send(serviceID, templateID, params, publicKey)
         .then(
             (res) => {

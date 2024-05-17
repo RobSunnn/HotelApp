@@ -1,11 +1,12 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.HotelInfoEntity;
-import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.domain.models.view.RoomView;
+import com.HotelApp.domain.models.view.SubscriberView;
 import com.HotelApp.repository.AdminRepository;
 import com.HotelApp.service.AdminService;
+import com.HotelApp.service.SubscriberService;
 import com.HotelApp.service.UserService;
 import com.HotelApp.service.helpers.GuestServiceHelper;
 import org.springframework.stereotype.Service;
@@ -22,16 +23,16 @@ public class AdminServiceImpl implements AdminService {
 
     private final GuestServiceHelper guestServiceHelper;
 
-    private final UserService userService;
+    private final SubscriberService subscriberService;
+
 
     public AdminServiceImpl(AdminRepository adminRepository,
                             RoomServiceImpl roomService,
-                            GuestServiceHelper guestServiceHelper, UserService userService) {
+                            GuestServiceHelper guestServiceHelper, SubscriberService subscriberService, UserService userService) {
         this.adminRepository = adminRepository;
         this.roomService = roomService;
         this.guestServiceHelper = guestServiceHelper;
-
-        this.userService = userService;
+        this.subscriberService = subscriberService;
     }
 
     @Override
@@ -48,8 +49,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<UserEntity> findAllUsers() {
-        return userService.findAllUsers();
+    public List<SubscriberView> seeAllSubscribers() {
+        return subscriberService.getAllSubscribers();
     }
 
     @Override
@@ -60,11 +61,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public BigDecimal getTotalProfit() {
         return getHotelInfo().getTotalProfit();
-    }
-
-    @Override
-    public void makeAnotherUserAdmin() {
-
     }
 
     @Override

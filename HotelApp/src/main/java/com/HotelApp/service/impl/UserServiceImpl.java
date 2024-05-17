@@ -11,16 +11,11 @@ import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.validation.constants.ValidationConstants;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,12 +27,10 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-//    private final UserDetailsService userDetailsService;
     private final RoleService roleService;
 
     public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
-//        this.userDetailsService = userDetailsService;
         this.roleService = roleService;
     }
 
@@ -48,13 +41,39 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        UserEntity user = userRepository.save(mapUser(userRegisterBindingModel));
+        UserEntity user = userRepository.save(mapAsUser(userRegisterBindingModel));
 
         return user.getEmail() != null;
     }
 
 
-    private UserEntity mapUser(UserRegisterBindingModel userRegisterBindingModel) {
+
+
+    @Override
+    public boolean checkIfEmailExist(UserRegisterBindingModel userRegisterBindingModel) {
+        Optional<UserEntity> user = userRepository.findByEmail(userRegisterBindingModel.getEmail());
+
+        return user.isPresent();
+    }
+
+    @Override
+    public List<UserEntity> findAllUsers() {
+        return userRepository.findAll().stream().skip(1).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserEntity findUserByEmail(String email) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+
+        if (user.getId() == 1) {
+            throw new ForbiddenUserException("You can't see this user :)");
+        }
+
+        return user;
+    }
+
+    private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel) {
 
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             return new UserEntity(); // TODO: better solution for field match
@@ -81,35 +100,9 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
-    public boolean checkIfEmailExist(UserRegisterBindingModel userRegisterBindingModel) {
-        Optional<UserEntity> user = userRepository.findByEmail(userRegisterBindingModel.getEmail());
-
-        return user.isPresent();
-    }
-
-    @Override
-    public List<UserEntity> findAllUsers() {
-        return userRepository.findAll().stream().skip(1).collect(Collectors.toList());
-    }
-
-    @Override
-    public UserEntity findUserByEmail(String email) {
-        UserEntity user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
-
-//        if (user.getId() == 1) {
-//            throw new ForbiddenUserException("You can't see this user :)");
-//        }
-//
-//        if (user.getEmail().equals(email)) {
-//            throw new ForbiddenUserException("Don't search for yourself :)");
-//        }
-
-        return user;
-    }
 //todo: add hotelInfoEntity to this service to save logs, like when
     // user is made admin to save a message with date and who is making the post if it is possible
+
     @Override
     public void makeUserAdmin(String email) {
         // Find the user by email
@@ -203,27 +196,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserView findUserProfile(String userId) {
-        UserEntity user = userRepository
-                .findById(Long.valueOf(userId))
-                .orElseThrow(() -> new UsernameNotFoundException("Could not find user"));
-
+    public UserView findUserDetails(String userEmail) {
+        UserEntity user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + userEmail + " not found"));
         return mapAsUserView(user);
     }
 
     private UserView mapAsUserView(UserEntity user) {
         return new UserView().setFullName(user.getFullName())
                 .setAge(user.getAge())
-                .setEmail(user.getEmail());
+                .setEmail(user.getEmail())
+                .setRoles(user.getRoles());
     }
 
-//    @Override
-//    public void displayUserInfo(String username) {
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//        // Access user details and display them
-//
-//        String email = userDetails.getUsername();
-//        List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
-//        // Display other user details as needed
-//    }
 }

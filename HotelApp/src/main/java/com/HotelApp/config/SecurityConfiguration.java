@@ -4,6 +4,7 @@ import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.service.impl.AppUserDetailsService;
+import com.sun.net.httpserver.HttpsConfigurator;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -32,11 +33,9 @@ public class SecurityConfiguration {
                 authorizeRequests -> authorizeRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
-                        .requestMatchers("/allRoomTypes").permitAll()
-                        .requestMatchers("/about").permitAll()
+                        .requestMatchers("/allRoomTypes", "/about/**", "/error").permitAll()
                         .requestMatchers("/guests/add").hasRole("MODERATOR")
-                        .requestMatchers("/admin/**", "/js/info").hasRole("ADMIN")
-                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).formLogin(
                 formLogin -> formLogin
@@ -67,7 +66,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public ModelMapper modelMapper() {
+    public static ModelMapper modelMapper() {
         return new ModelMapper();
     }
 

@@ -1,5 +1,9 @@
 package com.HotelApp.domain.models.view;
 
+import com.HotelApp.domain.entity.RoleEntity;
+
+import java.util.List;
+
 public class UserView {
 
     private String fullName;
@@ -7,6 +11,8 @@ public class UserView {
     private String email;
 
     private Integer age;
+
+    private List<RoleEntity> roles;
 
     public UserView() {}
 
@@ -34,6 +40,15 @@ public class UserView {
 
     public UserView setAge(Integer age) {
         this.age = age;
+        return this;
+    }
+
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public UserView setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
         return this;
     }
 }

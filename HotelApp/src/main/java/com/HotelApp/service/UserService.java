@@ -23,7 +23,6 @@ public interface UserService {
 
     void takeRights(String email);
 
-    UserView findUserProfile(String userId);
+    UserView findUserDetails(String userEmail);
 
-//    void displayUserInfo(String username);
 }

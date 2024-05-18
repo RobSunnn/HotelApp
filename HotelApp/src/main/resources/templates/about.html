@@ -58,7 +58,6 @@
     }
 
 
-
 </style>
 
 <body>
@@ -72,21 +71,25 @@
 
         <h1 class="mb-4">Welcome to Our Hotel</h1>
 
-       <div class="text">
-           <p><b>Nestled in the heart of [City Name], [Hotel Name] is your oasis of luxury and comfort. Whether you're here
-               for business, pleasure, or a bit of both, our hotel offers a seamless blend of modern sophistication and
-               timeless elegance. From our elegantly appointed rooms to our top-notch amenities, every detail has been
-               thoughtfully designed to ensure your stay is nothing short of extraordinary.</b></p>
+        <div class="text">
+            <p><b>Nestled in the heart of [City Name], [Hotel Name] is your oasis of luxury and comfort. Whether you're
+                here
+                for business, pleasure, or a bit of both, our hotel offers a seamless blend of modern sophistication and
+                timeless elegance. From our elegantly appointed rooms to our top-notch amenities, every detail has been
+                thoughtfully designed to ensure your stay is nothing short of extraordinary.</b></p>
 
-           <p>At [Hotel Name], we pride ourselves on our exceptional service and warm hospitality. Our dedicated staff is
-               always at your service, ready to cater to your every need and ensure your stay is as comfortable as
-               possible. Start your day with a sumptuous breakfast at our gourmet restaurant, relax in our tranquil spa, or
-               take a dip in our sparkling pool. For those looking to explore, our prime location puts you just steps away
-               from [City’s Major Attractions].</p>
-       </div>
+            <p>At [Hotel Name], we pride ourselves on our exceptional service and warm hospitality. Our dedicated staff
+                is
+                always at your service, ready to cater to your every need and ensure your stay is as comfortable as
+                possible. Start your day with a sumptuous breakfast at our gourmet restaurant, relax in our tranquil
+                spa, or
+                take a dip in our sparkling pool. For those looking to explore, our prime location puts you just steps
+                away
+                from [City’s Major Attractions].</p>
+        </div>
 
-<!--        <p>Experience the perfect blend of style, comfort, and convenience at [Hotel Name]. Book your stay today and-->
-<!--            discover why we are the preferred choice for discerning travelers.</p>-->
+        <!--        <p>Experience the perfect blend of style, comfort, and convenience at [Hotel Name]. Book your stay today and-->
+        <!--            discover why we are the preferred choice for discerning travelers.</p>-->
 
     </div>
 
@@ -125,23 +128,36 @@
 
         <div class="container">
 
-            <h2 class="mb-4">Leave a comment</h2>
+            <form th:action="@{/about/addComment}" th:method="POST" th:object="${addCommentBindingModel}">
 
-            <label for="nickname">Your Name or Nickname</label>
-            <input type="text" class="form-control" id="nickname"
-                   name="nickname" placeholder="Enter your name...">
+                <h2 class="mb-4">Leave a comment</h2>
 
+                <label for="author">Your Name or Nickname</label>
+                <input type="text" class="form-control" id="author" th:field="*{author}"
+                       th:errorclass="is-invalid"
+                       min="3" max="30"
+                       name="author" placeholder="Enter your name...">
 
-            <label for="comment">Your comment</label>
-            <textarea class="form-control" id="comment" rows="5"
-                      name="comment" placeholder="Your comment here."></textarea>
+                <small id="authorError" th:errors="*{author}"
+                       class="invalid-feedback text-white  bg-danger rounded"></small>
 
-            <form action="">
+                <label for="commentContent">Your comment</label>
+                <textarea class="form-control" id="commentContent" rows="5" th:field="*{commentContent}"
+                          th:errorclass="is-invalid"
+                          name="commentContent" placeholder="Your comment here."></textarea>
+                <br>
+                <small id="commentError" th:errors="*{commentContent}"
+                       class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                <small th:if="${successCommentMessage}" th:text="${successCommentMessage}" class="alert alert-success">
+                    <!-- put some decoration after successful subscribe -->
+                </small>
+
                 <button type="submit" class="btn btn-primary">Leave a comment</button>
+
             </form>
 
         </div>
-
 
     </section>
 
@@ -155,14 +171,15 @@
             <h3 class="mb-4">Subscribe to our newsletter</h3>
 
             <label for="subscriberEmail"></label>
-            <input type="text" id="subscriberEmail"  th:field="*{subscriberEmail}" th:errorclass="is-invalid" class="form-control"
+            <input type="text" id="subscriberEmail" min="3" max="30"  th:field="*{subscriberEmail}"
+                   th:errorclass="is-invalid" class="form-control"
                    placeholder="Enter your email">
-
+            <br>
             <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
                    class="invalid-feedback text-white  bg-danger rounded"></small>
 
-            <small th:if="${successMessage}" th:text="${successMessage}" class="success-message">
-                                <!-- put some decoration after successful subscribe -->
+            <small th:if="${successSubscribeMessage}" th:text="${successSubscribeMessage}" class="alert alert-success">
+                <!-- put some decoration after successful subscribe -->
             </small>
 
             <button type="submit" class="btn btn-primary">Subscribe</button>

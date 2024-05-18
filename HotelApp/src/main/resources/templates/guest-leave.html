@@ -22,7 +22,7 @@
       <div class="form-group">
 
         <label for="guest">Select guest</label>
-        <select id="guest" name="roomNumber" class="custom-select">
+        <select id="guest" name="roomNumber" class="custom-select" size="5">
           <option value="" selected disabled>Select guest</option>
           <option th:each="guest : ${guests}" th:value="${guest.roomNumber}" th:text="${guest.firstName}"></option>
         </select>

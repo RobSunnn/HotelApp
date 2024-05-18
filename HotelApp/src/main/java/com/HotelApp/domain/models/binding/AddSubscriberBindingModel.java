@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public class AddSubscriberBindingModel {
 
-    @NotBlank(message = "Field should not be empty")
-    @Email(message = "Enter valid email")
+    @NotBlank(message = "Field should not be empty.")
+    @Email(message = "Enter valid email.")
     private String subscriberEmail;
 
     public AddSubscriberBindingModel() {

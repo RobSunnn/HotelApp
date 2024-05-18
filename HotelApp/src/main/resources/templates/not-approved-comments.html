@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not approved comments</title>
+</head>
+
+<style>
+
+    h3 {
+        text-align: center;
+    }
+
+    .custom-dropdown {
+        /*position: relative;*/
+        display: flex;
+        gap: 3em;
+        justify-content: center;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+    }
+
+    .buttons a {
+        align-self: center;
+    }
+
+    .commentDropdown {
+
+    }
+
+    #fullCommentText {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        max-width: 300px; /* Adjust based on your layout */
+        max-height: 150px; /* Adjust based on your layout */
+        overflow-y: auto; /* Adds a scrollbar if content is too long */
+        word-wrap: break-word; /* Breaks long words */
+        word-break: break-all; /* Breaks long words */
+        white-space: pre-wrap; /* Preserves whitespace */
+    }
+</style>
+<body>
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+<div class="container">
+
+    <h3>New Comments</h3>
+
+    <div class="custom-dropdown">
+        <label for="commentDropdown"></label>
+        <select id="commentDropdown"  size="7">
+
+            <option th:each="comment : ${allNotApprovedComments}"
+                    th:value="${comment.id}"
+                    th:data-full-text="'Author: ' + ${comment.author} + ' - Text: ' + ${comment.commentContent}"
+                    th:text="${comment.created} + ' - Author: ' + ${comment.author} + ' - Text: ' + ${#strings.abbreviate(comment.commentContent, 30)}">
+            </option>
+
+        </select>
+        <div id="fullCommentText"></div>
+
+    </div>
+    <br>
+    <br>
+    <div class="buttons">
+
+        <a th:href="@{/moderatorPanel}" class="btn btn-primary">Go back <br> to your panel</a>
+
+        <form th:action="@{/moderatorPanel/approveComment}" th:method="POST">
+            <input type="hidden" id="selectedCommentId" name="id" />
+            <button type="submit" class="btn btn-success">Approve</button>
+        </form>
+
+        <form th:action="@{/moderatorPanel/commentNotApproved}" th:method="POST">
+            <input type="hidden" id="notApprovedCommentId" name="id" />
+            <button type="submit" class="btn btn-danger">Don't Approve</button>
+        </form>
+    </div>
+
+    <div th:insert="~{/fragments/footer}"></div>
+
+</div>
+
+<script src="/js/commentsHelp.js"></script>
+</body>
+</html>

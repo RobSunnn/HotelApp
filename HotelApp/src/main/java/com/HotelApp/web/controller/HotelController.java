@@ -1,15 +1,13 @@
 package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.view.GuestView;
+import com.HotelApp.domain.models.view.HappyGuestView;
 import com.HotelApp.domain.models.view.RoomView;
 import com.HotelApp.domain.models.view.SubscriberView;
-import com.HotelApp.service.AdminService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.HotelApp.service.HotelService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,34 +16,35 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class HotelController {
 
-    private final AdminService adminService;
+    private final HotelService hotelService;
 
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
+    public HotelController(HotelService hotelService) {
+        this.hotelService = hotelService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String adminPanel(Model model) {
-        int freeRoomsCount = adminService.seeAllFreeRooms().size();
-        int allGuestsCount = adminService.seeAllGuests().size();
-        int totalSubscribers = adminService.seeAllSubscribers().size();
-        BigDecimal totalProfit = adminService.getTotalProfit();
+        int freeRoomsCount = hotelService.seeAllFreeRooms().size();
+        int allGuestsCount = hotelService.seeAllGuests().size();
+        int totalSubscribers = hotelService.seeAllSubscribers().size();
+        int happyGuestsCount = hotelService.seeAllHappyGuests().size();
+        BigDecimal totalProfit = hotelService.getTotalProfit();
 
         model.addAttribute("freeRoomsCount", freeRoomsCount);
         model.addAttribute("allGuestsCount", allGuestsCount);
+        model.addAttribute("happyGuestsCount", happyGuestsCount);
         model.addAttribute("totalProfit", totalProfit);
         model.addAttribute("totalSubscribers", totalSubscribers);
-
         return "admin-panel";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/freeRooms")
     public String freeRooms(Model model) {
-        List<RoomView> freeRooms = adminService.seeAllFreeRooms();
+        List<RoomView> freeRooms = hotelService.seeAllFreeRooms();
         model.addAttribute("freeRooms", freeRooms);
 
         return "free-rooms";
@@ -54,7 +53,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/allGuests")
     public String allGuests(Model model) {
-        List<GuestView> allGuests = adminService.seeAllGuests();
+        List<GuestView> allGuests = hotelService.seeAllGuests();
         model.addAttribute("allGuests", allGuests);
 
         return "all-guests";
@@ -63,10 +62,19 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/allSubscribers")
     public String allSubscribers(Model model) {
-        List<SubscriberView> allSubscribers = adminService.seeAllSubscribers();
+        List<SubscriberView> allSubscribers = hotelService.seeAllSubscribers();
         model.addAttribute("allSubscribers", allSubscribers);
 
         return "all-subscribers";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/allHappyGuests")
+    public String allHappyGuests(Model model) {
+        List<HappyGuestView> allHappyGuests = hotelService.seeAllHappyGuests();
+        model.addAttribute("allHappyGuests", allHappyGuests);
+
+        return "all-happy-guests";
     }
 
 }

@@ -27,20 +27,8 @@ public class RoomTypesTypesServiceImpl implements RoomTypesService {
 
     @Override
     public Page<RoomTypeView> getRoomTypes(Pageable pageable) {
-     return roomTypeRepository.findAll((org.springframework.data.domain.Pageable) pageable)
+     return roomTypeRepository.findAll(pageable)
                 .map(RoomTypesTypesServiceImpl::map);
-    }
-
-    @Override
-    public List<RoomTypeView> getAllRoomTypes() {
-        List<RoomTypeEntity> allRooms = roomTypeRepository.findAll();
-        List<RoomTypeView> allRoomTypesView = new ArrayList<>();
-
-        for (RoomTypeEntity room : allRooms) {
-            allRoomTypesView.add(map(room));
-        }
-
-        return allRoomTypesView;
     }
 
     private static RoomTypeView map(RoomTypeEntity roomTypeEntity) {

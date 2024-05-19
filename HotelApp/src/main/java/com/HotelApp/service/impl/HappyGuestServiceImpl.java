@@ -1,6 +1,5 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.domain.entity.GuestEntity;
 import com.HotelApp.domain.entity.HappyGuestEntity;
 import com.HotelApp.repository.HappyGuestRepository;
 import com.HotelApp.service.HappyGuestService;
@@ -23,8 +22,8 @@ public class HappyGuestServiceImpl implements HappyGuestService {
     }
 
     @Override
-    public Optional<HappyGuestEntity> findByDocumentId(GuestEntity guest) {
-        return happyGuestRepository.findByDocumentId(guest.getDocumentId());
+    public Optional<HappyGuestEntity> findByDocumentId(String documentId) {
+        return happyGuestRepository.findByDocumentId(documentId);
     }
 
 

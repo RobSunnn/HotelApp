@@ -9,8 +9,6 @@ public interface RoomTypesService {
 
     Page<RoomTypeView> getRoomTypes(Pageable pageable);
 
-    List<RoomTypeView> getAllRoomTypes();
-
     long getRoomTypesCount();
 
     void initRoomTypes();

@@ -2,6 +2,7 @@ package com.HotelApp.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,9 @@ public class CommentEntity extends BaseEntity {
 
     @Column
     private String author;
+
+    @ManyToOne
+    private HotelInfoEntity hotelInfoEntity;
 
     public CommentEntity() {
     }
@@ -58,6 +62,11 @@ public class CommentEntity extends BaseEntity {
 
     public CommentEntity setAuthor(String author) {
         this.author = author;
+        return this;
+    }
+
+    public CommentEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {
+        this.hotelInfoEntity = hotelInfoEntity;
         return this;
     }
 }

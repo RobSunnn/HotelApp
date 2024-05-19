@@ -1,5 +1,6 @@
 package com.HotelApp.service.impl;
 
+import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.SubscriberEntity;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.view.SubscriberView;
@@ -25,7 +26,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public void addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel) {
+    public void addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel, HotelInfoEntity hotelInfo) {
 
         Optional<SubscriberEntity> checkSubscriber = subscriberRepository.findByEmail(addSubscriberBindingModel.getSubscriberEmail());
 
@@ -37,18 +38,8 @@ public class SubscriberServiceImpl implements SubscriberService {
             subscriberRepository.save(subscriber);
             return;
         }
-
-       subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel));
-
-    }
-
-    @Override
-    public List<SubscriberView> getAllSubscribers() {
-       return subscriberRepository
-               .findAll()
-               .stream()
-               .map(subscriberEntity -> modelMapper().map(subscriberEntity, SubscriberView.class))
-               .collect(Collectors.toList());
+        SubscriberEntity subscriber = subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
+        hotelInfo.getSubscribers().add(subscriber);
 
     }
 
@@ -57,10 +48,12 @@ public class SubscriberServiceImpl implements SubscriberService {
         //todo: send bonus
     }
 
-    private static SubscriberEntity mapAsSubscriber(AddSubscriberBindingModel addSubscriberBindingModel) {
-        return new SubscriberEntity().setEmail(addSubscriberBindingModel.getSubscriberEmail())
+    private static SubscriberEntity mapAsSubscriber(AddSubscriberBindingModel addSubscriberBindingModel, HotelInfoEntity hotelInfo) {
+        return new SubscriberEntity()
+                .setEmail(addSubscriberBindingModel.getSubscriberEmail())
                 .setTimeOfSubscription(LocalDateTime.now())
-                .setCounterOfSubscriptions(1);
+                .setCounterOfSubscriptions(1)
+                .setHotelInfoEntity(hotelInfo);
     }
 
 

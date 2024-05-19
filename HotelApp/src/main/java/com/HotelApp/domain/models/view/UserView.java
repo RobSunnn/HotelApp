@@ -6,6 +6,8 @@ import java.util.List;
 
 public class UserView {
 
+    private Long id;
+
     private String fullName;
 
     private String email;
@@ -22,6 +24,15 @@ public class UserView {
 
     public UserView setFullName(String fullName) {
         this.fullName = fullName;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public UserView setId(Long id) {
+        this.id = id;
         return this;
     }
 

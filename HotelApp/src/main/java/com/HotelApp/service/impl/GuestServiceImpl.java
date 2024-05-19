@@ -2,21 +2,17 @@ package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.GuestEntity;
 import com.HotelApp.domain.entity.HappyGuestEntity;
+import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
-import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.repository.GuestRepository;
 import com.HotelApp.repository.RoomRepository;
-import com.HotelApp.service.AdminService;
 import com.HotelApp.service.GuestService;
 import com.HotelApp.service.HappyGuestService;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static com.HotelApp.config.SecurityConfiguration.modelMapper;
@@ -31,94 +27,73 @@ public class GuestServiceImpl implements GuestService {
 
     private final HappyGuestService happyGuestService;
 
-    private final AdminService adminService;
-
     public GuestServiceImpl(GuestRepository guestRepository,
                             RoomRepository roomRepository,
-                            HappyGuestService happyGuestService,
-                            AdminService adminService) {
+                            HappyGuestService happyGuestService) {
         this.guestRepository = guestRepository;
         this.roomRepository = roomRepository;
         this.happyGuestService = happyGuestService;
-        this.adminService = adminService;
     }
 
     @Override
-    public boolean registerGuest(AddGuestBindingModel addGuestBindingModel) {
+    public boolean registerGuest(AddGuestBindingModel addGuestBindingModel, HotelInfoEntity hotelInfo) {
 
-        GuestEntity guest = guestRepository.save(map(addGuestBindingModel));
-
-        RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber()).setReserved(true);
-        room.setReserved(true);
-        roomRepository.save(room);
-
+        GuestEntity guest = guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
+        hotelInfo.getGuests().add(guest);
         return guest.getDocumentId() != null;
     }
 
     @Override
-    public void guestWantToLeave(Integer roomNumber) {
-        GuestEntity guest = guestRepository.findByRoomNumber(roomNumber);
-        RoomEntity room = roomRepository.findByRoomNumber(guest.getRoomNumber());
+    public void guestWantToLeave(RoomEntity room, HotelInfoEntity hotelInfo) {
 
-        adminService.takeMoney(room.getPrice());
+        GuestEntity guest = guestRepository.findByRoom(room);
 
-        Optional<HappyGuestEntity> happyGuest = happyGuestService.findByDocumentId(guest);
+        Optional<HappyGuestEntity> happyGuest = happyGuestService.findByDocumentId(guest.getDocumentId());
 
         if (happyGuest.isPresent()) {
-            happyGuest.get()
-                    .setTimesThatGuestHaveBeenToHotel(happyGuest.get().getTimesThatGuestHaveBeenToHotel() + 1)
+            HappyGuestEntity happyGuestEntity = happyGuest.get();
+
+            happyGuestEntity
+                    .setTimesThatGuestHaveBeenToHotel(happyGuestEntity.getTimesThatGuestHaveBeenToHotel() + 1)
                     .setLastCheckIn(guest.getCheckInTime())
                     .setLastCheckOut(LocalDateTime.now());
+
+            hotelInfo.getHappyGuests().add(happyGuestEntity);
 
             happyGuestService.saveHappyGuest(happyGuest.get());
         } else {
             HappyGuestEntity happyGuestEntity = modelMapper().map(guest, HappyGuestEntity.class);
-            happyGuestEntity.setLastRoomUsed(guest.getRoomNumber());
+
+            happyGuestEntity.setLastRoomUsed(guest.getRoom().getRoomNumber());
             happyGuestEntity.setTimesThatGuestHaveBeenToHotel(1);
             happyGuestEntity.setLastCheckIn(guest.getCheckInTime());
             happyGuestEntity.setLastCheckOut(LocalDateTime.now());
+            happyGuestEntity.setHotelInfoEntity(hotelInfo);
+
+            hotelInfo.getHappyGuests().add(happyGuestEntity);
             happyGuestService.saveHappyGuest(happyGuestEntity);
         }
+        hotelInfo.getGuests().remove(guest);
 
         guestRepository.delete(guest);
-
-        room.setReserved(false);
         roomRepository.save(room);
     }
 
-    @Override
-    public List<GuestView> getAllGuests() {
 
-        List<GuestEntity> allGuests = guestRepository.findAll();
-        List<GuestView> allGuestsView = new ArrayList<>();
+    private GuestEntity mapAsGuest(AddGuestBindingModel addGuestBindingModel, HotelInfoEntity hotelInfo) {
+        RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
 
-        for (GuestEntity guest : allGuests) {
-            allGuestsView.add(map(guest));
-        }
-
-        return allGuestsView;
-    }
-
-    private GuestEntity map(AddGuestBindingModel addGuestBindingModel) {
         return new GuestEntity()
                 .setFirstName(addGuestBindingModel.getFirstName())
                 .setLastName(addGuestBindingModel.getLastName())
                 .setAge(addGuestBindingModel.getAge())
                 .setEmail(addGuestBindingModel.getEmail())
                 .setDocumentId(addGuestBindingModel.getDocumentId())
-                .setRoomNumber(addGuestBindingModel.getRoomNumber())
+                .setRoom(room)
                 .setCheckInTime(LocalDateTime.now())
-                .setCheckOutTime(LocalDateTime.now().plusDays(addGuestBindingModel.getDaysToStay()));//todo: make days dynamic
+                .setCheckOutTime(LocalDateTime.now().plusDays(addGuestBindingModel.getDaysToStay()))
+                .setHotelInfoEntity(hotelInfo);
     }
 
-    private GuestView map(GuestEntity guest) {
-        return new GuestView()
-                .setFirstName(guest.getFirstName())
-                .setLastName(guest.getLastName())
-                .setAge(guest.getAge())
-                .setEmail(guest.getEmail())
-                .setRoomNumber(guest.getRoomNumber())
-                .setDocumentId(guest.getDocumentId());
-    }
 
 }

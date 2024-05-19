@@ -2,6 +2,7 @@ package com.HotelApp.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,9 @@ public class SubscriberEntity extends BaseEntity {
     private LocalDateTime timeOfSubscription;
 
     private Integer counterOfSubscriptions;
+
+    @ManyToOne
+    private HotelInfoEntity hotelInfoEntity;
 
     public SubscriberEntity() {}
 
@@ -43,6 +47,11 @@ public class SubscriberEntity extends BaseEntity {
 
     public SubscriberEntity setCounterOfSubscriptions(Integer counterOfSubscriptions) {
         this.counterOfSubscriptions = counterOfSubscriptions;
+        return this;
+    }
+
+    public SubscriberEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {
+        this.hotelInfoEntity = hotelInfoEntity;
         return this;
     }
 }

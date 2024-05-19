@@ -3,8 +3,7 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
 import com.HotelApp.domain.models.view.GuestView;
-import com.HotelApp.service.GuestService;
-import com.HotelApp.service.RoomService;
+import com.HotelApp.service.HotelService;
 import com.HotelApp.validation.constants.BindingConstants;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,10 +22,10 @@ import java.util.List;
 @RequestMapping("/guests")
 public class GuestController {
 
-    private final GuestService guestService;
+    private final HotelService hotelService;
 
-    public GuestController(GuestService guestService, RoomService roomService) {
-        this.guestService = guestService;
+    public GuestController(HotelService hotelService) {
+        this.hotelService = hotelService;
     }
 
 
@@ -59,8 +58,7 @@ public class GuestController {
             return "redirect:/guests/add";
         }
 
-
-        boolean registerGuest = guestService.registerGuest(addGuestBindingModel);
+        boolean registerGuest = hotelService.registerGuest(addGuestBindingModel);
 
         if (registerGuest) {
             return "redirect:/";
@@ -75,7 +73,7 @@ public class GuestController {
     @GetMapping("/leave")
     public String leave(Model model) {
 
-        List<GuestView> guests = guestService.getAllGuests();
+        List<GuestView> guests = hotelService.seeAllGuests();
         model.addAttribute("guests", guests);
 
         return "guest-leave";
@@ -84,7 +82,7 @@ public class GuestController {
     @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping("/leave")
     public String leave(@RequestParam("roomNumber") Integer roomNumber) {
-        guestService.guestWantToLeave(roomNumber);
+        hotelService.checkout(roomNumber);
         return "redirect:/";
     }
 

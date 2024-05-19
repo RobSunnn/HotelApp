@@ -1,54 +1,36 @@
-package com.HotelApp.domain.entity;
+package com.HotelApp.domain.models.view;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "happy_guests")
-public class HappyGuestEntity extends BaseEntity {
+public class HappyGuestView {
 
-    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
     private String lastName;
 
-    @Column //TODO: think if we need the email?
     private String email;
 
-    @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = false, unique = true, name = "document_id")
     private String documentId;
 
-    @Column(nullable = false, name = "last_room_used")
     private Integer lastRoomUsed;
 
-    @Column(nullable = false, name = "times_that_guest_have_been_to_hotel")
     private Integer timesThatGuestHaveBeenToHotel;
 
-    @Column(nullable = false, name = "last_check_in")
     private LocalDateTime lastCheckIn;
 
-    @Column(nullable = false, name = "last_check_out")
     private LocalDateTime lastCheckOut;
 
-    @ManyToOne
-    private HotelInfoEntity hotelInfoEntity;
-
-    public HappyGuestEntity() {
-    }
+    public HappyGuestView() {}
 
     public String getFirstName() {
         return firstName;
     }
 
-    public HappyGuestEntity setFirstName(String firstName) {
+    public HappyGuestView setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -57,7 +39,7 @@ public class HappyGuestEntity extends BaseEntity {
         return lastName;
     }
 
-    public HappyGuestEntity setLastName(String lastName) {
+    public HappyGuestView setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -66,7 +48,7 @@ public class HappyGuestEntity extends BaseEntity {
         return email;
     }
 
-    public HappyGuestEntity setEmail(String email) {
+    public HappyGuestView setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -75,7 +57,7 @@ public class HappyGuestEntity extends BaseEntity {
         return age;
     }
 
-    public HappyGuestEntity setAge(Integer age) {
+    public HappyGuestView setAge(Integer age) {
         this.age = age;
         return this;
     }
@@ -84,7 +66,7 @@ public class HappyGuestEntity extends BaseEntity {
         return documentId;
     }
 
-    public HappyGuestEntity setDocumentId(String documentId) {
+    public HappyGuestView setDocumentId(String documentId) {
         this.documentId = documentId;
         return this;
     }
@@ -93,7 +75,7 @@ public class HappyGuestEntity extends BaseEntity {
         return lastRoomUsed;
     }
 
-    public HappyGuestEntity setLastRoomUsed(Integer lastRoomUsed) {
+    public HappyGuestView setLastRoomUsed(Integer lastRoomUsed) {
         this.lastRoomUsed = lastRoomUsed;
         return this;
     }
@@ -102,7 +84,7 @@ public class HappyGuestEntity extends BaseEntity {
         return timesThatGuestHaveBeenToHotel;
     }
 
-    public HappyGuestEntity setTimesThatGuestHaveBeenToHotel(Integer timesThatGuestHaveBeenToHotel) {
+    public HappyGuestView setTimesThatGuestHaveBeenToHotel(Integer timesThatGuestHaveBeenToHotel) {
         this.timesThatGuestHaveBeenToHotel = timesThatGuestHaveBeenToHotel;
         return this;
     }
@@ -111,7 +93,7 @@ public class HappyGuestEntity extends BaseEntity {
         return lastCheckIn;
     }
 
-    public HappyGuestEntity setLastCheckIn(LocalDateTime lastCheckIn) {
+    public HappyGuestView setLastCheckIn(LocalDateTime lastCheckIn) {
         this.lastCheckIn = lastCheckIn;
         return this;
     }
@@ -120,13 +102,12 @@ public class HappyGuestEntity extends BaseEntity {
         return lastCheckOut;
     }
 
-    public HappyGuestEntity setLastCheckOut(LocalDateTime lastCheckOut) {
+    public HappyGuestView setLastCheckOut(LocalDateTime lastCheckOut) {
         this.lastCheckOut = lastCheckOut;
         return this;
     }
 
-    public HappyGuestEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {
-        this.hotelInfoEntity = hotelInfoEntity;
-        return this;
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 }

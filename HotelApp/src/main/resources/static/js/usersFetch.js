@@ -39,7 +39,7 @@ allUsersBtn.addEventListener('click', () => {
         .then(res => res.json())
         .then(result => {
             Object.values(result).forEach(e => {
-
+debugger;
                 let htmlOptionElement = document.createElement("option");
 
                 htmlOptionElement.append(`User with email: ${e.email}`);

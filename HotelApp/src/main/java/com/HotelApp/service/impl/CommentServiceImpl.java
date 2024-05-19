@@ -1,6 +1,7 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.CommentEntity;
+import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.models.binding.AddCommentBindingModel;
 import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.repository.CommentRepository;
@@ -23,9 +24,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel) {
+    public void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
 
-        commentRepository.save(mapAsComment(addCommentBindingModel));
+        commentRepository.save(mapAsComment(addCommentBindingModel, hotelInfo));
     }
 
     @Override
@@ -55,11 +56,12 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.delete(comment);
     }
 
-    private CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel) {
+    private CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
         return new CommentEntity()
                 .setCommentContent(addCommentBindingModel.getCommentContent())
                 .setApproved(false)
                 .setAuthor(addCommentBindingModel.getAuthor())
-                .setCreated(LocalDateTime.now());
+                .setCreated(LocalDateTime.now())
+                .setHotelInfoEntity(hotelInfo);
     }
 }

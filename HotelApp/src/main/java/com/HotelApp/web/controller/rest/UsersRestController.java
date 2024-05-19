@@ -1,12 +1,10 @@
 package com.HotelApp.web.controller.rest;
 
 import com.HotelApp.domain.entity.UserEntity;
-import com.HotelApp.service.UserService;
-import com.HotelApp.service.exception.UserNotFoundException;
-import org.springframework.http.HttpStatus;
+import com.HotelApp.domain.models.view.UserView;
+import com.HotelApp.service.HotelService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -14,22 +12,24 @@ import java.util.List;
 @RequestMapping("/admin")
 public class UsersRestController {
 
-    private final UserService userService;
+private final HotelService hotelService;
 
-    public UsersRestController(UserService userService) {
-        this.userService = userService;
+    public UsersRestController(HotelService hotelService) {
+
+        this.hotelService = hotelService;
     }
 
     @GetMapping("/allUsers")
-    public ResponseEntity<List<UserEntity>> allUsers() {
-        return ResponseEntity.ok(userService.findAllUsers());
+    public ResponseEntity<List<UserView>> allUsers() {
+        List<UserView> allUsers = hotelService.findAllUsers();
+        return ResponseEntity.ok(allUsers);
     }
 
 
     @GetMapping("/{userEmail}")
-    public ResponseEntity<UserEntity> userByEmail(@PathVariable String userEmail) {
-//todo: make userView
-        UserEntity user = userService.findUserByEmail(userEmail);
+    public ResponseEntity<UserView> userByEmail(@PathVariable String userEmail) {
+
+        UserView user = hotelService.findUserByEmail(userEmail);
 
         return ResponseEntity.ok(user);
 
@@ -37,21 +37,21 @@ public class UsersRestController {
 
     @PostMapping("/makeUserAdmin/{email}")
     public ResponseEntity<String> makeUserAdmin(@PathVariable String email) {
-        userService.makeUserAdmin(email);
+        hotelService.makeUserAdmin(email);
 
         return ResponseEntity.ok("redirect:/admin");
     }
 
     @PostMapping("/makeUserModerator/{email}")
     public ResponseEntity<String> makeUserModerator(@PathVariable String email) {
-        userService.makeUserModerator(email);
+        hotelService.makeUserModerator(email);
 
         return ResponseEntity.ok("redirect:/admin");
     }
 
     @PostMapping("/takeRights/{email}")
     public ResponseEntity<String> takeRightsOfUser(@PathVariable String email) {
-        userService.takeRights(email);
+        hotelService.takeRightsOfUser(email);
 
         return ResponseEntity.ok("redirect:/admin");
     }

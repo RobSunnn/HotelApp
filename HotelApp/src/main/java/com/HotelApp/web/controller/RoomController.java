@@ -28,19 +28,18 @@ public class RoomController {
                                 sort = "id"
                         )
                         Pageable pageable) {
-
+//TODO: maybe put this to DBInit
         if (roomTypesService.getRoomTypesCount() == 0) {
             roomTypesService.initRoomTypes();
         }
-//
-//        List<RoomTypeView> allRooms = roomTypesService.getAllRoomTypes();
-//        model.addAttribute("allRooms", allRooms);
+
         Page<RoomTypeView> roomTypes = roomTypesService.getRoomTypes(pageable);
         int totalPages = roomTypes.getTotalPages();
         Page<RoomTypeView> lastPage = roomTypesService.getRoomTypes(PageRequest.of(totalPages - 1, pageable.getPageSize(), pageable.getSort()));
 
         model.addAttribute("allRooms", roomTypes);
         model.addAttribute("lastPageRooms", lastPage);
+
         return "rooms";
     }
 

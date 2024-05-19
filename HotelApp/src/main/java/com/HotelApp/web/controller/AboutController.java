@@ -1,10 +1,9 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.entity.SubscriberEntity;
 import com.HotelApp.domain.models.binding.AddCommentBindingModel;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.service.CommentService;
-import com.HotelApp.service.SubscriberService;
+import com.HotelApp.service.HotelService;
 import com.HotelApp.validation.constants.BindingConstants;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -21,14 +20,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/about")
 public class AboutController {
 
-    private final SubscriberService subscriberService;
+    private final HotelService hotelService;
 
-    private final CommentService commentService;
-
-    public AboutController(SubscriberService subscriberService,
-                           CommentService commentService) {
-        this.subscriberService = subscriberService;
-        this.commentService = commentService;
+    public AboutController(HotelService hotelService) {
+        this.hotelService = hotelService;
     }
 
     @ModelAttribute
@@ -59,7 +54,7 @@ public class AboutController {
             return "redirect:/about";
         }
 
-        commentService.addCommentToDatabase(addCommentBindingModel);
+        hotelService.addCommentToDatabase(addCommentBindingModel);
         redirectAttributes.addFlashAttribute("successCommentMessage", "Thank you for your comment!");
 
         return "redirect:/about";
@@ -77,7 +72,7 @@ public class AboutController {
             return "redirect:/about";
         }
 
-        subscriberService.addNewSubscriber(addSubscriberBindingModel);
+        hotelService.addNewSubscriber(addSubscriberBindingModel);
 
         redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
 

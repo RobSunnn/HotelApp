@@ -1,6 +1,7 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.CategoryEntity;
+import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import com.HotelApp.domain.models.view.RoomView;
@@ -26,18 +27,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomView> getAvailableRooms() {
-        List<RoomEntity> allNotReservedRooms = roomRepository.findAllNotReservedRooms();
-        List<RoomView> allRoomViews = new ArrayList<>();
-
-        for (RoomEntity room : allNotReservedRooms) {
-            allRoomViews.add(map(room));
-        }
-
-        return allRoomViews;
-    }
-
-    @Override
     public List<RoomView> getAvailableRoomsByType(String roomType) {
 
         CategoryEntity category = categoriesRepository.findByName(CategoriesEnum.valueOf(roomType));
@@ -48,15 +37,25 @@ public class RoomServiceImpl implements RoomService {
 
         for (RoomEntity room : roomByCategoryId) {
             if (!room.isReserved()) {
-                availableRooms.add(map(room));
+                availableRooms.add(mapAsRoomView(room));
             }
         }
 
         return availableRooms;
     }
 
+    @Override
+    public RoomEntity findByRoomNumber(Integer roomNumber) {
+        return roomRepository.findByRoomNumber(roomNumber);
+    }
 
-    private RoomView map(RoomEntity room) {
+    @Override
+    public void saveRoom(RoomEntity room) {
+        roomRepository.save(room);
+    }
+
+
+    private RoomView mapAsRoomView(RoomEntity room) {
         return new RoomView()
                 .setRoomNumber(room.getRoomNumber())
                 .setCategory(room.getCategory());
@@ -68,31 +67,31 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void initRooms() {
+    public void initRooms(HotelInfoEntity hotelInfo) {
         //TODO: better way to init rooms
 
-        roomRepository.save(new RoomEntity(1, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE)));
-        roomRepository.save(new RoomEntity(2, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE)));
-        roomRepository.save(new RoomEntity(3, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE)));
-        roomRepository.save(new RoomEntity(4, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE)));
-        roomRepository.save(new RoomEntity(5, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE)));
-        roomRepository.save(new RoomEntity(6, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO)));
-        roomRepository.save(new RoomEntity(7, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO)));
-        roomRepository.save(new RoomEntity(8, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO)));
-        roomRepository.save(new RoomEntity(9, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO)));
-        roomRepository.save(new RoomEntity(10, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO)));
-        roomRepository.save(new RoomEntity(11, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE)));
-        roomRepository.save(new RoomEntity(12, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE)));
-        roomRepository.save(new RoomEntity(13, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE)));
-        roomRepository.save(new RoomEntity(14, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE)));
-        roomRepository.save(new RoomEntity(15, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE)));
-        roomRepository.save(new RoomEntity(16, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE)));
-        roomRepository.save(new RoomEntity(17, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE)));
-        roomRepository.save(new RoomEntity(18, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE)));
-        roomRepository.save(new RoomEntity(19, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE)));
-        roomRepository.save(new RoomEntity(20, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE)));
-        roomRepository.save(new RoomEntity(21, false, BigDecimal.valueOf(1250), categoriesRepository.findByName(CategoriesEnum.PRESIDENT)));
-        roomRepository.save(new RoomEntity(22, false, BigDecimal.valueOf(1250), categoriesRepository.findByName(CategoriesEnum.PRESIDENT)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(1, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(2, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(3, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(4, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(5, false, BigDecimal.valueOf(50), categoriesRepository.findByName(CategoriesEnum.SINGLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(6, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(7, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(8, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(9, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(10, false, BigDecimal.valueOf(80), categoriesRepository.findByName(CategoriesEnum.STUDIO), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(11, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(12, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(13, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(14, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(15, false, BigDecimal.valueOf(100), categoriesRepository.findByName(CategoriesEnum.DOUBLE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(16, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(17, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(18, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(19, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(20, false, BigDecimal.valueOf(150), categoriesRepository.findByName(CategoriesEnum.DELUXE), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(21, false, BigDecimal.valueOf(1250), categoriesRepository.findByName(CategoriesEnum.PRESIDENT), hotelInfo)));
+        hotelInfo.getRooms().add(roomRepository.save(new RoomEntity(22, false, BigDecimal.valueOf(1250), categoriesRepository.findByName(CategoriesEnum.PRESIDENT), hotelInfo)));
 
     }
 

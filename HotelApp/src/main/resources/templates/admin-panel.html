@@ -80,6 +80,16 @@
 
         </div>
 
+        <div class="card">
+
+            <div class="card-body">
+                <h5 class="card-title">Happy Guests Overview</h5>
+                <p class="card-text">Total Happy Guests: <span th:text="${happyGuestsCount}" id="happyGuests">XX</span></p>
+                <a th:href="@{/admin/allHappyGuests}" class="btn btn-primary">See All Happy Guests</a>
+            </div>
+
+        </div>
+
     </div>
 
     <div class="smallContainers">

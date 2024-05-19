@@ -23,16 +23,19 @@ public class RoomEntity extends BaseEntity {
     @ManyToOne
     private CategoryEntity category;
 
+    @ManyToOne
+    private HotelInfoEntity hotelInfoEntity;
+
     public RoomEntity() {
     }
 
-    public RoomEntity(Integer roomNumber, boolean isReserved, BigDecimal price, CategoryEntity category) {
+    public RoomEntity(Integer roomNumber, boolean isReserved, BigDecimal price, CategoryEntity category, HotelInfoEntity hotelInfo) {
 
         this.roomNumber = roomNumber;
         this.isReserved = isReserved;
         this.price = price;
         this.category = category;
-
+        this.hotelInfoEntity = hotelInfo;
     }
 
     public Integer getRoomNumber() {

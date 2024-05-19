@@ -1,5 +1,6 @@
 package com.HotelApp.service.impl;
 
+import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
@@ -12,13 +13,13 @@ import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.validation.constants.ValidationConstants;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.HotelApp.config.SecurityConfiguration.passwordEncoder;
 
@@ -34,14 +35,17 @@ public class UserServiceImpl implements UserService {
         this.roleService = roleService;
     }
 
+    @Transactional
     @Override
-    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult) {
+    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, HotelInfoEntity hotelInfo) {
         if (checkIfEmailExist(userRegisterBindingModel)) {
             bindingResult.addError(new FieldError("userRegisterBindingModel", "email", ValidationConstants.EMAIL_EXIST));
             return false;
         }
 
-        UserEntity user = userRepository.save(mapAsUser(userRegisterBindingModel));
+        UserEntity user = userRepository.save(mapAsUser(userRegisterBindingModel, hotelInfo));
+
+        hotelInfo.getUsers().add(user);
 
         return user.getEmail() != null;
     }
@@ -57,11 +61,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> findAllUsers() {
-        return userRepository.findAll().stream().skip(1).collect(Collectors.toList());
-    }
-
-    @Override
     public UserEntity findUserByEmail(String email) {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
@@ -73,7 +72,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel) {
+    private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel, HotelInfoEntity hotelInfo) {
 
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             return new UserEntity(); // TODO: better solution for field match
@@ -85,7 +84,8 @@ public class UserServiceImpl implements UserService {
                 .setFirstName(userRegisterBindingModel.getFirstName())
                 .setLastName(userRegisterBindingModel.getLastName())
                 .setPassword(passwordEncoder().encode(userRegisterBindingModel.getPassword()))
-                .setCreated(LocalDateTime.now());
+                .setCreated(LocalDateTime.now())
+                .setHotelInfoEntity(hotelInfo);
 
         if (roleService.getCount() == 0) {
             roleService.initRoles();

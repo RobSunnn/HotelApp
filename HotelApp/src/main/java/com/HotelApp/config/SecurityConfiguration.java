@@ -4,7 +4,6 @@ import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.service.impl.AppUserDetailsService;
-import com.sun.net.httpserver.HttpsConfigurator;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +23,12 @@ import java.util.Properties;
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
+
+//    private static AdminService adminService;
+//
+//    public SecurityConfiguration(AdminService adminService) {
+//        SecurityConfiguration.adminService = adminService;
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -83,5 +88,10 @@ public class SecurityConfiguration {
 
         return resolver;
     }
+
+//    @Bean
+//    public static HotelInfoEntity hotelInfoEntity() {
+//        return adminService.getHotelInfo();
+//    }
 
 }

@@ -24,6 +24,9 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    @ManyToOne
+    private HotelInfoEntity hotelInfoEntity;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -104,4 +107,8 @@ public class UserEntity extends BaseEntity {
         return firstName + " " + lastName;
     }
 
+    public UserEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {
+        this.hotelInfoEntity = hotelInfoEntity;
+        return this;
+    }
 }

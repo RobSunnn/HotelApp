@@ -2,6 +2,7 @@ package com.HotelApp.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -25,14 +26,17 @@ public class GuestEntity extends BaseEntity {
     @Column(nullable = false, unique = true, name = "document_id")
     private String documentId;
 
-    @Column(nullable = false, name = "room_number")
-    private Integer roomNumber;
+    @ManyToOne
+    private RoomEntity room;
 
     @Column(nullable = false, name = "check_in_time")
     private LocalDateTime checkInTime;
 
     @Column(nullable = false, name = "check_out_time")
     private LocalDateTime checkOutTime;
+
+    @ManyToOne
+    private HotelInfoEntity hotelInfoEntity;
 
     public GuestEntity() {
     }
@@ -82,12 +86,12 @@ public class GuestEntity extends BaseEntity {
         return this;
     }
 
-    public Integer getRoomNumber() {
-        return roomNumber;
+    public RoomEntity getRoom() {
+        return room;
     }
 
-    public GuestEntity setRoomNumber(Integer roomNumber) {
-        this.roomNumber = roomNumber;
+    public GuestEntity setRoom(RoomEntity roomNumber) {
+        this.room = roomNumber;
         return this;
     }
 
@@ -106,6 +110,11 @@ public class GuestEntity extends BaseEntity {
 
     public GuestEntity setCheckOutTime(LocalDateTime checkOutTime) {
         this.checkOutTime = checkOutTime;
+        return this;
+    }
+
+    public GuestEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {
+        this.hotelInfoEntity = hotelInfoEntity;
         return this;
     }
 }

@@ -10,5 +10,4 @@ public interface SubscriberService {
 
     void addNewSubscriber(AddSubscriberBindingModel subscriber, HotelInfoEntity hotelInfo);
 
-
 }

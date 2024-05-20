@@ -1,5 +1,6 @@
 package com.HotelApp.service.impl;
 
+import com.HotelApp.domain.entity.CommentEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.entity.UserEntity;
@@ -10,6 +11,7 @@ import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.service.*;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -48,17 +50,26 @@ public class HotelServiceImpl implements HotelService {
         this.subscriberService = subscriberService;
         this.commentService = commentService;
     }
-        /* Taking care of hotel info entity */
+
+    /* Taking care of hotel info entity */
     @Override
     public Long getCount() {
         return hotelRepository.count();
     }
 
+    @PostConstruct
+    @Transactional
     @Override
     public void init() {
+        if (hotelRepository.count() == 0) {
+            HotelInfoEntity hotelInfo = new HotelInfoEntity();
+            hotelInfo.setName("Great Hotel");
+            hotelInfo.setAddress("Somewhere");
+            hotelInfo.setPhoneNumber("0987-654-321");
+            hotelInfo.setTotalProfit(BigDecimal.ZERO);
 
-        //TODO: init should make Singleton instance
-        hotelRepository.save(new HotelInfoEntity(BigDecimal.ZERO));
+            hotelRepository.save(hotelInfo);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -220,9 +231,26 @@ public class HotelServiceImpl implements HotelService {
         commentService.addCommentToDatabase(addCommentBindingModel, getHotelInfo());
     }
 
+    @Transactional
     @Override
     public List<CommentView> getAllNotApprovedComments() {
-        return commentService.getAllNotApprovedComments();
+        return getHotelInfo()
+                .getComments()
+                .stream()
+                .filter(comment -> !comment.getApproved())
+                .map(comment -> modelMapper().map(comment, CommentView.class))
+                .toList();
+    }
+
+    @Transactional
+    @Override
+    public List<CommentView> getAllApprovedComments() {
+        return getHotelInfo()
+                .getComments()
+                .stream()
+                .filter(CommentEntity::getApproved)
+                .map(comment -> modelMapper().map(comment, CommentView.class))
+                .toList();
     }
 
     @Override

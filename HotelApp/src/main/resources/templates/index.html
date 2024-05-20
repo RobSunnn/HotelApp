@@ -4,14 +4,58 @@
     <meta charset="UTF-8">
     <title>Our Hotel</title>
     <style>
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
         body {
             background-image: url("/images/hotel.jpg");
-            background-size: 100% 60%;
+            background-size: 100% 60vh; /* Use viewport height for better responsiveness */
             background-repeat: no-repeat;
             background-attachment: fixed;
             transition: background-image 1s ease;
             transition-delay: 3s;
         }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .author {
+            font-style:italic;
+        }
+
+        .message-text {
+            font-style:italic;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+            position: fixed;
+            bottom: 10em;
+
+        }
+
+        .message {
+            text-align: center;
+            width: 30%;
+            background-color: #F8F0E9;
+            padding: 1em;
+            /*margin-top: 50em;*/
+        }
+
+        .comments {
+            display: flex;
+        }
+
 
     </style>
 
@@ -37,6 +81,7 @@
     // Change background image every 5 seconds
     setInterval(changeBackgroundImage, 5000);
 </script>
+
 
 </body>
 </html>

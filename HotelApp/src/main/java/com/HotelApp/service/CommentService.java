@@ -8,10 +8,7 @@ import java.util.List;
 
 public interface CommentService {
 
-
     void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo);
-
-    List<CommentView> getAllNotApprovedComments();
 
     void approve(Long id);
 

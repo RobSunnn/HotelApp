@@ -55,7 +55,10 @@ public interface HotelService {
 
     List<CommentView> getAllNotApprovedComments();
 
+    List<CommentView> getAllApprovedComments();
+
     void approveComment(Long id);
 
     void doNotApproveComment(Long id);
+
 }

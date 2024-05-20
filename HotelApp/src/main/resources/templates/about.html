@@ -10,6 +10,7 @@
     .text {
         display: flex;
         justify-content: space-around;
+
     }
 
     .forms-container {
@@ -25,38 +26,92 @@
 
     .container {
         text-align: center;
-    }
-
-    #contact {
-        background-color: grey;
-        width: 30rem;
-        max-width: 100%;
-        border: 3px solid black;
-        border-radius: 20%;
 
     }
 
+    /*.container {*/
+    /*    max-width: 50ch;*/
+    /*}*/
     #comments {
         background-color: blue;
         border: 3px solid black;
         border-radius: 20%;
-        width: 25rem;
+
 
     }
 
-    #subscribeForm {
-        margin: 1em auto 7em auto;
-        background-color: green;
-        border: 3px solid black;
+    .author {
+        font-style: italic;
+    }
+
+    .message-text {
+        font-style: italic;
+    }
+
+    .allComments {
         display: flex;
-        flex-direction: column;
-        padding: 3em;
-        width: 30rem;
-        max-width: 100%;
-        border-radius: 20%;
-
+        flex-grow: 1;
+        justify-content: center;
+        margin: 0 2em 0 2em;
     }
 
+    .allComments p {
+        max-width: 30ch;
+    }
+
+    #about {
+        text-align: center;
+
+    }
+    .hidden {
+        display: none;
+    }
+
+    .truncated {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 500px; /* Adjust as needed */
+        display: inline-block; /* Ensures ellipsis are applied */
+        vertical-align: top;
+    }
+
+    .message-text {
+        position: relative;
+    }
+
+    .message-text p {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        white-space: pre-wrap; /* This ensures that whitespace is preserved but allows wrapping */
+        max-height: 3em; /* Limit height to 3 lines (adjust as needed) */
+        overflow: hidden;
+    }
+
+    .message-text.expanded p {
+        white-space: pre-wrap; /* Allow wrapping when expanded */
+        max-height: none; /* Remove height limit when expanded */
+    }
+
+    .showMoreBtn {
+        display: none;
+    }
+
+    .truncated + .showMoreBtn {
+        display: inline-block;
+    }
+
+    /*.message {*/
+    /*    text-align: center;*/
+    /*    width: 30%;*/
+    /*    background-color: #F8F0E9;*/
+    /*    padding: 1em;*/
+    /*    !*margin-top: 50em;*!*/
+    /*}*/
+
+    /*.comments {*/
+    /*    display: flex;*/
+    /*}*/
 
 </style>
 
@@ -66,10 +121,10 @@
 
 
 <section id="about" class="py-5">
+    <h1 class="mb-4">About Our Hotel</h1>
 
     <div class="container">
 
-        <h1 class="mb-4">Welcome to Our Hotel</h1>
 
         <div class="text">
             <p><b>Nestled in the heart of [City Name], [Hotel Name] is your oasis of luxury and comfort. Whether you're
@@ -88,41 +143,32 @@
                 from [City’s Major Attractions].</p>
         </div>
 
-        <!--        <p>Experience the perfect blend of style, comfort, and convenience at [Hotel Name]. Book your stay today and-->
-        <!--            discover why we are the preferred choice for discerning travelers.</p>-->
+        <p><em>Experience the perfect blend of style, comfort, and convenience at [Hotel Name]. Book your stay today and
+            discover why we are the preferred choice for discerning travelers.</em></p>
 
     </div>
 
 </section>
 
-<div class="forms-container">
+<div class="allComments">
 
-    <section id="contact" class="py-5">
 
-        <div class="container">
-
-            <h2 class="mb-4">Contact us</h2>
-
-            <label for="name">Your Name</label>
-            <input type="text" class="form-control" id="name"
-                   name="name" placeholder="Enter your name...">
-
-            <label for="email">Your email</label>
-            <input type="text" class="form-control" id="email"
-                   name="email" placeholder="Enter your email address...">
-
-            <label for="message">Your message</label>
-            <textarea class="form-control" id="message" rows="5"
-                      name="message" placeholder="If you want you can leave us a message..."></textarea>
-
-            <form action="">
-                <button type="submit" class="btn btn-primary">Send Mail</button>
-            </form>
-
+    <div class="comments" th:each="comment, iterStat : ${comments}">
+        <div class="message" th:classappend="${iterStat.index >= 3} ? 'hidden'">
+            <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
+            <div class="message-text">
+                <p th:attr="data-full-text=${comment.commentContent}"
+                   th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
+                   th:classappend="${comment.commentContent.length() > 100} ? 'truncated' : ''"></p>
+            </div>
+            <button class="showWholeComment" th:if="${comment.commentContent.length() > 100}">Show More</button>
         </div>
+    </div>
 
+    <button id="allComments" th:if="${comments.size()} > 3">Show All Comments</button>
+</div>
 
-    </section>
+<div class="forms-container">
 
     <section id="comments" class="py-5">
 
@@ -163,35 +209,34 @@
 
 </div>
 
-<div class="container">
-
-    <form th:action="@{/about/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
-
-        <div class="py-5" id="subscribeForm">
-            <h3 class="mb-4">Subscribe to our newsletter</h3>
-
-            <label for="subscriberEmail"></label>
-            <input type="text" id="subscriberEmail" min="3" max="30"  th:field="*{subscriberEmail}"
-                   th:errorclass="is-invalid" class="form-control"
-                   placeholder="Enter your email">
-            <br>
-            <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
-                   class="invalid-feedback text-white  bg-danger rounded"></small>
-
-            <small th:if="${successSubscribeMessage}" th:text="${successSubscribeMessage}" class="alert alert-success">
-                <!-- put some decoration after successful subscribe -->
-            </small>
-
-            <button type="submit" class="btn btn-primary">Subscribe</button>
-
-        </div>
-
-
-    </form>
-
-</div>
 
 <div th:insert="~{/fragments/footer}"></div>
+<script>
 
+    document.addEventListener("DOMContentLoaded", function() {
+        // Handle "Show More" for individual long comments
+        document.querySelectorAll('.showWholeComment').forEach(button => {
+            button.addEventListener('click', function() {
+                const messageText = this.previousElementSibling;
+                messageText.classList.remove('truncated');
+                messageText.classList.add('expanded');
+                this.style.display = 'none';
+            });
+        });
+
+
+        // Handle "Show More Comments" button
+        const showMoreCommentsBtn = document.getElementById('allComments');
+        if (showMoreCommentsBtn) {
+            showMoreCommentsBtn.addEventListener('click', function() {
+                document.querySelectorAll('.comments .hidden').forEach(comment => {
+                    comment.classList.remove('hidden');
+                });
+                showMoreCommentsBtn.style.display = 'none';
+            });
+        }
+    });
+
+</script>
 </body>
 </html>

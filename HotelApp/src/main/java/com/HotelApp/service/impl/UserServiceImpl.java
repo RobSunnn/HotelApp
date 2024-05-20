@@ -50,9 +50,6 @@ public class UserServiceImpl implements UserService {
         return user.getEmail() != null;
     }
 
-
-
-
     @Override
     public boolean checkIfEmailExist(UserRegisterBindingModel userRegisterBindingModel) {
         Optional<UserEntity> user = userRepository.findByEmail(userRegisterBindingModel.getEmail());

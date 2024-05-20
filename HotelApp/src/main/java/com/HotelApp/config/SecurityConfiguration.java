@@ -24,38 +24,32 @@ import java.util.Properties;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
-//    private static AdminService adminService;
-//
-//    public SecurityConfiguration(AdminService adminService) {
-//        SecurityConfiguration.adminService = adminService;
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
                 .authorizeHttpRequests(
-                authorizeRequests -> authorizeRequests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
-                        .requestMatchers("/allRoomTypes", "/about/**", "/error").permitAll()
-                        .requestMatchers("/guests/add").hasRole("MODERATOR")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-        ).formLogin(
-                formLogin -> formLogin
-                        .loginPage("/users/login")
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/")
-                        .failureForwardUrl("/users/login-error")
-        ).logout(
-                logout -> logout.logoutUrl("/users/logout")
-                        .logoutSuccessUrl("/")
-                        .deleteCookies("JSESSIONID")
-                        .clearAuthentication(true)
-                        .invalidateHttpSession(true)
-        );
+                        authorizeRequests -> authorizeRequests
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                                .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
+                                .requestMatchers("/allRoomTypes", "/about/**","/contact/**", "/error").permitAll()
+                                .requestMatchers("/guests/add").hasRole("MODERATOR")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                ).formLogin(
+                        formLogin -> formLogin
+                                .loginPage("/users/login")
+                                .usernameParameter("email")
+                                .passwordParameter("password")
+                                .defaultSuccessUrl("/")
+                                .failureForwardUrl("/users/login-error")
+                ).logout(
+                        logout -> logout.logoutUrl("/users/logout")
+                                .logoutSuccessUrl("/")
+                                .deleteCookies("JSESSIONID")
+                                .clearAuthentication(true)
+                                .invalidateHttpSession(true)
+                );
 
         return httpSecurity.build();
     }
@@ -88,10 +82,5 @@ public class SecurityConfiguration {
 
         return resolver;
     }
-
-//    @Bean
-//    public static HotelInfoEntity hotelInfoEntity() {
-//        return adminService.getHotelInfo();
-//    }
 
 }

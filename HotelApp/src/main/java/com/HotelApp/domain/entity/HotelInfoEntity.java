@@ -13,6 +13,12 @@ import java.util.List;
 @Table(name = "hotel_info")
 public class HotelInfoEntity extends BaseEntity {
 
+    private String name;
+
+    private String address;
+
+    private String phoneNumber;
+
     private BigDecimal totalProfit;
 
     @OneToMany(mappedBy = "hotelInfoEntity", fetch = FetchType.EAGER)
@@ -33,14 +39,34 @@ public class HotelInfoEntity extends BaseEntity {
     @OneToMany(mappedBy = "hotelInfoEntity", fetch = FetchType.LAZY)
     private List<SubscriberEntity> subscribers;
 
-
-
     public HotelInfoEntity() {
-        this.users = new ArrayList<>();
     }
 
-    public HotelInfoEntity(BigDecimal start) {
-        this.totalProfit = start;
+    public String getName() {
+        return name;
+    }
+
+    public HotelInfoEntity setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public HotelInfoEntity setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public HotelInfoEntity setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
     }
 
     public BigDecimal getTotalProfit() {

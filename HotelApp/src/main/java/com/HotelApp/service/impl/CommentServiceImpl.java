@@ -30,18 +30,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentView> getAllNotApprovedComments() {
-        List<CommentEntity> allNotApprovedComments = commentRepository.findByApprovedFalse();
-        List<CommentView> notApprovedCommentsView = new ArrayList<>();
-
-        for (CommentEntity comment : allNotApprovedComments) {
-            notApprovedCommentsView.add(modelMapper().map(comment, CommentView.class));
-        }
-
-        return notApprovedCommentsView;
-    }
-
-    @Override
     public void approve(Long id) {
         CommentEntity comment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
 

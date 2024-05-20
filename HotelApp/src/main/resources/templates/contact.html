@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact</title>
+</head>
+
+<style>
+
+    .forms-container {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .container {
+        text-align: center;
+    }
+    .btn-primary {
+        margin: 2em auto;
+
+    }
+
+    #contact {
+        background-color: grey;
+        width: 30rem;
+        max-width: 100%;
+        border: 3px solid black;
+        border-radius: 20%;
+
+    }
+    #subscribeForm {
+        margin: 1em auto 7em auto;
+        background-color: green;
+        border: 3px solid black;
+        display: flex;
+        flex-direction: column;
+        padding: 3em;
+        width: 30rem;
+        max-width: 100%;
+        border-radius: 20%;
+
+    }
+</style>
+<body>
+<div th:insert="~{/fragments/nav-bar}"></div>
+<div class="forms-container">
+
+    <section id="contact" class="py-5">
+
+        <div class="container">
+
+            <h2 class="mb-4">Contact us</h2>
+
+            <label for="name">Your Name</label>
+            <input type="text" class="form-control" id="name"
+                   name="name" placeholder="Enter your name...">
+
+            <label for="email">Your email</label>
+            <input type="text" class="form-control" id="email"
+                   name="email" placeholder="Enter your email address...">
+
+            <label for="message">Your message</label>
+            <textarea class="form-control" id="message" rows="5"
+                      name="message" placeholder="If you want you can leave us a message..."></textarea>
+
+            <form action="">
+                <button type="submit" class="btn btn-primary">Send Mail</button>
+            </form>
+
+        </div>
+
+    </section>
+
+    <div>
+
+        <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
+
+            <div class="py-5" id="subscribeForm">
+                <h3 class="mb-4">Subscribe to our newsletter</h3>
+
+                <label for="subscriberEmail"></label>
+                <input type="text" id="subscriberEmail" min="3" max="30" th:field="*{subscriberEmail}"
+                       th:errorclass="is-invalid" class="form-control"
+                       placeholder="Enter your email">
+                <br>
+                <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
+                       class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                <small th:if="${successSubscribeMessage}" th:text="${successSubscribeMessage}" class="alert alert-success">
+                    <!-- put some decoration after successful subscribe -->
+                </small>
+
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+<div th:insert="~{/fragments/footer}"></div>
+
+</body>
+</html>

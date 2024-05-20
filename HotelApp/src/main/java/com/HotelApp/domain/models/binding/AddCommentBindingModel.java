@@ -10,10 +10,11 @@ public class AddCommentBindingModel {
     private String author;
 
     @NotBlank(message = "Leave a message here...")
-    @Size(min = 2, message = "You should at least say Hi...")
+    @Size(min = 2, max = 250, message = "You should at least say Hi...")
     private String commentContent;
 
-    public AddCommentBindingModel() {}
+    public AddCommentBindingModel() {
+    }
 
     public String getAuthor() {
         return author;

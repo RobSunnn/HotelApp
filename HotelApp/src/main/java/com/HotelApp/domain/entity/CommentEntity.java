@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -11,16 +12,17 @@ import java.time.LocalDateTime;
 @Table(name = "comments")
 public class CommentEntity extends BaseEntity {
 
-    @Column
+    @Column(nullable = false)
     private Boolean approved;
 
-    @Column
+    @Column(nullable = false)
     private LocalDateTime created;
 
-    @Column(name = "comment_content", columnDefinition = "TEXT")
+    @Column(name = "comment_content")
+    @Size(min = 2, max = 250)
     private String commentContent;
 
-    @Column
+    @Column(nullable = false)
     private String author;
 
     @ManyToOne

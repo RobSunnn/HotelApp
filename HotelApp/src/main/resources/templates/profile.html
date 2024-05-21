@@ -11,7 +11,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
-
+    .container {
+    margin: 0;
+    }
     span {
         margin: 1em;
     }
@@ -20,8 +22,8 @@
 <div th:insert="~{/fragments/nav-bar}"></div>
 
 
-<main class="p-5 align-content-center bg-blur my-register-div" >
-    <div class="container mt-5">
+<main class="align-content-center bg-blur my-register-div" >
+    <div class="container">
         <div class="row d-flex justify-content-center">
             <div class="col-md-7">
                 <div class="profile-card p-3 py-4">
@@ -30,7 +32,8 @@
 
                     <div class="text-center mt-3">
 
-                        <h4 th:text="'Name: ' + ${userDetails.getFullName()}">Roles of User</h4>
+                        <h5 th:text="'Name:'">Roles of</h5>
+                        <h4 th:text="${userDetails.getFullName()}">User</h4>
                         <br>
                         <h4>Roles</h4>
                         <span class="bg-primary p-1 px-4 rounded text-white" th:each="role : ${userDetails.getRoles()}" th:text="${role.getName()}">Pro</span>
@@ -39,14 +42,15 @@
 <!--                        <span>UI/UX Designer</span>-->
 <!--                        <h5 class="mt-2 mb-0">Username</h5>-->
 <!--                        <span>UI/UX Designer</span>-->
-                        <h5 class="mt-2 mb-0" th:text="'Age: ' + ${userDetails.getAge()}">Age</h5>
+                        <h5 class="mt-2 mb-0" th:text="'Age:'">Age</h5>
+                        <h5 class="mt-2 mb-0" th:text="${userDetails.getAge()} + ' years'">Age</h5>
                         <br>
                         <h5 class="mt-2 mb-0" th:text="'Email: ' + ${userDetails.getEmail()}">Email</h5>
 <!--                        <span>33</span>-->
 
                         <br>
                         <div class="buttons">
-                            <a th:href="@{/}" class="btn btn-outline-primary px-4">Back</a>
+                            <a th:href="@{/}" class="btn mb-5 btn-outline-primary px-4">Back</a>
 <!--                            <button type="submit" th:href="@{/}" class="btn btn-outline-primary px-4">Back</button>-->
 <!--                            <button class="btn btn-primary px-4 ms-3">Contact</button>-->
                         </div>

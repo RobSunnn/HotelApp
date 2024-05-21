@@ -21,10 +21,10 @@
         /*opacity: 80%;*/
     }
 
-    h1,
+
     section p:last-child {
         color: white;
-        background-color: chocolate;
+        background-color: #2e2d2c;
         margin-top: 1em;
         border-radius: 30px;
         text-decoration: underline;
@@ -33,7 +33,7 @@
     .text {
         display: flex;
         justify-content: space-around;
-        background-color: chocolate;
+        background-color: #2e2d2c;
         border-radius: 30px;
         gap: 1em;
         color: white;
@@ -76,7 +76,12 @@
         width: 70%;
         max-width: 100%;
         opacity: 85%;
-        background-color: chocolate;
+        background-color: #2e2d2c;
+    }
+
+    .comment-title {
+        display: flex;
+        gap: 1em;
     }
 
     .author {
@@ -106,7 +111,6 @@
     .hidden {
         display: none;
     }
-
 
     .truncated {
         overflow: hidden;
@@ -170,9 +174,11 @@
         overflow: hidden;
         border-radius: 50px;
     }
+
     .allComments, #controls {
         transition: opacity 1.3s ease-in-out;
     }
+
 </style>
 
 <body>
@@ -218,13 +224,23 @@
 
     <div class="comments" th:each="comment, iterStat : ${comments.getContent()}" th:fragment="commentList">
         <div class="message" th:classappend="${iterStat.index >= 5} ? 'hidden'">
-            <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
+
+         <div class="comment-title">
+
+             <h5 class="author" th:text="'Date: ' + ${comment.created}">Author</h5>
+
+             <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
+
+
+         </div>
             <div class="message-text">
                 <p th:attr="data-full-text=${comment.commentContent}"
                    th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
                    th:classappend="${comment.commentContent.length() > 40} ? 'truncated' : ''"></p>
             </div>
             <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 40}">Show More</button>
+
+
         </div>
     </div>
 

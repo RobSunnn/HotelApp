@@ -25,7 +25,10 @@ public class ModeratorController {
 
     @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping
-    public String moderatorPanel() {
+    public String moderatorPanel(Model model) {
+
+        int allNotApprovedComments = hotelService.getAllNotApprovedComments().size();
+        model.addAttribute("allNotApprovedComments", allNotApprovedComments);
         return "moderator-panel";
     }
 

@@ -6,6 +6,8 @@ import com.HotelApp.domain.models.binding.AddCommentBindingModel;
 import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.repository.CommentRepository;
 import com.HotelApp.service.CommentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,6 +46,12 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.delete(comment);
     }
 
+    @Override
+    public Page<CommentView> getApproved(Pageable pageable) {
+        return commentRepository.findByApprovedTrue(pageable)
+                .map(CommentServiceImpl::mapAsCommentView);
+    }
+
     private CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
         return new CommentEntity()
                 .setCommentContent(addCommentBindingModel.getCommentContent())
@@ -51,5 +59,13 @@ public class CommentServiceImpl implements CommentService {
                 .setAuthor(addCommentBindingModel.getAuthor())
                 .setCreated(LocalDateTime.now())
                 .setHotelInfoEntity(hotelInfo);
+    }
+
+    private static CommentView mapAsCommentView(CommentEntity comment) {
+        return new CommentView()
+                .setId(comment.getId())
+                .setAuthor(comment.getAuthor())
+                .setCommentContent(comment.getCommentContent())
+                .setCreated(comment.getCreated());
     }
 }

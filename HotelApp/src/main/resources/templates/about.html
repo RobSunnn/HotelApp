@@ -6,36 +6,77 @@
 </head>
 
 <style>
+    * {
+        box-sizing: border-box; /* Ensures padding and border are included in the total width/height */
+    }
+    html {
+        scroll-behavior: smooth;
+
+    }
+    body {
+        background-image: url("/images/hotel2.jpg");
+        background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        /*opacity: 80%;*/
+    }
+
+    h1,
+    section p:last-child {
+        color: white;
+        background-color: chocolate;
+        margin-top: 1em;
+        border-radius: 30px;
+        text-decoration: underline;
+    }
 
     .text {
         display: flex;
         justify-content: space-around;
-
+        background-color: chocolate;
+        border-radius: 30px;
+        gap: 1em;
+        color: white;
+        text-decoration: underline;
     }
 
     .forms-container {
         display: flex;
         justify-content: center;
         gap: 2rem;
+
+        width: 70%;
+        margin: 0 auto;
     }
 
-<!--    .btn-primary {-->
-<!--        margin: 2em auto;-->
-<!--    }-->
+    .page-counter {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .btn-primary {
+        margin: 0.3em auto;
+
+    }
+
+    .pagination {
+        width: 60%;
+        margin: 0 auto 5em auto;
+        gap: 1em;
+    }
 
     .container {
         text-align: center;
     }
 
-    /*.container {*/
-    /*    max-width: 50ch;*/
-    /*}*/
     #comments {
-        background-color: blue;
-        border: 3px solid black;
+        color: white;
         border-radius: 20%;
-
-
+        margin-bottom: 5em;
+        width: 70%;
+        max-width: 100%;
+        opacity: 85%;
+        background-color: chocolate;
     }
 
     .author {
@@ -47,33 +88,25 @@
     }
 
 
-
     .allComments {
         display: flex;
-        flex-grow: 1;
-        gap: 3em;
+        flex: 0 0 30%;
+        flex-wrap: wrap;
+        gap: 1em;
         justify-content: center;
-        margin: 4em 2em 8em 2em;
+        margin: 1em auto 1em auto;
+        transition: opacity 0.3s ease-in-out;
+        width: 100%;
     }
-
-<!--    .allComments p {-->
-<!--        max-width: 50ch;-->
-<!--    }-->
 
     #about {
         text-align: center;
-
     }
+
     .hidden {
         display: none;
     }
 
-    .message {
-            background-color: blue;
-        padding: 1em;
-        color: white;
-        width: 150px;
-    }
 
     .truncated {
         overflow: hidden;
@@ -82,6 +115,22 @@
         max-width: 500px; /* Adjust as needed */
         display: inline-block; /* Ensures ellipsis are applied */
         vertical-align: top;
+    }
+
+    .form-content {
+        display: flex;
+        gap: 2em;
+        justify-content: center;
+    }
+
+    .form-name {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-text-content {
+        display: flex;
+        flex-direction: column;
     }
 
     .message-text {
@@ -109,18 +158,21 @@
         display: inline-block;
     }
 
-    /*.message {*/
-    /*    text-align: center;*/
-    /*    width: 30%;*/
-    /*    background-color: #F8F0E9;*/
-    /*    padding: 1em;*/
-    /*    !*margin-top: 50em;*!*/
-    /*}*/
-
-    /*.comments {*/
-    /*    display: flex;*/
-    /*}*/
-
+    .message {
+        padding: 1.5em;
+        color: white;
+        text-align: center;
+        width:100%;
+        max-width: 40ch;
+        background-color: chocolate;
+        margin: 0 auto;
+        min-height: 200px;
+        overflow: hidden;
+        border-radius: 50px;
+    }
+    .allComments, #controls {
+        transition: opacity 1.3s ease-in-out;
+    }
 </style>
 
 <body>
@@ -129,7 +181,7 @@
 
 
 <section id="about" class="py-5">
-    <h1 class="mb-4">About Our Hotel</h1>
+    <h1 class="mb-4 text-white">About Our Hotel</h1>
 
     <div class="container">
 
@@ -159,6 +211,55 @@
 </section>
 
 
+
+
+<div class="allComments">
+
+
+    <div class="comments" th:each="comment, iterStat : ${comments.getContent()}" th:fragment="commentList">
+        <div class="message" th:classappend="${iterStat.index >= 5} ? 'hidden'">
+            <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
+            <div class="message-text">
+                <p th:attr="data-full-text=${comment.commentContent}"
+                   th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
+                   th:classappend="${comment.commentContent.length() > 40} ? 'truncated' : ''"></p>
+            </div>
+            <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 40}">Show More</button>
+        </div>
+    </div>
+
+    <!--    <button id="allComments" th:if="${comments.getContent().size()} > 3">Show All Comments</button>-->
+</div>
+
+<!-- Page counter -->
+<div th:unless="${comments.getTotalElements() < 5}" id="controls" class="page-counter text-white">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p>
+                Page <span th:text="${comments.getNumber() + 1}"></span>
+                of <span th:text="${comments.getTotalPages()}"></span>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div th:unless="${comments.getTotalElements() < 5}" class="col-md-12 text-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- Previous button -->
+            <li class="page-item" th:classappend="${comments.number == 0} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{${'/about'}(page=${comments.number - 1})}">Previous</a>
+            </li>
+
+            <!-- Next button -->
+            <li class="page-item" th:classappend="${comments.number == comments.totalPages - 1} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{${'/about'}(page=${comments.number + 1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
 <div class="forms-container">
 
     <section id="comments" class="py-5">
@@ -169,28 +270,51 @@
 
                 <h2 class="mb-4">Leave a comment</h2>
 
-                <label for="author">Your Name or Nickname</label>
-                <input type="text" class="form-control" id="author" th:field="*{author}"
-                       th:errorclass="is-invalid"
-                       min="3" max="30"
-                       name="author" placeholder="Enter your name...">
+                <div class="form-content">
 
-                <small id="authorError" th:errors="*{author}"
-                       class="invalid-feedback text-white  bg-danger rounded"></small>
+                    <div class="form-name">
 
-                <label for="commentContent">Your comment</label>
-                <textarea class="form-control" id="commentContent" rows="5" th:field="*{commentContent}"
-                          th:errorclass="is-invalid"
-                          name="commentContent" placeholder="Your comment here."></textarea>
-                <br>
-                <small id="commentError" th:errors="*{commentContent}"
-                       class="invalid-feedback text-white  bg-danger rounded"></small>
+                        <label for="author">Your Name or Nickname</label>
+                        <input type="text" class="form-control" id="author" th:field="*{author}"
+                               th:errorclass="is-invalid"
+                               min="3" max="30"
+                               name="author" placeholder="Enter your name...">
 
-                <small th:if="${successCommentMessage}" th:text="${successCommentMessage}" class="alert alert-success">
-                    <!-- put some decoration after successful subscribe -->
-                </small>
-                <br>
-                <button type="submit" class="btn btn-primary">Leave a comment</button>
+                        <!--                        <label for="authorEmail">If you want you can leave email</label>-->
+                        <!--                        <input type="text" class="form-control" id="authorEmail" th:field="*{author}"-->
+                        <!--                               th:errorclass="is-invalid"-->
+                        <!--                               min="3" max="30"-->
+                        <!--                               name="author" placeholder="Enter your email...">-->
+
+                        <small id="authorError" th:errors="*{author}"
+                               class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                    </div>
+
+                    <div class="form-text-content">
+
+                        <label for="commentContent">Your comment</label>
+                        <textarea class="form-control" id="commentContent" rows="4" th:field="*{commentContent}"
+                                  th:errorclass="is-invalid"
+                                  name="commentContent" placeholder="Your comment here."></textarea>
+
+                        <small id="commentError" th:errors="*{commentContent}"
+                               class="invalid-feedback text-white  bg-danger rounded"></small>
+                    </div>
+
+
+                </div>
+
+                <div class="form-button">
+                    <br>
+                    <small th:if="${successCommentMessage}" th:text="${successCommentMessage}"
+                           class="alert alert-success">
+                        <!-- put some decoration after successful subscribe -->
+                    </small>
+
+                    <button type="submit" class="btn btn-primary">Leave a comment</button>
+
+                </div>
 
             </form>
 
@@ -199,54 +323,46 @@
     </section>
 
 </div>
-
-<div class="allComments">
-
-
-    <div class="comments" th:each="comment, iterStat : ${comments}">
-        <div class="message" th:classappend="${iterStat.index >= 3} ? 'hidden'">
-            <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
-            <div class="message-text">
-                <p th:attr="data-full-text=${comment.commentContent}"
-                   th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
-                   th:classappend="${comment.commentContent.length() > 100} ? 'truncated' : ''"></p>
-            </div>
-            <button class="showWholeComment" th:if="${comment.commentContent.length() > 100}">Show More</button>
-        </div>
-    </div>
-
-    <button id="allComments" th:if="${comments.size()} > 3">Show All Comments</button>
-</div>
-
-
-
 <div th:insert="~{/fragments/footer}"></div>
+
 <script>
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         // Handle "Show More" for individual long comments
         document.querySelectorAll('.showWholeComment').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const messageText = this.previousElementSibling;
                 messageText.classList.remove('truncated');
                 messageText.classList.add('expanded');
                 this.style.display = 'none';
             });
         });
-
-
-        // Handle "Show More Comments" button
-        const showMoreCommentsBtn = document.getElementById('allComments');
-        if (showMoreCommentsBtn) {
-            showMoreCommentsBtn.addEventListener('click', function() {
-                document.querySelectorAll('.comments .hidden').forEach(comment => {
-                    comment.classList.remove('hidden');
-                });
-                showMoreCommentsBtn.style.display = 'none';
-            });
-        }
     });
 
+    // Handle "Show More Comments" button
+    //     const showMoreCommentsBtn = document.getElementById('allComments');
+    //     if (showMoreCommentsBtn) {
+    //         showMoreCommentsBtn.addEventListener('click', function () {
+    //             document.querySelectorAll('.comments .hidden').forEach(comment => {
+    //                 comment.classList.remove('hidden');
+    //             });
+    //             showMoreCommentsBtn.style.display = 'none';
+    //         });
+    //     }
+    // });
+
 </script>
+<!--<script>$(document).on('click', '.page-item', function (e) {-->
+<!--    e.preventDefault();-->
+<!--    let url = $(this).attr('href');-->
+<!--    $(this).prop('disabled', true); // Disable the button-->
+<!--    $.get(url, function (data) {-->
+<!--        $('#comment-container').html($(data).find('#comment-container').html());-->
+<!--        $('#pagination-controls').html($(data).find('#pagination-controls').html());-->
+<!--        $('.page-item').prop('disabled', false); // Re-enable the buttons after content is loaded-->
+<!--    });-->
+<!--});-->
+<!--</script>-->
+
 </body>
 </html>

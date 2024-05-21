@@ -9,7 +9,14 @@
     <!-- Custom CSS -->
     <style>
         /* Add custom styles here */
-
+        body {
+            background-image: url("/images/hotel2.jpg");
+            background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /*transition: background-image 1s ease;*/
+            /*transition-delay: 3s;*/
+        }
         .card {
             width: 100%; /* Make each card take up full width within the flex container */
             max-width: 300px; /* Set a maximum width for each card */
@@ -64,8 +71,8 @@
             <div class="card-body">
                 <h5 class="card-title">See comments</h5>
                 <p class="card-text">Check if there are any not approved comments.</p>
-
-                <a th:href="@{/moderatorPanel/comments}" class="btn btn-primary">Check comments</a>
+                <p th:if="${allNotApprovedComments == 0}" th:text="'No new comments.'"></p>
+                <a th:unless="${allNotApprovedComments == 0}"  th:href="@{/moderatorPanel/comments}" class="btn btn-primary">Check comments</a>
             </div>
 
         </div>
@@ -75,6 +82,8 @@
     <!-- Make fetch for quote here to make moderator happy :)-->
 
 </section>
+
+<div th:insert="~{/fragments/footer}"></div>
 
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

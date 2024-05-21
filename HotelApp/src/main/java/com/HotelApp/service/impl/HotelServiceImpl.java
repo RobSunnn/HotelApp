@@ -1,6 +1,5 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.domain.entity.CommentEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.entity.UserEntity;
@@ -12,6 +11,8 @@ import com.HotelApp.domain.models.view.*;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.service.*;
 import jakarta.annotation.PostConstruct;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -244,13 +245,17 @@ public class HotelServiceImpl implements HotelService {
 
     @Transactional
     @Override
-    public List<CommentView> getAllApprovedComments() {
-        return getHotelInfo()
-                .getComments()
-                .stream()
-                .filter(CommentEntity::getApproved)
-                .map(comment -> modelMapper().map(comment, CommentView.class))
-                .toList();
+    public Page<CommentView> getAllApprovedComments(Pageable pageable) {
+     return commentService.getApproved(pageable);
+
+
+
+//        return getHotelInfo()
+//                .getComments()
+//                .stream()
+//                .filter(CommentEntity::getApproved)
+//                .map(comment -> modelMapper().map(comment, CommentView.class))
+//                .toList();
     }
 
     @Override

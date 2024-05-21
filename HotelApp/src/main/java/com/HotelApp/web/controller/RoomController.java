@@ -34,11 +34,13 @@ public class RoomController {
         }
 
         Page<RoomTypeView> roomTypes = roomTypesService.getRoomTypes(pageable);
-        int totalPages = roomTypes.getTotalPages();
-        Page<RoomTypeView> lastPage = roomTypesService.getRoomTypes(PageRequest.of(totalPages - 1, pageable.getPageSize(), pageable.getSort()));
+//        int totalPages = roomTypes.getTotalPages();
+//
+//        Page<RoomTypeView> lastPage = roomTypesService
+//                .getRoomTypes(PageRequest.of(totalPages - 1, pageable.getPageSize(), pageable.getSort()));
 
         model.addAttribute("allRooms", roomTypes);
-        model.addAttribute("lastPageRooms", lastPage);
+//        model.addAttribute("lastPageRooms", lastPage);
 
         return "rooms";
     }

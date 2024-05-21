@@ -1,12 +1,14 @@
 package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.AddCommentBindingModel;
-import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.view.CommentView;
-import com.HotelApp.service.CommentService;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.validation.constants.BindingConstants;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,9 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
-
 
 @Controller
 @RequestMapping("/about")
@@ -31,19 +30,21 @@ public class AboutController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
-//        if (!model.containsAttribute("addSubscriberBindingModel")) {
-//            model.addAttribute("addSubscriberBindingModel", new AddSubscriberBindingModel());
-//        }
         if (!model.containsAttribute("addCommentBindingModel")) {
-            model.addAttribute("addCommentBindingModel",new AddCommentBindingModel());
+            model.addAttribute("addCommentBindingModel", new AddCommentBindingModel());
         }
-
     }
 
     @GetMapping
-    public String about(Model model) {
+    public String about(Model model,
+                        @PageableDefault(
+                                size = 4,
+                                sort = "id"
+                        )
+                        Pageable pageable, HttpServletRequest request) {
 
-        List<CommentView> allApprovedComments = hotelService.getAllApprovedComments();
+        request.getSession(true);
+        Page<CommentView> allApprovedComments = hotelService.getAllApprovedComments(pageable);
 
         model.addAttribute("comments", allApprovedComments);
 
@@ -58,7 +59,6 @@ public class AboutController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addCommentBindingModel", addCommentBindingModel);
             redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "addCommentBindingModel", bindingResult);
-
             return "redirect:/about";
         }
 

@@ -10,17 +10,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
-public class RoomTypesTypesServiceImpl implements RoomTypesService {
+public class RoomTypesServiceImpl implements RoomTypesService {
     private final RoomTypeRepository roomTypeRepository;
 
     private final CategoriesRepository categoriesRepository;
 
-    public RoomTypesTypesServiceImpl(RoomTypeRepository roomTypeRepository,
-                                     CategoriesRepository categoriesRepository) {
+    public RoomTypesServiceImpl(RoomTypeRepository roomTypeRepository,
+                                CategoriesRepository categoriesRepository) {
         this.roomTypeRepository = roomTypeRepository;
         this.categoriesRepository = categoriesRepository;
     }
@@ -28,7 +25,7 @@ public class RoomTypesTypesServiceImpl implements RoomTypesService {
     @Override
     public Page<RoomTypeView> getRoomTypes(Pageable pageable) {
      return roomTypeRepository.findAll(pageable)
-                .map(RoomTypesTypesServiceImpl::map);
+                .map(RoomTypesServiceImpl::map);
     }
 
     private static RoomTypeView map(RoomTypeEntity roomTypeEntity) {

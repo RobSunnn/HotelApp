@@ -6,6 +6,9 @@ import com.HotelApp.domain.models.binding.AddGuestBindingModel;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
@@ -55,7 +58,10 @@ public interface HotelService {
 
     List<CommentView> getAllNotApprovedComments();
 
-    List<CommentView> getAllApprovedComments();
+//    List<CommentView> getAllApprovedComments();
+
+    @Transactional
+    Page<CommentView> getAllApprovedComments(Pageable pageable);
 
     void approveComment(Long id);
 

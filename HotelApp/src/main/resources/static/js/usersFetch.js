@@ -39,12 +39,13 @@ allUsersBtn.addEventListener('click', () => {
         .then(res => res.json())
         .then(result => {
             Object.values(result).forEach(e => {
-debugger;
-                let htmlOptionElement = document.createElement("option");
 
+                let htmlOptionElement = document.createElement("option");
+                userSearchBar.style.color = 'white';
+                usersDropdown.style.color = 'white';
                 htmlOptionElement.append(`User with email: ${e.email}`);
                 htmlOptionElement.value = e.email;
-
+                htmlOptionElement.style.color = 'black';
                 // Generate a unique ID for each user and set it as the ID of the option element
                 const dynamicId = 'email_' + counter++;
                 selectedUserId = dynamicId;
@@ -92,7 +93,7 @@ findUserBtn.addEventListener('click', () => {
         .then(response => {
             if (!response.ok) {
                 allButtonsContainer.hidden = true;
-                userSearchBar.style.background = "red";
+                userEmail.style.background = 'red';
                 userSearchBar.style.color = "white";
                 throw new Error(response.statusText);
             }

@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <title>Free Rooms</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<style>
-     .container {
-        margin: 5em auto;
-        width: 100%;
+    <style>
+        body {
+            background-image: url("/images/hotel1.jpg");
+            background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
-</style>
+
+        .container {
+            margin: 5em auto;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,9 +27,10 @@
     <div>
         <div class="form-group">
             <label for="freeRooms">See Free Rooms</label>
-            <select id="freeRooms" name="freeRooms" class="custom-select" size="7">
+            <select id="freeRooms" name="freeRooms" class="custom-select bg-dark text-white" size="7">
 
-                <option th:each="room : ${freeRooms}" th:text="${room.getCategory().name} + ' - Room number: ' + ${room.getRoomNumber()}"></option>
+                <option th:each="room : ${freeRooms}"
+                        th:text="${room.getCategory().name} + ' - Room number: ' + ${room.getRoomNumber()}"></option>
             </select>
 
             <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>

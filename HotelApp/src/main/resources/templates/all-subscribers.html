@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <title>Subscribers</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
+    <style>
+        body {
+            background-image: url("/images/hotel.jpg");
+            background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
 </head>
 <body>
 
@@ -14,16 +21,16 @@
 <div class="container">
     <div class="form-group">
         <label for="allSubscribers">Select subscriber</label>
-        <select id="allSubscribers" name="allSubscribers" class="custom-select">
+        <select id="allSubscribers" name="allSubscribers" class="custom-select  bg-dark text-white" size="10">
             <option value="" selected disabled>Check all subscribers</option>
             <option th:each="subscriber : ${allSubscribers}" th:text="${subscriber.getEmail()}"></option>
         </select>
 
         <div class="buttons">
-            <a th:href="@{/admin}" class="btn btn-primary" >Go back <br> to your panel</a>
-<!--            <a th:href="@{/admin}" class="btn btn-success" >Make Guest <br> User</a>-->
-<!--            <a th:href="@{/admin}" class="btn btn-secondary" >See Guest <br> Profile</a>-->
-<!--            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>-->
+            <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
+            <!--            <a th:href="@{/admin}" class="btn btn-success" >Make Guest <br> User</a>-->
+            <!--            <a th:href="@{/admin}" class="btn btn-secondary" >See Guest <br> Profile</a>-->
+            <!--            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>-->
         </div>
 
     </div>

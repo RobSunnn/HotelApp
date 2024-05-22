@@ -11,6 +11,12 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
+    body {
+        background-image: url("/images/hotel1.jpg");
+        background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
     .container {
     margin: 0;
     }
@@ -25,12 +31,21 @@
 <main class="align-content-center bg-blur my-register-div" >
     <div class="container">
         <div class="row d-flex justify-content-center">
-            <div class="col-md-7">
+            <div class="col-md-7 bg-white">
                 <div class="profile-card p-3 py-4">
 
                     <div class="text-center"><img src="/images/profile.jpg" width="100" class="rounded-circle" alt="pic"></div>
+                    <input type="file" name="profile-picture"
 
-                    <div class="text-center mt-3">
+                           id="profile-picture"
+                           class="form-control-file"
+                           aria-describedby="profile-picture">
+                    <small id="profile-picture-error"
+                           class="invalid-feedback  form-text bg-danger rounded">Picture size must be between 1MB and 5MB</small>
+                    <form action="">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    <div class="text-center mt-3 bg-white">
 
                         <h5 th:text="'Name:'">Roles of</h5>
                         <h4 th:text="${userDetails.getFullName()}">User</h4>

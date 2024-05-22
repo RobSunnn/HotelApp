@@ -8,6 +8,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <style>
 
+    ul li {
+        margin-right:0.5em;
+    }
 
 </style>
 </head>
@@ -16,53 +19,49 @@
 
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-dark">
     <a class="navbar-brand text-white" th:href="@{/}">Hotel Application</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
 
-            <li class="nav-item">
+            <li class="nav-item btn-outline-secondary rounded rounded">
                 <a class="nav-link text-white" th:href="@{/about}">About</a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item btn-outline-secondary rounded rounded">
                 <a class="nav-link text-white" th:href="@{/contact}">Contact us</a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item btn-outline-secondary rounded rounded">
                 <a class="nav-link text-white" th:href="@{/allRoomTypes}">Our Rooms</a>
             </li>
 
-<!--            <li class="nav-item" sec:authorize="hasRole('MODERATOR')">-->
-<!--                <a class="nav-link" th:href="@{/guests/add}">Add Guest</a>-->
-<!--            </li>-->
-
-            <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <li class="nav-item btn-outline-secondary rounded rounded" sec:authorize="hasRole('ADMIN')">
                 <a class="nav-link text-white" th:href="@{/admin}">Admin Panel</a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasRole('MODERATOR')">
+            <li class="nav-item btn-outline-secondary rounded rounded" sec:authorize="hasRole('MODERATOR')">
                 <a class="nav-link text-white" th:href="@{/moderatorPanel}">Moderator Panel</a>
             </li>
 
-            <li class="nav-item text-white" sec:authorize="!isAuthenticated()">
+            <li class="nav-item text-white btn-outline-secondary rounded rounded" sec:authorize="!isAuthenticated()">
                 <a class="nav-link text-white" th:href="@{/users/register}">Register</a>
             </li>
 
-            <li class="nav-item text-white" sec:authorize="!isAuthenticated()">
+            <li class="nav-item text-white btn-outline-secondary rounded" sec:authorize="!isAuthenticated()">
                 <a class="nav-link text-white" th:href="@{/users/login}">Login</a>
             </li>
 
             <li class="nav-item" sec:authorize="isAuthenticated()">
                 <div class="form-inline my-2 my-lg-0 border px-3">
-                    <div class="logged-user text-white">
-                        Welcome, <a th:href="@{/users/profile}"><th:block  th:text="${#authentication.principal.fullName}"></th:block></a> !
+                    <div class="logged-user text-white p-2">
+                        Welcome, <a th:href="@{/users/profile}"><th:block  th:text="${#authentication.principal.fullName}"></th:block></a>!
                     </div>
 
                     <form th:method="post" th:action="@{/users/logout}">
-                        <input type="submit" class="btn btn-link text-white" value="Logout"></input>
+                        <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white" value="Logout"></input>
                     </form>
 
                 </div>

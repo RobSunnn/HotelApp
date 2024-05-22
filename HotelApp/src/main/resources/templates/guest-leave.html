@@ -3,35 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Guest want to leave</title>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-     .container {
-        margin: 5em auto;
-        width: 100%;
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("/images/hotel1.jpg");
+            background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
-</style>
+
+        .container {
+            margin: 5em auto;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 
 <div th:insert="~{/fragments/nav-bar}"></div>
 
 <div class="container">
-  <form th:action="@{/guests/leave}" th:method="POST">
+    <form th:action="@{/guests/leave}" th:method="POST">
 
-    <div id="test">
-      <div class="form-group">
+        <div id="test">
+            <div class="form-group">
 
-        <label for="guest">Select guest</label>
-        <select id="guest" name="roomNumber" class="custom-select" size="5">
-          <option value="" selected disabled>Select guest</option>
-          <option th:each="guest : ${guests}" th:value="${guest.roomNumber}" th:text="${guest.firstName}"></option>
-        </select>
+                <label for="guest">Select guest</label>
+                <select id="guest" name="roomNumber" class="custom-select" size="5">
+                    <option value="" selected disabled>Select guest</option>
+                    <option th:each="guest : ${guests}" th:value="${guest.roomNumber}"
+                            th:text="${guest.firstName}"></option>
+                </select>
 
-      </div>
-    </div>
-    <button type="submit" class="btn btn-success">Check Out Guest From Hotel</button>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Check Out Guest From Hotel</button>
 
-  </form>
+    </form>
 </div>
 
 

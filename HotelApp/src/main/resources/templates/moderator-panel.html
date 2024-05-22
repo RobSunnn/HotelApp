@@ -30,9 +30,6 @@
             max-width: 1200px;
         }
 
-    #comments {
-        background-color: red;
-        }
     </style>
 </head>
 <body>
@@ -45,11 +42,11 @@
 
         <div class="card">
 
-            <div class="card-body">
+            <div class="card-body bg-dark text-white">
                 <h5 class="card-title">Add Guest to Hotel</h5>
                 <p class="card-text">Here you can add guest to hotel, <br> so you are going to be albe to see <br> the
                     free rooms in the hotel later,
-                    <br> and also to save some data about the guest <br> to be easier in future.</p>
+                    <br> and also to save some data about the guest to be easier in the future.</p>
 
                 <a th:href="@{/guests/add}" class="btn btn-primary">Add guest</a>
             </div>
@@ -58,7 +55,7 @@
 
         <div class="card">
 
-            <div class="card-body">
+            <div class="card-body bg-dark text-white">
                 <h5 class="card-title">CHECK OUT</h5>
                 <p class="card-text">Here you need to check out the Guest, <br>take money for the stay and to wish <br>
                     the Guest a Happy New Year :D</p>
@@ -70,11 +67,12 @@
 
         <div class="card" th:unless="${allNotApprovedComments == 0}">
 
-            <div id="comments" class="card-body">
+            <div class="card-body  bg-danger text-white">
                 <h5 class="card-title">See comments</h5>
-                <p class="card-text">Check if there are any not approved comments.</p>
-                <p th:if="${allNotApprovedComments == 0}" th:text="'No new comments.'"></p>
-                <a th:unless="${allNotApprovedComments == 0}"  th:href="@{/moderatorPanel/comments}" class="btn btn-primary">Check comments</a>
+                <p class="card-text"></p>
+                <p th:if="${allNotApprovedComments == 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>
+                <p th:if="${allNotApprovedComments > 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comments!'"></p>
+                <a th:href="@{/moderatorPanel/comments}" class="btn btn-primary">Check comments</a>
             </div>
 
         </div>

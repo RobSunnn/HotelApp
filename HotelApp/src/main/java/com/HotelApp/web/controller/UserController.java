@@ -32,7 +32,7 @@ public class UserController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "users/login";
     }
 
     @PostMapping("/login-error")
@@ -53,7 +53,7 @@ public class UserController {
             model.addAttribute(USER_REGISTER_BINDING_MODEL, new UserRegisterBindingModel());
         }
 
-        return "register";
+        return "users/register";
     }
 
     @PreAuthorize("isAnonymous()")
@@ -75,7 +75,7 @@ public class UserController {
         if (registrationSuccessful) {
             return "redirect:/users/login";
         } else {
-            return "register";
+            return "users/register";
         }
 
     }

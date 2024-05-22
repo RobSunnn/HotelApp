@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <title>Happy Guests</title>
 </head>
+<style>
+    body {
+        background-image: url("/images/hotel.jpg");
+        background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+</style>
 <body>
 
 <div th:insert="~{/fragments/nav-bar}"></div>
@@ -17,7 +25,7 @@
         </select>
 
         <div class="buttons">
-            <a th:href="@{/admin}" class="btn btn-primary" >Go back <br> to your panel</a>
+            <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
             <!--            <a th:href="@{/admin}" class="btn btn-success" >Make Guest <br> User</a>-->
             <!--            <a th:href="@{/admin}" class="btn btn-secondary" >See Guest <br> Profile</a>-->
             <!--            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>-->

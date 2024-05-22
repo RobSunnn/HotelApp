@@ -7,12 +7,14 @@
 
 <style>
     * {
-        box-sizing: border-box; /* Ensures padding and border are included in the total width/height */
+    box-sizing: border-box;
     }
+
     html {
         scroll-behavior: smooth;
 
     }
+
     body {
         background-image: url("/images/hotel2.jpg");
         background-size: 100% 100vh; /* Use viewport height for better responsiveness */
@@ -21,23 +23,12 @@
         /*opacity: 80%;*/
     }
 
-
-    section p:last-child {
-        color: white;
-        background-color: #2e2d2c;
-        margin-top: 1em;
-        border-radius: 30px;
-        text-decoration: underline;
-    }
-
     .text {
         display: flex;
         justify-content: space-around;
-        background-color: #2e2d2c;
         border-radius: 30px;
         gap: 1em;
         color: white;
-        text-decoration: underline;
     }
 
     .forms-container {
@@ -50,19 +41,24 @@
     }
 
     .page-counter {
-        width: 90%;
         margin: 0 auto;
     }
 
     .btn-primary {
         margin: 0.3em auto;
-
     }
 
     .pagination {
-        width: 60%;
         margin: 0 auto 5em auto;
         gap: 1em;
+    }
+
+    .card-info p {
+        color: white;
+        background-color: #2e2d2c;
+        margin-top: 1em;
+        border-radius: 30px;
+        padding: 1em;
     }
 
     .container {
@@ -162,11 +158,15 @@
         display: inline-block;
     }
 
+    #commentContent {
+        width: 100%;
+    }
+
     .message {
         padding: 1.5em;
         color: white;
         text-align: center;
-        width:100%;
+        width: 100%;
         max-width: 40ch;
         background-color: chocolate;
         margin: 0 auto;
@@ -193,30 +193,38 @@
 
 
         <div class="text">
-            <p><b>Nestled in the heart of [City Name], [Hotel Name] is your oasis of luxury and comfort. Whether you're
-                here
-                for business, pleasure, or a bit of both, our hotel offers a seamless blend of modern sophistication and
-                timeless elegance. From our elegantly appointed rooms to our top-notch amenities, every detail has been
-                thoughtfully designed to ensure your stay is nothing short of extraordinary.</b></p>
+            <div class="card-info">
+                <p><b>Nestled in the heart of [City Name], [Hotel Name] is your oasis of luxury and comfort. Whether
+                    you're
+                    here
+                    for business, pleasure, or a bit of both, our hotel offers a seamless blend of modern sophistication
+                    and
+                    timeless elegance. From our elegantly appointed rooms to our top-notch amenities, every detail has
+                    been
+                    thoughtfully designed to ensure your stay is nothing short of extraordinary.</b></p>
+            </div>
 
-            <p>At [Hotel Name], we pride ourselves on our exceptional service and warm hospitality. Our dedicated staff
-                is
-                always at your service, ready to cater to your every need and ensure your stay is as comfortable as
-                possible. Start your day with a sumptuous breakfast at our gourmet restaurant, relax in our tranquil
-                spa, or
-                take a dip in our sparkling pool. For those looking to explore, our prime location puts you just steps
-                away
-                from [City’s Major Attractions].</p>
+            <div class="card-info">
+                <p>At [Hotel Name], we pride ourselves on our exceptional service and warm hospitality. Our dedicated
+                    staff
+                    is
+                    always at your service, ready to cater to your every need and ensure your stay is as comfortable as
+                    possible. Start your day with a sumptuous breakfast at our gourmet restaurant, relax in our tranquil
+                    spa, or
+                    take a dip in our sparkling pool. For those looking to explore, our prime location puts you just
+                    steps
+                    away
+                    from [City’s Major Attractions].</p>
+            </div>
         </div>
 
-        <p><em>Experience the perfect blend of style, comfort, and convenience at [Hotel Name]. Book your stay today and
+        <p class="text-white bg-dark rounded"><em>Experience the perfect blend of style, comfort, and convenience at [Hotel Name].
+            <br> Book your stay today and
             discover why we are the preferred choice for discerning travelers.</em></p>
 
     </div>
 
 </section>
-
-
 
 
 <div class="allComments">
@@ -225,20 +233,22 @@
     <div class="comments" th:each="comment, iterStat : ${comments.getContent()}" th:fragment="commentList">
         <div class="message" th:classappend="${iterStat.index >= 5} ? 'hidden'">
 
-         <div class="comment-title">
+            <div class="comment-title">
 
-             <h5 class="author" th:text="'Date: ' + ${comment.created}">Author</h5>
+                <h5 class="author" th:text="'Date: ' + ${comment.created}">Author</h5>
 
-             <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
+                <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
 
 
-         </div>
+            </div>
             <div class="message-text">
                 <p th:attr="data-full-text=${comment.commentContent}"
                    th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
                    th:classappend="${comment.commentContent.length() > 40} ? 'truncated' : ''"></p>
             </div>
-            <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 40}">Show More</button>
+            <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 40}">Show
+                More
+            </button>
 
 
         </div>
@@ -249,14 +259,14 @@
 
 <!-- Page counter -->
 <div th:unless="${comments.getTotalElements() < 5}" id="controls" class="page-counter text-white">
-    <div class="row">
+
         <div class="col-md-12 text-center">
             <p>
                 Page <span th:text="${comments.getNumber() + 1}"></span>
                 of <span th:text="${comments.getTotalPages()}"></span>
             </p>
         </div>
-    </div>
+
 </div>
 
 
@@ -270,7 +280,7 @@
 
             <!-- Next button -->
             <li class="page-item" th:classappend="${comments.number == comments.totalPages - 1} ? 'disabled' : ''">
-                <a class="page-link" th:href="@{${'/about'}(page=${comments.number + 1})}">Next</a>
+                <a class="page-link pr-4 pl-4 rounded" th:href="@{${'/about'}(page=${comments.number + 1})}">Next</a>
             </li>
         </ul>
     </nav>

@@ -40,7 +40,7 @@ public class GuestController {
         CategoriesEnum[] categories = CategoriesEnum.values();
         model.addAttribute("categories", categories);
 
-        return "add-guest";
+        return "moderator/add-guest";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -76,7 +76,7 @@ public class GuestController {
         List<GuestView> guests = hotelService.seeAllGuests();
         model.addAttribute("guests", guests);
 
-        return "guest-leave";
+        return "moderator/guest-leave";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")

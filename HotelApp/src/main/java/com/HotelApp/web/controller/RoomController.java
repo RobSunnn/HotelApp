@@ -42,7 +42,7 @@ public class RoomController {
         model.addAttribute("allRooms", roomTypes);
 //        model.addAttribute("lastPageRooms", lastPage);
 
-        return "rooms";
+        return "rooms/rooms-page";
     }
 
 

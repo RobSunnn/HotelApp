@@ -38,7 +38,7 @@ public class HotelController {
         model.addAttribute("happyGuestsCount", happyGuestsCount);
         model.addAttribute("totalProfit", totalProfit);
         model.addAttribute("totalSubscribers", totalSubscribers);
-        return "admin-panel";
+        return "admin/admin-panel";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -47,7 +47,7 @@ public class HotelController {
         List<RoomView> freeRooms = hotelService.seeAllFreeRooms();
         model.addAttribute("freeRooms", freeRooms);
 
-        return "free-rooms";
+        return "admin/free-rooms";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -56,7 +56,7 @@ public class HotelController {
         List<GuestView> allGuests = hotelService.seeAllGuests();
         model.addAttribute("allGuests", allGuests);
 
-        return "all-guests";
+        return "admin/all-guests";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -65,7 +65,7 @@ public class HotelController {
         List<SubscriberView> allSubscribers = hotelService.seeAllSubscribers();
         model.addAttribute("allSubscribers", allSubscribers);
 
-        return "all-subscribers";
+        return "admin/all-subscribers";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -74,7 +74,7 @@ public class HotelController {
         List<HappyGuestView> allHappyGuests = hotelService.seeAllHappyGuests();
         model.addAttribute("allHappyGuests", allHappyGuests);
 
-        return "all-happy-guests";
+        return "admin/all-happy-guests";
     }
 
 }

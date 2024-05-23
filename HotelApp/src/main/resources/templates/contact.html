@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Contact</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 
 <style>
@@ -14,15 +16,54 @@
         /*transition: background-image 1s ease;*/
         /*transition-delay: 3s;*/
     }
+
     .forms-container {
         display: flex;
         justify-content: center;
         gap: 2rem;
     }
 
+    .content {
+        margin: 5em auto;
+    }
+
+    .content-text {
+        color: white;
+        width: 50%;
+        margin: 5em auto;
+    }
+
+    .content,
     .container {
         text-align: center;
     }
+
+    .content-text-end {
+        color: white;
+        width: 50%;
+        margin: 3em auto;
+    }
+
+    .content-text-end ul {
+        display: flex;
+        gap: 2em;
+        justify-content: center;
+    }
+
+    .content-text-end ul li {
+        list-style: none outside;
+        margin-top: 3em;
+    }
+
+    .content-text-end ul li i {
+        font-size: 50px;
+        color: royalblue;
+    }
+
+    .content-text-end ul li span {
+        display: none;
+    }
+
     .btn-primary {
         margin: 2em auto;
 
@@ -36,6 +77,7 @@
         border-radius: 20%;
 
     }
+
     #subscribeForm {
         margin: 1em auto 7em auto;
         background-color: green;
@@ -51,62 +93,93 @@
 </style>
 <body>
 <div th:insert="~{/fragments/nav-bar}"></div>
-<div class="forms-container">
+<div class="content">
+    <div class="content-text">
+        <p>We’d love to hear from you! <br> Whether you have a question about our features, pricing, need assistance, or just
+            want to give feedback, our team is ready to answer all your questions.</p>
 
-    <section id="contact" class="py-5">
+        <p>Email: <br> You can reach us at support@yourwebapp.com for any inquiries or support issues.</p>
 
-        <div class="container">
+        <p>Phone:
+            Prefer to speak with us directly? Call us at +1 (123) 456-7890. Our phone support is available from 9 AM to
+            5 PM, Monday to Friday.</p>
+    </div>
 
-            <h2 class="mb-4">Contact us</h2>
+    <div class="forms-container">
 
-            <label for="name">Your Name</label>
-            <input type="text" class="form-control" id="name"
-                   name="name" placeholder="Enter your name...">
+        <section id="contact" class="py-5">
 
-            <label for="email">Your email</label>
-            <input type="text" class="form-control" id="email"
-                   name="email" placeholder="Enter your email address...">
+            <div class="container">
 
-            <label for="message">Your message</label>
-            <textarea class="form-control" id="message" rows="5"
-                      name="message" placeholder="If you want you can leave us a message..."></textarea>
+                <h2 class="mb-4">Contact us</h2>
 
-            <form action="">
-                <button type="submit" class="btn btn-primary">Send Mail</button>
+                <label for="name">Your Name</label>
+                <input type="text" class="form-control" id="name"
+                       name="name" placeholder="Enter your name...">
+
+                <label for="email">Your email</label>
+                <input type="text" class="form-control" id="email"
+                       name="email" placeholder="Enter your email address...">
+
+                <label for="message">Your message</label>
+                <textarea class="form-control" id="message" rows="5"
+                          name="message" placeholder="If you want you can leave us a message..."></textarea>
+
+                <form action="">
+                    <button type="submit" class="btn btn-primary">Send Mail</button>
+                </form>
+
+            </div>
+
+        </section>
+
+        <div>
+
+            <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
+
+                <div class="py-5" id="subscribeForm">
+                    <h3 class="mb-4">Subscribe to our newsletter</h3>
+
+                    <label for="subscriberEmail"></label>
+                    <input type="text" id="subscriberEmail" min="3" max="30" th:field="*{subscriberEmail}"
+                           th:errorclass="is-invalid" class="form-control"
+                           placeholder="Enter your email">
+                    <br>
+                    <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
+                           class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                    <small th:if="${successSubscribeMessage}" th:text="${successSubscribeMessage}"
+                           class="alert alert-success">
+                        <!-- put some decoration after successful subscribe -->
+                    </small>
+
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+
+                </div>
+
+
             </form>
 
         </div>
 
-    </section>
-
-    <div>
-
-        <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
-
-            <div class="py-5" id="subscribeForm">
-                <h3 class="mb-4">Subscribe to our newsletter</h3>
-
-                <label for="subscriberEmail"></label>
-                <input type="text" id="subscriberEmail" min="3" max="30" th:field="*{subscriberEmail}"
-                       th:errorclass="is-invalid" class="form-control"
-                       placeholder="Enter your email">
-                <br>
-                <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
-                       class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                <small th:if="${successSubscribeMessage}" th:text="${successSubscribeMessage}" class="alert alert-success">
-                    <!-- put some decoration after successful subscribe -->
-                </small>
-
-                <button type="submit" class="btn btn-primary">Subscribe</button>
-
-            </div>
-
-
-        </form>
-
     </div>
 
+    <div class="content-text-end">
+
+
+        <p>Support Hours: <br>
+            Our support team is available to help you during the following hours:
+            <br>
+            Monday to Friday: 9 AM - 5 PM (EST) <br>
+            Saturday and Sunday: Closed</p>
+
+        <ul>
+
+            <li><i class="fa-brands fa-facebook fa-beat"></i><span>Facebook</span></li>
+            <li><i class="fa-brands fa-twitter fa-beat"></i><span>Twitter</span></li>
+            <li><i class="fa-brands fa-linkedin fa-beat"></i><span>LinkedIn</span></li>
+        </ul>
+    </div>
 </div>
 
 <div th:insert="~{/fragments/footer}"></div>

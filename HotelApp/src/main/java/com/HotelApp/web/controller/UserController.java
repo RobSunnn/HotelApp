@@ -42,7 +42,7 @@ public class UserController {
         model.addAttribute(EMAIL, email);
         model.addAttribute(BAD_CREDENTIALS, "true");
 
-        return "login";
+        return "users/login";
     }
 
     @PreAuthorize("isAnonymous()")
@@ -90,6 +90,6 @@ public class UserController {
 
         model.addAttribute("userDetails", user);
 
-        return "profile";
+        return "users/profile";
     }
 }

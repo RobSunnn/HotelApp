@@ -29,7 +29,7 @@ public class ModeratorController {
 
         int allNotApprovedComments = hotelService.getAllNotApprovedComments().size();
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
-        return "moderator-panel";
+        return "moderator/moderator-panel";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -39,7 +39,7 @@ public class ModeratorController {
         List<CommentView> allNotApprovedComments = hotelService.getAllNotApprovedComments();
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
 
-        return "not-approved-comments";
+        return "moderator/not-approved-comments";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")

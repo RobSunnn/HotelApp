@@ -38,7 +38,7 @@ public class AboutController {
     @GetMapping
     public String about(Model model,
                         @PageableDefault(
-                                size = 4,
+                                size = 3,
                                 sort = "id"
                         )
                         Pageable pageable, HttpServletRequest request) {

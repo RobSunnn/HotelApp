@@ -6,8 +6,6 @@ import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import org.springframework.validation.BindingResult;
 
-import java.util.List;
-
 public interface UserService {
 
     boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, HotelInfoEntity hotelInfo);

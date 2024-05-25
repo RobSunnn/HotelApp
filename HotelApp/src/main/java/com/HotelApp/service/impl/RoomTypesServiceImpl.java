@@ -52,7 +52,7 @@ public class RoomTypesServiceImpl implements RoomTypesService {
 
         roomTypeRepository.save(new RoomTypeEntity("Studio",
                 "With its blend of contemporary design, thoughtful amenities, and prime location, our studio suite offers the perfect balance of style and comfort for your stay in the city. Whether you''re here for a weekend getaway or an extended business trip, we invite you to experience the ultimate in urban living at our hotel.",
-                2, "https://upload.wikimedia.org/wikipedia/commons/9/97/Studio_apartment.webp",
+                2, "https://image-tc.galaxy.tf/wijpeg-cpdilo03fm3hl1oe6816gv0vu/cts-studio-room-2522-1920-x-1080.jpg",
                 categoriesRepository.findByName(CategoriesEnum.STUDIO)));
 
         roomTypeRepository.save(new RoomTypeEntity("Double Room",

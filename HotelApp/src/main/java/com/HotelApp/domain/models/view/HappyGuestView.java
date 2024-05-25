@@ -1,7 +1,5 @@
 package com.HotelApp.domain.models.view;
 
-import jakarta.persistence.Column;
-
 import java.time.LocalDateTime;
 
 public class HappyGuestView {

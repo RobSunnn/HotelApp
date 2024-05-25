@@ -43,7 +43,8 @@ public class HotelServiceImpl implements HotelService {
                             UserService userService,
                             RoomServiceImpl roomService,
                             GuestService guestService,
-                            SubscriberService subscriberService, CommentService commentService) {
+                            SubscriberService subscriberService,
+                            CommentService commentService) {
         this.hotelRepository = hotelRepository;
         this.userService = userService;
         this.roomService = roomService;
@@ -133,10 +134,10 @@ public class HotelServiceImpl implements HotelService {
     /*  Hotel takes the guest money  */
     @Transactional
     @Override
-    public void takeMoney(BigDecimal roomPrice) {
+    public void takeMoney(BigDecimal vacationPrice) {
         HotelInfoEntity hotelInfo = getHotelInfo();
 
-        hotelInfo.setTotalProfit(hotelInfo.getTotalProfit().add(roomPrice));
+        hotelInfo.setTotalProfit(hotelInfo.getTotalProfit().add(vacationPrice));
         hotelRepository.save(hotelInfo);
     }
 
@@ -188,7 +189,7 @@ public class HotelServiceImpl implements HotelService {
                 .getHappyGuests()
                 .stream()
                 .map(happyGuestEntity -> modelMapper().map(happyGuestEntity, HappyGuestView.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
@@ -198,7 +199,7 @@ public class HotelServiceImpl implements HotelService {
                 .getSubscribers()
                 .stream()
                 .map(subscriberEntity -> modelMapper().map(subscriberEntity, SubscriberView.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
@@ -208,7 +209,7 @@ public class HotelServiceImpl implements HotelService {
                 .getGuests()
                 .stream()
                 .map(guest -> modelMapper().map(guest, GuestView.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
@@ -247,15 +248,6 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public Page<CommentView> getAllApprovedComments(Pageable pageable) {
      return commentService.getApproved(pageable);
-
-
-
-//        return getHotelInfo()
-//                .getComments()
-//                .stream()
-//                .filter(CommentEntity::getApproved)
-//                .map(comment -> modelMapper().map(comment, CommentView.class))
-//                .toList();
     }
 
     @Override

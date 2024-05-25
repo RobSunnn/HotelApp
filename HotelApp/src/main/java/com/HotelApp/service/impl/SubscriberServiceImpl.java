@@ -3,18 +3,12 @@ package com.HotelApp.service.impl;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.SubscriberEntity;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
-import com.HotelApp.domain.models.view.SubscriberView;
 import com.HotelApp.repository.SubscriberRepository;
 import com.HotelApp.service.SubscriberService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static com.HotelApp.config.SecurityConfiguration.modelMapper;
 
 @Service
 public class SubscriberServiceImpl implements SubscriberService {
@@ -36,11 +30,11 @@ public class SubscriberServiceImpl implements SubscriberService {
             subscriber.setCounterOfSubscriptions(subscriber.getCounterOfSubscriptions() + 1);
             sendBonusVoucher();
             subscriberRepository.save(subscriber);
+
             return;
         }
         SubscriberEntity subscriber = subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
         hotelInfo.getSubscribers().add(subscriber);
-
     }
 
     private void sendBonusVoucher() {
@@ -55,6 +49,4 @@ public class SubscriberServiceImpl implements SubscriberService {
                 .setCounterOfSubscriptions(1)
                 .setHotelInfoEntity(hotelInfo);
     }
-
-
 }

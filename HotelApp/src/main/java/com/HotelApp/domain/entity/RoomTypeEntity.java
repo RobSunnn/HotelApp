@@ -27,8 +27,11 @@ public class RoomTypeEntity extends BaseEntity {
     public RoomTypeEntity() {
     }
 
-    public RoomTypeEntity(String name, String description,
-                          int capacity, String pictureUrl, CategoryEntity category) {
+    public RoomTypeEntity(String name,
+                          String description,
+                          int capacity,
+                          String pictureUrl,
+                          CategoryEntity category) {
         this.name = name;
         this.description = description;
         this.capacity = capacity;

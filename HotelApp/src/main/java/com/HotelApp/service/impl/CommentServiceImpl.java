@@ -27,7 +27,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
-
         commentRepository.save(mapAsComment(addCommentBindingModel, hotelInfo));
     }
 

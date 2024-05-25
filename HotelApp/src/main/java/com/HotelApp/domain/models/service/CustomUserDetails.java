@@ -9,7 +9,7 @@ public class CustomUserDetails extends User {
     private String fullName;
 
     public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-            super(username, password, authorities);
+        super(username, password, authorities);
     }
 
     public String getFullName() {

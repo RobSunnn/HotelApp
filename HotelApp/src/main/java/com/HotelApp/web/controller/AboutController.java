@@ -68,23 +68,4 @@ public class AboutController {
         return "redirect:/about";
     }
 
-//    @PostMapping("/subscribe")
-//    public String subscribe(@Valid AddSubscriberBindingModel addSubscriberBindingModel,
-//                            BindingResult bindingResult,
-//                            RedirectAttributes redirectAttributes) {
-//
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);
-//            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.SUBSCRIBER_BINDING_MODEL, bindingResult);
-//
-//            return "redirect:/about";
-//        }
-//
-//        hotelService.addNewSubscriber(addSubscriberBindingModel);
-//
-//        redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
-//
-//        return "redirect:/about";
-//    }
-
 }

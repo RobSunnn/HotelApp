@@ -40,6 +40,7 @@ public class HotelInfoEntity extends BaseEntity {
     private List<SubscriberEntity> subscribers;
 
     public HotelInfoEntity() {
+        this.users = new ArrayList<>();
     }
 
     public String getName() {

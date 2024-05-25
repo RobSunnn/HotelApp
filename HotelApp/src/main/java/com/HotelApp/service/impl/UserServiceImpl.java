@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
             bindingResult.addError(new FieldError("userRegisterBindingModel", "email", ValidationConstants.EMAIL_EXIST));
             return false;
         }
-
-        UserEntity user = userRepository.save(mapAsUser(userRegisterBindingModel, hotelInfo));
+        UserEntity user1 = mapAsUser(userRegisterBindingModel, hotelInfo);
+        UserEntity user = userRepository.save(user1);
 
         hotelInfo.getUsers().add(user);
 
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService {
 //            }
 
         } else {
-            throw new IllegalArgumentException("User not found for email: " + email);
+            throw new UserNotFoundException("User not found for email: " + email);
         }
 
     }
@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
         } else {
-            throw new IllegalArgumentException("User not found for email: " + email);
+            throw new UserNotFoundException("User not found for email: " + email);
         }
 
     }
@@ -196,6 +196,7 @@ public class UserServiceImpl implements UserService {
     public UserView findUserDetails(String userEmail) {
         UserEntity user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException("User with email " + userEmail + " not found"));
+
         return mapAsUserView(user);
     }
 

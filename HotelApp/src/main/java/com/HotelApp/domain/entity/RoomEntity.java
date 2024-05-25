@@ -29,7 +29,11 @@ public class RoomEntity extends BaseEntity {
     public RoomEntity() {
     }
 
-    public RoomEntity(Integer roomNumber, boolean isReserved, BigDecimal price, CategoryEntity category, HotelInfoEntity hotelInfo) {
+    public RoomEntity(Integer roomNumber,
+                      boolean isReserved,
+                      BigDecimal price,
+                      CategoryEntity category,
+                      HotelInfoEntity hotelInfo) {
 
         this.roomNumber = roomNumber;
         this.isReserved = isReserved;

@@ -58,8 +58,6 @@ public interface HotelService {
 
     List<CommentView> getAllNotApprovedComments();
 
-//    List<CommentView> getAllApprovedComments();
-
     @Transactional
     Page<CommentView> getAllApprovedComments(Pageable pageable);
 

@@ -6,8 +6,6 @@ import com.HotelApp.domain.models.view.CommentView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface CommentService {
 
     void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo);

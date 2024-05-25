@@ -31,17 +31,11 @@ public class RoomServiceImpl implements RoomService {
 
         CategoryEntity category = categoriesRepository.findByName(CategoriesEnum.valueOf(roomType));
 
-        List<RoomEntity> roomByCategoryId = roomRepository.findRoomByCategoryName(category.getName());
-
-        List<RoomView> availableRooms = new ArrayList<>();
-
-        for (RoomEntity room : roomByCategoryId) {
-            if (!room.isReserved()) {
-                availableRooms.add(mapAsRoomView(room));
-            }
-        }
-
-        return availableRooms;
+        return roomRepository.findRoomByCategoryName(category.getName())
+                .stream()
+                .filter(room -> !room.isReserved())
+                .map(this::mapAsRoomView)
+                .toList();
     }
 
     @Override

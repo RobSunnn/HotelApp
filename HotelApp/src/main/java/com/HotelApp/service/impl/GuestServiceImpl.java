@@ -37,9 +37,9 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     public boolean registerGuest(AddGuestBindingModel addGuestBindingModel, HotelInfoEntity hotelInfo) {
-
         GuestEntity guest = guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
         hotelInfo.getGuests().add(guest);
+
         return guest.getDocumentId() != null;
     }
 
@@ -79,7 +79,6 @@ public class GuestServiceImpl implements GuestService {
         roomRepository.save(room);
     }
 
-
     private GuestEntity mapAsGuest(AddGuestBindingModel addGuestBindingModel, HotelInfoEntity hotelInfo) {
         RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
 
@@ -94,6 +93,5 @@ public class GuestServiceImpl implements GuestService {
                 .setCheckOutTime(LocalDateTime.now().plusDays(addGuestBindingModel.getDaysToStay()))
                 .setHotelInfoEntity(hotelInfo);
     }
-
 
 }

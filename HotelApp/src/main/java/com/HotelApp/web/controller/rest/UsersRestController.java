@@ -1,6 +1,5 @@
 package com.HotelApp.web.controller.rest;
 
-import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.service.HotelService;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ public class UsersRestController {
 private final HotelService hotelService;
 
     public UsersRestController(HotelService hotelService) {
-
         this.hotelService = hotelService;
     }
 

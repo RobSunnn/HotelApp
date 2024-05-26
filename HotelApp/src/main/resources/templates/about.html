@@ -225,7 +225,7 @@
 
             <div class="comment-title">
 
-                <h5 class="author" th:text="'Date: ' + ${comment.created}">Author</h5>
+                <h5 class="date" th:text="'Date: ' + ${comment.created}">Author</h5>
 
                 <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
 
@@ -234,12 +234,11 @@
             <div class="message-text">
                 <p th:attr="data-full-text=${comment.commentContent}"
                    th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
-                   th:classappend="${comment.commentContent.length() > 40} ? 'truncated' : ''"></p>
+                   th:classappend="${comment.commentContent.length() > 70} ? 'truncated' : ''"></p>
             </div>
-            <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 40}">Show
+            <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 70}">Show
                 More
             </button>
-
 
         </div>
     </div>
@@ -248,7 +247,7 @@
 </div>
 
 <!-- Page counter -->
-<div th:unless="${comments.getTotalElements() < 5}" id="controls" class="page-counter text-white">
+<div th:unless="${comments.getTotalElements() < 4}" id="controls" class="page-counter text-white">
 
         <div class="col-md-12 text-center">
             <p>
@@ -260,18 +259,20 @@
 </div>
 
 
-<div th:unless="${comments.getTotalElements() < 5}" class="col-md-12 text-center">
+<div th:unless="${comments.getTotalElements() < 4}" class="col-md-12 text-center">
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
+
             <!-- Previous button -->
             <li class="page-item" th:classappend="${comments.number == 0} ? 'disabled' : ''">
-                <a class="page-link" th:href="@{${'/about'}(page=${comments.number - 1})}">Previous</a>
+                <a class="page-link rounded bg-dark text-white" th:href="@{${'/about'}(page=${comments.number - 1})}">Previous</a>
             </li>
 
             <!-- Next button -->
             <li class="page-item" th:classappend="${comments.number == comments.totalPages - 1} ? 'disabled' : ''">
-                <a class="page-link pr-4 pl-4 rounded" th:href="@{${'/about'}(page=${comments.number + 1})}">Next</a>
+                <a class="page-link pr-4 pl-4 rounded bg-dark text-white" th:href="@{${'/about'}(page=${comments.number + 1})}">Next</a>
             </li>
+
         </ul>
     </nav>
 </div>

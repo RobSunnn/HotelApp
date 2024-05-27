@@ -3,7 +3,7 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.models.binding.AddCommentBindingModel;
 import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.service.HotelService;
-import com.HotelApp.validation.constants.BindingConstants;
+import com.HotelApp.common.constants.BindingConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

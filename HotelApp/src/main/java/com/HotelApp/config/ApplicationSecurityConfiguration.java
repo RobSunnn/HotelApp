@@ -22,7 +22,7 @@ import java.util.Properties;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-public class SecurityConfiguration {
+public class ApplicationSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -62,25 +62,6 @@ public class SecurityConfiguration {
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public static ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
-    @Bean
-    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
-        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
-
-        Properties properties = new Properties();
-        properties.setProperty(UserNotFoundException.class.getSimpleName(), "404");
-        properties.setProperty(ForbiddenUserException.class.getSimpleName(), "403");
-
-        resolver.setExceptionMappings(properties);
-        resolver.setDefaultErrorView("error");
-
-        return resolver;
     }
 
 }

@@ -3,7 +3,7 @@ package com.HotelApp.domain.models.binding;
 
 import jakarta.validation.constraints.*;
 
-import static com.HotelApp.validation.constants.ValidationConstants.*;
+import static com.HotelApp.common.constants.ValidationConstants.*;
 
 public class UserRegisterBindingModel {
     //TODO: validation maybe on fields or maybe with annotation

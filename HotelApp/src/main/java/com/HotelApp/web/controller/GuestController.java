@@ -4,7 +4,7 @@ import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
 import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.service.HotelService;
-import com.HotelApp.validation.constants.BindingConstants;
+import com.HotelApp.common.constants.BindingConstants;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

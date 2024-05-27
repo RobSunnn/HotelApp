@@ -2,7 +2,7 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.service.HotelService;
-import com.HotelApp.validation.constants.BindingConstants;
+import com.HotelApp.common.constants.BindingConstants;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

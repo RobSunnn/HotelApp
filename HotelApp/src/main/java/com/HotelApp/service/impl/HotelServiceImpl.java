@@ -21,7 +21,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.HotelApp.config.SecurityConfiguration.modelMapper;
+import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
+
 
 @Service
 public class HotelServiceImpl implements HotelService {

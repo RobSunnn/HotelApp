@@ -11,10 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.HotelApp.config.SecurityConfiguration.modelMapper;
 
 @Service
 public class CommentServiceImpl implements CommentService {

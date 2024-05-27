@@ -11,7 +11,7 @@ import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
-import com.HotelApp.validation.constants.ValidationConstants;
+import com.HotelApp.common.constants.ValidationConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.HotelApp.config.SecurityConfiguration.passwordEncoder;
+import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
 
 @Service
 public class UserServiceImpl implements UserService {

@@ -1,4 +1,4 @@
-package com.HotelApp.validation.constants;
+package com.HotelApp.common.constants;
 
 public class ValidationConstants {
 

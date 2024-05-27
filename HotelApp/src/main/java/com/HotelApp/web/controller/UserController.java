@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static com.HotelApp.validation.constants.BindingConstants.*;
+import static com.HotelApp.common.constants.BindingConstants.*;
 
 
 @Controller

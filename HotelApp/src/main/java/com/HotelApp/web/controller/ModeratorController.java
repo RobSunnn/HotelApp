@@ -28,6 +28,8 @@ public class ModeratorController {
     public String moderatorPanel(Model model) {
 
         int allNotApprovedComments = hotelService.getAllNotApprovedComments().size();
+        hotelService.getAllContactRequest();
+
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
         return "moderator/moderator-panel";
     }

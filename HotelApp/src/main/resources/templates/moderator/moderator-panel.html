@@ -67,7 +67,19 @@
 
         <div class="card" th:unless="${allNotApprovedComments == 0}">
 
-            <div class="card-body  bg-danger text-white">
+            <div class="card-body bg-danger text-white">
+                <h5 class="card-title">See comments</h5>
+                <p class="card-text"></p>
+                <p th:if="${allNotApprovedComments == 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>
+                <p th:if="${allNotApprovedComments > 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comments!'"></p>
+                <a th:href="@{/moderatorPanel/comments}" class="btn btn-primary">Check comments</a>
+            </div>
+
+        </div>
+
+        <div class="card" th:unless="${allNotApprovedComments == 0}">
+
+            <div class="card-body bg-danger text-white">
                 <h5 class="card-title">See comments</h5>
                 <p class="card-text"></p>
                 <p th:if="${allNotApprovedComments == 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>

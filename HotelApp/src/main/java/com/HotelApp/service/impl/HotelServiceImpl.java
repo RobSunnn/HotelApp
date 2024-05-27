@@ -3,10 +3,7 @@ package com.HotelApp.service.impl;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.entity.UserEntity;
-import com.HotelApp.domain.models.binding.AddCommentBindingModel;
-import com.HotelApp.domain.models.binding.AddGuestBindingModel;
-import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
-import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
+import com.HotelApp.domain.models.binding.*;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.service.*;
@@ -39,19 +36,21 @@ public class HotelServiceImpl implements HotelService {
 
     private final CommentService commentService;
 
+    private final ContactRequestService contactRequestService;
 
     public HotelServiceImpl(HotelRepository hotelRepository,
                             UserService userService,
                             RoomServiceImpl roomService,
                             GuestService guestService,
                             SubscriberService subscriberService,
-                            CommentService commentService) {
+                            CommentService commentService, ContactRequestService contactRequestService) {
         this.hotelRepository = hotelRepository;
         this.userService = userService;
         this.roomService = roomService;
         this.guestService = guestService;
         this.subscriberService = subscriberService;
         this.commentService = commentService;
+        this.contactRequestService = contactRequestService;
     }
 
     /* Taking care of hotel info entity */
@@ -260,4 +259,16 @@ public class HotelServiceImpl implements HotelService {
     public void doNotApproveComment(Long id) {
         commentService.doNotApprove(id);
     }
+
+    @Override
+    public void sendForm(ContactRequestBindingModel contactRequestBindingModel) {
+        contactRequestService.sendContactForm(contactRequestBindingModel);
+    }
+
+    @Override
+    public List<ContactUsView> getAllContactRequest() {
+        return null;
+    }
+
+
 }

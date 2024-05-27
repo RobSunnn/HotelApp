@@ -1,10 +1,7 @@
 package com.HotelApp.config;
 
 import com.HotelApp.repository.UserRepository;
-import com.HotelApp.service.exception.ForbiddenUserException;
-import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.service.impl.AppUserDetailsService;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-
-import java.util.Properties;
 
 @Configuration
 @EnableWebSecurity
@@ -33,7 +27,7 @@ public class ApplicationSecurityConfiguration {
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                                 .requestMatchers("/allRoomTypes", "/about/**","/contact/**", "/error").permitAll()
-                                .requestMatchers("/guests/add").hasRole("MODERATOR")
+                                .requestMatchers("/moderatorPanel/**", "/guests/add").hasRole("MODERATOR")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 ).formLogin(
@@ -63,5 +57,7 @@ public class ApplicationSecurityConfiguration {
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 
 }

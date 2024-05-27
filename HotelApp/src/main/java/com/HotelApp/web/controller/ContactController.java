@@ -1,16 +1,14 @@
 package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
+import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.common.constants.BindingConstants;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -27,6 +25,9 @@ public class ContactController {
     public void addAttributes(Model model) {
         if (!model.containsAttribute("addSubscriberBindingModel")) {
             model.addAttribute("addSubscriberBindingModel", new AddSubscriberBindingModel());
+        }
+        if (!model.containsAttribute("contactRequestBindingModel")) {
+            model.addAttribute("contactRequestBindingModel", new ContactRequestBindingModel());
         }
     }
 
@@ -52,6 +53,23 @@ public class ContactController {
         redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
 
         return "redirect:/contact";
+    }
+
+    @PostMapping("/contactForm")
+    public String sendMail(@Valid ContactRequestBindingModel contactRequestBindingModel,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("contactRequestBindingModel", contactRequestBindingModel);
+            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "contactRequestBindingModel", bindingResult);
+
+            return "redirect:/contact";
+        }
+
+        hotelService.sendForm(contactRequestBindingModel);
+
+        return "redirect:/";
     }
 
 }

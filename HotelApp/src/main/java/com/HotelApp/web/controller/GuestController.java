@@ -74,6 +74,11 @@ public class GuestController {
     public String leave(Model model) {
 
         List<GuestView> guests = hotelService.seeAllGuests();
+
+        if (guests.isEmpty()) {
+            return "redirect:/moderatorPanel";
+        }
+
         model.addAttribute("guests", guests);
 
         return "moderator/guest-leave";
@@ -82,6 +87,7 @@ public class GuestController {
     @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping("/leave")
     public String leave(@RequestParam("roomNumber") Integer roomNumber) {
+
         hotelService.checkout(roomNumber);
         return "redirect:/";
     }

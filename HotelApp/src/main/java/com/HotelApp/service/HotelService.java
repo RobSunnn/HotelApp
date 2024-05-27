@@ -1,10 +1,7 @@
 package com.HotelApp.service;
 
 import com.HotelApp.domain.entity.HotelInfoEntity;
-import com.HotelApp.domain.models.binding.AddCommentBindingModel;
-import com.HotelApp.domain.models.binding.AddGuestBindingModel;
-import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
-import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
+import com.HotelApp.domain.models.binding.*;
 import com.HotelApp.domain.models.view.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,4 +62,7 @@ public interface HotelService {
 
     void doNotApproveComment(Long id);
 
+    void sendForm(ContactRequestBindingModel contactRequestBindingModel);
+
+    List<ContactUsView> getAllContactRequest();
 }

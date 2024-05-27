@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({Throwable.class})
     public ResponseEntity<?> handleUserNotFoundException(Throwable ex) {
 
-        return ResponseEntity.notFound().build(); // Return 404 Not Found status
+        return ResponseEntity.notFound().build();
     }
 
 //    @ExceptionHandler(Exception.class)

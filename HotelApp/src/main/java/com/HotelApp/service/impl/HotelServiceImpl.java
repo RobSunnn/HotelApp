@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
@@ -260,15 +261,32 @@ public class HotelServiceImpl implements HotelService {
         commentService.doNotApprove(id);
     }
 
+    @Transactional
     @Override
     public void sendForm(ContactRequestBindingModel contactRequestBindingModel) {
-        contactRequestService.sendContactForm(contactRequestBindingModel);
+        contactRequestService.sendContactForm(contactRequestBindingModel, getHotelInfo());
     }
 
+    @Transactional
     @Override
-    public List<ContactUsView> getAllContactRequest() {
-        return null;
+    public List<ContactRequestView> getAllNotCheckedContactRequest() {
+        return getHotelInfo()
+                .getContactRequests()
+                .stream()
+                .filter(contactRequest -> !contactRequest.getChecked())
+                .map(contactRequest -> modelMapper().map(contactRequest, ContactRequestView.class))
+                .toList();
     }
 
-
+    @Transactional
+    @Override
+    public void checkedContactRequest(Long id) {
+        getHotelInfo()
+                .getContactRequests()
+                .stream()
+                .filter(contactRequest -> Objects.equals(contactRequest.getId(), id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No such contact request."))
+                .setChecked(true);
+    }
 }

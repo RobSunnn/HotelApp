@@ -1,6 +1,7 @@
 package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.view.CommentView;
+import com.HotelApp.domain.models.view.ContactRequestView;
 import com.HotelApp.service.HotelService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -28,9 +29,11 @@ public class ModeratorController {
     public String moderatorPanel(Model model) {
 
         int allNotApprovedComments = hotelService.getAllNotApprovedComments().size();
-        hotelService.getAllContactRequest();
+        int allContactRequests = hotelService.getAllNotCheckedContactRequest().size();
 
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
+        model.addAttribute("allContactRequests", allContactRequests);
+
         return "moderator/moderator-panel";
     }
 
@@ -39,9 +42,26 @@ public class ModeratorController {
     public String comments(Model model) {
 
         List<CommentView> allNotApprovedComments = hotelService.getAllNotApprovedComments();
+        if (allNotApprovedComments.isEmpty()) {
+            return "redirect:/moderatorPanel";
+        }
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
 
         return "moderator/not-approved-comments";
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/contactRequests")
+    public String contactRequest(Model model) {
+
+        List<ContactRequestView> allNotCheckedContactRequest = hotelService.getAllNotCheckedContactRequest();
+        if (allNotCheckedContactRequest.isEmpty()) {
+            return "redirect:/moderatorPanel";
+        }
+
+        model.addAttribute("allNotCheckedContactRequest", allNotCheckedContactRequest);
+
+        return "moderator/all-contact-requests";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -53,6 +73,13 @@ public class ModeratorController {
         hotelService.approveComment(id);
 
         return "redirect:/moderatorPanel/comments";
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("/requestChecked")
+    public String checkContactRequest(@RequestParam("id") Long id) {
+        hotelService.checkedContactRequest(id);
+        return "redirect:/moderatorPanel/contactRequests";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")

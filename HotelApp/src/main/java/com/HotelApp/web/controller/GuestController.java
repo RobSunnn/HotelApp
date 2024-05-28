@@ -89,7 +89,7 @@ public class GuestController {
     public String leave(@RequestParam("roomNumber") Integer roomNumber) {
 
         hotelService.checkout(roomNumber);
-        return "redirect:/";
+        return "redirect:/guests/leave";
     }
 
 }

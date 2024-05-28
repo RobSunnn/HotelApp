@@ -2,7 +2,9 @@ package com.HotelApp.domain.models.view;
 
 import java.time.LocalDateTime;
 
-public class ContactUsView {
+public class ContactRequestView {
+
+    private Long id;
 
     private String name;
 
@@ -14,13 +16,22 @@ public class ContactUsView {
 
     private LocalDateTime created;
 
-    public ContactUsView() {}
+    public ContactRequestView() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public ContactRequestView setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getName() {
         return name;
     }
 
-    public ContactUsView setName(String name) {
+    public ContactRequestView setName(String name) {
         this.name = name;
         return this;
     }
@@ -29,7 +40,7 @@ public class ContactUsView {
         return email;
     }
 
-    public ContactUsView setEmail(String email) {
+    public ContactRequestView setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -38,7 +49,7 @@ public class ContactUsView {
         return phoneNumber;
     }
 
-    public ContactUsView setPhoneNumber(String phoneNumber) {
+    public ContactRequestView setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
@@ -47,7 +58,7 @@ public class ContactUsView {
         return message;
     }
 
-    public ContactUsView setMessage(String message) {
+    public ContactRequestView setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -56,7 +67,7 @@ public class ContactUsView {
         return created;
     }
 
-    public ContactUsView setCreated(LocalDateTime created) {
+    public ContactRequestView setCreated(LocalDateTime created) {
         this.created = created;
         return this;
     }

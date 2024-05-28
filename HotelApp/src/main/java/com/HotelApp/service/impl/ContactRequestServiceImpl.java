@@ -1,6 +1,7 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.ContactRequestEntity;
+import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.repository.ContactRequestRepository;
 import com.HotelApp.service.ContactRequestService;
@@ -21,9 +22,11 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
 
     @Override
-    public void sendContactForm(ContactRequestBindingModel contactRequestBindingModel) {
+    public void sendContactForm(ContactRequestBindingModel contactRequestBindingModel, HotelInfoEntity hotelInfo) {
         ContactRequestEntity contactRequest = modelMapper().map(contactRequestBindingModel, ContactRequestEntity.class);
+        contactRequest.setChecked(false);
         contactRequest.setCreated(LocalDateTime.now());
+        contactRequest.setHotelInfoEntity(hotelInfo);
 
         contactRequestRepository.save(contactRequest);
     }

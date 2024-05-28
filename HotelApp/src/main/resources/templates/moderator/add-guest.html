@@ -12,12 +12,19 @@
             background-attachment: fixed;
         }
 
+        option{
+            color: black;
+        }
         .card {
             margin-bottom: 5em;
+
         }
 
-        .p-3 {
+        #checkbox {
+            margin: auto auto;
+            font-size: 1.1rem;
             display: flex;
+            flex-wrap: wrap;
             gap: 0.3em;
         }
     </style>
@@ -105,21 +112,21 @@
 
                             </div>
 
-                            <div class="form-group p-3">
+                            <div id="checkbox" class="form-group p-3">
                                 <!--                  <label class="p-0" for="category"></label>-->
-                                <input class="m-0" type="checkbox" name="category"
+                                <input  type="checkbox" name="category"
                                        th:each="category : ${categories}" th:value="${category.name()}"
                                        th:text="${category.name()}" data-index="${status.index}">
                             </div>
 
 
                             <div>
-                                <div class="form-group" id="freeRooms" hidden>
+                                <div class="form-group" id="freeRooms">
 
                                     <label for="roomNumber">Free Rooms</label>
                                     <select id="roomNumber" name="roomNumber" th:errorclass="is-invalid" size="6"
                                             th:field="*{roomNumber}" class="custom-select">
-                                        <option value="" selected disabled>Select room</option>
+                                        <option value="" selected disabled>Choose category to select room number</option>
                                     </select>
 
                                     <small id="roomNumberError" th:errors="*{roomNumber}"

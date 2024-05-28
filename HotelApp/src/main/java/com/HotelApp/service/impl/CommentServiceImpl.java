@@ -49,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
 
     private CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
         return new CommentEntity()
-                .setCommentContent(addCommentBindingModel.getCommentContent())
+                .setCommentContent(addCommentBindingModel.getCommentContent().trim())
                 .setApproved(false)
                 .setAuthor(addCommentBindingModel.getAuthor())
                 .setCreated(LocalDateTime.now())

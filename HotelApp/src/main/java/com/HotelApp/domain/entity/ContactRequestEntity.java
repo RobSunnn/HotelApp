@@ -2,6 +2,7 @@ package com.HotelApp.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,11 @@ public class ContactRequestEntity extends BaseEntity {
 
     @Column(nullable = false)
     private LocalDateTime created;
+
+    private Boolean isChecked;
+
+    @ManyToOne
+    private HotelInfoEntity hotelInfoEntity;
 
     public ContactRequestEntity() {}
 
@@ -69,6 +75,24 @@ public class ContactRequestEntity extends BaseEntity {
 
     public ContactRequestEntity setCreated(LocalDateTime created) {
         this.created = created;
+        return this;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public ContactRequestEntity setChecked(Boolean checked) {
+        isChecked = checked;
+        return this;
+    }
+
+    public HotelInfoEntity getHotelInfoEntity() {
+        return hotelInfoEntity;
+    }
+
+    public ContactRequestEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {
+        this.hotelInfoEntity = hotelInfoEntity;
         return this;
     }
 }

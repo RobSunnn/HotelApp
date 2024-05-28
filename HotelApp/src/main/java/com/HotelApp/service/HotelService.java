@@ -64,5 +64,7 @@ public interface HotelService {
 
     void sendForm(ContactRequestBindingModel contactRequestBindingModel);
 
-    List<ContactUsView> getAllContactRequest();
+    List<ContactRequestView> getAllNotCheckedContactRequest();
+
+    void checkedContactRequest(Long id);
 }

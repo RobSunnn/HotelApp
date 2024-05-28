@@ -2,6 +2,7 @@ package com.HotelApp.domain.models.view;
 
 public class GuestView {
 
+    private Long id;
     private String firstName;
 
     private String lastName;
@@ -15,6 +16,15 @@ public class GuestView {
     private Integer roomNumber;
 
     public GuestView() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public GuestView setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getFirstName() {

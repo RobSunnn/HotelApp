@@ -225,7 +225,7 @@
 
             <div class="comment-title">
 
-                <h5 class="date" th:text="'Date: ' + ${comment.created}">Author</h5>
+                <h5 class="date" th:text="'Date: ' + ${comment.created.toLocalDate()}">Author</h5>
 
                 <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
 

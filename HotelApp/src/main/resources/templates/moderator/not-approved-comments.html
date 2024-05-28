@@ -14,8 +14,14 @@
         background-attachment: fixed;
     }
 
-    h3 {
+    table,
+    h2,
+    h4 {
         text-align: center;
+    }
+
+    .container {
+        margin-top: 5em;
     }
 
     .custom-dropdown {
@@ -23,6 +29,9 @@
         display: flex;
         gap: 3em;
         justify-content: center;
+        flex-direction: column;
+        margin-top: 2em;
+
     }
 
     .buttons {
@@ -35,44 +44,69 @@
         align-self: center;
     }
 
-    .commentDropdown {
-
+    #commentTable {
+        cursor: pointer;
+        border: 5px solid #ddd; /* Adds a line between rows */
+        max-height: 10vh; /* Adjust the max-height as needed */
+        overflow-y: auto;
     }
 
-    #fullCommentText {
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
+    #commentTable tr.selected {
+        background-color: black; /* Light grey background */
+        color: white;
+    }
+
+    #commentTable th, #commentTable td {
+        padding: 8px;
+        border: 2px solid #ddd; /* Adds a line between rows */
+    }
+
+    #fullMessage {
+
+        padding:30px;
         background-color: #f9f9f9;
-        max-width: 300px; /* Adjust based on your layout */
-        max-height: 150px; /* Adjust based on your layout */
+        max-width: 100%; /* Adjust based on your layout */
+        max-height: 100%; /* Adjust based on your layout */
         overflow-y: auto; /* Adds a scrollbar if content is too long */
         word-wrap: break-word; /* Breaks long words */
         word-break: break-all; /* Breaks long words */
         white-space: pre-wrap; /* Preserves whitespace */
+        text-align: center;
+        border: 5px solid black; /* Adds a line between rows */
+
     }
 </style>
 <body>
 <div th:insert="~{/fragments/nav-bar}"></div>
 
-<div class="container">
+<div class="container p-3 bg-dark rounded">
 
-    <h3>New Comments</h3>
+    <h2 class="text-white mt-2">New Comments</h2>
 
-    <div class="custom-dropdown">
-        <label for="commentDropdown"></label>
-        <select id="commentDropdown"  size="7">
+    <div class="custom-dropdown p-3">
+        <table class="bg-white" id="commentTable">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Author</th>
+                <th>Comment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="comment, iterStat : ${allNotApprovedComments}" th:data-full-text="${comment.commentContent}" th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${comment.id}">
+                <td th:text="${comment.created.toLocalDate()}"></td>
+                <td th:text="${comment.author}"></td>
+                <td th:text="${#strings.abbreviate(comment.commentContent, 30)}"></td>
+            </tr>
+            </tbody>
+        </table>
 
-            <option th:each="comment : ${allNotApprovedComments}"
-                    th:value="${comment.id}"
-                    th:data-full-text="'Author: ' + ${comment.author} + ' - Text: ' + ${comment.commentContent}"
-                    th:text="${comment.created} + ' - Author: ' + ${comment.author} + ' - Text: ' + ${#strings.abbreviate(comment.commentContent, 30)}">
-            </option>
-
-        </select>
-        <div id="fullCommentText" ></div>
+        <h4 class="text-white">Comment content will be displayed here</h4>
+        <div id="fullMessage"></div>
 
     </div>
+
+
     <br>
     <br>
     <div class="buttons">
@@ -80,21 +114,39 @@
         <a th:href="@{/moderatorPanel}" class="btn btn-primary">Go back <br> to your panel</a>
 
         <form th:action="@{/moderatorPanel/approveComment}" th:method="POST">
-            <input type="hidden" id="selectedCommentId" name="id" />
+            <input type="hidden" id="selectedContentId" name="id"/>
             <button type="submit" class="btn btn-success">Approve</button>
         </form>
 
         <form th:action="@{/moderatorPanel/commentNotApproved}" th:method="POST">
-            <input type="hidden" id="notApprovedCommentId" name="id" />
+            <input type="hidden" id="notApprovedCommentId" name="id"/>
             <button type="submit" class="btn btn-danger">Don't Approve</button>
         </form>
     </div>
 
 
 </div>
+<br>
+<br>
+<!--    <div class="buttons">-->
+
+<!--        <a th:href="@{/moderatorPanel}" class="btn btn-primary">Go back <br> to your panel</a>-->
+
+<!--        <form th:action="@{/moderatorPanel/approveComment}" th:method="POST">-->
+<!--            <input type="hidden" id="selectedCommentId" name="id" />-->
+<!--            <button type="submit" class="btn btn-success">Approve</button>-->
+<!--        </form>-->
+
+<!--        <form th:action="@{/moderatorPanel/commentNotApproved}" th:method="POST">-->
+<!--            <input type="hidden" id="notApprovedCommentId" name="id" />-->
+<!--            <button type="submit" class="btn btn-danger">Don't Approve</button>-->
+<!--        </form>-->
+<!--    </div>-->
+
 
 <div th:insert="~{/fragments/footer}"></div>
 
-<script src="/js/commentsHelp.js"></script>
+<script src="/js/commentsAndContactRequestsScript.js"></script>
+
 </body>
 </html>

@@ -39,6 +39,9 @@ public class HotelInfoEntity extends BaseEntity {
     @OneToMany(mappedBy = "hotelInfoEntity", fetch = FetchType.LAZY)
     private List<SubscriberEntity> subscribers;
 
+    @OneToMany(mappedBy = "hotelInfoEntity", fetch = FetchType.LAZY)
+    private List<ContactRequestEntity> contactRequests;
+
     public HotelInfoEntity() {
         this.rooms = new ArrayList<>();
         this.users = new ArrayList<>();
@@ -46,6 +49,7 @@ public class HotelInfoEntity extends BaseEntity {
         this.happyGuests = new ArrayList<>();
         this.comments = new ArrayList<>();
         this.subscribers = new ArrayList<>();
+        this.contactRequests = new ArrayList<>();
     }
 
     public String getName() {
@@ -134,6 +138,15 @@ public class HotelInfoEntity extends BaseEntity {
 
     public HotelInfoEntity setHappyGuests(List<HappyGuestEntity> happyGuests) {
         this.happyGuests = happyGuests;
+        return this;
+    }
+
+    public List<ContactRequestEntity> getContactRequests() {
+        return contactRequests;
+    }
+
+    public HotelInfoEntity setContactRequests(List<ContactRequestEntity> contactRequests) {
+        this.contactRequests = contactRequests;
         return this;
     }
 }

@@ -26,8 +26,8 @@
             display: flex;
             justify-content: center;
             gap: 3em;
-            margin: 3em auto;
-            max-width: 1200px;
+            margin: 5em auto;
+            flex-wrap: wrap;
         }
 
     </style>
@@ -77,14 +77,14 @@
 
         </div>
 
-        <div class="card" th:unless="${allNotApprovedComments == 0}">
+        <div class="card" th:unless="${allContactRequests == 0}">
 
             <div class="card-body bg-danger text-white">
-                <h5 class="card-title">See comments</h5>
+                <h5 class="card-title">See Contact Requests</h5>
                 <p class="card-text"></p>
-                <p th:if="${allNotApprovedComments == 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>
-                <p th:if="${allNotApprovedComments > 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comments!'"></p>
-                <a th:href="@{/moderatorPanel/comments}" class="btn btn-primary">Check comments</a>
+                <p th:if="${allContactRequests == 1}"  th:text="'You have ' + ${allContactRequests} + ' contact request!'"></p>
+                <p th:if="${allContactRequests > 1}"  th:text="'You have ' + ${allContactRequests} + ' contact requests!'"></p>
+                <a th:href="@{/moderatorPanel/contactRequests}" class="btn btn-primary">Contact Requests</a>
             </div>
 
         </div>

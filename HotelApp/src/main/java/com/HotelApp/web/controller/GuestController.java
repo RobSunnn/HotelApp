@@ -3,6 +3,7 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
 import com.HotelApp.domain.models.view.GuestView;
+import com.HotelApp.service.GuestService;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.common.constants.BindingConstants;
 import jakarta.validation.Valid;
@@ -22,10 +23,10 @@ import java.util.List;
 @RequestMapping("/guests")
 public class GuestController {
 
-    private final HotelService hotelService;
+    private final GuestService guestService;
 
-    public GuestController(HotelService hotelService) {
-        this.hotelService = hotelService;
+    public GuestController(GuestService guestService) {
+        this.guestService = guestService;
     }
 
 
@@ -58,7 +59,7 @@ public class GuestController {
             return "redirect:/guests/add";
         }
 
-        boolean registerGuest = hotelService.registerGuest(addGuestBindingModel);
+        boolean registerGuest = guestService.registerGuest(addGuestBindingModel);
 
         if (registerGuest) {
             return "redirect:/";
@@ -73,7 +74,7 @@ public class GuestController {
     @GetMapping("/leave")
     public String leave(Model model) {
 
-        List<GuestView> guests = hotelService.seeAllGuests();
+        List<GuestView> guests = guestService.seeAllGuests();
 
         if (guests.isEmpty()) {
             return "redirect:/moderatorPanel";
@@ -88,7 +89,7 @@ public class GuestController {
     @PostMapping("/leave")
     public String leave(@RequestParam("roomNumber") Integer roomNumber) {
 
-        hotelService.checkout(roomNumber);
+        guestService.checkout(roomNumber);
         return "redirect:/guests/leave";
     }
 

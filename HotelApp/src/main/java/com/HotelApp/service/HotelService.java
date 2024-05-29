@@ -19,25 +19,7 @@ public interface HotelService {
 
     HotelInfoEntity getHotelInfo();
 
-    boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult);
-
-    UserView findUserDetails(String userEmail);
-
-    List<UserView> findAllUsers();
-
-    UserView findUserByEmail(String userEmail);
-
-    void makeUserAdmin(String email);
-
-    void makeUserModerator(String email);
-
-    void takeRightsOfUser(String email);
-
     void takeMoney(BigDecimal roomPrice);
-
-    boolean registerGuest(AddGuestBindingModel addGuestBindingModel);
-
-    void checkout(Integer roomNumber);
 
     List<RoomView> seeAllFreeRooms();
 
@@ -47,24 +29,12 @@ public interface HotelService {
 
     List<GuestView> seeAllGuests();
 
-    BigDecimal getTotalProfit();
-
-    void addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel);
-
-    void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel);
-
     List<CommentView> getAllNotApprovedComments();
-
-    @Transactional
-    Page<CommentView> getAllApprovedComments(Pageable pageable);
-
-    void approveComment(Long id);
-
-    void doNotApproveComment(Long id);
-
-    void sendForm(ContactRequestBindingModel contactRequestBindingModel);
 
     List<ContactRequestView> getAllNotCheckedContactRequest();
 
     void checkedContactRequest(Long id);
+
+    BigDecimal getTotalProfit();
+
 }

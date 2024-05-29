@@ -19,16 +19,14 @@ let selectedUserId; // Variable to store the selected user ID
 let counter = 0;
 
 allUsersBtn.addEventListener('click', () => {
-    userSearchBar.style.background = 'none';
-    userSearchBar.style.color = 'black';
-    userSearchBar.innerText = '';
+
+    userSearchBar.placeholder = 'Enter User Email';
 
     usersDropdown.innerText = '';
     usersDropdown.removeAttribute("disabled");
     usersDropdown.style.background = 'none';
     usersDropdown.style.color = "black";
 
-    allButtonsContainer.hidden = false;
 
     fetch(`${baseUrl}/allUsers`, {
         method: 'GET',
@@ -41,8 +39,13 @@ allUsersBtn.addEventListener('click', () => {
             Object.values(result).forEach(e => {
 
                 let htmlOptionElement = document.createElement("option");
-                userSearchBar.style.color = 'white';
-                usersDropdown.style.color = 'white';
+                // userSearchBar.style.color = 'black';
+                userSearchBar.style.backgroundColor = 'white';
+                userSearchBar.innerText = 'Enter User Email';
+                userSearchBar.classList.add("black-placeholder");
+
+                allButtonsContainer.hidden = false;
+
                 htmlOptionElement.append(`User with email: ${e.email}`);
                 htmlOptionElement.value = e.email;
                 htmlOptionElement.style.color = 'black';
@@ -56,9 +59,10 @@ allUsersBtn.addEventListener('click', () => {
             });
 
             document.getElementById('usersDropdown').hidden = false;
+
         })
-        .catch(error => {
-            console.error('Error:', error);
+        .catch(() => {
+            console.log('There are no users.');
         });
 });
 
@@ -70,6 +74,7 @@ findUserBtn.addEventListener('click', () => {
     if (userEmail.value === '') {
         userEmail.style.background = 'red';
         userEmail.setAttribute('placeholder', 'You should enter user email..');
+        userEmail.classList.remove("black-placeholder");
         userEmail.classList.add("white-placeholder");
 
         userSearchBar.style.color = 'white';
@@ -127,12 +132,12 @@ findUserBtn.addEventListener('click', () => {
         })
         .catch(() => {
             // Handle the case where the user is not found
-
+            console.log('User not found or you search for not existing user.');
             let htmlOptionElement = document.createElement("option");
             htmlOptionElement.append(`User with email: "${userEmail.value}" - does not exist`);
             usersDropdown.appendChild(htmlOptionElement);
-            usersDropdown.style.background = "red";
-            usersDropdown.style.color = "white";
+            htmlOptionElement.style.background = "red";
+            htmlOptionElement.style.color = "white";
 
         });
 

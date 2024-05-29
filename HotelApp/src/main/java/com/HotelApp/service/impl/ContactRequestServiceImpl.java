@@ -5,6 +5,7 @@ import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.repository.ContactRequestRepository;
 import com.HotelApp.service.ContactRequestService;
+import com.HotelApp.service.HotelService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,14 +17,20 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
     private final ContactRequestRepository contactRequestRepository;
 
-    public ContactRequestServiceImpl(ContactRequestRepository contactRequestRepository) {
+    private final HotelService hotelService;
+
+    public ContactRequestServiceImpl(ContactRequestRepository contactRequestRepository, HotelService hotelService) {
         this.contactRequestRepository = contactRequestRepository;
+        this.hotelService = hotelService;
     }
 
 
     @Override
-    public void sendContactForm(ContactRequestBindingModel contactRequestBindingModel, HotelInfoEntity hotelInfo) {
+    public void sendContactForm(ContactRequestBindingModel contactRequestBindingModel) {
         ContactRequestEntity contactRequest = modelMapper().map(contactRequestBindingModel, ContactRequestEntity.class);
+        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+        //TODO: Maybe we need to map it by hand not with model mapper to trim it correctly
+        contactRequest.setMessage(contactRequest.getMessage().trim());
         contactRequest.setChecked(false);
         contactRequest.setCreated(LocalDateTime.now());
         contactRequest.setHotelInfoEntity(hotelInfo);

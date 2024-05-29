@@ -1,6 +1,5 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
@@ -21,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
 
 @Service
@@ -30,22 +30,23 @@ public class UserServiceImpl implements UserService {
 
     private final RoleService roleService;
 
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+    private final HotelServiceImpl hotelService;
+
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, HotelServiceImpl hotelService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.hotelService = hotelService;
     }
 
     @Transactional
     @Override
-    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, HotelInfoEntity hotelInfo) {
+    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult) {
         if (checkIfEmailExist(userRegisterBindingModel)) {
             bindingResult.addError(new FieldError("userRegisterBindingModel", "email", ValidationConstants.EMAIL_EXIST));
             return false;
         }
-        UserEntity user1 = mapAsUser(userRegisterBindingModel, hotelInfo);
-        UserEntity user = userRepository.save(user1);
-
-        hotelInfo.getUsers().add(user);
+        UserEntity user = mapAsUser(userRegisterBindingModel);
+        userRepository.save(user);
 
         return user.getEmail() != null;
     }
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findUserByEmail(String email) {
+    public UserView findUserByEmail(String email) {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
 
@@ -66,10 +67,10 @@ public class UserServiceImpl implements UserService {
             throw new ForbiddenUserException("You can't see this user :)");
         }
 
-        return user;
+        return modelMapper().map(user, UserView.class);
     }
 
-    private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel, HotelInfoEntity hotelInfo) {
+    private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel) {
 
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             return new UserEntity(); // TODO: better solution for field match
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
                 .setLastName(userRegisterBindingModel.getLastName())
                 .setPassword(passwordEncoder().encode(userRegisterBindingModel.getPassword()))
                 .setCreated(LocalDateTime.now())
-                .setHotelInfoEntity(hotelInfo);
+                .setHotelInfoEntity(hotelService.getHotelInfo());
 
         if (roleService.getCount() == 0) {
             roleService.initRoles();
@@ -156,13 +157,9 @@ public class UserServiceImpl implements UserService {
             boolean isModerator = user.getRoles().stream()
                     .anyMatch(role -> role.getName().name().equals("MODERATOR"));
 
-//            if (!isModerator) {
-                //todo: if user is admin and we want to be only moderator it is not working properly
-                user.setRoles(List.of(userRole, moderatorRole));
-                userRepository.save(user);
-//            } else {
-//                System.out.println("User is already a moderator.");
-//            }
+            //todo: if user is admin and we want to be only moderator it is not working properly
+            user.setRoles(List.of(userRole, moderatorRole));
+            userRepository.save(user);
 
         } else {
             throw new UserNotFoundException("User not found for email: " + email);
@@ -190,6 +187,15 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User not found for email: " + email);
         }
 
+    }
+
+    public List<UserView> findAllUsers() {
+        return userRepository
+                .findAll()
+                .stream()
+                .skip(1)
+                .map(user -> modelMapper().map(user, UserView.class))
+                .toList();
     }
 
     @Override

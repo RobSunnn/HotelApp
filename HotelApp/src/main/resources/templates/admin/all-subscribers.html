@@ -11,6 +11,36 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
+
+        table,
+        h2 {
+            text-align: center;
+        }
+
+        .container {
+            margin: 5em auto;
+            opacity: 90%;
+        }
+
+        .custom-table {
+            /*position: static;*/
+            display: flex;
+            gap: 3em;
+            justify-content: center;
+            flex-direction: column;
+            cursor: auto;
+            overflow-y: auto;
+            border: 5px solid chocolate; /* Adds a line between rows */
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 8px;
+            border: 2px solid chocolate; /* Adds a line between rows */
+        }
+        .buttons {
+            margin-top: 2em;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -18,21 +48,39 @@
 <div th:insert="~{/fragments/nav-bar}"></div>
 
 
-<div class="container">
-    <div class="form-group">
-        <label for="allSubscribers">Select subscriber</label>
-        <select id="allSubscribers" name="allSubscribers" class="custom-select  bg-dark text-white" size="10">
-            <option value="" selected disabled>Check all subscribers</option>
-            <option th:each="subscriber : ${allSubscribers}" th:text="${subscriber.getEmail()}"></option>
-        </select>
+<div class="container p-3 bg-dark rounded">
+    <h2 class="text-white mt-2">Subscribers</h2>
 
-        <div class="buttons">
-            <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
-            <!--            <a th:href="@{/admin}" class="btn btn-success" >Make Guest <br> User</a>-->
-            <!--            <a th:href="@{/admin}" class="btn btn-secondary" >See Guest <br> Profile</a>-->
-            <!--            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>-->
-        </div>
+    <div class="form-group custom-table">
+        <table class="bg-white" id="commentTable">
+            <thead>
+            <tr>
+                <th>Email</th>
+                <th>Count Subscriptions</th>
+                <th>Time of Subscription</th>
 
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subscriber, iterStat : ${allSubscribers}" th:data-full-text="${subscriber}"
+                th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${subscriber.id}">
+                <td th:text="${subscriber.email}"></td>
+                <td th:text="${subscriber.counterOfSubscriptions}"></td>
+                <td th:text="${subscriber.timeOfSubscription.toLocalDate()}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+
+    </div>
+
+    <div class="buttons">
+        <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
+        <!--            <a th:href="@{/admin}" class="btn btn-success" >Make Guest <br> User</a>-->
+        <!--            <a th:href="@{/admin}" class="btn btn-secondary" >See Guest <br> Profile</a>-->
+        <!--            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>-->
     </div>
 </div>
 

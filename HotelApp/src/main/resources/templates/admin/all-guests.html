@@ -11,13 +11,34 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-        .buttons {
-            margin-top: 2em;
+        table,
+        h2 {
+            text-align: center;
         }
 
         .container {
             margin: 5em auto;
-            width: 100%;
+            opacity: 90%;
+        }
+
+        .custom-table {
+            /*position: static;*/
+            display: flex;
+            gap: 3em;
+            justify-content: center;
+            flex-direction: column;
+            cursor: auto;
+            overflow-y: auto;
+            border: 5px solid chocolate; /* Adds a line between rows */
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 8px;
+            border: 2px solid chocolate; /* Adds a line between rows */
+        }
+        .buttons {
+            margin-top: 2em;
+            text-align: center;
         }
     </style>
 </head>
@@ -25,22 +46,51 @@
 
 <div th:insert="~{/fragments/nav-bar}"></div>
 
-<div class="container">
-    <div class="form-group">
-        <label for="allGuests">Select guest</label>
-        <select id="allGuests" name="allGuests" class="custom-select">
-            <option value="" selected disabled>Check all guests in hotel</option>
-            <option th:each="guest : ${allGuests}"
-                    th:text="${guest.getFullName()} + ' - Room number: ' + ${guest.getRoomNumber()}"></option>
-        </select>
+<div class="container p-3 bg-dark rounded">
+    <h2 class="text-white mt-2">All Guests in Hotel</h2>
 
-        <div class="buttons">
-            <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
-            <a th:href="@{/admin}" class="btn btn-success">Make Guest <br> User</a>
-            <a th:href="@{/admin}" class="btn btn-secondary">See Guest <br> Profile</a>
-            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>
-        </div>
+    <div class="form-group custom-table">
+        <table class="bg-white" >
+            <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Room Number</th>
+                <th>Document Id</th>
+                <th>Check In Time</th>
+                <th>Check Out Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="guest, iterStat : ${allGuests}" th:data-full-text="${guest}"
+                th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${guest.id}">
 
+                <td th:text="${guest.fullName}"></td>
+                <td th:text="${guest.age}"></td>
+                <td th:text="${guest.documentId}"></td>
+                <td th:text="${guest.roomNumber}"></td>
+                <td th:text="${guest.checkInTime.toLocalDate()}"></td>
+                <td th:text="${guest.checkOutTime.toLocalDate()}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+
+<!--        <label for="allGuests">Select guest</label>-->
+<!--        <select id="allGuests" name="allGuests" class="custom-select">-->
+<!--            <option value="" selected disabled>Check all guests in hotel</option>-->
+<!--            <option th:each="guest : ${allGuests}"-->
+<!--                    th:text="${guest.getFullName()} + ' - Room number: ' + ${guest.getRoomNumber()}"></option>-->
+<!--        </select>-->
+
+
+
+    </div>
+    <div class="buttons">
+        <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
+        <a th:href="@{/admin}" class="btn btn-success">Make Guest <br> User</a>
+        <a th:href="@{/admin}" class="btn btn-secondary">See Guest <br> Profile</a>
+        <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>
     </div>
 </div>
 

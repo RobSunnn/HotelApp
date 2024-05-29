@@ -2,8 +2,9 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
-import com.HotelApp.service.HotelService;
+import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.common.constants.BindingConstants;
+import com.HotelApp.service.SubscriberService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/contact")
 public class ContactController {
 
-    private final HotelService hotelService;
+    private final SubscriberService subscriberService;
 
-    public ContactController(HotelService hotelService) {
-        this.hotelService = hotelService;
+    private final ContactRequestService contactRequestService;
+
+    public ContactController(SubscriberService subscriberService, ContactRequestService contactRequestService) {
+        this.subscriberService = subscriberService;
+        this.contactRequestService = contactRequestService;
     }
 
     @ModelAttribute
@@ -48,7 +52,7 @@ public class ContactController {
             return "redirect:/contact";
         }
 
-        hotelService.addNewSubscriber(addSubscriberBindingModel);
+        subscriberService.addNewSubscriber(addSubscriberBindingModel);
 
         redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
 
@@ -67,7 +71,7 @@ public class ContactController {
             return "redirect:/contact";
         }
 
-        hotelService.sendForm(contactRequestBindingModel);
+        contactRequestService.sendContactForm(contactRequestBindingModel);
 
         return "redirect:/";
     }

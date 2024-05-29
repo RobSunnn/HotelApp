@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class SubscriberView {
 
+    private Long id;
     private String email;
 
     private LocalDateTime timeOfSubscription;
@@ -11,6 +12,15 @@ public class SubscriberView {
     private Integer counterOfSubscriptions;
 
     public SubscriberView() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public SubscriberView setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getEmail() {
         return email;

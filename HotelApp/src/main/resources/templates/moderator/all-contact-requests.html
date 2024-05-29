@@ -19,7 +19,8 @@
         }
 
         .container {
-            margin-top: 5em;
+            margin: 5em auto;
+            opacity: 90%;
         }
 
         .custom-dropdown {
@@ -31,10 +32,12 @@
             margin-top: 2em;
 
         }
+
         #commentTable tr.selected {
             background-color: black; /* Light grey background */
             color: white;
         }
+
         .buttons {
             display: flex;
             justify-content: center;
@@ -48,7 +51,6 @@
         #commentTable {
             cursor: pointer;
             border: 5px solid #ddd; /* Adds a line between rows */
-            max-height: 10vh; /* Adjust the max-height as needed */
             overflow-y: auto;
         }
 
@@ -59,8 +61,7 @@
         }
 
         #fullMessage {
-
-            padding:30px;
+            padding: 30px;
             background-color: #f9f9f9;
             max-width: 100%; /* Adjust based on your layout */
             max-height: 100%; /* Adjust based on your layout */
@@ -70,7 +71,6 @@
             white-space: pre-wrap; /* Preserves whitespace */
             text-align: center;
             border: 5px solid black; /* Adds a line between rows */
-
         }
     </style>
 </head>
@@ -93,7 +93,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="request, iterStat : ${allNotCheckedContactRequest}" th:data-full-text="${request.message}" th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${request.id}">
+            <tr th:each="request, iterStat : ${allNotCheckedContactRequest}" th:data-full-text="${request.message}"
+                th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${request.id}">
                 <td th:text="${request.created.toLocalDate()}"></td>
                 <td th:text="${request.name}"></td>
                 <td th:text="${request.email}"></td>

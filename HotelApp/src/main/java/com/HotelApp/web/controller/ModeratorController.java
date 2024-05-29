@@ -2,6 +2,7 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.domain.models.view.ContactRequestView;
+import com.HotelApp.service.CommentService;
 import com.HotelApp.service.HotelService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,12 @@ public class ModeratorController {
 
     private final HotelService hotelService;
 
-    public ModeratorController(HotelService hotelService) {
+    private final CommentService commentService;
 
+    public ModeratorController(HotelService hotelService,
+                               CommentService commentService) {
         this.hotelService = hotelService;
+        this.commentService = commentService;
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -45,6 +49,7 @@ public class ModeratorController {
         if (allNotApprovedComments.isEmpty()) {
             return "redirect:/moderatorPanel";
         }
+
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
 
         return "moderator/not-approved-comments";
@@ -60,7 +65,6 @@ public class ModeratorController {
         }
 
         model.addAttribute("allNotCheckedContactRequest", allNotCheckedContactRequest);
-
         return "moderator/all-contact-requests";
     }
 
@@ -68,16 +72,14 @@ public class ModeratorController {
     @PostMapping("/approveComment")
     public String approveComment(@RequestParam("id") Long id) {
 
-        //TODO: think of a way to handle exception when comment is not selected also for guest leave the same
-
-        hotelService.approveComment(id);
-
+        commentService.approve(id);
         return "redirect:/moderatorPanel/comments";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping("/requestChecked")
     public String checkContactRequest(@RequestParam("id") Long id) {
+
         hotelService.checkedContactRequest(id);
         return "redirect:/moderatorPanel/contactRequests";
     }
@@ -86,8 +88,7 @@ public class ModeratorController {
     @PostMapping("/commentNotApproved")
     public String commentNotApproved(@RequestParam("id") Long id) {
 
-        hotelService.doNotApproveComment(id);
-
+        commentService.doNotApprove(id);
         return "redirect:/moderatorPanel/comments";
     }
 }

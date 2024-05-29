@@ -38,6 +38,7 @@ public class HotelController {
         model.addAttribute("happyGuestsCount", happyGuestsCount);
         model.addAttribute("totalProfit", totalProfit);
         model.addAttribute("totalSubscribers", totalSubscribers);
+
         return "admin/admin-panel";
     }
 

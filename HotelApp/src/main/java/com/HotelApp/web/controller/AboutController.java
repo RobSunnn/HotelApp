@@ -2,7 +2,7 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.AddCommentBindingModel;
 import com.HotelApp.domain.models.view.CommentView;
-import com.HotelApp.service.HotelService;
+import com.HotelApp.service.CommentService;
 import com.HotelApp.common.constants.BindingConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -22,10 +22,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/about")
 public class AboutController {
 
-    private final HotelService hotelService;
+    private final CommentService commentService;
 
-    public AboutController(HotelService hotelService) {
-        this.hotelService = hotelService;
+    public AboutController(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     @ModelAttribute
@@ -44,7 +44,7 @@ public class AboutController {
                         Pageable pageable, HttpServletRequest request) {
 
         request.getSession(true);
-        Page<CommentView> allApprovedComments = hotelService.getAllApprovedComments(pageable);
+        Page<CommentView> allApprovedComments = commentService.getApprovedComments(pageable);
 
         model.addAttribute("comments", allApprovedComments);
 
@@ -62,7 +62,7 @@ public class AboutController {
             return "redirect:/about";
         }
 
-        hotelService.addCommentToDatabase(addCommentBindingModel);
+        commentService.addCommentToDatabase(addCommentBindingModel);
         redirectAttributes.addFlashAttribute("successCommentMessage", "Thank you for your comment!");
 
         return "redirect:/about";

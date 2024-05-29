@@ -1,5 +1,7 @@
 package com.HotelApp.domain.models.view;
 
+import java.time.LocalDateTime;
+
 public class GuestView {
 
     private Long id;
@@ -12,6 +14,10 @@ public class GuestView {
     private Integer age;
 
     private String documentId;
+
+    private LocalDateTime checkInTime;
+
+    private LocalDateTime checkOutTime;
 
     private Integer roomNumber;
 
@@ -69,6 +75,24 @@ public class GuestView {
 
     public GuestView setDocumentId(String documentId) {
         this.documentId = documentId;
+        return this;
+    }
+
+    public LocalDateTime getCheckInTime() {
+        return checkInTime;
+    }
+
+    public GuestView setCheckInTime(LocalDateTime checkInTime) {
+        this.checkInTime = checkInTime;
+        return this;
+    }
+
+    public LocalDateTime getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public GuestView setCheckOutTime(LocalDateTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
         return this;
     }
 

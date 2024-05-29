@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class HappyGuestView {
 
+    private Long id;
     private String firstName;
 
     private String lastName;
@@ -23,6 +24,15 @@ public class HappyGuestView {
     private LocalDateTime lastCheckOut;
 
     public HappyGuestView() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public HappyGuestView setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getFirstName() {
         return firstName;

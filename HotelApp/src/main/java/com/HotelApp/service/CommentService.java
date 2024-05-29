@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface CommentService {
 
-    void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo);
+    void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel);
 
     void approve(Long id);
 
     void doNotApprove(Long id);
 
-    Page<CommentView> getApproved(Pageable pageable);
+    Page<CommentView> getApprovedComments(Pageable pageable);
 }

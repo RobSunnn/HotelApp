@@ -3,6 +3,7 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.service.HotelService;
+import com.HotelApp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -23,10 +24,10 @@ import static com.HotelApp.common.constants.BindingConstants.*;
 @RequestMapping("/users")
 public class UserController {
 
-    private final HotelService hotelService;
+    private final UserService userService;
 
-    public UserController(HotelService hotelService) {
-        this.hotelService = hotelService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PreAuthorize("isAnonymous()")
@@ -70,7 +71,7 @@ public class UserController {
             return "redirect:/users/register";
         }
 
-        boolean registrationSuccessful = hotelService.registerUser(userRegisterBindingModel, bindingResult);
+        boolean registrationSuccessful = userService.registerUser(userRegisterBindingModel, bindingResult);
 
         if (registrationSuccessful) {
             return "redirect:/users/login";
@@ -86,7 +87,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
-        UserView user = hotelService.findUserDetails(userEmail);
+        UserView user = userService.findUserDetails(userEmail);
 
         model.addAttribute("userDetails", user);
 

@@ -2,6 +2,7 @@ package com.HotelApp.web.controller.rest;
 
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.service.HotelService;
+import com.HotelApp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,15 +12,16 @@ import java.util.List;
 @RequestMapping("/admin")
 public class UsersRestController {
 
-private final HotelService hotelService;
+    private final UserService userService;
 
-    public UsersRestController(HotelService hotelService) {
-        this.hotelService = hotelService;
+    public UsersRestController(UserService userService) {
+        this.userService = userService;
+
     }
 
     @GetMapping("/allUsers")
     public ResponseEntity<List<UserView>> allUsers() {
-        List<UserView> allUsers = hotelService.findAllUsers();
+        List<UserView> allUsers = userService.findAllUsers();
         return ResponseEntity.ok(allUsers);
     }
 
@@ -27,7 +29,7 @@ private final HotelService hotelService;
     @GetMapping("/{userEmail}")
     public ResponseEntity<UserView> userByEmail(@PathVariable String userEmail) {
 
-        UserView user = hotelService.findUserByEmail(userEmail);
+        UserView user = userService.findUserByEmail(userEmail);
 
         return ResponseEntity.ok(user);
 
@@ -35,21 +37,21 @@ private final HotelService hotelService;
 
     @PostMapping("/makeUserAdmin/{email}")
     public ResponseEntity<String> makeUserAdmin(@PathVariable String email) {
-        hotelService.makeUserAdmin(email);
+        userService.makeUserAdmin(email);
 
         return ResponseEntity.ok("redirect:/admin");
     }
 
     @PostMapping("/makeUserModerator/{email}")
     public ResponseEntity<String> makeUserModerator(@PathVariable String email) {
-        hotelService.makeUserModerator(email);
+        userService.makeUserModerator(email);
 
         return ResponseEntity.ok("redirect:/admin");
     }
 
     @PostMapping("/takeRights/{email}")
     public ResponseEntity<String> takeRightsOfUser(@PathVariable String email) {
-        hotelService.takeRightsOfUser(email);
+        userService.takeRights(email);
 
         return ResponseEntity.ok("redirect:/admin");
     }

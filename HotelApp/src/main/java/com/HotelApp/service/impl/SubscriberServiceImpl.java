@@ -4,6 +4,7 @@ import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.SubscriberEntity;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.repository.SubscriberRepository;
+import com.HotelApp.service.HotelService;
 import com.HotelApp.service.SubscriberService;
 import org.springframework.stereotype.Service;
 
@@ -15,26 +16,27 @@ public class SubscriberServiceImpl implements SubscriberService {
 
     private final SubscriberRepository subscriberRepository;
 
-    public SubscriberServiceImpl(SubscriberRepository subscriberRepository) {
+    private final HotelService hotelService;
+
+    public SubscriberServiceImpl(SubscriberRepository subscriberRepository, HotelService hotelService) {
         this.subscriberRepository = subscriberRepository;
+        this.hotelService = hotelService;
     }
 
     @Override
-    public void addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel, HotelInfoEntity hotelInfo) {
+    public void addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel) {
 
         Optional<SubscriberEntity> checkSubscriber = subscriberRepository.findByEmail(addSubscriberBindingModel.getSubscriberEmail());
-
+        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
         if (checkSubscriber.isPresent()) {
             SubscriberEntity subscriber = checkSubscriber.get();
-
             subscriber.setCounterOfSubscriptions(subscriber.getCounterOfSubscriptions() + 1);
             sendBonusVoucher();
             subscriberRepository.save(subscriber);
 
             return;
         }
-        SubscriberEntity subscriber = subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
-        hotelInfo.getSubscribers().add(subscriber);
+        subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
     }
 
     private void sendBonusVoucher() {

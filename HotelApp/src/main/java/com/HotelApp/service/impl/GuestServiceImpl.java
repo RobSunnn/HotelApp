@@ -5,14 +5,18 @@ import com.HotelApp.domain.entity.HappyGuestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
+import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.repository.GuestRepository;
 import com.HotelApp.repository.RoomRepository;
 import com.HotelApp.service.GuestService;
 import com.HotelApp.service.HappyGuestService;
+import com.HotelApp.service.HotelService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
@@ -27,26 +31,37 @@ public class GuestServiceImpl implements GuestService {
 
     private final HappyGuestService happyGuestService;
 
+    private final HotelService hotelService;
+
     public GuestServiceImpl(GuestRepository guestRepository,
                             RoomRepository roomRepository,
-                            HappyGuestService happyGuestService) {
+                            HappyGuestService happyGuestService, HotelService hotelService) {
         this.guestRepository = guestRepository;
         this.roomRepository = roomRepository;
         this.happyGuestService = happyGuestService;
+        this.hotelService = hotelService;
     }
 
     @Override
-    public boolean registerGuest(AddGuestBindingModel addGuestBindingModel, HotelInfoEntity hotelInfo) {
+    public boolean registerGuest(AddGuestBindingModel addGuestBindingModel) {
+        RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
+        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+        hotelService.takeMoney(room.getPrice().multiply(BigDecimal.valueOf(addGuestBindingModel.getDaysToStay())));
+        room.setReserved(true);
+        roomRepository.save(room);
+
         GuestEntity guest = guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
-        hotelInfo.getGuests().add(guest);
 
         return guest.getDocumentId() != null;
     }
 
     @Override
-    public void guestWantToLeave(RoomEntity room, HotelInfoEntity hotelInfo) {
+    public void checkout(Integer roomNumber) {
+        RoomEntity room = roomRepository.findByRoomNumber(roomNumber);
+        room.setReserved(false);
 
         GuestEntity guest = guestRepository.findByRoom(room);
+        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
 
         Optional<HappyGuestEntity> happyGuest = happyGuestService.findByDocumentId(guest.getDocumentId());
 
@@ -58,25 +73,29 @@ public class GuestServiceImpl implements GuestService {
                     .setLastCheckIn(guest.getCheckInTime())
                     .setLastCheckOut(LocalDateTime.now());
 
-            hotelInfo.getHappyGuests().add(happyGuestEntity);
-
             happyGuestService.saveHappyGuest(happyGuest.get());
         } else {
-            HappyGuestEntity happyGuestEntity = modelMapper().map(guest, HappyGuestEntity.class);
+            HappyGuestEntity happyGuestEntity = modelMapper().map(guest, HappyGuestEntity.class)
+                    .setLastRoomUsed(guest.getRoom().getRoomNumber())
+                    .setTimesThatGuestHaveBeenToHotel(1)
+                    .setLastCheckIn(guest.getCheckInTime())
+                    .setLastCheckOut(LocalDateTime.now())
+                    .setHotelInfoEntity(hotelInfo);
 
-            happyGuestEntity.setLastRoomUsed(guest.getRoom().getRoomNumber());
-            happyGuestEntity.setTimesThatGuestHaveBeenToHotel(1);
-            happyGuestEntity.setLastCheckIn(guest.getCheckInTime());
-            happyGuestEntity.setLastCheckOut(LocalDateTime.now());
-            happyGuestEntity.setHotelInfoEntity(hotelInfo);
-
-            hotelInfo.getHappyGuests().add(happyGuestEntity);
             happyGuestService.saveHappyGuest(happyGuestEntity);
         }
-        hotelInfo.getGuests().remove(guest);
 
         guestRepository.delete(guest);
         roomRepository.save(room);
+    }
+
+    @Override
+    public List<GuestView> seeAllGuests() {
+        return guestRepository
+                .findAll()
+                .stream()
+                .map(guest -> modelMapper().map(guest, GuestView.class))
+                .toList();
     }
 
     private GuestEntity mapAsGuest(AddGuestBindingModel addGuestBindingModel, HotelInfoEntity hotelInfo) {

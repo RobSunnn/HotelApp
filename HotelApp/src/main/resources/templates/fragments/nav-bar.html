@@ -6,20 +6,26 @@
     <meta charset="UTF-8">
     <title>Navbar</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<style>
+    <style>
 
-    ul li {
-        margin-right:0.5em;
-    }
+        nav {
+            border-top: 2px solid white;
+            border-bottom: 2px solid white;
+        }
 
-</style>
+        ul li {
+            margin-right: 0.5em;
+        }
+
+    </style>
 </head>
 
 <body>
 
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-dark">
     <a class="navbar-brand text-white" th:href="@{/}">Hotel Application</a>
-    <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -57,11 +63,14 @@
             <li class="nav-item" sec:authorize="isAuthenticated()">
                 <div class="form-inline my-2 my-lg-0 border px-3">
                     <div class="logged-user text-white p-2">
-                        Welcome, <a th:href="@{/users/profile}"><th:block  th:text="${#authentication.principal.fullName}"></th:block></a>!
+                        Welcome, <a th:href="@{/users/profile}">
+                        <th:block th:text="${#authentication.principal.fullName}"></th:block>
+                    </a>!
                     </div>
 
                     <form th:method="post" th:action="@{/users/logout}">
-                        <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white" value="Logout"></input>
+                        <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
+                               value="Logout"></input>
                     </form>
 
                 </div>

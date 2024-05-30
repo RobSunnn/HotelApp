@@ -2,109 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Contact</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
 
 </head>
-
-<style>
-    body {
-        background-image: url("/images/hotel2.jpg");
-        background-size: 100% 100vh; /* Use viewport height for better responsiveness */
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        /*transition: background-image 1s ease;*/
-        /*transition-delay: 3s;*/
-    }
-
-    .forms-container {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-    }
-
-    .content {
-        margin: 5em auto;
-    }
-
-    .content-text {
-        color: white;
-        width: 50%;
-        margin: 5em auto;
-    }
-
-    .content,
-    .container {
-        text-align: center;
-    }
-
-    .content-text-end {
-        color: white;
-        width: 50%;
-        margin: 3em auto;
-    }
-
-    .content-text-end ul {
-        display: flex;
-        gap: 2em;
-        justify-content: center;
-    }
-
-    .content-text-end ul li {
-        list-style: none outside;
-        margin-top: 3em;
-    }
-
-    .content-text-end ul li i {
-        font-size: 50px;
-        color: royalblue;
-    }
-
-    .content-text-end ul li span {
-        display: none;
-    }
-
-    .btn-primary {
-        margin: 2em auto;
-
-    }
-
-    #contact {
-        background-color: grey;
-        width: 30rem;
-        max-width: 100%;
-        border: 3px solid black;
-        border-radius: 20%;
-
-    }
-
-    #subscribeForm {
-        margin: 1em auto 7em auto;
-        background-color: green;
-        border: 3px solid black;
-        display: flex;
-        flex-direction: column;
-        padding: 3em;
-        width: 30rem;
-        max-width: 100%;
-        border-radius: 20%;
-
-    }
-</style>
 <body>
 <div th:insert="~{/fragments/nav-bar}"></div>
 <div class="content">
-    <div class="content-text">
-        <p>We’d love to hear from you! <br> Whether you have a question about our features, pricing, need assistance, or
-            just
-            want to give feedback, our team is ready to answer all your questions.</p>
-
-        <p>Email: <br> You can reach us at support@yourwebapp.com for any inquiries or support issues.</p>
-
-        <p>Phone:
-            Prefer to speak with us directly? Call us at +1 (123) 456-7890. Our phone support is available from 9 AM to
-            5 PM, Monday to Friday.</p>
-    </div>
 
     <div class="forms-container">
 
@@ -114,91 +21,107 @@
 
                 <div class="container">
 
-                    <h2 class="mb-4">Contact us</h2>
+                    <h2 class="mb-4 text-white">Contact us</h2>
 
-                    <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name" th:field="*{name}"
-                           th:errorclass="is-invalid" placeholder="Enter your name...">
+                    <div class="label">
+                        <label for="name" class="label text-white">Name:</label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}"
+                               th:errorclass="is-invalid" placeholder="Enter your name...">
 
-                    <small id="contactNameError" th:errors="*{name}"
-                           class="invalid-feedback text-white bg-danger rounded"></small>
+                        <small id="contactNameError" th:errors="*{name}"
+                               class="invalid-feedback text-white bg-danger rounded"></small>
 
-                    <label for="phoneNumber">Phone:</label>
-                    <input type="number" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
-                           th:errorclass="is-invalid" placeholder="Enter your phone number...">
+                        <label for="phoneNumber" class="text-white">Phone:</label>
+                        <input type="number" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
+                               th:errorclass="is-invalid" placeholder="Enter your phone number...">
 
-                    <small id="contactPhoneNumberError" th:errors="*{phoneNumber}"
-                           class="invalid-feedback text-white  bg-danger rounded"></small>
+                        <small id="contactPhoneNumberError" th:errors="*{phoneNumber}"
+                               class="invalid-feedback text-white  bg-danger rounded"></small>
 
-                    <label for="email">Email:</label>
-                    <input type="text" class="form-control" id="email" th:field="*{email}"
-                           th:errorclass="is-invalid" placeholder="Enter your email address...">
+                        <label for="email" class="text-white">Email:</label>
+                        <input type="text" class="form-control" id="email" th:field="*{email}"
+                               th:errorclass="is-invalid" placeholder="Enter your email address...">
 
-                    <small id="contactEmailError" th:errors="*{email}"
-                           class="invalid-feedback text-white  bg-danger rounded"></small>
+                        <small id="contactEmailError" th:errors="*{email}"
+                               class="invalid-feedback text-white  bg-danger rounded"></small>
 
-                    <label for="message">Message:</label>
-                    <textarea class="form-control" id="message" rows="5" th:field="*{message}"
-                              th:errorclass="is-invalid"
-                              placeholder="If you want you can leave us a message..."></textarea>
+                        <label for="message" class="text-white">Message:</label>
+                        <textarea class="form-control" id="message" rows="5" th:field="*{message}"
+                                  th:errorclass="is-invalid"
+                                  placeholder="If you want you can leave us a message..."></textarea>
 
-                    <small id="contactMessageError" th:errors="*{message}"
-                           class="invalid-feedback text-white  bg-danger rounded"></small>
+                        <small id="contactMessageError" th:errors="*{message}"
+                               class="invalid-feedback text-white  bg-danger rounded"></small>
 
-                    <button type="submit" class="btn btn-primary">Send Mail</button>
+
+                    </div>
+
 
                 </div>
 
             </section>
 
+            <button type="submit" class="contact-btn btn btn-primary bg-dark p-3 mt-0">Send</button>
+
         </form>
 
         <div>
 
+
             <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
 
                 <div class="py-5" id="subscribeForm">
-                    <h3 class="mb-4">Subscribe to our newsletter</h3>
+                    <h2 class="mb-4 text-white">Subscribe to our newsletter</h2>
 
                     <label for="subscriberEmail"></label>
                     <input type="text" id="subscriberEmail" min="3" max="30" th:field="*{subscriberEmail}"
                            th:errorclass="is-invalid" class="form-control"
                            placeholder="Enter your email">
-                    <br>
+
                     <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
                            class="invalid-feedback text-white  bg-danger rounded"></small>
 
                     <small th:if="${successSubscribeMessage}" th:text="${successSubscribeMessage}"
-                           class="alert alert-success">
-                        <!-- put some decoration after successful subscribe -->
-                    </small>
-
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                           class="alert alert-success"></small>
+                    <br>
+                    <button type="submit" class="btn btn-primary bg-dark">Subscribe</button>
 
                 </div>
 
 
             </form>
 
+            <div class="support-card">
+                <h4>Support Hours:</h4>
+                <p><br>Our support team is available to help you during the following hours:<br></p>
+                <h3>We work every day 24/7</h3>
+                <ul>
+                    <li><i class="fa-brands fa-facebook fa-beat"></i><span>Facebook</span></li>
+                    <li><i class="fa-brands fa-twitter fa-beat"></i><span>Twitter</span></li>
+                    <li><i class="fa-brands fa-linkedin fa-beat"></i><span>LinkedIn</span></li>
+                </ul>
+            </div>
+
         </div>
 
     </div>
 
-    <div class="content-text-end">
+    <div class="content-text">
 
+        <div>
+            <h4>We’d love to hear from you! <br> Whether you have a question about our features, <br> pricing, need
+                assistance, or just want to give feedback, <br> our team is ready to answer all your questions.</h4>
+        </div>
 
-        <p>Support Hours: <br>
-            Our support team is available to help you during the following hours:
-            <br>
-            Monday to Friday: 9 AM - 5 PM (EST) <br>
-            Saturday and Sunday: Closed</p>
-
-        <ul>
-
-            <li><i class="fa-brands fa-facebook fa-beat"></i><span>Facebook</span></li>
-            <li><i class="fa-brands fa-twitter fa-beat"></i><span>Twitter</span></li>
-            <li><i class="fa-brands fa-linkedin fa-beat"></i><span>LinkedIn</span></li>
-        </ul>
+        <div class="support-card">
+            <hr>
+            <h3>Email:</h3>
+            <h4>You can reach us at support@yourwebapp.com for any inquiries or support issues.</h4>
+            <hr>
+            <h3>Phone:</h3>
+            <h4>Prefer to speak with us directly?<br>Call us at +1 (123) 456-7890. </h4>
+            <hr>
+        </div>
     </div>
 </div>
 

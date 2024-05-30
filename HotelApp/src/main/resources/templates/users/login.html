@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>User Login</title>
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -20,8 +21,7 @@
 </head>
 
 <body>
-
-<div th:insert="~{/fragments/nav-bar}"></div>
+<div th:insert="~{fragments/nav-bar :: navbar}"></div>
 
 <form th:action="@{/users/login}" th:method="POST">
   <div class="container mt-5">

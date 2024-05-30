@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>About us</title>
 </head>
 
@@ -118,7 +120,7 @@
     }
 
     .form-content {
-        max-width: 50%;
+        max-width: 90%;
         margin: 0 auto;
     }
 
@@ -236,7 +238,7 @@
                    th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
                    th:classappend="${comment.commentContent.length() > 70} ? 'truncated' : ''"></p>
             </div>
-            <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 70}">Show
+            <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 40}">Show
                 More
             </button>
 

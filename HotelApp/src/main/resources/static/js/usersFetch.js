@@ -39,7 +39,7 @@ allUsersBtn.addEventListener('click', () => {
             Object.values(result).forEach(e => {
 
                 let htmlOptionElement = document.createElement("option");
-                // userSearchBar.style.color = 'black';
+                userSearchBar.style.color = 'black';
                 userSearchBar.style.backgroundColor = 'white';
                 userSearchBar.innerText = 'Enter User Email';
                 userSearchBar.classList.add("black-placeholder");

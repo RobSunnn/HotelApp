@@ -1,19 +1,15 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.HotelInfoEntity;
-import com.HotelApp.domain.models.binding.*;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.repository.HotelRepository;
-import com.HotelApp.service.*;
+import com.HotelApp.service.HotelService;
 import jakarta.annotation.PostConstruct;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
@@ -54,9 +50,6 @@ public class HotelServiceImpl implements HotelService {
         return hotelRepository.findById(1L).orElseThrow(() -> new RuntimeException("Hotel Info not found"));
     }
 
-    /* EO: Taking care of hotel info entity */
-
-    /*  Hotel takes the guest money  */
     @Transactional
     @Override
     public void takeMoney(BigDecimal vacationPrice) {
@@ -65,9 +58,6 @@ public class HotelServiceImpl implements HotelService {
         hotelInfo.setTotalProfit(hotelInfo.getTotalProfit().add(vacationPrice));
         hotelRepository.save(hotelInfo);
     }
-
-
-    /* ADMIN PAGE INFO */
 
     @Transactional(readOnly = true)
     @Override
@@ -134,22 +124,8 @@ public class HotelServiceImpl implements HotelService {
 
     @Transactional
     @Override
-    public void checkedContactRequest(Long id) {
-        getHotelInfo()
-                .getContactRequests()
-                .stream()
-                .filter(contactRequest -> Objects.equals(contactRequest.getId(), id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No such contact request."))
-                .setChecked(true);
-    }
-
-    @Transactional
-    @Override
     public BigDecimal getTotalProfit() {
         return getHotelInfo().getTotalProfit();
     }
-
-    /* EO: ADMIN PAGE INFO */
 
 }

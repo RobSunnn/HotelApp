@@ -27,7 +27,7 @@ public class ApplicationSecurityConfiguration {
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                                 .requestMatchers("/allRoomTypes", "/about/**","/contact/**", "/error").permitAll()
-                                .requestMatchers("/moderatorPanel/**", "/guests/add").hasRole("MODERATOR")
+                                .requestMatchers("/moderator/**", "/guests/add").hasRole("MODERATOR")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 ).formLogin(

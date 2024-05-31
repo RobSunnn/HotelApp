@@ -15,4 +15,7 @@ public interface CommentService {
     void doNotApprove(Long id);
 
     Page<CommentView> getApprovedComments(Pageable pageable);
+
+    void approveAll();
+
 }

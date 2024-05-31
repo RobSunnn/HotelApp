@@ -117,11 +117,16 @@
     <br>
     <div class="buttons">
 
-        <a th:href="@{/moderatorPanel}" class="btn btn-primary">Go back <br> to your panel</a>
+        <a th:href="@{/moderator}" class="btn btn-info">Go back <br> to your panel</a>
 
-        <form th:action="@{/moderatorPanel/requestChecked}" th:method="POST">
+        <form th:action="@{/moderator/requestChecked}" th:method="POST">
             <input type="hidden" id="selectedContentId" name="id"/>
             <button type="submit" class="btn btn-success">Done</button>
+        </form>
+
+        <form th:action="@{/moderator/allRequestsChecked}" th:method="POST">
+            <input type="hidden" name="id"/>
+            <button type="submit" class="btn btn-primary">All Done</button>
         </form>
 
     </div>

@@ -71,9 +71,10 @@ public class ContactController {
             return "redirect:/contact";
         }
 
+        redirectAttributes.addFlashAttribute("successContactRequestMessage", "Contact Request Send!");
         contactRequestService.sendContactForm(contactRequestBindingModel);
 
-        return "redirect:/";
+        return "redirect:/contact";
     }
 
 }

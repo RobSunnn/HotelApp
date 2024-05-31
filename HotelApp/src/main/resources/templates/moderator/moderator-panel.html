@@ -11,11 +11,9 @@
         /* Add custom styles here */
         body {
             background-image: url("/images/hotel2.jpg");
-            background-size: cover; /* Use viewport height for better responsiveness */
+            background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            /*transition: background-image 1s ease;*/
-            /*transition-delay: 3s;*/
         }
         .card {
             width: 100%; /* Make each card take up full width within the flex container */
@@ -73,7 +71,7 @@
                 <p class="card-text"></p>
                 <p th:if="${allNotApprovedComments == 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>
                 <p th:if="${allNotApprovedComments > 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comments!'"></p>
-                <a th:href="@{/moderatorPanel/comments}" class="btn btn-primary">Check comments</a>
+                <a th:href="@{/moderator/comments}" class="btn btn-primary">Check comments</a>
             </div>
 
         </div>
@@ -85,7 +83,7 @@
                 <p class="card-text"></p>
                 <p th:if="${allContactRequests == 1}"  th:text="'You have ' + ${allContactRequests} + ' contact request!'"></p>
                 <p th:if="${allContactRequests > 1}"  th:text="'You have ' + ${allContactRequests} + ' contact requests!'"></p>
-                <a th:href="@{/moderatorPanel/contactRequests}" class="btn btn-primary">Contact Requests</a>
+                <a th:href="@{/moderator/contactRequests}" class="btn btn-primary">Contact Requests</a>
             </div>
 
         </div>

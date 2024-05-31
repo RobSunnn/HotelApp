@@ -141,10 +141,6 @@
         max-height: none; /* Remove height limit when expanded */
     }
 
-    .showMoreBtn {
-        display: none;
-    }
-
     .truncated + .showMoreBtn {
         display: inline-block;
     }
@@ -238,7 +234,7 @@
                    th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
                    th:classappend="${comment.commentContent.length() > 70} ? 'truncated' : ''"></p>
             </div>
-            <button class="showWholeComment btn btn-secondary" th:if="${comment.commentContent.length() > 40}">Show
+            <button class="showWholeComment btn btn-info" th:if="${comment.commentContent.length() > 40}">Show
                 More
             </button>
 
@@ -299,12 +295,6 @@
                                min="3" max="30"
                                name="author" placeholder="Enter your name...">
 
-                        <!--                        <label for="authorEmail">If you want you can leave email</label>-->
-                        <!--                        <input type="text" class="form-control" id="authorEmail" th:field="*{author}"-->
-                        <!--                               th:errorclass="is-invalid"-->
-                        <!--                               min="3" max="30"-->
-                        <!--                               name="author" placeholder="Enter your email...">-->
-
                         <small id="authorError" th:errors="*{author}"
                                class="invalid-feedback text-white  bg-danger rounded"></small>
 
@@ -331,7 +321,7 @@
                         <!-- put some decoration after successful subscribe -->
                     </small>
 
-                    <button type="submit" class="btn btn-primary">Leave a comment</button>
+                    <button type="submit" class="btn btn-success">Leave a comment</button>
 
                 </div>
 

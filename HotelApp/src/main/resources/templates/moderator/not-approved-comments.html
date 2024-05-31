@@ -111,38 +111,28 @@
     <br>
     <div class="buttons">
 
-        <a th:href="@{/moderatorPanel}" class="btn btn-primary">Go back <br> to your panel</a>
+        <a th:href="@{/moderator}" class="btn btn-info">Go back to your panel</a>
 
-        <form th:action="@{/moderatorPanel/approveComment}" th:method="POST">
+        <form th:action="@{/moderator/approveComment}" th:method="POST">
             <input type="hidden" id="selectedContentId" name="id"/>
             <button type="submit" class="btn btn-success">Approve</button>
         </form>
 
-        <form th:action="@{/moderatorPanel/commentNotApproved}" th:method="POST">
+        <form th:action="@{/moderator/approveAll}" th:method="POST">
+            <input type="hidden" name="id"/>
+            <button type="submit" class="btn btn-primary">Approve All</button>
+        </form>
+
+        <form th:action="@{/moderator/commentNotApproved}" th:method="POST">
             <input type="hidden" id="notApprovedCommentId" name="id"/>
             <button type="submit" class="btn btn-danger">Don't Approve</button>
         </form>
+
+
     </div>
 
 
 </div>
-<br>
-<br>
-<!--    <div class="buttons">-->
-
-<!--        <a th:href="@{/moderatorPanel}" class="btn btn-primary">Go back <br> to your panel</a>-->
-
-<!--        <form th:action="@{/moderatorPanel/approveComment}" th:method="POST">-->
-<!--            <input type="hidden" id="selectedCommentId" name="id" />-->
-<!--            <button type="submit" class="btn btn-success">Approve</button>-->
-<!--        </form>-->
-
-<!--        <form th:action="@{/moderatorPanel/commentNotApproved}" th:method="POST">-->
-<!--            <input type="hidden" id="notApprovedCommentId" name="id" />-->
-<!--            <button type="submit" class="btn btn-danger">Don't Approve</button>-->
-<!--        </form>-->
-<!--    </div>-->
-
 
 <div th:insert="~{/fragments/footer}"></div>
 

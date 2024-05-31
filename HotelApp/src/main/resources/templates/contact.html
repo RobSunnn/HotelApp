@@ -51,17 +51,20 @@
                                   placeholder="If you want you can leave us a message..."></textarea>
 
                         <small id="contactMessageError" th:errors="*{message}"
-                               class="invalid-feedback text-white  bg-danger rounded"></small>
-
+                               class="invalid-feedback text-white bg-danger rounded"></small>
 
                     </div>
-
+                    <br>
+                    <small th:if="${successContactRequestMessage}" th:text="${successContactRequestMessage}"
+                           class="alert alert-success text-black  rounded"></small>
 
                 </div>
 
+                <button type="submit" class="btn btn-success mt-3">Send</button>
+
             </section>
 
-            <button type="submit" class="contact-btn btn btn-primary bg-dark p-3 mt-0">Send</button>
+
 
         </form>
 
@@ -79,12 +82,12 @@
                            placeholder="Enter your email">
 
                     <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
-                           class="invalid-feedback text-white  bg-danger rounded"></small>
+                           class="invalid-feedback alert alert-danger"></small>
 
                     <small th:if="${successSubscribeMessage}" th:text="${successSubscribeMessage}"
-                           class="alert alert-success"></small>
+                           class="alert alert-success rounded"></small>
                     <br>
-                    <button type="submit" class="btn btn-primary bg-dark">Subscribe</button>
+                    <button type="submit" class="btn btn-success">Subscribe</button>
 
                 </div>
 
@@ -108,15 +111,15 @@
 
     <div class="content-text">
 
-        <div>
+        <div class="text">
             <h4>We’d love to hear from you! <br> Whether you have a question about our features, <br> pricing, need
                 assistance, or just want to give feedback, <br> our team is ready to answer all your questions.</h4>
         </div>
 
-        <div class="support-card">
+        <div class="contact-card">
             <hr>
             <h3>Email:</h3>
-            <h4>You can reach us at support@yourwebapp.com for any inquiries or support issues.</h4>
+            <h4>You can reach us at hotel@hotel.com for any inquiries or support issues.</h4>
             <hr>
             <h3>Phone:</h3>
             <h4>Prefer to speak with us directly?<br>Call us at +1 (123) 456-7890. </h4>

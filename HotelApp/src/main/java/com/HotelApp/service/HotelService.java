@@ -33,8 +33,6 @@ public interface HotelService {
 
     List<ContactRequestView> getAllNotCheckedContactRequest();
 
-    void checkedContactRequest(Long id);
-
     BigDecimal getTotalProfit();
 
 }

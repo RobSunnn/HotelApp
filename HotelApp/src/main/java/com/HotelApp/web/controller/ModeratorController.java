@@ -3,6 +3,7 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.domain.models.view.ContactRequestView;
 import com.HotelApp.service.CommentService;
+import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,17 +16,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("/moderatorPanel")
+@RequestMapping("/moderator")
 public class ModeratorController {
 
     private final HotelService hotelService;
 
     private final CommentService commentService;
 
+    private final ContactRequestService contactRequestService;
+
     public ModeratorController(HotelService hotelService,
-                               CommentService commentService) {
+                               CommentService commentService, ContactRequestService contactRequestService) {
         this.hotelService = hotelService;
         this.commentService = commentService;
+        this.contactRequestService = contactRequestService;
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -47,7 +51,7 @@ public class ModeratorController {
 
         List<CommentView> allNotApprovedComments = hotelService.getAllNotApprovedComments();
         if (allNotApprovedComments.isEmpty()) {
-            return "redirect:/moderatorPanel";
+            return "redirect:/moderator";
         }
 
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
@@ -61,7 +65,7 @@ public class ModeratorController {
 
         List<ContactRequestView> allNotCheckedContactRequest = hotelService.getAllNotCheckedContactRequest();
         if (allNotCheckedContactRequest.isEmpty()) {
-            return "redirect:/moderatorPanel";
+            return "redirect:/moderator";
         }
 
         model.addAttribute("allNotCheckedContactRequest", allNotCheckedContactRequest);
@@ -73,15 +77,15 @@ public class ModeratorController {
     public String approveComment(@RequestParam("id") Long id) {
 
         commentService.approve(id);
-        return "redirect:/moderatorPanel/comments";
+        return "redirect:/moderator/comments";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
-    @PostMapping("/requestChecked")
-    public String checkContactRequest(@RequestParam("id") Long id) {
+    @PostMapping("/approveAll")
+    public String approveAllComments() {
 
-        hotelService.checkedContactRequest(id);
-        return "redirect:/moderatorPanel/contactRequests";
+        commentService.approveAll();
+        return "redirect:/moderator/comments";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -89,6 +93,24 @@ public class ModeratorController {
     public String commentNotApproved(@RequestParam("id") Long id) {
 
         commentService.doNotApprove(id);
-        return "redirect:/moderatorPanel/comments";
+        return "redirect:/moderator/comments";
     }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("/requestChecked")
+    public String checkContactRequest(@RequestParam("id") Long id) {
+
+        contactRequestService.checkedContactRequest(id);
+        return "redirect:/moderator/contactRequests";
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("/allRequestsChecked")
+    public String allContactRequestsChecked() {
+
+        contactRequestService.allRequestsChecked();
+        return "redirect:/moderator/contactRequests";
+    }
+
+
 }

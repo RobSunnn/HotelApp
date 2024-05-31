@@ -62,7 +62,7 @@ public class GuestController {
         boolean registerGuest = guestService.registerGuest(addGuestBindingModel);
 
         if (registerGuest) {
-            return "redirect:/";
+            return "redirect:/moderator";
         } else {
             return "redirect:/guests/add";
         }
@@ -77,7 +77,7 @@ public class GuestController {
         List<GuestView> guests = guestService.seeAllGuests();
 
         if (guests.isEmpty()) {
-            return "redirect:/moderatorPanel";
+            return "redirect:/moderator";
         }
 
         model.addAttribute("guests", guests);

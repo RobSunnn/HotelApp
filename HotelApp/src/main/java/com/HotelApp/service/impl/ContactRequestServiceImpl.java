@@ -9,6 +9,7 @@ import com.HotelApp.service.HotelService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
@@ -36,5 +37,26 @@ public class ContactRequestServiceImpl implements ContactRequestService {
         contactRequest.setHotelInfoEntity(hotelInfo);
 
         contactRequestRepository.save(contactRequest);
+    }
+
+    @Override
+    public void checkedContactRequest(Long id) {
+        contactRequestRepository
+                .save(contactRequestRepository
+                        .findAll()
+                        .stream()
+                        .filter(contactRequest -> Objects.equals(contactRequest.getId(), id))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("No such contact request."))
+                        .setChecked(true));
+    }
+
+    @Override
+    public void allRequestsChecked() {
+        contactRequestRepository
+                .findAll()
+                .stream()
+                .filter(contactRequest -> !contactRequest.getChecked())
+                .forEach(contactRequest -> contactRequestRepository.save(contactRequest.setChecked(true)));
     }
 }

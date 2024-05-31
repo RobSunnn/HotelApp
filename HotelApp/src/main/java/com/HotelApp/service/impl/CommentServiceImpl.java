@@ -52,6 +52,15 @@ public class CommentServiceImpl implements CommentService {
                 .map(CommentServiceImpl::mapAsCommentView);
     }
 
+    @Override
+    public void approveAll() {
+        commentRepository
+                .findAll()
+                .stream()
+                .filter(comment -> !comment.getApproved())
+                .forEach(comment -> commentRepository.save(comment.setApproved(true)));
+    }
+
     private CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
         return new CommentEntity()
                 .setCommentContent(addCommentBindingModel.getCommentContent().trim())

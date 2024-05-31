@@ -4,11 +4,14 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Navbar</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
 
-        nav {
+        .navbar {
+            width: 100%;
             border-top: 2px solid white;
             border-bottom: 2px solid white;
         }
@@ -49,7 +52,7 @@
             </li>
 
             <li class="nav-item btn-outline-secondary rounded rounded" sec:authorize="hasRole('MODERATOR')">
-                <a class="nav-link text-white" th:href="@{/moderatorPanel}">Moderator Panel</a>
+                <a class="nav-link text-white" th:href="@{/moderator}">Moderator Panel</a>
             </li>
 
             <li class="nav-item text-white btn-outline-secondary rounded rounded" sec:authorize="!isAuthenticated()">

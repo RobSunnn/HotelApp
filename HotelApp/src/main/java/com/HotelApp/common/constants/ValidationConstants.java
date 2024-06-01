@@ -8,7 +8,7 @@ public class ValidationConstants {
 
     public static final String EMAIL_NOT_BLANK = "Email should be provided.";
 
-    public static final String VALID_EMAIL = "You must enter real email...";
+    public static final String INVALID_EMAIL = "You must enter real email...";
 
     public static final String INVALID_AGE = "We need your age to verify that you are over 18 years old";
 

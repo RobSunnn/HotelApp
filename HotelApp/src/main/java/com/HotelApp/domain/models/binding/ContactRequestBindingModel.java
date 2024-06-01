@@ -12,6 +12,7 @@ public class ContactRequestBindingModel {
 
     @NotBlank(message = "Enter your email.")
     @Email(message = "Enter a valid email...")
+    @Size(max = 100, message = "Your email is too long!")
     private String email;
 
     private String phoneNumber;

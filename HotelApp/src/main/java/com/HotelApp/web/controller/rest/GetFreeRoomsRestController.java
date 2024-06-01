@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 public class GetFreeRoomsRestController {
-//TODO: maybe we need to do it through hotelService
     private final RoomService roomService;
 
     public GetFreeRoomsRestController(RoomService roomService) {

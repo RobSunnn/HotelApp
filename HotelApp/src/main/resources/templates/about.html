@@ -292,7 +292,7 @@
                         <label for="author">Your Name or Nickname</label>
                         <input type="text" class="form-control" id="author" th:field="*{author}"
                                th:errorclass="is-invalid"
-                               min="3" max="30"
+                               min="3" max="30" required
                                name="author" placeholder="Enter your name...">
 
                         <small id="authorError" th:errors="*{author}"
@@ -304,7 +304,7 @@
 
                         <label for="commentContent">Your comment</label>
                         <textarea class="form-control" id="commentContent" rows="4" th:field="*{commentContent}"
-                                  th:errorclass="is-invalid"
+                                  th:errorclass="is-invalid" required
                                   name="commentContent" placeholder="Your comment here."></textarea>
 
                         <small id="commentError" th:errors="*{commentContent}"
@@ -317,9 +317,7 @@
                 <div class="form-button">
                     <br>
                     <small th:if="${successCommentMessage}" th:text="${successCommentMessage}"
-                           class="alert alert-success">
-                        <!-- put some decoration after successful subscribe -->
-                    </small>
+                           class="alert alert-success"></small>
 
                     <button type="submit" class="btn btn-success">Leave a comment</button>
 

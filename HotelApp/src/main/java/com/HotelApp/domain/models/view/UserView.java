@@ -2,6 +2,7 @@ package com.HotelApp.domain.models.view;
 
 import com.HotelApp.domain.entity.RoleEntity;
 
+import java.util.Base64;
 import java.util.List;
 
 public class UserView {
@@ -13,6 +14,8 @@ public class UserView {
     private String email;
 
     private Integer age;
+
+    private byte[] userImage;
 
     private List<RoleEntity> roles;
 
@@ -61,5 +64,18 @@ public class UserView {
     public UserView setRoles(List<RoleEntity> roles) {
         this.roles = roles;
         return this;
+    }
+
+    public byte[] getUserImage() {
+        return userImage;
+    }
+
+    public UserView setUserImage(byte[] userImage) {
+        this.userImage = userImage;
+        return this;
+    }
+
+    public String getProfilePictureBase64() {
+        return userImage != null ? Base64.getEncoder().encodeToString(userImage) : "";
     }
 }

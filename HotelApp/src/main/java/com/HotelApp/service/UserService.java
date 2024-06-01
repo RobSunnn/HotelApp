@@ -1,9 +1,9 @@
 package com.HotelApp.service;
 
-import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,4 +25,5 @@ public interface UserService {
 
     UserView findUserDetails(String userEmail);
 
+    void addUserImage(MultipartFile image, String userEmail);
 }

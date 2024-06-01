@@ -41,6 +41,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public void approveAll() {
+        commentRepository
+                .findAll()
+                .stream()
+                .filter(comment -> !comment.getApproved())
+                .forEach(comment -> commentRepository.save(comment.setApproved(true)));
+    }
+
+    @Override
     public void doNotApprove(Long id) {
         CommentEntity comment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
         commentRepository.delete(comment);
@@ -50,15 +59,6 @@ public class CommentServiceImpl implements CommentService {
     public Page<CommentView> getApprovedComments(Pageable pageable) {
         return commentRepository.findByApprovedTrue(pageable)
                 .map(CommentServiceImpl::mapAsCommentView);
-    }
-
-    @Override
-    public void approveAll() {
-        commentRepository
-                .findAll()
-                .stream()
-                .filter(comment -> !comment.getApproved())
-                .forEach(comment -> commentRepository.save(comment.setApproved(true)));
     }
 
     private CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {

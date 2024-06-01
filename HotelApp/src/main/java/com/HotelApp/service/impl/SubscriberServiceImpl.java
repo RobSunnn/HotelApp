@@ -28,6 +28,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
         Optional<SubscriberEntity> checkSubscriber = subscriberRepository.findByEmail(addSubscriberBindingModel.getSubscriberEmail());
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+
         if (checkSubscriber.isPresent()) {
             SubscriberEntity subscriber = checkSubscriber.get();
             subscriber.setCounterOfSubscriptions(subscriber.getCounterOfSubscriptions() + 1);
@@ -36,6 +37,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
             return;
         }
+
         subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
     }
 

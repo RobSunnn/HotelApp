@@ -1,15 +1,18 @@
 package com.HotelApp.web.controller;
 
+import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.service.ContactRequestService;
-import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.service.SubscriberService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -71,7 +74,7 @@ public class ContactController {
             return "redirect:/contact";
         }
 
-        redirectAttributes.addFlashAttribute("successContactRequestMessage", "Contact Request Send!");
+        redirectAttributes.addFlashAttribute("successContactRequestMessage", "Contact Request Send, Thank You!");
         contactRequestService.sendContactForm(contactRequestBindingModel);
 
         return "redirect:/contact";

@@ -18,12 +18,14 @@ public class UserRegisterBindingModel {
     private String lastName;
 
     @NotBlank(message = EMAIL_NOT_BLANK)
-    @Email(message = VALID_EMAIL)
+    @Email(message = INVALID_EMAIL)
+    @Size(max = 100, message = "Your email is too long.")
     private String email;
 
     @NotNull(message = INVALID_AGE)
     @Positive(message = NEGATIVE_AGE)
     @Min(value = 18, message = MINIMUM_AGE)
+    @Max(value = 100, message = "You exceed the maximum value for age.")
     private Integer age;
 
     @NotBlank(message = EMPTY_PASSWORD)

@@ -2,6 +2,7 @@ package com.HotelApp.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,6 +24,9 @@ public class UserEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @Lob
+    private Blob userImage;
 
     @ManyToOne
     private HotelInfoEntity hotelInfoEntity;
@@ -100,6 +104,15 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setCreated(LocalDateTime created) {
         this.created = created;
+        return this;
+    }
+
+    public Blob getUserImage() {
+        return userImage;
+    }
+
+    public UserEntity setUserImage(Blob userImage) {
+        this.userImage = userImage;
         return this;
     }
 

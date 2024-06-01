@@ -15,7 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +51,7 @@ public class UserServiceImpl implements UserService {
             bindingResult.addError(new FieldError("userRegisterBindingModel", "email", ValidationConstants.EMAIL_EXIST));
             return false;
         }
+
         UserEntity user = mapAsUser(userRegisterBindingModel);
         userRepository.save(user);
 
@@ -142,6 +149,10 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
 
+            if (user.getId() == 1) {
+                throw new ForbiddenUserException("Don't try this.");
+            }
+
             RoleEntity userRole = roleService.getAllRoles()
                     .stream()
                     .filter(role -> role.getName().name().equals("USER"))
@@ -180,6 +191,10 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             UserEntity user = userOptional.get();
 
+            if (user.getId() == 1) {
+                throw new ForbiddenUserException("Don't try this.");
+            }
+
             user.setRoles(List.of(userRole));
             userRepository.save(user);
 
@@ -207,10 +222,42 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserView mapAsUserView(UserEntity user) {
-        return new UserView().setFullName(user.getFullName())
+        UserView userView = new UserView().setFullName(user.getFullName())
                 .setAge(user.getAge())
                 .setEmail(user.getEmail())
                 .setRoles(user.getRoles());
+
+        Blob userImage = user.getUserImage();
+
+        if (userImage != null) {
+            try {
+                userView.setUserImage(userImage.getBytes(1, (int) userImage.length()));
+            } catch (SQLException e) {
+                // Handle exception
+                e.printStackTrace();
+            }
+        }
+
+        return userView;
     }
 
+
+    @Override
+    public void addUserImage(MultipartFile image, String userEmail) {
+        if (image.getSize() > (5 * 1024 * 1024)) {
+            throw new MaxUploadSizeExceededException(5);
+        }
+
+        UserEntity user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + userEmail + " not found"));
+
+        try {
+            byte[] imageBytes = image.getBytes();
+            Blob blob = new SerialBlob(imageBytes);
+            user.setUserImage(blob);
+            userRepository.save(user);
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException("Failed to upload image", e);
+        }
+    }
 }

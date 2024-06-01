@@ -37,17 +37,6 @@ public class RoomServiceImpl implements RoomService {
                 .toList();
     }
 
-    @Override
-    public RoomEntity findByRoomNumber(Integer roomNumber) {
-        return roomRepository.findByRoomNumber(roomNumber);
-    }
-
-    @Override
-    public void saveRoom(RoomEntity room) {
-        roomRepository.save(room);
-    }
-
-
     private RoomView mapAsRoomView(RoomEntity room) {
         return new RoomView()
                 .setRoomNumber(room.getRoomNumber())

@@ -28,7 +28,7 @@
 }
 
 body {
-    background-image: url("/images/contact-us.jpg");
+    background-image: url("../images/contact-us.jpg");
     background-size: 100% 100vh; /* Use viewport height for better responsiveness */
     background-repeat: no-repeat;
     background-attachment: fixed;

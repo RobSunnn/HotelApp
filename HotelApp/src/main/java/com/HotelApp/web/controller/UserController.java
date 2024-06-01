@@ -2,19 +2,18 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
-import com.HotelApp.service.HotelService;
 import com.HotelApp.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
@@ -93,4 +92,22 @@ public class UserController {
 
         return "users/profile";
     }
+
+    @PostMapping("/profile/addProfileImage")
+    public String addProfilePicture(@RequestParam("profile-picture") MultipartFile image,
+                                    RedirectAttributes redirectAttributes) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        try {
+            userService.addUserImage(image, userEmail);
+            redirectAttributes.addFlashAttribute("successMessage", "Profile picture uploaded successfully.");
+
+        } catch (MaxUploadSizeExceededException ignored) {
+        }
+
+        return "redirect:/users/profile";
+    }
+
 }

@@ -46,7 +46,9 @@ public class GuestServiceImpl implements GuestService {
     public boolean registerGuest(AddGuestBindingModel addGuestBindingModel) {
         RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+
         hotelService.takeMoney(room.getPrice().multiply(BigDecimal.valueOf(addGuestBindingModel.getDaysToStay())));
+
         room.setReserved(true);
         roomRepository.save(room);
 

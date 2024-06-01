@@ -17,59 +17,89 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
-    .container {
-    margin: 0;
+
+    main {
+        margin-bottom: 10em;
     }
-    /*span {*/
-    /*    margin: 1em;*/
-    /*}*/
+
+    .container {
+        opacity: 90%;
+    }
+
+    .file-input-container {
+        width: 100%;
+        margin: 1em auto 1em 2.5em;
+    }
+
+    .file-input-container input[type="file"] {
+        display: inline-block;
+    }
+
 </style>
 <body>
 <div th:insert="~{/fragments/nav-bar}"></div>
 
-
-<main class="align-content-center bg-blur my-register-div" >
+<main class="align-content-center mt-5 bg-blur my-register-div">
     <div class="container">
         <div class="row d-flex justify-content-center">
-            <div class="col-md-7 bg-white">
+            <div class="col-md-7 bg-white rounded">
                 <div class="profile-card p-3 py-4">
 
-                    <div class="text-center"><img src="/images/profile.jpg" width="100" class="rounded-circle" alt="pic"></div>
-                    <input type="file" name="profile-picture"
+                    <div class="text-center">
 
-                           id="profile-picture"
-                           class="form-control-file"
-                           aria-describedby="profile-picture">
-                    <small id="profile-picture-error"
-                           class="invalid-feedback  form-text bg-danger rounded">Picture size must be between 1MB and 5MB</small>
-                    <form action="">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                    <div class="text-center mt-3 bg-white">
+                        <img th:if="${userDetails.getProfilePictureBase64() != ''}"
+                             th:src="'data:image/jpeg;base64,' + ${userDetails.getProfilePictureBase64()}" width="300"
+                             height="300" class="rounded-circle" alt="Profile Picture">
+                        <img th:if="${userDetails.getProfilePictureBase64() == ''}" src="/images/profile.jpg"
+                             width="300" height="300" class="rounded-circle" alt="Default Profile Picture">
 
-                        <h5 th:text="'Name:'">Roles of</h5>
-                        <h4 th:text="${userDetails.getFullName()}">User</h4>
-                        <br>
-                        <h4>Roles</h4>
-                        <span class="bg-primary p-1 px-4 rounded text-white" th:each="role : ${userDetails.getRoles()}" th:text="${role.getName()}">Pro</span>
-                        <br>
-                        <br>
-<!--                        <span>UI/UX Designer</span>-->
-<!--                        <h5 class="mt-2 mb-0">Username</h5>-->
-<!--                        <span>UI/UX Designer</span>-->
-                        <h5 class="mt-2 mb-0" th:text="'Age:'">Age</h5>
-                        <h5 class="mt-2 mb-0" th:text="${userDetails.getAge()} + ' years'">Age</h5>
-                        <br>
-                        <h5 class="mt-2 mb-0" th:text="'Email: ' + ${userDetails.getEmail()}">Email</h5>
-<!--                        <span>33</span>-->
-
-                        <br>
-                        <div class="buttons">
-                            <a th:href="@{/}" class="btn mb-5 btn-outline-primary px-4">Back</a>
-<!--                            <button type="submit" th:href="@{/}" class="btn btn-outline-primary px-4">Back</button>-->
-<!--                            <button class="btn btn-primary px-4 ms-3">Contact</button>-->
+                        <div th:if="${successMessage}" class="alert alert-success mt-1" role="alert">
+                            <span th:text="${successMessage}"></span>
                         </div>
 
+                        <div th:if="${errorMessage}" class="alert alert-danger mt-1" role="alert">
+                            <span th:text="${errorMessage}"></span>
+                        </div>
+                        <form id="profile-form" th:action="@{/users/profile/addProfileImage}" th:method="POST" enctype="multipart/form-data">
+
+                            <div class="file-input-container">
+                                <input type="file" name="profile-picture" id="profile-picture" value=""
+                                       aria-describedby="profile-picture">
+                            </div>
+<!--                            <small id="profile-picture-error" class="invalid-feedback form-text bg-danger rounded">Picture-->
+<!--                                size must be between 1MB and 5MB</small>-->
+                            <p><b>Allowed size 5MB</b></p>
+
+                            <button type="submit" class="btn btn-success">Change profile picture</button>
+                        </form>
+
+
+                        <div class="text-center mt-5 bg-white">
+
+                            <h4 th:text="'Name:'">Name of</h4>
+                            <h3 th:text="${userDetails.getFullName()}">User</h3>
+                            <br>
+                            <br>
+                            <h4 th:text="'Roles:'">Roles of</h4>
+                            <br>
+                            <span class="bg-info p-1 m-1 px-4 rounded text-white"
+                                  th:each="role : ${userDetails.getRoles()}" th:text="${role.getName()}">User</span>
+                            <br>
+                            <br>
+
+                            <h4 class="mt-2 mb-0" th:text="'Age:'">Age of</h4>
+                            <h3 class="mt-2 mb-0" th:text="${userDetails.getAge()} + ' years'">User</h3>
+                            <br>
+
+                            <h4 class="mt-2 mb-0" th:text="'Email: '">Email of</h4>
+                            <h3 class="mt-2 mb-0" th:text="${userDetails.getEmail()}">User</h3>
+                            <br>
+
+                            <div class="buttons">
+                                <a th:href="@{/}" class="btn mb-5 btn-outline-primary px-4">Back</a>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,5 +109,5 @@
 </body>
 
 <div th:insert="~{/fragments/footer}"></div>
-
+<script src="/js/fileValidationScript.js"></script>
 </html>

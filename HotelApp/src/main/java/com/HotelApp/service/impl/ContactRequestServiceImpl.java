@@ -25,7 +25,6 @@ public class ContactRequestServiceImpl implements ContactRequestService {
         this.hotelService = hotelService;
     }
 
-
     @Override
     public void sendContactForm(ContactRequestBindingModel contactRequestBindingModel) {
         ContactRequestEntity contactRequest = modelMapper().map(contactRequestBindingModel, ContactRequestEntity.class);

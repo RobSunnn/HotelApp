@@ -15,8 +15,8 @@ spring:
     password: ${DB_PASS:1234}
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 100MB
+      max-file-size: 15MB
+      max-request-size: 25MB
   mvc:
     hiddenmethod:
       filter:

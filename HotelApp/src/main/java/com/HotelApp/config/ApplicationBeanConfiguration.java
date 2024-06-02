@@ -5,6 +5,7 @@ import com.HotelApp.service.exception.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import java.util.Properties;
@@ -16,6 +17,7 @@ public class ApplicationBeanConfiguration {
     public static ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 
 //    @Bean
 //    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {

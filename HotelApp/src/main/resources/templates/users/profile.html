@@ -22,13 +22,15 @@
         margin-bottom: 10em;
     }
 
-    .container {
-        opacity: 90%;
-    }
-
     .file-input-container {
         width: 100%;
+        max-width: 100%;
         margin: 1em auto 1em 2.5em;
+    }
+
+    #profile-form {
+        width: 100%;
+        text-align: center;
     }
 
     .file-input-container input[type="file"] {
@@ -78,6 +80,7 @@
 
                             <h4 th:text="'Name:'">Name of</h4>
                             <h3 th:text="${userDetails.getFullName()}">User</h3>
+
                             <br>
                             <br>
                             <h4 th:text="'Roles:'">Roles of</h4>
@@ -97,6 +100,8 @@
 
                             <div class="buttons">
                                 <a th:href="@{/}" class="btn mb-5 btn-outline-primary px-4">Back</a>
+                                <a th:href="@{/users/profile/editProfile}" class="btn mb-5 btn-outline-primary px-4">Edit Profile</a>
+                                <a th:href="@{/users/profile/changePassword}" class="btn mb-5 btn-outline-primary px-4">Change Password</a>
                             </div>
 
                         </div>

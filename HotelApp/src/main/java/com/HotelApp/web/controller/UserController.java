@@ -1,5 +1,7 @@
 package com.HotelApp.web.controller;
 
+import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
+import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.service.UserService;
@@ -80,34 +82,6 @@ public class UserController {
 
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/profile")
-    public String profile(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
 
-        UserView user = userService.findUserDetails(userEmail);
-
-        model.addAttribute("userDetails", user);
-
-        return "users/profile";
-    }
-
-    @PostMapping("/profile/addProfileImage")
-    public String addProfilePicture(@RequestParam("profile-picture") MultipartFile image,
-                                    RedirectAttributes redirectAttributes) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-
-        try {
-            userService.addUserImage(image, userEmail);
-            redirectAttributes.addFlashAttribute("successMessage", "Profile picture uploaded successfully.");
-
-        } catch (MaxUploadSizeExceededException ignored) {
-        }
-
-        return "redirect:/users/profile";
-    }
 
 }

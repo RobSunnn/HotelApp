@@ -1,5 +1,7 @@
 package com.HotelApp.service;
 
+import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
+import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import org.springframework.validation.BindingResult;
@@ -26,4 +28,8 @@ public interface UserService {
     UserView findUserDetails(String userEmail);
 
     void addUserImage(MultipartFile image, String userEmail);
+
+    void editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, String userEmail);
+
+    void changeUserPassword(String userEmail, ChangeUserPasswordBindingModel changeUserPasswordBindingModel);
 }

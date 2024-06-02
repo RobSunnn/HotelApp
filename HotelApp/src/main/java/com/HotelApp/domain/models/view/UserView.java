@@ -9,6 +9,10 @@ public class UserView {
 
     private Long id;
 
+    private String firstName;
+
+    private String lastName;
+
     private String fullName;
 
     private String email;
@@ -36,6 +40,24 @@ public class UserView {
 
     public UserView setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public UserView setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public UserView setLastName(String lastName) {
+        this.lastName = lastName;
         return this;
     }
 

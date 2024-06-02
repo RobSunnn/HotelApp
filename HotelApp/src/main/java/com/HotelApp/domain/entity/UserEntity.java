@@ -1,6 +1,7 @@
 package com.HotelApp.domain.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
@@ -9,8 +10,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class UserEntity extends BaseEntity {
-
+//TODO: more validation on fields
     @Column(nullable = false, name = "first_name")
+    @Size(min = 2)
     private String firstName;
 
     @Column(nullable = false, name = "last_name")

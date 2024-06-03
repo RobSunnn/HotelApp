@@ -1,5 +1,6 @@
 package com.HotelApp.service.impl;
 
+import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.entity.GuestEntity;
 import com.HotelApp.domain.entity.HappyGuestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
@@ -13,6 +14,8 @@ import com.HotelApp.service.HappyGuestService;
 import com.HotelApp.service.HotelService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,11 +29,8 @@ import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 public class GuestServiceImpl implements GuestService {
 
     private final GuestRepository guestRepository;
-
     private final RoomRepository roomRepository;
-
     private final HappyGuestService happyGuestService;
-
     private final HotelService hotelService;
 
     public GuestServiceImpl(GuestRepository guestRepository,
@@ -43,15 +43,27 @@ public class GuestServiceImpl implements GuestService {
     }
 
     @Override
-    public boolean registerGuest(AddGuestBindingModel addGuestBindingModel) {
+    public boolean registerGuest(AddGuestBindingModel addGuestBindingModel,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
+        //TODO: check if documentID exits in database
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute(BindingConstants.GUEST_REGISTER_BINDING_MODEL, addGuestBindingModel);
+            redirectAttributes
+                    .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH
+                            + BindingConstants.GUEST_REGISTER_BINDING_MODEL, bindingResult);
+
+            return false;
+        }
+
         RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
 
         hotelService.takeMoney(room.getPrice().multiply(BigDecimal.valueOf(addGuestBindingModel.getDaysToStay())));
-
         room.setReserved(true);
         roomRepository.save(room);
-
         GuestEntity guest = guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
 
         return guest.getDocumentId() != null;

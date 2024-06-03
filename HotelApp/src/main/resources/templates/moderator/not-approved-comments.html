@@ -88,6 +88,7 @@
             <thead>
             <tr>
                 <th>Date</th>
+                <th>Time</th>
                 <th>Author</th>
                 <th>Comment</th>
             </tr>
@@ -95,6 +96,7 @@
             <tbody>
             <tr th:each="comment, iterStat : ${allNotApprovedComments}" th:data-full-text="${comment.commentContent}" th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${comment.id}">
                 <td th:text="${comment.created.toLocalDate()}"></td>
+                <td th:text="${comment.created.toLocalTime().getHour()} + ':' + ${comment.created.toLocalTime().getMinute()}"></td>
                 <td th:text="${comment.author}"></td>
                 <td th:text="${#strings.abbreviate(comment.commentContent, 30)}"></td>
             </tr>

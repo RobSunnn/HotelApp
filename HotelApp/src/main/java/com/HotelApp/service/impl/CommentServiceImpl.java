@@ -10,8 +10,13 @@ import com.HotelApp.service.HotelService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+
+import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH;
+import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -27,9 +32,19 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel) {
+    public void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel,
+                                     BindingResult  bindingResult,
+                                     RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute(COMMENT_BINDING_MODEL, addCommentBindingModel);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + COMMENT_BINDING_MODEL, bindingResult);
+            return;
+        }
+
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
         commentRepository.save(mapAsComment(addCommentBindingModel, hotelInfo));
+        redirectAttributes.addFlashAttribute("successCommentMessage", "Thank you for your comment!");
     }
 
     @Override

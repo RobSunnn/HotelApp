@@ -1,4 +1,3 @@
-// Attach validation function to form submit event
 document.getElementById('profile-form').addEventListener('submit', function(event) {
     event.preventDefault();
 

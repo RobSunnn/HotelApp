@@ -1,5 +1,7 @@
 package com.HotelApp.web.controller;
 
+import com.HotelApp.common.constants.BindingConstants;
+import com.HotelApp.common.constants.ValidationConstants;
 import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.view.UserView;
@@ -73,9 +75,7 @@ public class ProfileController {
                                     RedirectAttributes redirectAttributes,
                                     @ModelAttribute("userEmail") String userEmail) {
 
-        userService.addUserImage(image, userEmail);
-        redirectAttributes.addFlashAttribute("successMessage", "Profile picture uploaded successfully.");
-
+        userService.addUserImage(image, userEmail, redirectAttributes);
         return "redirect:/users/profile";
     }
 
@@ -85,8 +85,13 @@ public class ProfileController {
                               BindingResult bindingResult,
                               RedirectAttributes redirectAttributes,
                               @ModelAttribute("userEmail") String userEmail) {
-//todo: when validation fail use binding result and redirect att
-        userService.editProfileInfo(editUserProfileBindingModel, userEmail);
+
+        boolean editSuccess = userService
+                .editProfileInfo(editUserProfileBindingModel, userEmail, bindingResult, redirectAttributes);
+
+        if (!editSuccess) {
+            return "redirect:/users/profile/editProfile";
+        }
 
         return "redirect:/users/profile";
     }
@@ -98,7 +103,12 @@ public class ProfileController {
                                        RedirectAttributes redirectAttributes,
                                        @ModelAttribute("userEmail") String userEmail) {
 
-        userService.changeUserPassword(userEmail, changeUserPasswordBindingModel);
+        boolean changePasswordSuccess = userService
+                .changeUserPassword(userEmail, changeUserPasswordBindingModel, bindingResult, redirectAttributes);
+
+        if (!changePasswordSuccess) {
+            return "redirect:/users/profile/changePassword";
+        }
 
         return "redirect:/users/profile";
     }

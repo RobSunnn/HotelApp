@@ -6,26 +6,26 @@ import jakarta.validation.constraints.*;
 import static com.HotelApp.common.constants.ValidationConstants.*;
 
 public class UserRegisterBindingModel {
-    //TODO: validation maybe on fields or maybe with annotation
-
     @NotBlank(message = FIRST_AND_LAST_NAME_NOT_BLANK)
-    @Size(min = 3, message = FIRST_AND_LAST_NAME_LENGTH)
+    @Size(min = 2, message = FIRST_AND_LAST_NAME_LENGTH)
+    @Size(max = 60, message = FIRST_AND_LAST_NAME_LENGTH_TOO_LONG)
     private String firstName;
 
 
     @NotBlank(message = FIRST_AND_LAST_NAME_NOT_BLANK)
-    @Size(min = 3, message = FIRST_AND_LAST_NAME_LENGTH)
+    @Size(min = 2, message = FIRST_AND_LAST_NAME_LENGTH)
+    @Size(max = 60, message = FIRST_AND_LAST_NAME_LENGTH_TOO_LONG)
     private String lastName;
 
     @NotBlank(message = EMAIL_NOT_BLANK)
     @Email(message = INVALID_EMAIL)
-    @Size(max = 100, message = "Your email is too long.")
+    @Size(max = 100, message = EMAIL_TOO_LONG)
     private String email;
 
     @NotNull(message = INVALID_AGE)
     @Positive(message = NEGATIVE_AGE)
     @Min(value = 18, message = MINIMUM_AGE)
-    @Max(value = 100, message = "You exceed the maximum value for age.")
+    @Max(value = 100, message = INVALID_AGE_OVER_100)
     private Integer age;
 
     @NotBlank(message = EMPTY_PASSWORD)

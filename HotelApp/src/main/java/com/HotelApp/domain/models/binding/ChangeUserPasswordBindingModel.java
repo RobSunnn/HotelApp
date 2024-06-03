@@ -7,13 +7,14 @@ import static com.HotelApp.common.constants.ValidationConstants.*;
 
 public class ChangeUserPasswordBindingModel {
 
+    @NotBlank(message = EMPTY_PASSWORD)
+    @Size(min = 5, message = PASSWORD_LENGTH)
     private String oldPassword;
 
     @NotBlank(message = EMPTY_PASSWORD)
     @Size(min = 5, message = PASSWORD_LENGTH)
     private String newPassword;
 
-    @NotBlank(message = CONFIRM_PASSWORD)
     private String confirmNewPassword;
 
     public ChangeUserPasswordBindingModel() {}

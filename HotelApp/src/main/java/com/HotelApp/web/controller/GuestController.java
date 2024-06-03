@@ -1,6 +1,5 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
 import com.HotelApp.domain.models.view.GuestView;
@@ -44,28 +43,24 @@ public class GuestController {
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/addGuestSuccess")
+    public String addGuestSuccess() {
+        return "moderator/add-guest-success";
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping("/add")
     public String add(@Valid AddGuestBindingModel addGuestBindingModel,
                       BindingResult bindingResult,
                       RedirectAttributes redirectAttributes) {
+        boolean registerGuestSuccess =
+                guestService.registerGuest(addGuestBindingModel, bindingResult, redirectAttributes);
 
-        //TODO: check if documentID exits in database
-
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(BindingConstants.GUEST_REGISTER_BINDING_MODEL, addGuestBindingModel);
-            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.GUEST_REGISTER_BINDING_MODEL, bindingResult);
-
-            return "redirect:/guests/add";
-        }
-
-        boolean registerGuest = guestService.registerGuest(addGuestBindingModel);
-
-        if (registerGuest) {
-            return "redirect:/moderator";
+        if (registerGuestSuccess) {
+            return "redirect:/guests/addGuestSuccess";
         } else {
             return "redirect:/guests/add";
         }
-
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -73,13 +68,11 @@ public class GuestController {
     public String leave(Model model) {
 
         List<GuestView> guests = guestService.seeAllGuests();
-
         if (guests.isEmpty()) {
             return "redirect:/moderator";
         }
 
         model.addAttribute("guests", guests);
-
         return "moderator/guest-leave";
     }
 

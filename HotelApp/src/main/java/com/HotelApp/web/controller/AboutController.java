@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH;
+import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
+
 @Controller
 @RequestMapping("/about")
 public class AboutController {
@@ -30,8 +33,8 @@ public class AboutController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        if (!model.containsAttribute("addCommentBindingModel")) {
-            model.addAttribute("addCommentBindingModel", new AddCommentBindingModel());
+        if (!model.containsAttribute(COMMENT_BINDING_MODEL)) {
+            model.addAttribute(COMMENT_BINDING_MODEL, new AddCommentBindingModel());
         }
     }
 
@@ -47,7 +50,6 @@ public class AboutController {
         Page<CommentView> allApprovedComments = commentService.getApprovedComments(pageable);
 
         model.addAttribute("comments", allApprovedComments);
-
         return "about";
     }
 
@@ -56,15 +58,7 @@ public class AboutController {
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("addCommentBindingModel", addCommentBindingModel);
-            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "addCommentBindingModel", bindingResult);
-            return "redirect:/about";
-        }
-
-        commentService.addCommentToDatabase(addCommentBindingModel);
-        redirectAttributes.addFlashAttribute("successCommentMessage", "Thank you for your comment!");
-
+        commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
         return "redirect:/about";
     }
 

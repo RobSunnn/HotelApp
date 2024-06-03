@@ -1,5 +1,6 @@
 package com.HotelApp.service.impl;
 
+import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.SubscriberEntity;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
@@ -7,6 +8,8 @@ import com.HotelApp.repository.SubscriberRepository;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.service.SubscriberService;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -24,7 +27,16 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public void addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel) {
+    public void addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);
+            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.SUBSCRIBER_BINDING_MODEL, bindingResult);
+
+            return;
+        }
 
         Optional<SubscriberEntity> checkSubscriber = subscriberRepository.findByEmail(addSubscriberBindingModel.getSubscriberEmail());
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
@@ -34,11 +46,14 @@ public class SubscriberServiceImpl implements SubscriberService {
             subscriber.setCounterOfSubscriptions(subscriber.getCounterOfSubscriptions() + 1);
             sendBonusVoucher();
             subscriberRepository.save(subscriber);
+            redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
 
             return;
         }
 
+        redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
         subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
+
     }
 
     private void sendBonusVoucher() {

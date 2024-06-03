@@ -1,30 +1,44 @@
 package com.HotelApp.domain.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.HotelApp.common.constants.ValidationConstants.*;
+
 @Entity
 @Table(name = "users")
 public class UserEntity extends BaseEntity {
-//TODO: more validation on fields
+
     @Column(nullable = false, name = "first_name")
-    @Size(min = 2)
+    @NotBlank(message = FIRST_AND_LAST_NAME_NOT_BLANK)
+    @Size(min = 2, message = FIRST_AND_LAST_NAME_LENGTH)
+    @Size(max = 60, message = FIRST_AND_LAST_NAME_LENGTH_TOO_LONG)
     private String firstName;
 
     @Column(nullable = false, name = "last_name")
+    @NotBlank(message = FIRST_AND_LAST_NAME_NOT_BLANK)
+    @Size(min = 2, message = FIRST_AND_LAST_NAME_LENGTH)
+    @Size(max = 60, message = FIRST_AND_LAST_NAME_LENGTH_TOO_LONG)
     private String lastName;
 
     @Column(nullable = false, unique = true)
+    @Email(message = INVALID_EMAIL)
+    @Size(max = 100, message = EMAIL_TOO_LONG)
     private String email;
 
     @Column(nullable = false)
+    @Positive(message = NEGATIVE_AGE)
+    @Min(value = 18, message = MINIMUM_AGE)
+    @Max(value = 100, message = INVALID_AGE_OVER_100)
     private Integer age;
 
     @Column(nullable = false)
+    @NotBlank(message = EMPTY_PASSWORD)
+    @Size(min = 5, message = PASSWORD_LENGTH)
     private String password;
 
     @Lob

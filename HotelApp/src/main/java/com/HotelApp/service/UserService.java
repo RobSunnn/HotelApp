@@ -6,14 +6,15 @@ import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 public interface UserService {
 
-    boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult);
+    boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
 
-    boolean checkIfEmailExist(UserRegisterBindingModel userRegisterBindingModel);
+    boolean checkIfEmailExist(String email);
 
     UserView findUserByEmail(String email);
 
@@ -27,9 +28,9 @@ public interface UserService {
 
     UserView findUserDetails(String userEmail);
 
-    void addUserImage(MultipartFile image, String userEmail);
+    void addUserImage(MultipartFile image, String userEmail, RedirectAttributes redirectAttributes);
 
-    void editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, String userEmail);
+    boolean editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, String userEmail, BindingResult bindingResult, RedirectAttributes redirectAttributes);
 
-    void changeUserPassword(String userEmail, ChangeUserPasswordBindingModel changeUserPasswordBindingModel);
+    boolean changeUserPassword(String userEmail, ChangeUserPasswordBindingModel changeUserPasswordBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
 }

@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static com.HotelApp.common.constants.BindingConstants.*;
+
 @Controller
 @RequestMapping("/contact")
 public class ContactController {
-
     private final SubscriberService subscriberService;
-
     private final ContactRequestService contactRequestService;
 
     public ContactController(SubscriberService subscriberService, ContactRequestService contactRequestService) {
@@ -30,11 +30,11 @@ public class ContactController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        if (!model.containsAttribute("addSubscriberBindingModel")) {
-            model.addAttribute("addSubscriberBindingModel", new AddSubscriberBindingModel());
+        if (!model.containsAttribute(SUBSCRIBER_BINDING_MODEL)) {
+            model.addAttribute(SUBSCRIBER_BINDING_MODEL, new AddSubscriberBindingModel());
         }
-        if (!model.containsAttribute("contactRequestBindingModel")) {
-            model.addAttribute("contactRequestBindingModel", new ContactRequestBindingModel());
+        if (!model.containsAttribute(CONTACT_REQUEST_BINDING_MODEL)) {
+            model.addAttribute(CONTACT_REQUEST_BINDING_MODEL, new ContactRequestBindingModel());
         }
     }
 
@@ -48,17 +48,7 @@ public class ContactController {
                             BindingResult bindingResult,
                             RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);
-            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.SUBSCRIBER_BINDING_MODEL, bindingResult);
-
-            return "redirect:/contact";
-        }
-
-        subscriberService.addNewSubscriber(addSubscriberBindingModel);
-
-        redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
-
+        subscriberService.addNewSubscriber(addSubscriberBindingModel, bindingResult, redirectAttributes);
         return "redirect:/contact";
     }
 
@@ -67,17 +57,7 @@ public class ContactController {
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("contactRequestBindingModel", contactRequestBindingModel);
-            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "contactRequestBindingModel", bindingResult);
-
-            return "redirect:/contact";
-        }
-
-        redirectAttributes.addFlashAttribute("successContactRequestMessage", "Contact Request Send, Thank You!");
-        contactRequestService.sendContactForm(contactRequestBindingModel);
-
+        contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult, redirectAttributes);
         return "redirect:/contact";
     }
-
 }

@@ -1,5 +1,6 @@
 package com.HotelApp.service.impl;
 
+import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.entity.ContactRequestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
@@ -7,6 +8,8 @@ import com.HotelApp.repository.ContactRequestRepository;
 import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -26,15 +29,24 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     }
 
     @Override
-    public void sendContactForm(ContactRequestBindingModel contactRequestBindingModel) {
+    public void sendContactForm(ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("contactRequestBindingModel", contactRequestBindingModel);
+            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "contactRequestBindingModel", bindingResult);
+
+            return;
+        }
+
         ContactRequestEntity contactRequest = modelMapper().map(contactRequestBindingModel, ContactRequestEntity.class);
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
-        //TODO: Maybe we need to map it by hand not with model mapper to trim it correctly
+
         contactRequest.setMessage(contactRequest.getMessage().trim());
         contactRequest.setChecked(false);
         contactRequest.setCreated(LocalDateTime.now());
         contactRequest.setHotelInfoEntity(hotelInfo);
 
+        redirectAttributes.addFlashAttribute("successContactRequestMessage", "Contact Request Send, Thank You!");
         contactRequestRepository.save(contactRequest);
     }
 

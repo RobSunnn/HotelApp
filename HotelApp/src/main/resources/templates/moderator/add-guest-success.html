@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Adding Guest Success</title>
+
+    <style>
+        h1,
+        h3{
+            padding-bottom: 1em;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 30%;
+            margin: 0 auto;
+        }
+
+        .card {
+            justify-content: center;
+            align-self: center;
+            width: 50%;
+            justify-self: center;
+            margin: 6em auto;
+            padding: 3em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+
+<div class="card bg-dark text-white">
+    <h1>Guest added Successfully!</h1>
+    <h2>Welcome to our Application!</h2>
+    <h3>Thank you for choosing us!</h3>
+    <a href="/moderator" class="btn btn-success">Go To Your Panel</a>
+</div>
+
+<div th:insert="~{/fragments/footer}"></div>
+
+</body>
+</html>

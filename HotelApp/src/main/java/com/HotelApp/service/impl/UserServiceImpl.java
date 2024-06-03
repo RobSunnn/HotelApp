@@ -1,5 +1,6 @@
 package com.HotelApp.service.impl;
 
+import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
@@ -10,6 +11,7 @@ import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
+import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.common.constants.ValidationConstants;
@@ -26,16 +28,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.BindingConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
 
@@ -49,7 +52,12 @@ public class UserServiceImpl implements UserService {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
 
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService, HotelServiceImpl hotelService, UserDetailsService userDetailsService, HttpServletRequest request, HttpServletResponse response) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleService roleService,
+                           HotelServiceImpl hotelService,
+                           UserDetailsService userDetailsService,
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.hotelService = hotelService;
@@ -60,9 +68,18 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult) {
-        if (checkIfEmailExist(userRegisterBindingModel)) {
-            bindingResult.addError(new FieldError("userRegisterBindingModel", "email", ValidationConstants.EMAIL_EXIST));
+    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (checkIfEmailExist(userRegisterBindingModel.getEmail())) {
+            bindingResult.addError(new FieldError("userRegisterBindingModel",
+                    "email", ValidationConstants.EMAIL_EXIST));
+        }
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel);
+            redirectAttributes
+                    .addFlashAttribute(BINDING_RESULT_PATH +
+                            USER_REGISTER_BINDING_MODEL, bindingResult);
             return false;
         }
 
@@ -73,16 +90,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkIfEmailExist(UserRegisterBindingModel userRegisterBindingModel) {
-        Optional<UserEntity> user = userRepository.findByEmail(userRegisterBindingModel.getEmail());
+    public boolean checkIfEmailExist(String email) {
+        Optional<UserEntity> user = userRepository.findByEmail(email);
 
         return user.isPresent();
     }
 
     @Override
     public UserView findUserByEmail(String email) {
-        UserEntity user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+        UserEntity user = findUser(email);
 
         if (user.getId() == 1) {
             throw new ForbiddenUserException("You can't see this user :)");
@@ -182,7 +198,6 @@ public class UserServiceImpl implements UserService {
             boolean isModerator = user.getRoles().stream()
                     .anyMatch(role -> role.getName().name().equals("MODERATOR"));
 
-            //todo: if user is admin and we want to be only moderator it is not working properly
             user.setRoles(List.of(userRole, moderatorRole));
             userRepository.save(user);
 
@@ -229,8 +244,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserView findUserDetails(String userEmail) {
-        UserEntity user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + userEmail + " not found"));
+        UserEntity user = findUser(userEmail);
 
         return mapAsUserView(user);
     }
@@ -256,21 +270,36 @@ public class UserServiceImpl implements UserService {
         return userView;
     }
 
-
     @Override
-    public void addUserImage(MultipartFile image, String userEmail) {
+    public void addUserImage(MultipartFile image, String userEmail, RedirectAttributes redirectAttributes) {
         if (image.getSize() > (5 * 1024 * 1024)) {
             throw new MaxUploadSizeExceededException(5 * 1024 * 1024);
         }
 
-        UserEntity user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + userEmail + " not found"));
+        if (image.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Please select a file.");
+            return;
+        }
+
+        String filename = image.getOriginalFilename();
+        assert filename != null;
+
+        if (!isAllowedExtension(filename)) {
+            throw new FileNotAllowedException("File type not supported.");
+        }
+
+        UserEntity user = findUser(userEmail);
 
         try {
             byte[] imageBytes = image.getBytes();
             Blob blob = new SerialBlob(imageBytes);
             user.setUserImage(blob);
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Profile picture uploaded successfully.");
+
             userRepository.save(user);
+
         } catch (SQLException | IOException e) {
             throw new RuntimeException("Failed to upload image", e);
         }
@@ -278,11 +307,24 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, String userEmail) {
-        UserEntity user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + userEmail + " not found"));
+    public boolean editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, String userEmail, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
+        UserEntity user = findUser(userEmail);
         boolean emailChanged = !user.getEmail().equals(editUserProfileBindingModel.getEmail());
+
+        if (checkIfEmailExist(editUserProfileBindingModel.getEmail()) && emailChanged) {
+            bindingResult.addError(new FieldError("userRegisterBindingModel",
+                    "email", ValidationConstants.EMAIL_EXIST));
+        }
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute("editUserProfileBindingModel", editUserProfileBindingModel);
+            redirectAttributes
+                    .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH +
+                            "editUserProfileBindingModel", bindingResult);
+            return false;
+        }
 
         user.setFirstName(editUserProfileBindingModel.getFirstName());
         user.setLastName(editUserProfileBindingModel.getLastName());
@@ -305,24 +347,57 @@ public class UserServiceImpl implements UserService {
             // Re-authenticate user
             reAuthenticateUser(editUserProfileBindingModel.getEmail());
         }
+
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Profile info updated successfully.");
+
+        return true;
     }
 
     @Override
-    public void changeUserPassword(String userEmail, ChangeUserPasswordBindingModel changeUserPasswordBindingModel) {
-        UserEntity user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + userEmail + " not found"));
+    public boolean changeUserPassword(String userEmail,
+                                      ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
+                                      BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        UserEntity user = findUser(userEmail);
 
         if (!passwordEncoder().matches(changeUserPasswordBindingModel.getOldPassword(), user.getPassword())) {
-          throw new RuntimeException("Old pass mismatch");
+            bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
+                    "oldPassword", ValidationConstants.OLD_PASS_MISMATCH));
         }
         if (!changeUserPasswordBindingModel.getNewPassword().equals(changeUserPasswordBindingModel.getConfirmNewPassword())) {
-            throw new RuntimeException("New Password mismatch"); // TODO: better solution for field match or throw exception
+            bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
+                    "confirmNewPassword", ValidationConstants.CONFIRM_PASSWORD));
+        }
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute(CHANGE_PASSWORD_BINDING_MODEL, changeUserPasswordBindingModel);
+            redirectAttributes
+                    .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH +
+                            CHANGE_PASSWORD_BINDING_MODEL, bindingResult);
+            return false;
         }
 
         user.setPassword(passwordEncoder().encode(changeUserPasswordBindingModel.getNewPassword()));
         userRepository.save(user);
 
         reAuthenticateUser(userEmail);
+
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Password changed successfully.");
+
+        return true;
+    }
+
+    private boolean isAllowedExtension(String filename) {
+        String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+
+        return extension.equals("jpg") ||
+                extension.equals("jpeg") ||
+                extension.equals("png") ||
+                extension.equals("svg") ||
+                extension.equals("avif") ||
+                extension.equals("gif");
     }
 
     private void reAuthenticateUser(String newEmail) {
@@ -340,5 +415,10 @@ public class UserServiceImpl implements UserService {
 
         // Update session with the new authentication
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+    }
+
+    private UserEntity findUser(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
     }
 }

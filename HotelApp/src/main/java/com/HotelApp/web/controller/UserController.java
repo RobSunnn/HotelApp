@@ -1,21 +1,16 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
-import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
-import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
@@ -29,6 +24,13 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        if (!model.containsAttribute(USER_REGISTER_BINDING_MODEL)) {
+            model.addAttribute(USER_REGISTER_BINDING_MODEL, new UserRegisterBindingModel());
+        }
     }
 
     @PreAuthorize("isAnonymous()")
@@ -49,13 +51,13 @@ public class UserController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/register")
-    public String register(Model model) {
-
-        if (!model.containsAttribute(USER_REGISTER_BINDING_MODEL)) {
-            model.addAttribute(USER_REGISTER_BINDING_MODEL, new UserRegisterBindingModel());
-        }
-
+    public String register() {
         return "users/register";
+    }
+
+    @GetMapping("/registrationSuccess")
+    public String registrationSuccess() {
+        return "users/registration-success";
     }
 
     @PreAuthorize("isAnonymous()")
@@ -63,25 +65,13 @@ public class UserController {
     public String register(@Valid UserRegisterBindingModel userRegisterBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
-
-
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel);
-            redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + USER_REGISTER_BINDING_MODEL, bindingResult);
-
-            return "redirect:/users/register";
-        }
-
-        boolean registrationSuccessful = userService.registerUser(userRegisterBindingModel, bindingResult);
+        boolean registrationSuccessful = userService
+                .registerUser(userRegisterBindingModel, bindingResult, redirectAttributes);
 
         if (registrationSuccessful) {
-            return "redirect:/users/login";
+            return "redirect:/users/registrationSuccess";
         } else {
-            return "users/register";
+            return "redirect:/users/register";
         }
-
     }
-
-
-
 }

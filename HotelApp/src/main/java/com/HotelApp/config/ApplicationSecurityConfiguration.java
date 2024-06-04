@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +30,7 @@ public class ApplicationSecurityConfiguration {
                                 .requestMatchers("/", "/users/login", "/users/register",
                                         "/users/registrationSuccess", "/users/login-error").permitAll()
                                 .requestMatchers("/allRoomTypes", "/about/**",
-                                        "/contact/**", "/error").permitAll()
+                                        "/contact/**", "/error", "/session-expired").permitAll()
                                 .requestMatchers("/moderator/**", "/guests/**").hasRole("MODERATOR")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
@@ -45,7 +47,12 @@ public class ApplicationSecurityConfiguration {
                                 .deleteCookies("JSESSIONID")
                                 .clearAuthentication(true)
                                 .invalidateHttpSession(true)
-                );
+                ).sessionManagement(session -> session
+                        .invalidSessionStrategy((request, response) -> request.authenticate(response))
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .maximumSessions(1)
+                        .expiredUrl("/users/login"));
+
 
         return httpSecurity.build();
     }
@@ -59,7 +66,6 @@ public class ApplicationSecurityConfiguration {
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
 }

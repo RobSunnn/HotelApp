@@ -44,9 +44,9 @@ public class AboutController {
                                 size = 3,
                                 sort = "id"
                         )
-                        Pageable pageable, HttpServletRequest request) {
+                        Pageable pageable) {
 
-        request.getSession(true);
+
         Page<CommentView> allApprovedComments = commentService.getApprovedComments(pageable);
 
         model.addAttribute("comments", allApprovedComments);

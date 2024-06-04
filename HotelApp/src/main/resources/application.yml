@@ -32,8 +32,14 @@ spring:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true
+server:
+  servlet:
+    session:
+      timeout: 60s
 
-#Cloudinary Properties
+
+
+  #Cloudinary Properties
 #cloudinary:
   #api-key: 
   #api-secret: 

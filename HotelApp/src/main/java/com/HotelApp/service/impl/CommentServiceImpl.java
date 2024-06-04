@@ -80,7 +80,7 @@ public class CommentServiceImpl implements CommentService {
         return new CommentEntity()
                 .setCommentContent(addCommentBindingModel.getCommentContent().trim())
                 .setApproved(false)
-                .setAuthor(addCommentBindingModel.getAuthor())
+                .setAuthor(addCommentBindingModel.getAuthor().trim())
                 .setCreated(LocalDateTime.now())
                 .setHotelInfoEntity(hotelInfo);
     }

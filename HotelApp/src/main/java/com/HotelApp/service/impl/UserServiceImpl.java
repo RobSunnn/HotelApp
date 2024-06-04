@@ -7,6 +7,7 @@ import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
+import com.HotelApp.domain.models.service.CustomUserDetails;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.RoleService;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
 
+
     public UserServiceImpl(UserRepository userRepository,
                            RoleService roleService,
                            HotelServiceImpl hotelService,
@@ -64,6 +67,7 @@ public class UserServiceImpl implements UserService {
         this.userDetailsService = userDetailsService;
         this.request = request;
         this.response = response;
+
     }
 
     @Transactional
@@ -114,10 +118,10 @@ public class UserServiceImpl implements UserService {
         }
 
         UserEntity user = new UserEntity()
-                .setEmail(userRegisterBindingModel.getEmail())
+                .setEmail(userRegisterBindingModel.getEmail().trim())
                 .setAge(userRegisterBindingModel.getAge())
-                .setFirstName(userRegisterBindingModel.getFirstName())
-                .setLastName(userRegisterBindingModel.getLastName())
+                .setFirstName(userRegisterBindingModel.getFirstName().trim())
+                .setLastName(userRegisterBindingModel.getLastName().trim())
                 .setPassword(passwordEncoder().encode(userRegisterBindingModel.getPassword()))
                 .setCreated(LocalDateTime.now())
                 .setHotelInfoEntity(hotelService.getHotelInfo());
@@ -253,7 +257,7 @@ public class UserServiceImpl implements UserService {
         UserView userView = new UserView()
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
-                .setFullName(user.getFullName())
+                .setFullName(user.getFirstName() + " " + user.getLastName())
                 .setAge(user.getAge())
                 .setEmail(user.getEmail())
                 .setRoles(user.getRoles());
@@ -326,9 +330,10 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        user.setFirstName(editUserProfileBindingModel.getFirstName());
-        user.setLastName(editUserProfileBindingModel.getLastName());
-        user.setEmail(editUserProfileBindingModel.getEmail());
+        user.setFirstName(editUserProfileBindingModel.getFirstName().trim());
+        user.setLastName(editUserProfileBindingModel.getLastName().trim());
+
+        user.setEmail(editUserProfileBindingModel.getEmail().trim());
         user.setAge(editUserProfileBindingModel.getAge());
 
         userRepository.save(user);
@@ -336,18 +341,14 @@ public class UserServiceImpl implements UserService {
         if (emailChanged) {
             // Invalidate the session
             request.getSession().invalidate();
-
             // Clear cookies
-//            Arrays.stream(request.getCookies()).forEach(cookie -> {
-//                cookie.setMaxAge(0);
-//                cookie.setPath("/");
-//                response.addCookie(cookie);
-//            });
-
-            // Re-authenticate user
-            reAuthenticateUser(editUserProfileBindingModel.getEmail());
+            Arrays.stream(request.getCookies()).forEach(cookie -> {
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            });
         }
-
+        reAuthenticateUser(editUserProfileBindingModel.getEmail());
         redirectAttributes.addFlashAttribute("successMessage",
                 "Profile info updated successfully.");
 
@@ -382,7 +383,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         reAuthenticateUser(userEmail);
-
         redirectAttributes.addFlashAttribute("successMessage",
                 "Password changed successfully.");
 
@@ -406,7 +406,7 @@ public class UserServiceImpl implements UserService {
 
         // Create a new authentication token
         UsernamePasswordAuthenticationToken newAuth =
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                new UsernamePasswordAuthenticationToken(userDetails, userDetails.getUsername(), userDetails.getAuthorities());
 
         newAuth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

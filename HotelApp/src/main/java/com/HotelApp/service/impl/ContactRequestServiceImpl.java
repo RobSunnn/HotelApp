@@ -7,6 +7,8 @@ import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.repository.ContactRequestRepository;
 import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,6 +18,7 @@ import java.util.Objects;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
+@EnableScheduling
 @Service
 public class ContactRequestServiceImpl implements ContactRequestService {
 
@@ -41,6 +44,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
         ContactRequestEntity contactRequest = modelMapper().map(contactRequestBindingModel, ContactRequestEntity.class);
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
 
+        contactRequest.setName(contactRequest.getName().trim());
         contactRequest.setMessage(contactRequest.getMessage().trim());
         contactRequest.setChecked(false);
         contactRequest.setCreated(LocalDateTime.now());
@@ -48,6 +52,17 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
         redirectAttributes.addFlashAttribute("successContactRequestMessage", "Contact Request Send, Thank You!");
         contactRequestRepository.save(contactRequest);
+    }
+
+    @Override
+    @Scheduled(cron = "@daily")
+    public void clearCheckedContactRequests() {
+        System.out.println(LocalDateTime.now());
+        contactRequestRepository
+                .deleteAll(contactRequestRepository.findAll()
+                        .stream()
+                        .filter(ContactRequestEntity::getChecked)
+                        .toList());
     }
 
     @Override

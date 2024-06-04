@@ -36,6 +36,8 @@
 
         .buttons {
             display: flex;
+            flex-wrap: wrap;
+            flex: 0 1 30%;
             gap: 1em;
         }
 
@@ -142,7 +144,7 @@
 
                     <div id="usersDropdown" hidden>
 
-                        <label for="userSelect"></label>
+                        <label for="userSelect"> Select User:</label>
                         <select class="form-control bg-white" id="userSelect" size="5">
                             <option selected disabled class="text-white">Select User:</option>
                         </select>

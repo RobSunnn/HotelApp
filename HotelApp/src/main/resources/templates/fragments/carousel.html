@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <th:block th:insert="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+
     <title>Carousel</title>
 
     <style>
@@ -10,6 +11,11 @@
         @media (min-width: 992px) {
             #introCarousel {
                 margin-top: -60px;
+            }
+        }
+        @media (max-width: 992px) {
+            #introCarousel {
+                margin-top: 100px;
             }
         }
         #introCarousel,
@@ -33,7 +39,7 @@
             background-size: cover;
             background-attachment: fixed;
             background-position: center center;
-            height: 80vh;
+            height: 100vh;
         }
 
         .carousel-item:nth-child(2) {
@@ -42,7 +48,7 @@
             background-size: cover;
             background-attachment: fixed;
             background-position: center center;
-            height: 80vh;
+            height: 100vh;
         }
 
         .carousel-item:nth-child(3) {
@@ -51,13 +57,17 @@
             background-size: cover;
             background-attachment: fixed;
             background-position: center center;
-            height: 80vh;
+            height: 100vh;
+        }
+        .card {
+            width: 100%;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
-<div th:fragment="carousel">
-    <div id="introCarousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
+
+    <div th:fragment="carousel" id="introCarousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
             <li data-mdb-target="#introCarousel" data-mdb-slide-to="0" class="active"></li>
@@ -72,11 +82,20 @@
                 <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">
+<!--                            <div class="card" style="width: 18rem;">-->
+<!--                                <div class="card-body">-->
+<!--                                    <h3 class="card-title">Welcome</h3>-->
+<!--                                    <h3 class="card-subtitle mb-2 text-muted"><th:block th:text="${#authentication.principal.fullName}"></th:block></h3>-->
+<!--                                    <p class="card-text"></p>-->
+
+<!--                                </div>-->
+<!--                            </div>-->
+
                             <!--                        <h1 class="mb-3">Learn Bootstrap 5 with MDB</h1>-->
                             <!--                        <h5 class="mb-4">Best & free guide of responsive web design</h5>-->
-                            <a class="btn btn-outline-light btn-lg m-2" href="/users/login"
+                            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/login"
                                role="button" rel="nofollow">Sign In</a>
-                            <a class="btn btn-outline-light btn-lg m-2" href="/users/register"
+                            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/register"
                                role="button">Sign Up</a>
                         </div>
                     </div>
@@ -85,12 +104,12 @@
 
             <!-- Single item -->
             <div class="carousel-item">
-                <div class="mask" style="background-color: rgba(0, 0, 0, 0.3);">
+                <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="text-white text-center">
-                            <a class="btn btn-outline-light btn-lg m-2" href="/users/login"
+                            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/login"
                                role="button" rel="nofollow">Sign In</a>
-                            <a class="btn btn-outline-light btn-lg m-2" href="/users/register"
+                            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/register"
                                role="button">Sign Up</a>
                         </div>
                     </div>
@@ -108,9 +127,9 @@
                 <!--                  ">-->
                 <div class="d-flex justify-content-center align-items-center h-100">
                     <div class="text-white text-center">
-                        <a class="btn btn-outline-light btn-lg m-2" href="/users/login"
+                        <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/login"
                            role="button" rel="nofollow">Sign In</a>
-                        <a class="btn btn-outline-light btn-lg m-2" href="/users/register"
+                        <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/register"
                            role="button">Sign Up</a>
                     </div>
                 </div>
@@ -127,7 +146,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-</div>
+
 
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 

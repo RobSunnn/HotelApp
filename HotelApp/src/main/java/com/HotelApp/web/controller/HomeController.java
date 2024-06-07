@@ -13,10 +13,4 @@ public class HomeController {
         model.addAttribute("imageUrls", new String[]{"/images/hotel.jpg", "/images/hotel1.jpg", "/images/hotel2.jpg"});
         return "index";
     }
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
-
 }

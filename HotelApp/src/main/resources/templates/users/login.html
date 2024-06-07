@@ -3,25 +3,19 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Sign IN</title>
 
-<!--    <style>-->
-<!--        body {-->
-<!--            background-image: url("/images/hotel.jpg");-->
-<!--            background-size: 100% 100vh; /* Use viewport height for better responsiveness */-->
-<!--            background-repeat: no-repeat;-->
-<!--            background-attachment: fixed;-->
-<!--            /*transition: background-image 1s ease;*/-->
-<!--            /*transition-delay: 3s;*/-->
-<!--        }-->
+    <style>
+        body {
+            background-image: url("/images/hotel.jpg");
+            background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /*transition: background-image 1s ease;*/
+            /*transition-delay: 3s;*/
+        }
 
-<!--        .navbar {-->
-<!--            border-top: 2px solid white;-->
-<!--            border-bottom: 2px solid white;-->
-<!--        }-->
-
-<!--    </style>-->
+    </style>
 </head>
 
 <body>
@@ -76,8 +70,7 @@
 
 
 <!-- Bootstrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

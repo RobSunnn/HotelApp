@@ -39,7 +39,7 @@ public class ApplicationSecurityConfiguration {
                                 .loginPage("/users/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/home")
+                                .defaultSuccessUrl("/")
                                 .failureForwardUrl("/users/login-error")
                 ).logout(
                         logout -> logout.logoutUrl("/users/logout")

@@ -39,7 +39,7 @@ public class ApplicationSecurityConfiguration {
                                 .loginPage("/users/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/")
+                                .defaultSuccessUrl("/home")
                                 .failureForwardUrl("/users/login-error")
                 ).logout(
                         logout -> logout.logoutUrl("/users/logout")
@@ -47,11 +47,7 @@ public class ApplicationSecurityConfiguration {
                                 .deleteCookies("JSESSIONID")
                                 .clearAuthentication(true)
                                 .invalidateHttpSession(true)
-                ).sessionManagement(session -> session
-                        .invalidSessionStrategy((request, response) -> request.authenticate(response))
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                        .maximumSessions(1)
-                        .expiredUrl("/users/login"));
+                );
 
 
         return httpSecurity.build();

@@ -3,89 +3,94 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Navbar</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+    <title>NavBar</title>
     <style>
 
-        .navbar {
-            width: 100%;
-            border-top: 2px solid white;
-            border-bottom: 2px solid white;
+        /* Height for devices larger than 576px */
+        @media (min-width: 992px) {
+            #introCarousel {
+                margin-top: -60px;
+            }
         }
 
-        ul li {
-            margin-right: 0.5em;
+        @media (max-width: 992px) {
+            .navbar {
+                background-color: #2e2d2c;
+            }
+        }
+
+        .form-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /*width: 130%;*/
+        }
+
+        .navbar .nav-link {
+            color: #fff !important;
         }
 
     </style>
 </head>
 
 <body>
+<!-- Navbar -->
+<header th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark d-lg-block" style="z-index: 2000;">
+        <div class="container-fluid">
+            <a th:if="${#authorization.expression('isAuthenticated()')}" class="navbar-brand nav-link" href="/home">
+                <strong>Hotel App</strong>
+            </a>
+            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="navbar-brand nav-link" href="/">
+                <strong>Hotel App</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#toggler"
+                    aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="fas fa-bars"></i></span>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-dark">
-    <a class="navbar-brand text-white" th:href="@{/}">Hotel Application</a>
-    <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+            </button>
+            <div class="collapse navbar-collapse" id="toggler">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact" rel="nofollow">Contact us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/moderator">Moderator</a>
+                    </li>
+                </ul>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav list-inline" id="custom-box">
+                    <!-- Icons -->
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <div class="form-inline my-2 my-lg-0 border px-3">
+                            <div class="logged-user text-white p-2">
+                                Welcome, <a th:href="@{/users/profile}">
+                                <th:block th:text="${#authentication.principal.fullName}"></th:block>
+                            </a>!
+                            </div>
 
-            <li class="nav-item btn-outline-secondary rounded rounded">
-                <a class="nav-link text-white" th:href="@{/about}">About</a>
-            </li>
+                            <form th:method="post" th:action="@{/users/logout}">
+                                <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
+                                       value="Logout">
+                            </form>
 
-            <li class="nav-item btn-outline-secondary rounded rounded">
-                <a class="nav-link text-white" th:href="@{/contact}">Contact us</a>
-            </li>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-            <li class="nav-item btn-outline-secondary rounded rounded">
-                <a class="nav-link text-white" th:href="@{/allRoomTypes}">Our Rooms</a>
-            </li>
+</header>
 
-            <li class="nav-item btn-outline-secondary rounded rounded" sec:authorize="hasRole('ADMIN')">
-                <a class="nav-link text-white" th:href="@{/admin}">Admin Panel</a>
-            </li>
 
-            <li class="nav-item btn-outline-secondary rounded rounded" sec:authorize="hasRole('MODERATOR')">
-                <a class="nav-link text-white" th:href="@{/moderator}">Moderator Panel</a>
-            </li>
-
-            <li class="nav-item text-white btn-outline-secondary rounded rounded" sec:authorize="!isAuthenticated()">
-                <a class="nav-link text-white" th:href="@{/users/register}">Register</a>
-            </li>
-
-            <li class="nav-item text-white btn-outline-secondary rounded" sec:authorize="!isAuthenticated()">
-                <a class="nav-link text-white" th:href="@{/users/login}">Login</a>
-            </li>
-
-            <li class="nav-item" sec:authorize="isAuthenticated()">
-                <div class="form-inline my-2 my-lg-0 border px-3">
-                    <div class="logged-user text-white p-2">
-                        Welcome, <a th:href="@{/users/profile}">
-                        <th:block th:text="${#authentication.principal.fullName}"></th:block>
-                    </a>!
-                    </div>
-
-                    <form th:method="post" th:action="@{/users/logout}">
-                        <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
-                               value="Logout"></input>
-                    </form>
-
-                </div>
-            </li>
-
-        </ul>
-    </div>
-</nav>
-
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>
-<!-- Bootstrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </html>

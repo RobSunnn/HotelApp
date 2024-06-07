@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<th:block th:insert="~{fragments/head :: head}"></th:block>
     <title>Moderator Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <style>
         /* Add custom styles here */
         body {
@@ -32,7 +28,6 @@
 </head>
 <body>
 
-<!-- Navigation -->
 <div th:insert="~{fragments/nav-bar :: navbar}"></div>
 
 
@@ -97,8 +92,7 @@
 <div th:insert="~{/fragments/footer}"></div>
 
 <!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

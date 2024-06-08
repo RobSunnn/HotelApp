@@ -60,10 +60,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/about">About us</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">Admin</a>
+                    <li  class="nav-item">
+                        <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
                     </li>
-                    <li class="nav-item">
+                    <li sec:authorize="hasRole('ADMIN')" class="nav-item">
                         <a class="nav-link" href="/moderator">Moderator</a>
                     </li>
                 </ul>

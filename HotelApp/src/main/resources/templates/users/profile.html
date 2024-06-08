@@ -48,7 +48,7 @@
                         <img th:if="${userDetails.getProfilePictureBase64() != ''}"
                              th:src="'data:image/jpeg;base64,' + ${userDetails.getProfilePictureBase64()}" width="300"
                              height="300" class="rounded-circle" alt="Profile Picture">
-                        <img th:if="${userDetails.getProfilePictureBase64() == ''}" src="/images/profile.jpg"
+                        <img th:if="${userDetails.getProfilePictureBase64() == ''}" src="/images/minion.gif"
                              width="300" height="300" class="rounded-circle" alt="Default Profile Picture">
 
                         <div th:if="${successMessage}" class="alert alert-success mt-1" role="alert">

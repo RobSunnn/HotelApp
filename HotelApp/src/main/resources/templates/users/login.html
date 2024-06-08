@@ -7,14 +7,16 @@
 
     <style>
         body {
-            background-image: url("/images/hotel.jpg");
+            background-image: url("/images/login-img.jpg");
             background-size: 100% 100vh; /* Use viewport height for better responsiveness */
             background-repeat: no-repeat;
             background-attachment: fixed;
             /*transition: background-image 1s ease;*/
             /*transition-delay: 3s;*/
         }
-
+        main {
+            margin-bottom: 15em;
+        }
     </style>
 </head>
 
@@ -27,7 +29,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header bg-secondary text-white">
+                        <div class="card-header bg-dark text-white">
                             <h4>Login</h4>
                         </div>
 
@@ -66,11 +68,12 @@
     </form>
 
 </main>
-<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{/fragments/footer}" th:with="addSubscriberBindingModel=${addSubscriberBindingModel},
+                  successMessage=${successMessage}"></th:block>
 
 
 <!-- Bootstrap JS -->
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments/scripts}"></th:block>
 
 </body>
 </html>

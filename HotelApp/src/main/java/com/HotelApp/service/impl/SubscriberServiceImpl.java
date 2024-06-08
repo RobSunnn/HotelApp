@@ -34,6 +34,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);
             redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.SUBSCRIBER_BINDING_MODEL, bindingResult);
+            redirectAttributes.addFlashAttribute("failMessage", "Please enter valid email.");
 
             return;
         }

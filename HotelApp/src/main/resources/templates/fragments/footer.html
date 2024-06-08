@@ -9,19 +9,184 @@
         /* Custom styles for the footer */
         footer {
             color: white;
-            position: fixed;
+            background-color: black;
             bottom: 0;
+
             width: 100%;
-            border-top: 2px solid white;
-            border-bottom:2px solid white;
+            margin-top: 3em;
         }
+
+        .footer-end {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .video {
+            font-size: 10px;
+        }
+
+
     </style>
 </head>
 
-<body th:fragment="footer">
+<body >
 
-    <footer class="text-center bg-dark p-1">
-        <p>&copy; 2024 Hotel App</p>
-    </footer>
+<!-- Footer -->
+<footer th:fragment="footer" class="bg-body-tertiary bg-dark text-center">
+    <!-- Grid container -->
+    <div class="container p-4">
+        <!-- Section: Social media -->
+        <section class="mb-4">
+            <!-- Facebook -->
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#!" role="button"
+            ><i class="fab fa-facebook-f"></i
+            ></a>
+
+            <!-- Twitter -->
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#!" role="button"
+            ><i class="fab fa-twitter"></i
+            ></a>
+
+            <!-- Google -->
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#!" role="button"
+            ><i class="fab fa-google"></i
+            ></a>
+
+            <!-- Instagram -->
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#!" role="button"
+            ><i class="fab fa-instagram"></i
+            ></a>
+
+            <!-- Linkedin -->
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#!" role="button"
+            ><i class="fab fa-linkedin-in"></i
+            ></a>
+
+            <!-- Github -->
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#!" role="button"
+            ><i class="fab fa-github"></i
+            ></a>
+        </section>
+        <!-- Section: Social media -->
+
+        <!-- Section: Form -->
+        <section>
+            <!--/*@thymesVar id="addSubscriberBindingModel" type="AddSubscriberBindingModel"*/-->
+            <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
+                <!--Grid row-->
+
+                <input type="hidden" name="redirectUrl" th:value="${pageUrl}" />
+                <div class="row d-flex justify-content-center">
+                    <!--Grid column-->
+                    <div class="col-auto">
+                        <p class="pt-2">
+                            <strong>Sign up for our newsletter</strong>
+                        </p>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-md-5 col-12">
+                        <!-- Email input -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="email" id="form5Example24" class="form-control" name="subscriberEmail" />
+                            <label class="form-label" for="form5Example24">Email address</label>
+                        </div>
+
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-auto">
+                        <!-- Submit button -->
+                        <button data-mdb-ripple-init type="submit" class="btn btn-primary mb-4">
+                            Subscribe
+                        </button>
+                    </div>
+
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+                <div th:if="${successSubscribeMessage}" style="color: green;">
+                    <p th:text="${successSubscribeMessage}"></p>
+                </div>
+                <div th:if="${failMessage}" style="color: red;">
+                    <p th:text="${failMessage}"></p>
+                </div>
+            </form>
+
+        </section>
+        <!-- Section: Form -->
+
+        <!-- Section: Text -->
+        <section class="mb-4">
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
+                repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam eum
+                harum corrupti dicta, aliquam sequi voluptate quas.
+            </p>
+        </section>
+        <!-- Section: Text -->
+
+        <!-- Section: Links -->
+        <section>
+            <!--Grid row-->
+
+               <div class="footer-end">
+                   <!--Grid column-->
+                   <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                       <h5 class="text-uppercase">Quick Links</h5>
+
+                       <ul class="list-unstyled mb-0">
+                           <li class="">
+                               <a class="text-body" href="/about">About Us</a>
+                           </li>
+                           <li>
+                               <a class="text-body" href="/contact">Contact</a>
+                           </li>
+                           <li>
+                               <a class="text-body" href="/allRoomTypes">Our Rooms</a>
+                           </li>
+                           <li>
+                               <a class="text-body" href="#!">Link 4</a>
+                           </li>
+                       </ul>
+
+                   </div>
+
+                   <div class="video">
+                       <div class="">
+                           <div class="">
+                               <video controls width="350">
+
+                                   <source src="/images/10154095086876282.mp4" type="video/mp4" />
+
+                                   Download the
+                                   <a href="/images/10154095086876282.mp4">MP4</a>
+                                   video.
+                               </video>
+                           </div>
+                       </div>
+                   </div>
+
+               </div>
+
+        </section>
+
+    </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2024
+        <a class="text-reset fw-bold" href="#"></a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<!-- Footer -->
+
+
+<!--<th:block th:replace="~{fragments/scripts}"></th:block>-->
+
 </body>
 </html>

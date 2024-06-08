@@ -7,9 +7,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
 
-        * {
-            box-sizing: border-box;
-        }
 
         body {
             background-image: url("/images/hotel1.jpg");
@@ -23,21 +20,19 @@
            margin-bottom: 5em;
         }
 
-        .container {
-            margin-top: 2em;
-            display: flex;
-
-        }
-
         .card {
             min-height:700px;
-
         }
 
         .card-img {
             padding: 1em;
             height: 100%; /* adjust the height as needed */
             object-fit: cover;
+        }
+
+        footer {
+            display: flex;
+            flex-direction: column;
         }
     </style>
 </head>
@@ -66,34 +61,35 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</div>-->
-<div class="cards d-flex">
-    <div class="container-fluid" th:each="room : ${allRooms.getContent()}">
-        <h2 class="text-center text-white mt-5" th:text="${room.getName()}">Room Type</h2>
-        <div class="row  d-flex flex-row justify-content-center">
-            <div class="card col-sm-10 m-1 p-1">
-                <div class="card-img-top-wrapper">
-                    <img class="card-img" th:src="${room.getPictureUrl}" alt="Car image">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="'Our ' + ${room.getName()} "></h5>
-                </div>
-                <ul class="offer-details list-group list-group-flush">
-                    <li class="list-group-item">
+<main>
+    <div class="cards d-flex">
+        <div class="container-fluid" th:each="room : ${allRooms.getContent()}">
+            <h2 class="text-center text-white mt-5" th:text="${room.getName()}">Room Type</h2>
+            <div class="row  d-flex flex-row justify-content-center">
+                <div class="card col-sm-10 m-1 p-1">
+                    <div class="card-img-top-wrapper">
+                        <img class="card-img" th:src="${room.getPictureUrl}" alt="Car image">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="'Our ' + ${room.getName()} "></h5>
+                    </div>
+                    <ul class="offer-details list-group list-group-flush">
+                        <li class="list-group-item">
 
-                        <div class="card-text"><span th:text="${room.getDescription()}">• Mileage</span></div>
+                            <div class="card-text"><span th:text="${room.getDescription()}">• Mileage</span></div>
 
-                    </li>
-                </ul>
-                <div class="card-body">
-                    <a class="card-link" href="/static">Details</a>
+                        </li>
+                    </ul>
+                    <div class="card-body">
+                        <a class="card-link" href="/static">Details</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Page counter -->
-<div class="container mt-4">
+    <!-- Page counter -->
+    <div class="container mt-4">
 
         <div class="col-md-12 text-white text-center">
             <p>
@@ -102,7 +98,7 @@
             </p>
         </div>
 
-</div>
+    </div>
 
 
     <div class="col-md-12 text-center">
@@ -120,10 +116,14 @@
             </ul>
         </nav>
     </div>
+</main>
 
 
 
-<div th:insert="~{/fragments/footer}"></div>
+<th:block th:replace="~{/fragments/footer}"></th:block>
+
+<th:block th:replace="~{fragments/scripts}"></th:block>
+
 
 </body>
 </html>

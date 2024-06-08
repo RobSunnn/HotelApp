@@ -9,16 +9,16 @@
     <style>
 
         @media (min-width: 992px) {
-            #introCarousel {
+            #carousel {
                 margin-top: -60px;
             }
         }
         @media (max-width: 992px) {
-            #introCarousel {
+            #carousel {
                 margin-top: 100px;
             }
         }
-        #introCarousel,
+        #carousel,
         .carousel-inner,
         .carousel-item,
         .carousel-item.active {
@@ -67,12 +67,13 @@
 </head>
 <body>
 
-    <div th:fragment="carousel" id="introCarousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
+
+    <div th:fragment="carousel" id="carousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
-            <li data-mdb-target="#introCarousel" data-mdb-slide-to="0" class="active"></li>
-            <li data-mdb-target="#introCarousel" data-mdb-slide-to="1"></li>
-            <li data-mdb-target="#introCarousel" data-mdb-slide-to="2"></li>
+            <li data-mdb-target="#carousel" data-mdb-slide-to="0" class="active"></li>
+            <li data-mdb-target="#carousel" data-mdb-slide-to="1"></li>
+            <li data-mdb-target="#carousel" data-mdb-slide-to="2"></li>
         </ol>
 
         <!-- Inner -->
@@ -136,13 +137,13 @@
             </div>
         </div>
     </div>
-    <a class="carousel-control-prev" href="#introCarousel" role="button" data-mdb-slide="prev">
+    <a class="carousel-control-prev" href="#carousel" role="button" data-mdb-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
     </a>
 
     <!-- Controls -->
-    <a class="carousel-control-next" href="#introCarousel" role="button" data-mdb-slide="next">
+    <a class="carousel-control-next" href="#carousel" role="button" data-mdb-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>

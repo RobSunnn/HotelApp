@@ -47,7 +47,7 @@ public class RoomTypesServiceImpl implements RoomTypesService {
 
         roomTypeRepository.save(new RoomTypeEntity("Single Room",
                 "With thoughtful touches and impeccable attention to detail, our single hotel room offers a retreat where you can recharge, rejuvenate, and experience true hospitality at its finest. Whether you''re here for business or pleasure, we invite you to make yourself at home and discover the perfect blend of comfort and sophistication.",
-                1, "https://hmhub.in/wp-content/uploads/2018/07/bed-bedroom-chair-comfort-271619-1024x673.jpg",
+                1, "https://images.adsttc.com/media/images/6019/902f/f91c/8198/f400/00d4/large_jpg/loft-23.jpg?1612288037",
                 categoriesRepository.findByName(CategoriesEnum.SINGLE)));
 
         roomTypeRepository.save(new RoomTypeEntity("Studio",
@@ -57,7 +57,7 @@ public class RoomTypesServiceImpl implements RoomTypesService {
 
         roomTypeRepository.save(new RoomTypeEntity("Double Room",
                 "Whether you''re here for a romantic getaway, a family vacation, or a weekend escape with friends, our double hotel room offers the perfect blend of comfort, convenience, and style for your stay. We invite you to make yourself at home and experience the warmth of true hospitality during your time with us.",
-                2, "https://i0.wp.com/homequirer.com/wp-content/uploads/2022/01/Double-Room.jpg?resize=1200%2C675&ssl=1",
+                2, "https://elmalekfurniture.com/wp-content/uploads/2022/06/Screenshot-2022-06-24-at-6.11.56-PM.jpg",
                 categoriesRepository.findByName(CategoriesEnum.DOUBLE)));
 
         roomTypeRepository.save(new RoomTypeEntity("Deluxe Room",
@@ -67,7 +67,7 @@ public class RoomTypesServiceImpl implements RoomTypesService {
 
         roomTypeRepository.save(new RoomTypeEntity("Presidential Room",
                 "Welcome to the epitome of luxury and refinement, where opulence meets sophistication in our distinguished presidential suite. From the moment you step inside, you''ll be enveloped in an atmosphere of grandeur and elegance, promising an unparalleled experience fit for royalty.",
-                4, "https://themirahotel.com.vn/wp-content/uploads/2016/11/620x458px-1a-1-1920x813.jpg",
+                4, "https://s7d2.scene7.com/is/image/ritzcarlton/RCCHENG_00057_conversion?$XlargeViewport100pct$",
                 categoriesRepository.findByName(CategoriesEnum.PRESIDENT)));
     }
 

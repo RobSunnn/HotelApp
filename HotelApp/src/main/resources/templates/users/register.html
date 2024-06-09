@@ -17,15 +17,18 @@
             text-align: center;
         }
 
-        small {
+        .is-invalid~.invalid-feedback {
+            position: unset;
+
+        }
+
+       .container small {
             text-align: center;
-            font-size: 1.3rem;
+            font-size: 0.9rem;
+            width: 90%;
+            margin: 0 auto;
         }
 
-
-        .card {
-            margin-bottom: 7em;
-        }
     </style>
 </head>
 
@@ -39,81 +42,83 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="card bg-dark text-white">
-                        <div class="card-header bg-dark text-black">
+                        <div class="card-header bg-dark text-white">
                             <h4>Registration</h4>
                         </div>
                         <div class="card-body">
                             <form>
 
-                                <div class="form-group">
+                                <div class="container">
+                                    <div class="form-group">
 
-                                    <label for="firstName">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" th:errorclass="is-invalid"
-                                           th:field="*{firstName}" name="firstName" placeholder="Enter your first name...">
+                                        <label for="firstName">First Name</label>
+                                        <input type="text" class="form-control" id="firstName" th:errorclass="is-invalid"
+                                               th:field="*{firstName}" name="firstName" placeholder="Enter your first name...">
 
-                                    <small id="firstNameError" th:errors="*{firstName}"
-                                           class="invalid-feedback text-white  bg-danger rounded"></small>
+                                        <small id="firstNameError" th:errors="*{firstName}"
+                                               class="invalid-feedback  text-white  bg-danger rounded"></small>
 
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="lastName">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName" th:errorclass="is-invalid"
+                                               th:field="*{lastName}" name="lastName" placeholder="Enter your last name...">
+
+                                        <small id="lastNameError" th:errors="*{lastName}"
+                                               class="invalid-feedback text-white bg-danger rounded"></small>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="email">Email address</label>
+                                        <input type="email" class="form-control" id="email" th:errorclass="is-invalid"
+                                               th:field="*{email}" name="email" placeholder="Enter your email...">
+
+                                        <small id="emailError" th:errors="*{email}"
+                                               class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="age">Age</label>
+                                        <input type="number" class="form-control" id="age" th:errorclass="is-invalid"
+                                               th:field="*{age}" name="age" placeholder="Enter your age...">
+
+                                        <small id="ageError" th:errors="*{age}"
+                                               class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" id="password" th:errorclass="is-invalid"
+                                               th:field="*{password}" name="password" placeholder="Enter password...">
+
+                                        <small id="passwordError" th:errors="*{password}"
+                                               class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label for="confirmPassword">Confirm Password</label>
+                                        <input type="password" class="form-control" id="confirmPassword"
+                                               th:errorclass="is-invalid" th:field="*{confirmPassword}" name="confirmPassword"
+                                               placeholder="Confirm your password...">
+
+                                        <small id="confirmPasswordError" th:errors="*{confirmPassword}"
+                                               class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-info btn-lg">Register</button>
                                 </div>
-
-                                <div class="form-group">
-
-                                    <label for="lastName">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" th:errorclass="is-invalid"
-                                           th:field="*{lastName}" name="lastName" placeholder="Enter your last name...">
-
-                                    <small id="lastNameError" th:errors="*{lastName}"
-                                           class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                </div>
-
-                                <div class="form-group">
-
-                                    <label for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email" th:errorclass="is-invalid"
-                                           th:field="*{email}" name="email" placeholder="Enter your email...">
-
-                                    <small id="emailError" th:errors="*{email}"
-                                           class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                </div>
-
-                                <div class="form-group">
-
-                                    <label for="age">Age</label>
-                                    <input type="number" class="form-control" id="age" th:errorclass="is-invalid"
-                                           th:field="*{age}" name="age" placeholder="Enter your age...">
-
-                                    <small id="ageError" th:errors="*{age}"
-                                           class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                </div>
-
-                                <div class="form-group">
-
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" th:errorclass="is-invalid"
-                                           th:field="*{password}" name="password" placeholder="Enter password...">
-
-                                    <small id="passwordError" th:errors="*{password}"
-                                           class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                </div>
-
-                                <div class="form-group">
-
-                                    <label for="confirmPassword">Confirm Password</label>
-                                    <input type="password" class="form-control" id="confirmPassword"
-                                           th:errorclass="is-invalid" th:field="*{confirmPassword}" name="confirmPassword"
-                                           placeholder="Confirm your password...">
-
-                                    <small id="confirmPasswordError" th:errors="*{confirmPassword}"
-                                           class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                </div>
-
-
-                                <button type="submit" class="btn btn-info btn-lg">Register</button>
 
                             </form>
                         </div>

@@ -14,6 +14,12 @@
             /*transition: background-image 1s ease;*/
             /*transition-delay: 3s;*/
         }
+
+
+        .is-invalid~.invalid-feedback {
+            position: unset;
+
+        }
         main {
             margin-bottom: 15em;
         }
@@ -24,6 +30,7 @@
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <main>
+<div class="container">
     <form th:action="@{/users/login}" th:method="POST">
         <div class="container mt-5">
             <div class="row justify-content-center">
@@ -66,6 +73,7 @@
             </div>
         </div>
     </form>
+</div>
 
 </main>
 <th:block th:insert="~{/fragments/footer}" th:with="addSubscriberBindingModel=${addSubscriberBindingModel},

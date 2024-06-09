@@ -1,277 +1,304 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head >
+<head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
 
     <title>Welcome</title>
-<style>
-    /* Height for devices larger than 576px */
-    @media (min-width: 992px) {
-        #carousel {
-            margin-top: -600px;
+    <style>
+        /* Height for devices larger than 576px */
+        @media (min-width: 992px) {
+            #carousel {
+                margin-top: -60px;
+            }
         }
-    }
-
-    .form-inline {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        /*width: 130%;*/
-    }
-
-    /*.navbar {*/
-    /*    margin-bottom: 3em;*/
-    /*    background-image: url("/images/hotel.jpg");*/
-    /*}*/
-    .navbar .nav-link {
-        color: #fff !important;
-    }
-    @media (min-width: 992px) {
-        #carousel {
-            margin-top: -60px;
+        h2 {
+            text-align: center;
+            padding: 0.5em;
         }
-    }
+        .form-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    #carousel,
-    .carousel-inner,
-    .carousel-item,
-    .carousel-item.active {
-        height: 80vh;
-    }
+        .navbar .nav-link {
+            color: #fff !important;
+        }
 
-    .carousel-control-next {
-        height: 90vh;
-    }
 
-    .carousel-control-prev {
-        height: 90vh;
-    }
+        #carousel,
+        .carousel-inner,
+        .carousel-item,
+        .carousel-item.active {
+            height: 100vh;
+        }
 
-    .carousel-item:nth-child(1) {
-        background-image: url('/images/hotel.jpg');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center center;
-        height: 80vh;
-    }
+        #roomCarousel {
+            height: 50vh;
+        }
 
-    .carousel-item:nth-child(2) {
-        background-image: url('/images/hotel1.jpg');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
+        #roomCarousel .carousel-inner,
+        #roomCarousel .carousel-item,
+        #roomCarousel .carousel-control-next,
+        #roomCarousel .carousel-control-prev{
+            height: 50vh;
+        }
 
-        background-position: center center;
-        height: 80vh;
-    }
+        .carousel-control-next,
+        .carousel-control-prev {
+            align-self: center;
+            height: 100vh;
+            color: black;
+        }
 
-    .carousel-item:nth-child(3) {
-        background-image: url('/images/hotel2.jpg');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center center;
-        height: 80vh;
-    }
-    .card {
-        width: 100%;
-        margin: 0 auto;
-    }
+        .carousel-item {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center center;
+            height: 100vh;
+        }
 
-    footer {
-        color: white;
-        background-color: black;
-        bottom: 0;
+        /*.card {*/
+        /*    width: 100%;*/
+        /*    margin: 0 auto;*/
+        /*}*/
+        .custom-card .card-body {
+            padding: 0;
+        }
+        .custom-card {
+            display: flex;
+            width: 100%;
+            height: 60vh;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .custom-card .card-img {
+            display: block;
+            width: 70%;
+            max-width: 100%;
+            height: 60vh;
+        }
+        .card-img img {
+            width: 100%;
+            max-width: 100%;
+            height: 60vh;
+            margin-right: 3em;
+        }
+        .custom-card .text {
+            width: 100%;
+            height: 60vh;
+            align-content: center;
+            padding: 2em;
+        }
 
-        width: 100%;
-        margin-top: 3em;
-    }
+        footer {
+            color: white;
+            background-color: black;
+            bottom: 0;
+            opacity: 90%;
+            width: 100%;
+            margin-top: 3em;
+        }
 
-    .footer-end {
-        display: flex;
-        justify-content: space-evenly;
-    }
-</style>
+        .footer-end {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+    </style>
 </head>
 <body>
 
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark d-lg-block" style="z-index: 2000;">
+        <div class="container-fluid">
 
-<main>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark d-lg-block" style="z-index: 2000;">
-            <div class="container-fluid">
+            <a class="navbar-brand nav-link" href="/">
+                <strong>Hotel App</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#toggler"
+                    aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span><i class="fas fa-bars"></i></span>
 
-                <a class="navbar-brand nav-link" href="/">
-                    <strong>Hotel App</strong>
-                </a>
-                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#toggler"
-                        aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
-                    <span><i class="fas fa-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="toggler">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact" rel="nofollow">Contact us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                        <a class="nav-link" href="/moderator">Moderator</a>
+                    </li>
+                </ul>
 
-                </button>
-                <div class="collapse navbar-collapse" id="toggler">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/contact" rel="nofollow">Contact us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/about">About us</a>
-                        </li>
-                        <li  class="nav-item">
-                            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
-                        </li>
-                        <li sec:authorize="hasRole('ADMIN')" class="nav-item">
-                            <a class="nav-link" href="/moderator">Moderator</a>
-                        </li>
-                    </ul>
+                <ul class="navbar-nav list-inline" id="custom-box">
 
-                    <ul class="navbar-nav list-inline" id="custom-box">
-                        <!-- Icons -->
-                        <li class="nav-item" sec:authorize="isAuthenticated()">
-                            <div class="form-inline my-2 my-lg-0 border px-3">
-                                <div class="logged-user text-white p-2">
-                                    Welcome, <a style="font-weight: 700" th:href="@{/users/profile}">
-                                    <th:block th:text="${#authentication.principal.fullName}"></th:block>
-                                </a>!
-                                </div>
 
-                                <form th:method="post" th:action="@{/users/logout}">
-                                    <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
-                                           value="Logout">
-                                </form>
-
+                    <!-- Icons -->
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <div class="form-inline my-2 my-lg-0 border px-3">
+                            <div class="logged-user text-white p-2">
+                                Welcome, <a style="font-weight: 700" th:href="@{/users/profile}">
+                                <th:block th:text="${#authentication.principal.fullName}"></th:block>
+                            </a>!
                             </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
 
-    </header>
-    <div  id="carousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-mdb-target="#carousel" data-mdb-slide-to="0" class="active"></li>
-            <li data-mdb-target="#carousel" data-mdb-slide-to="1"></li>
-            <li data-mdb-target="#carousel" data-mdb-slide-to="2"></li>
-        </ol>
+                            <form th:method="post" th:action="@{/users/logout}">
+                                <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
+                                       value="Logout">
+                            </form>
 
-        <!-- Inner -->
-        <div class="carousel-inner">
-            <!-- Single item -->
-            <div class="carousel-item active">
-                <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
-                    <div class="d-flex justify-content-center align-items-center h-100">
-                        <div class="text-white text-center">
-                            <!--                            <div class="card" style="width: 18rem;">-->
-                            <!--                                <div class="card-body">-->
-                            <!--                                    <h3 class="card-title">Welcome</h3>-->
-                            <!--                                    <h3 class="card-subtitle mb-2 text-muted"><th:block th:text="${#authentication.principal.fullName}"></th:block></h3>-->
-                            <!--                                    <p class="card-text"></p>-->
-
-                            <!--                                </div>-->
-                            <!--                            </div>-->
-
-                            <!--                        <h1 class="mb-3">Learn Bootstrap 5 with MDB</h1>-->
-                            <!--                        <h5 class="mb-4">Best & free guide of responsive web design</h5>-->
-                            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/login"
-                               role="button" rel="nofollow">Sign In</a>
-                            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/register"
-                               role="button">Sign Up</a>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Single item -->
-            <div class="carousel-item">
-                <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
-                    <div class="d-flex justify-content-center align-items-center h-100">
-                        <div class="text-white text-center">
-                            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/login"
-                               role="button" rel="nofollow">Sign In</a>
-                            <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/register"
-                               role="button">Sign Up</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Single item -->
-            <div class="carousel-item">
-                <!--            <div class="mask" style="-->
-                <!--                    background: linear-gradient(-->
-                <!--                      45deg,-->
-                <!--                      rgba(29, 236, 197, 0.7),-->
-                <!--                      rgba(91, 14, 214, 0.7) 100%-->
-                <!--                    );-->
-                <!--                  ">-->
-                <div class="d-flex justify-content-center align-items-center h-100">
-                    <div class="text-white text-center">
-                        <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/login"
-                           role="button" rel="nofollow">Sign In</a>
-                        <a th:unless="${#authorization.expression('isAuthenticated()')}" class="btn btn-outline-light btn-lg m-2" href="/users/register"
-                           role="button">Sign Up</a>
-                    </div>
-                </div>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
+
+</header>
+
+<main>
+    <div id="carousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
+
+        <div id="carouselIndicators" class="carousel slide" data-mdb-ride="carousel">
+            <!-- Dynamic Carousel Indicators -->
+            <ol class="carousel-indicators">
+                <li th:each="image, iterStat : ${imageUrls}"
+                    th:data-mdb-target="'#carouselIndicators'"
+                    th:data-mdb-slide-to="${iterStat.index}"
+                    th:classappend="${iterStat.index == 0} ? 'active'">
+                </li>
+            </ol>
+
+            <!-- Dynamic Carousel Items -->
+            <!-- Inner -->
+            <div class="carousel-inner">
+                <!-- Single item -->
+                <div th:each="image, iterStat : ${imageUrls}" class="carousel-item"
+                     th:classappend="${iterStat.index == 0} ? 'active'"
+                     th:style="'background-image: url(' + ${image} + ');'">
+                    <div th:unless="${#authorization.expression('isAuthenticated()')}" class="mask"
+                         style="background-color: rgba(0, 0, 0, 0.6); width: 100%; height: 100%;">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="text-white text-center">
+                                <div>
+                                    <a th:unless="${#authorization.expression('isAuthenticated()')}"
+                                       class="btn btn-outline-light btn-lg m-2" href="/users/login" role="button"
+                                       rel="nofollow">Sign In</a>
+                                    <a th:unless="${#authorization.expression('isAuthenticated()')}"
+                                       class="btn btn-outline-light btn-lg m-2" href="/users/register" role="button">Sign
+                                        Up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-mdb-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselIndicators" role="button" data-mdb-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
-    <a class="carousel-control-prev" href="#carousel" role="button" data-mdb-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
 
-    <!-- Controls -->
-    <a class="carousel-control-next" href="#carousel" role="button" data-mdb-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    <h2>Our Rooms</h2>
 
-<!--    <div class="card">-->
-<!--        <p>test</p>-->
-<!--        <p>test</p>-->
-<!--        <p>test</p>-->
-<!--        <p>test</p>-->
-<!--        <p>test</p>-->
-<!--    </div>-->
+    <div id="roomCarousel" class="carousel slide carousel-fade shadow-2-strong"  data-mdb-ride="carousel">
+        <div id="carouselRoomsIndicators" class="carousel slide" data-mdb-ride="carousel">
+            <ol class="carousel-indicators">
+                <li th:each="room, iterStat : ${allRooms.getContent()}"
+                    th:data-mdb-target="'#carouselRoomsIndicators'"
+                    th:data-mdb-slide-to="${iterStat.index}"
+                    th:classappend="${iterStat.index == 0} ? 'active'">
+                </li>
+            </ol>
+
+            <div class="carousel-inner">
+                <div th:each="room, iterStat : ${allRooms.getContent()}"
+                     class="carousel-item"
+                     th:classappend="${iterStat.index == 0} ? ' active'"
+                     >
+                    <div class="mask d-flex justify-content-center align-items-center">
+                        <div class="custom-card text-center">
+
+                           <div class="card-body d-flex">
+                               <div class="card-img">
+                                   <img th:src="${room.getPictureUrl()}" alt="">
+                               </div>
+                               <div class="text">
+                                   <h2 class="card-title" th:text="${room.getName()}"></h2>
+                                   <p class="card-text" th:text="${room.getDescription()}"></p>
+                               </div>
+                           </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Carousel Controls -->
+        <a class="carousel-control-prev" href="#carouselRoomsIndicators" role="button" data-mdb-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselRoomsIndicators" role="button" data-mdb-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
 </main>
-<footer th:fragment="footer" class="bg-body-tertiary bg-dark text-center">
+<footer class="bg-body-tertiary bg-dark text-center">
     <!-- Grid container -->
     <div class="container p-4">
         <!-- Section: Social media -->
         <section class="mb-4">
             <!-- Facebook -->
-            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button"
-            ><i class="fab fa-facebook-f"></i
-            ></a>
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button">
+                <i class="fab fa-facebook-f fa-2xl"></i>
+            </a>
 
             <!-- Twitter -->
-            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button"
-            ><i class="fab fa-twitter"></i
-            ></a>
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button">
+                <i class="fab fa-twitter fa-2xl"></i>
+            </a>
 
             <!-- Google -->
-            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button"
-            ><i class="fab fa-google"></i
-            ></a>
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button">
+                <i class="fab fa-google fa-2xl"></i>
+            </a>
 
             <!-- Instagram -->
-            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button"
-            ><i class="fab fa-instagram"></i
-            ></a>
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button">
+                <i class="fab fa-instagram fa-2xl"></i>
+            </a>
 
             <!-- Linkedin -->
-            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button"
-            ><i class="fab fa-linkedin-in"></i
-            ></a>
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1"
+               href="https://www.linkedin.com/in/roberto-spasov-3305a4228/" role="button">
+                <i class="fab fa-linkedin-in fa-2xl"></i>
+            </a>
 
             <!-- Github -->
-            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button"
-            ><i class="fab fa-github"></i
-            ></a>
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="https://github.com/RobSunnn"
+               role="button">
+                <i class="fab fa-github fa-2xl"></i>
+            </a>
         </section>
         <!-- Section: Social media -->
 
@@ -292,8 +319,8 @@
                     <div class="col-md-5 col-12">
                         <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="email" id="form5Example24" class="form-control" th:field="*{subscriberEmail}" />
-                            <label class="form-label" for="form5Example24">Email address</label>
+                            <input type="email" id="form5Example24" class="form-control" th:field="*{subscriberEmail}"/>
+                            <label class="form-label text-white" for="form5Example24">Email address</label>
                         </div>
                     </div>
                     <!-- Grid column -->
@@ -308,7 +335,9 @@
                     <!-- Grid column -->
                 </div>
                 <!-- Grid row -->
-                <div th:if="${#fields.hasErrors('subscriberEmail')}" th:errors="*{subscriberEmail}" style="color: red;">Email Error</div>
+                <div th:if="${#fields.hasErrors('subscriberEmail')}" th:errors="*{subscriberEmail}" style="color: red;">
+                    Email Error
+                </div>
 
             </form>
 
@@ -320,11 +349,13 @@
         <!-- Section: Form -->
 
         <!-- Section: Text -->
-        <section class="mb-4">
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
-                repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam eum
-                harum corrupti dicta, aliquam sequi voluptate quas.
+        <section class="p-1 mb-4">
+            <p class="w-50 ml-auto mr-auto">
+                Welcome to Our Hotel, your home away from home. <br> Nestled in the heart of [City],
+                we offer a blend of comfort and luxury tailored to your needs. Whether you're here for business or
+                leisure,
+                our modern amenities, exceptional service, and prime location ensure a memorable stay.
+                Discover the perfect retreat with us, where every guest is treated like family.
             </p>
         </section>
         <!-- Section: Text -->
@@ -339,17 +370,17 @@
                     <h5 class="text-uppercase">Quick Links</h5>
 
                     <ul class="list-unstyled mb-0">
-                        <li class="">
-                            <a class="text-body" href="/about">About Us</a>
+                        <li class="page-link">
+                            <a class="page-item" href="/about">About Us</a>
                         </li>
-                        <li>
-                            <a class="text-body" href="/contact">Contact</a>
+                        <li class="page-link">
+                            <a class="page-item" href="/contact">Contact</a>
                         </li>
-                        <li>
-                            <a class="text-body" href="/allRoomTypes">Our Rooms</a>
+                        <li class="page-link">
+                            <a class="page-item" href="/allRoomTypes">Our Rooms</a>
                         </li>
-                        <li>
-                            <a class="text-body" href="#top">Go TOP</a>
+                        <li class="page-link">
+                            <a class="page-item" href="#top">Go TOP</a>
                         </li>
                     </ul>
 
@@ -358,9 +389,9 @@
                 <div class="video">
                     <div class="">
                         <div class="">
-                            <video controls width="300">
+                            <video controls width="520" height="320">
 
-                                <source src="/images/10154095086876282.mp4" type="video/mp4" />
+                                <source src="/images/10154095086876282.mp4" type="video/mp4"/>
 
                                 Download the
                                 <a href="/images/10154095086876282.mp4">MP4</a>
@@ -384,7 +415,6 @@
     </div>
     <!-- Copyright -->
 </footer>
-
 
 
 <th:block th:replace="~{fragments/scripts}"></th:block>

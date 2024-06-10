@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <title>Forbidden Page</title>
     <style>
         .container {
             margin:0 auto;
@@ -10,14 +10,15 @@
     </style>
 </head>
 <body>
-<div th:insert="~{/fragments/nav-bar}"></div>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <div class="container">
     <img src="/images/forbidden.jpg" alt="">
     <h1>Sorry, but you don't have rights to see this page</h1>
     <a href="/" class="btn btn-primary">Go back</a>
 </div>
-
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 <!--<script src="/js/test.js"></script>-->
 <!--<script type="text/javascript"-->
 <!--        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>-->

@@ -1,134 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Contact</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/styles.css">
-
 </head>
 <body>
-<div th:insert="~{/fragments/nav-bar}"></div>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <div class="content">
+
 
     <div class="forms-container">
 
         <form th:action="@{/contact/contactForm}" th:method="POST" th:object="${contactRequestBindingModel}">
 
-            <section id="contact" class="py-5">
+           <div class="form-and-text">
 
-                <div class="container">
+               <div class="content-text">
 
-                    <h2 class="mb-4 text-white">Contact us</h2>
+                   <div class="text">
+                       <h4>We’d love to hear from you! <br> Whether you have a question about our features, <br> pricing,
+                           need
+                           assistance, or just want to give feedback, <br> our team is ready to answer all your questions.
+                       </h4>
+                   </div>
 
-                    <div class="label">
-                        <label for="name" class="label text-white">Name:</label>
-                        <input type="text" class="form-control" id="name" th:field="*{name}"
-                               th:errorclass="is-invalid" placeholder="Enter your name...">
+                   <div class="support-card">
+                       <h4>Support Hours:</h4>
+                       <p><br>Our support team is available to help you during the following hours:<br></p>
+                       <h3>We work every day 24/7</h3>
+                       <ul>
+                           <li><i class="fa-brands fa-facebook fa-beat"></i><span>Facebook</span></li>
+                           <li><i class="fa-brands fa-twitter fa-beat"></i><span>Twitter</span></li>
+                           <li><i class="fa-brands fa-linkedin fa-beat"></i><span>LinkedIn</span></li>
+                       </ul>
+                   </div>
+               </div>
+               <section id="contact-form" class="contact-form py-5">
 
-                        <small id="contactNameError" th:errors="*{name}"
-                               class="invalid-feedback text-white bg-danger rounded"></small>
+                   <div class="container">
 
-                        <label for="phoneNumber" class="text-white">Phone:</label>
-                        <input type="number" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
-                               th:errorclass="is-invalid" placeholder="Enter your phone number...">
+                       <h2 class="mb-4 text-white">Contact us</h2>
 
-                        <small id="contactPhoneNumberError" th:errors="*{phoneNumber}"
-                               class="invalid-feedback text-white  bg-danger rounded"></small>
+                       <div class="label">
+                           <label for="name" class="label text-white">Name:</label>
+                           <input type="text" class="form-control" id="name" th:field="*{name}"
+                                  th:errorclass="is-invalid" placeholder="Enter your name...">
 
-                        <label for="email" class="text-white">Email:</label>
-                        <input type="text" class="form-control" id="email" th:field="*{email}"
-                               th:errorclass="is-invalid" placeholder="Enter your email address...">
+                           <small id="contactNameError" th:errors="*{name}"
+                                  class="invalid-feedback text-white bg-danger rounded"></small>
 
-                        <small id="contactEmailError" th:errors="*{email}"
-                               class="invalid-feedback text-white  bg-danger rounded"></small>
+                           <label for="phoneNumber" class="text-white">Phone:</label>
+                           <input type="number" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
+                                  th:errorclass="is-invalid" placeholder="Enter your phone number...">
 
-                        <label for="message" class="text-white">Message:</label>
-                        <textarea class="form-control" id="message" rows="5" th:field="*{message}"
-                                  th:errorclass="is-invalid"
-                                  placeholder="If you want you can leave us a message..."></textarea>
+                           <small id="contactPhoneNumberError" th:errors="*{phoneNumber}"
+                                  class="invalid-feedback text-white  bg-danger rounded"></small>
 
-                        <small id="contactMessageError" th:errors="*{message}"
-                               class="invalid-feedback text-white bg-danger rounded"></small>
+                           <label for="email" class="text-white">Email:</label>
+                           <input type="text" class="form-control" id="email" th:field="*{email}"
+                                  th:errorclass="is-invalid" placeholder="Enter your email address...">
 
-                    </div>
-                    <br>
-                    <small th:if="${successContactRequestMessage}" th:text="${successContactRequestMessage}"
-                           class="alert alert-success text-black  rounded"></small>
+                           <small id="contactEmailError" th:errors="*{email}"
+                                  class="invalid-feedback text-white  bg-danger rounded"></small>
 
-                </div>
+                           <label for="message" class="text-white">Message:</label>
+                           <textarea class="form-control" id="message" rows="5" th:field="*{message}"
+                                     th:errorclass="is-invalid"
+                                     placeholder="If you want you can leave us a message..."></textarea>
 
-                <button type="submit" class="btn btn-success mt-3">Send</button>
+                           <small id="contactMessageError" th:errors="*{message}"
+                                  class="invalid-feedback text-white bg-danger rounded"></small>
 
-            </section>
+                       </div>
+                       <br>
+                       <small th:if="${successContactRequestMessage}" th:text="${successContactRequestMessage}"
+                              class="alert alert-success text-black  rounded"></small>
 
+                   </div>
 
+                   <button type="submit" class="btn btn-success mt-3">Send</button>
+
+               </section>
+
+           </div>
 
         </form>
 
-        <div>
 
-
-            <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
-
-                <div class="py-5" id="subscribeForm">
-                    <h2 class="mb-4 text-white">Subscribe to our newsletter</h2>
-
-                    <label for="subscriberEmail"></label>
-                    <input type="text" id="subscriberEmail" min="3" max="30" required th:field="*{subscriberEmail}"
-                           th:errorclass="is-invalid" class="form-control"
-                           placeholder="Enter your email">
-
-                    <small id="subscriberEmailError" th:errors="*{subscriberEmail}"
-                           class="invalid-feedback alert alert-danger"></small>
-
-                    <small th:if="${successSubscribeMessage}" th:text="${successSubscribeMessage}"
-                           class="alert alert-success rounded"></small>
-                    <br>
-                    <button type="submit" class="btn btn-success">Subscribe</button>
-
-                </div>
-
-
-            </form>
-
-            <div class="support-card">
-                <h4>Support Hours:</h4>
-                <p><br>Our support team is available to help you during the following hours:<br></p>
-                <h3>We work every day 24/7</h3>
-                <ul>
-                    <li><i class="fa-brands fa-facebook fa-beat"></i><span>Facebook</span></li>
-                    <li><i class="fa-brands fa-twitter fa-beat"></i><span>Twitter</span></li>
-                    <li><i class="fa-brands fa-linkedin fa-beat"></i><span>LinkedIn</span></li>
-                </ul>
-            </div>
-
-        </div>
 
     </div>
 
-    <div class="content-text">
-
-        <div class="text">
-            <h4>We’d love to hear from you! <br> Whether you have a question about our features, <br> pricing, need
-                assistance, or just want to give feedback, <br> our team is ready to answer all your questions.</h4>
-        </div>
-
-        <div class="contact-card">
-            <hr>
-            <h3>Email:</h3>
-            <h4>You can reach us at hotel@hotel.com for any inquiries or support issues.</h4>
-            <hr>
-            <h3>Phone:</h3>
-            <h4>Prefer to speak with us directly?<br>Call us at +1 (123) 456-7890. </h4>
-            <hr>
-        </div>
+    <div class="contact-card">
+        <hr>
+        <h3>Email:</h3>
+        <h4>You can reach us at hotel@hotel.com for any inquiries or support issues.</h4>
+        <hr>
+        <h3>Phone:</h3>
+        <h4>Prefer to speak with us directly?<br>Call us at +1 (123) 456-7890. </h4>
+        <hr>
     </div>
+
 </div>
 
-<div th:insert="~{/fragments/footer}"></div>
+<th:block th:replace="~{/fragments/footer}"></th:block>
+<!--<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>-->
 
 </body>
 </html>

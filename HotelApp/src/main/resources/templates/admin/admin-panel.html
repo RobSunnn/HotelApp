@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Admin</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background-image: url("/images/hotel2.jpg");
@@ -62,7 +60,7 @@
 </head>
 <body>
 
-<div th:insert="~{/fragments/nav-bar}"></div>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <div class="cards">
 
@@ -186,17 +184,10 @@
                 </h2>
 
             </div>
-
         </div>
-
     </div>
-
-
 </div>
-
 <div th:insert="~{/fragments/footer}"></div>
-
-<!-- Bootstrap JS may be you can put them locally do research -->
 <th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 <script src="/js/usersFetch.js"></script>
 </body>

@@ -1,2 +1,14 @@
 @import url(reset.css);
 @import url(contact-page.css);
+@import url(about-page.css);
+
+.is-invalid~.invalid-feedback {
+    position: unset;
+}
+
+.container small {
+    text-align: center;
+    font-size: 0.9rem;
+    width: 90%;
+    margin: 0 auto;
+}

@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Edit Profile</title>
 </head>
 
@@ -27,7 +25,7 @@
     .form-container {
         display: flex;
         text-align: left;
-        margin: 5em auto;
+        margin: 10em auto;
         justify-content: center;
     }
 
@@ -43,7 +41,7 @@
 </style>
 <body>
 
-<div th:insert="~{/fragments/nav-bar}"></div>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <div class="form-container">
 
@@ -106,7 +104,8 @@
 
 </div>
 
-<div th:insert="~{/fragments/footer}"></div>
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 
 </body>
 </html>

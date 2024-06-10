@@ -4,10 +4,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Profile</title>
-    <!-- Bootstrap CSS -->
 </head>
 <style>
     body {
@@ -34,32 +32,34 @@
     }
 
     .btn:hover {
-                transform: scale(1.15);
-
+        transform: scale(1.15);
     }
 
     .image-frame {
-        display: inline-block;
+        width: 50%;
+        max-width: 100%;
+
+        align-content: center;
+        margin: auto;
         border-radius: 15px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 18px 16px rgba(0, 0, 0, 0.2);
         overflow: hidden;
-        transition: transform 0.2s;
+        transition: transform 0.5s;
     }
 
     .image-frame img {
         display: block;
         width: 100%;
-        height: auto;
+        height: 20vh;
     }
 
     .image-frame:hover {
-        transform: scale(1.25);
+        transform: scale(1.35);
     }
-
 
 </style>
 <body>
-<div th:insert="~{/fragments/nav-bar}"></div>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <main class="align-content-center mt-5 bg-blur">
 
@@ -74,7 +74,8 @@
                              alt="Profile Picture">
                     </div>
                     <div class="image-frame">
-                        <img class="" th:if="${userDetails.getProfilePictureBase64() == ''}" th:src="@{/images/minion.gif}"
+                        <img class="" th:if="${userDetails.getProfilePictureBase64() == ''}"
+                             th:src="@{/images/minion.gif}"
                              alt="Default Profile Picture">
                     </div>
 
@@ -125,9 +126,11 @@
 
                         <div class="buttons">
                             <a th:href="@{/}" class="btn mb-5 btn-outline-primary px-4">Back</a>
-                            <a th:href="@{/users/profile/editProfile}" class="btn mb-5 btn-outline-success bg-dark px-4">Edit
+                            <a th:href="@{/users/profile/editProfile}"
+                               class="btn mb-5 btn-outline-success bg-dark px-4">Edit
                                 Profile</a>
-                            <a th:href="@{/users/profile/changePassword}" class="btn mb-5 btn-outline-primary px-4 bg-dark">Change
+                            <a th:href="@{/users/profile/changePassword}"
+                               class="btn mb-5 btn-outline-primary px-4 bg-dark">Change
                                 Password</a>
                         </div>
 
@@ -138,8 +141,8 @@
     </div>
 
 </main>
-</body>
-
-<div th:insert="~{/fragments/footer}"></div>
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 <script src="/js/fileValidationScript.js"></script>
+</body>
 </html>

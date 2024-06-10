@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+
     <title>Ooops! - Page Not Found</title>
     <style>
         body {
@@ -52,6 +52,7 @@
     </style>
 </head>
 <body>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <div class="error-container">
     <p class="error-message">Oops! Page not found.</p>
     <p>Sorry, the page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
@@ -63,5 +64,7 @@
     <p ></p>
     <a th:href="@{/}" class="error-link">Go to Home</a>
 </div>
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

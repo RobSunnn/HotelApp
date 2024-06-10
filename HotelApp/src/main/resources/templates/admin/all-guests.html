@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Free Rooms</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <title>All Guests in Hotel</title>
     <style>
         body {
             background-image: url("/images/hotel1.jpg");
@@ -46,7 +43,7 @@
 </head>
 <body>
 
-<div th:insert="~{/fragments/nav-bar}"></div>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <div class="container p-3 bg-dark rounded">
     <h2 class="text-white mt-2">All Guests in Hotel</h2>
@@ -96,7 +93,7 @@
     </div>
 </div>
 
-<div th:insert="~{/fragments/footer}"></div>
-
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

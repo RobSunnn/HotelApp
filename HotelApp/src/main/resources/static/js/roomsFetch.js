@@ -70,7 +70,7 @@ checkboxes.forEach(checkbox => {
                                 roomDropdown.appendChild(htmlOptionElement);
                             });
                         }
-                        document.getElementById("freeRooms").hidden = false;
+
                     })
                     .catch(error => {
                         console.error('Error:', error);

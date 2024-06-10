@@ -1,11 +1,11 @@
 @media (max-width: 990px) {
 
-    .text {
-        display: none;
-    }
-
     .forms-container {
         margin: 0 auto;
+    }
+
+    .form-and-text {
+        flex-wrap: wrap;
     }
 
     .content-text {
@@ -17,8 +17,8 @@
         margin: 0 auto;
     }
 
-    #contact {
-        width: 15rem;
+    #contact-form {
+        width: 70vw;
     }
 
     #subscribeForm {
@@ -34,14 +34,13 @@ body {
     background-attachment: fixed;
 }
 
-small {
-    text-align: center;
-}
+
 
 .content {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    margin: 0 auto;
 }
 
 .label {
@@ -52,13 +51,18 @@ small {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    column-gap: 10rem;
     max-width: 100%;
+}
+
+.form-and-text {
+    display: flex;
+    margin-bottom: 3em;
 }
 
 .content-text {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     gap: 1em;
     color: white;
     width: 80%;
@@ -74,8 +78,7 @@ small {
     padding: 2em;
 }
 
-.content,
-.container {
+.content {
     text-align: center;
     opacity: 90%;
 }
@@ -121,36 +124,26 @@ small {
 }
 
 .contact-card {
+    width: 80vw;
     max-width: 100%;
+    margin: 1em auto 2em auto;
     background-color: #d8d8d8;
     padding: 2em 0;
     font-size: 1rem;
-    margin-bottom: 2em;
     color: black;
     opacity: 77%;
     /*backdrop-filter:      blur(10px);*/
 }
 
-#contact {
-    width: 23rem;
+.contact-form {
+    width: 30rem;
     max-width: 100%;
-    margin-top: 2em;
+    margin: 2em auto 1em auto;
     box-shadow: -50px -22px 100px rgba(8, 72, 16, 0.6);
     border-radius: 20px;
 }
 
-#subscribeForm {
-    margin: 2em auto 0 auto;
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-    max-width: 100%;
-    border-radius: 20%;
-    box-shadow: -20px -12px 100px rgba(8, 72, 16, 0.6);
-}
-
-#contact h2,
-#subscribeForm h2 {
+#contact-form h2 {
     border-bottom: 2px solid black;
     padding-bottom: 0.3em;
     border-bottom-style: dotted;

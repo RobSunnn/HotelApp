@@ -1,0 +1,147 @@
+@media (max-width: 990px) {
+    .comments-and-form {
+        flex-wrap: wrap;
+    }
+    .form-container {
+        width: 100vw;
+    }
+}
+
+body {
+    background-image: url("../images/hotel2.jpg");
+    background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.text {
+    display: flex;
+    justify-content: space-around;
+    border-radius: 30px;
+    gap: 1em;
+    color: white;
+}
+
+.form-container {
+    display: flex;
+    width: 40vw;
+    justify-content: center;
+    max-width: 100%;
+}
+
+.page-counter {
+    margin: 0 auto;
+}
+
+.btn-primary {
+    margin: 0.3em auto;
+}
+
+.pagination {
+    margin: 0 auto 5em auto;
+    gap: 1em;
+}
+
+.card-info p {
+    color: white;
+    background-color: #2e2d2c;
+    margin-top: 1em;
+    border-radius: 30px;
+    padding: 1em;
+}
+
+/*.container {*/
+/*    width: 60vw;*/
+/*}*/
+
+.comments-and-form {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#comments {
+    color: white;
+    border-radius: 20%;
+    margin-bottom: 5em;
+    width: 80%;
+    max-width: 100%;
+    opacity: 85%;
+    background-color: #2e2d2c;
+}
+
+.comment-title {
+    display: flex;
+    gap: 1em;
+}
+
+.message-text,
+.author {
+    font-style: italic;
+}
+
+.allComments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+    margin: 1em auto;
+    transition: opacity 0.3s ease-in-out;
+    width: 100%;
+}
+
+#about {
+    text-align: center;
+}
+
+.truncated {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 500px; /* Adjust as needed */
+    display: inline-block; /* Ensures ellipsis are applied */
+    vertical-align: top;
+}
+
+.form-content {
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.message-text p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap; /* This ensures that whitespace is preserved but allows wrapping */
+    max-height: 3em; /* Limit height to 3 lines (adjust as needed) */
+    overflow: hidden;
+}
+
+.message-text.expanded p {
+    white-space: pre-wrap; /* Allow wrapping when expanded */
+    max-height: none; /* Remove height limit when expanded */
+}
+
+.truncated + .showMoreBtn {
+    display: inline-block;
+}
+
+#commentContent {
+    width: 100%;
+}
+
+.message {
+    padding: 1.5em;
+    color: white;
+    text-align: center;
+    width: 100%;
+    max-width: 40ch;
+    background-color: chocolate;
+    margin: 0 auto;
+    min-height: 200px;
+    overflow: hidden;
+    opacity: 80%;
+    border-radius: 50px;
+}
+
+.allComments, #controls {
+    transition: opacity 1.3s ease-in-out;
+}

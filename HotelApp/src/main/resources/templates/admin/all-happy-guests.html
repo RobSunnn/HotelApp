@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Happy Guests</title>
 </head>
 <style>
@@ -48,7 +46,7 @@
 </style>
 <body>
 
-<div th:insert="~{/fragments/nav-bar}"></div>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <div class="container  p-3 bg-dark rounded">
 
@@ -91,8 +89,7 @@
         <!--            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>-->
     </div>
 </div>
-
-<div th:insert="~{/fragments/footer}"></div>
-
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

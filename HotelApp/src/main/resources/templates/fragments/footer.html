@@ -7,10 +7,17 @@
     <title>Footer</title>
     <style>
         /* Custom styles for the footer */
+
+        @media (max-width: 990px) {
+            .video {
+               display: none;
+
+            }
+        }
         footer {
-            color: white;
-            background-color: black;
+            position: relative;
             bottom: 0;
+            left: 0;
             opacity: 90%;
             width: 100%;
             margin-top: 3em;
@@ -18,9 +25,14 @@
 
         .footer-end {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-evenly;
         }
 
+        .video {
+
+
+        }
 
     </style>
 </head>
@@ -152,9 +164,9 @@
                 </div>
 
                 <div class="video">
-                    <div class="">
-                        <div class="">
-                            <video controls width="520" height="320">
+                    <div>
+                        <div >
+                            <video controls>
 
                                 <source src="/images/10154095086876282.mp4" type="video/mp4"/>
 
@@ -181,9 +193,6 @@
     <!-- Copyright -->
 </footer>
 <!-- Footer -->
-
-
-<!--<th:block th:replace="~{fragments/scripts}"></th:block>-->
-
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

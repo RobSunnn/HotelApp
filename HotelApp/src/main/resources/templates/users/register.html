@@ -3,8 +3,10 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <th:block th:insert="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Sign UP</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
     <style>
         body {
             background-image: url("/images/register-img.jpg");
@@ -17,23 +19,11 @@
             text-align: center;
         }
 
-        .is-invalid~.invalid-feedback {
-            position: unset;
-
-        }
-
-       .container small {
-            text-align: center;
-            font-size: 0.9rem;
-            width: 90%;
-            margin: 0 auto;
-        }
-
     </style>
 </head>
 
 <body>
-<th:block th:insert="~{fragments/nav-bar}"></th:block>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 
 <main>
@@ -129,13 +119,7 @@
 
     </form>
 </main>
-
-<div th:insert="~{/fragments/footer}"></div>
-
-
-<!-- Bootstrap JS may be you can put them locally do research -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

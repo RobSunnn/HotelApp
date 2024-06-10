@@ -3,6 +3,7 @@
 <head>
 <th:block th:insert="~{fragments/head :: head}"></th:block>
     <title>Moderator Dashboard</title>
+
     <style>
         /* Add custom styles here */
         body {
@@ -10,11 +11,18 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
+
         }
 
-<!--        footer {-->
-<!--            position: fixed;-->
-<!--        }-->
+        main {
+            display: flex;
+        }
+
+        section {
+            display: flex;
+            flex-grow: 1;
+            margin-bottom: 10em;
+        }
 
         .card {
             width: 100%; /* Make each card take up full width within the flex container */
@@ -32,72 +40,67 @@
     </style>
 </head>
 <body>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<main>
+    <section>
+        <div class="cards">
 
-<div th:insert="~{fragments/nav-bar :: navbar}"></div>
+            <div class="card">
 
+                <div class="card-body bg-dark text-white">
+                    <h5 class="card-title">Add Guest to Hotel</h5>
+                    <p class="card-text">Here you can add guest to hotel, <br> so you are going to be albe to see <br> the
+                        free rooms in the hotel later,
+                        <br> and also to save some data about the guest to be easier in the future.</p>
 
-<section>
-    <div class="cards">
+                    <a th:href="@{/guests/add}" class="btn btn-primary">Add guest</a>
+                </div>
 
-        <div class="card">
+            </div>
 
-            <div class="card-body bg-dark text-white">
-                <h5 class="card-title">Add Guest to Hotel</h5>
-                <p class="card-text">Here you can add guest to hotel, <br> so you are going to be albe to see <br> the
-                    free rooms in the hotel later,
-                    <br> and also to save some data about the guest to be easier in the future.</p>
+            <div class="card">
 
-                <a th:href="@{/guests/add}" class="btn btn-primary">Add guest</a>
+                <div class="card-body bg-dark text-white">
+                    <h5 class="card-title">CHECK OUT</h5>
+                    <p class="card-text">Here you need to check out the Guest, <br>take money for the stay and to wish <br>
+                        the Guest a Happy New Year :D</p>
+
+                    <a th:href="@{/guests/leave}" class="btn btn-primary">Guest want to leave</a>
+                </div>
+
+            </div>
+
+            <div class="card" th:unless="${allNotApprovedComments == 0}">
+
+                <div class="card-body bg-danger text-white">
+                    <h5 class="card-title">See comments</h5>
+                    <p class="card-text"></p>
+                    <p th:if="${allNotApprovedComments == 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>
+                    <p th:if="${allNotApprovedComments > 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comments!'"></p>
+                    <a th:href="@{/moderator/comments}" class="btn btn-primary">Check comments</a>
+                </div>
+
+            </div>
+
+            <div class="card" th:unless="${allContactRequests == 0}">
+
+                <div class="card-body bg-danger text-white">
+                    <h5 class="card-title">See Contact Requests</h5>
+                    <p class="card-text"></p>
+                    <p th:if="${allContactRequests == 1}"  th:text="'You have ' + ${allContactRequests} + ' contact request!'"></p>
+                    <p th:if="${allContactRequests > 1}"  th:text="'You have ' + ${allContactRequests} + ' contact requests!'"></p>
+                    <a th:href="@{/moderator/contactRequests}" class="btn btn-primary">Contact Requests</a>
+                </div>
+
             </div>
 
         </div>
 
-        <div class="card">
+        <!-- Make fetch for quote here to make moderator happy :)-->
 
-            <div class="card-body bg-dark text-white">
-                <h5 class="card-title">CHECK OUT</h5>
-                <p class="card-text">Here you need to check out the Guest, <br>take money for the stay and to wish <br>
-                    the Guest a Happy New Year :D</p>
-
-                <a th:href="@{/guests/leave}" class="btn btn-primary">Guest want to leave</a>
-            </div>
-
-        </div>
-
-        <div class="card" th:unless="${allNotApprovedComments == 0}">
-
-            <div class="card-body bg-danger text-white">
-                <h5 class="card-title">See comments</h5>
-                <p class="card-text"></p>
-                <p th:if="${allNotApprovedComments == 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>
-                <p th:if="${allNotApprovedComments > 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comments!'"></p>
-                <a th:href="@{/moderator/comments}" class="btn btn-primary">Check comments</a>
-            </div>
-
-        </div>
-
-        <div class="card" th:unless="${allContactRequests == 0}">
-
-            <div class="card-body bg-danger text-white">
-                <h5 class="card-title">See Contact Requests</h5>
-                <p class="card-text"></p>
-                <p th:if="${allContactRequests == 1}"  th:text="'You have ' + ${allContactRequests} + ' contact request!'"></p>
-                <p th:if="${allContactRequests > 1}"  th:text="'You have ' + ${allContactRequests} + ' contact requests!'"></p>
-                <a th:href="@{/moderator/contactRequests}" class="btn btn-primary">Contact Requests</a>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Make fetch for quote here to make moderator happy :)-->
-
-</section>
-
-<div th:insert="~{/fragments/footer}"></div>
-
-<!-- Bootstrap JS -->
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
-
+    </section>
+</main>
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<!--<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>-->
 </body>
 </html>

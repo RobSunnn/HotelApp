@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head >
-    <th:block th:insert="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Scripts</title>
 </head>
 <body>
@@ -12,7 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
     <!-- MDB JS (if needed) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
-
 
 </div>
 </body>

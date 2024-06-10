@@ -7,13 +7,6 @@
     <title>NavBar</title>
     <style>
 
-        /* Height for devices larger than 576px */
-        @media (min-width: 992px) {
-            #introCarousel {
-                margin-top: -100px;
-            }
-        }
-
         @media (max-width: 992px) {
             .navbar {
                  background-color: #2e2d2c;
@@ -99,6 +92,7 @@
 
 </header>
 
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

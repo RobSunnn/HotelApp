@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Add 'selected' class to the clicked row
         row.classList.add("selected");
+
         let fullText = row.getAttribute("data-full-text");
         document.getElementById("fullMessage").innerText = fullText;
 
@@ -19,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Update the hidden input fields with the selected commentId
         document.getElementById("selectedContentId").value = commentId;
         let notApprovedCommentInput = document.getElementById("notApprovedCommentId");
+
         if (notApprovedCommentInput) {
             notApprovedCommentInput.value = commentId;
         }

@@ -1,83 +1,81 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Not approved comments</title>
 </head>
 
-<!--<style>-->
-<!--    body {-->
-<!--        background-image: url("/images/hotel2.jpg");-->
-<!--        background-size: cover; /* Use viewport height for better responsiveness */-->
-<!--        background-repeat: no-repeat;-->
-<!--        background-attachment: fixed;-->
-<!--    }-->
+<style>
+    body {
+        background-image: url("/images/hotel2.jpg");
+        background-size: cover; /* Use viewport height for better responsiveness */
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
 
-<!--    table,-->
-<!--    h2,-->
-<!--    h4 {-->
-<!--        text-align: center;-->
-<!--    }-->
+    table,
+    h2,
+    h4 {
+        text-align: center;
+    }
 
-<!--    .container {-->
-<!--        margin-top: 5em;-->
-<!--    }-->
+    .container {
+        margin-top: 5em;
+    }
 
-<!--    .custom-dropdown {-->
-<!--        /*position: relative;*/-->
-<!--        display: flex;-->
-<!--        gap: 3em;-->
-<!--        justify-content: center;-->
-<!--        flex-direction: column;-->
-<!--        margin-top: 2em;-->
+    .custom-dropdown {
+        /*position: relative;*/
+        display: flex;
+        gap: 3em;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 2em;
 
-<!--    }-->
+    }
 
-<!--    .buttons {-->
-<!--        display: flex;-->
-<!--        justify-content: center;-->
-<!--        gap: 1em;-->
-<!--    }-->
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+    }
 
-<!--    .buttons a {-->
-<!--        align-self: center;-->
-<!--    }-->
+    .buttons a {
+        align-self: center;
+    }
 
-<!--    #commentTable {-->
-<!--        cursor: pointer;-->
-<!--        border: 5px solid #ddd; /* Adds a line between rows */-->
-<!--        max-height: 10vh; /* Adjust the max-height as needed */-->
-<!--        overflow-y: auto;-->
-<!--    }-->
+    #commentTable {
+        cursor: pointer;
+        border: 5px solid #ddd; /* Adds a line between rows */
+        max-height: 10vh; /* Adjust the max-height as needed */
+        overflow-y: auto;
+    }
 
-<!--    #commentTable tr.selected {-->
-<!--        background-color: black; /* Light grey background */-->
-<!--        color: white;-->
-<!--    }-->
+    #commentTable tr.selected {
+        background-color: lightgray; /* Light grey background */
+        color: white;
+    }
 
-<!--    #commentTable th, #commentTable td {-->
-<!--        padding: 8px;-->
-<!--        border: 2px solid #ddd; /* Adds a line between rows */-->
-<!--    }-->
+    #commentTable th, #commentTable td {
+        padding: 8px;
+        border: 2px solid #ddd; /* Adds a line between rows */
+    }
 
-<!--    #fullMessage {-->
+    #fullMessage {
+        padding:30px;
+        background-color: #f9f9f9;
+        max-width: 100%; /* Adjust based on your layout */
+        max-height: 100%; /* Adjust based on your layout */
+        overflow-y: auto; /* Adds a scrollbar if content is too long */
+        word-wrap: break-word; /* Breaks long words */
+        word-break: break-all; /* Breaks long words */
+        white-space: pre-wrap; /* Preserves whitespace */
+        text-align: center;
+        border: 5px solid black; /* Adds a line between rows */
 
-<!--        padding:30px;-->
-<!--        background-color: #f9f9f9;-->
-<!--        max-width: 100%; /* Adjust based on your layout */-->
-<!--        max-height: 100%; /* Adjust based on your layout */-->
-<!--        overflow-y: auto; /* Adds a scrollbar if content is too long */-->
-<!--        word-wrap: break-word; /* Breaks long words */-->
-<!--        word-break: break-all; /* Breaks long words */-->
-<!--        white-space: pre-wrap; /* Preserves whitespace */-->
-<!--        text-align: center;-->
-<!--        border: 5px solid black; /* Adds a line between rows */-->
-
-<!--    }-->
-<!--</style>-->
+    }
+</style>
 <body>
-<div th:insert="~{/fragments/nav-bar}"></div>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <div class="container p-3 bg-dark rounded">
 
@@ -137,10 +135,8 @@
 
 
 </div>
-
-<div th:insert="~{/fragments/footer}"></div>
-
+<th:block th:insert="~{/fragments/footer}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 <script src="/js/commentsAndContactRequestsScript.js"></script>
-
 </body>
 </html>

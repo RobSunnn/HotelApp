@@ -3,7 +3,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
-
     <title>Welcome</title>
     <style>
         /* Height for devices larger than 576px */
@@ -12,10 +11,28 @@
                 margin-top: -60px;
             }
         }
+
+        @media (max-width: 992px) {
+            .navbar {
+                background-color: #2e2d2c;
+            }
+            #text-footer {
+                width: 60vw;
+                display: flex;
+                justify-content: center;
+
+            }
+
+            .video {
+                display: none;
+            }
+        }
+
         h2 {
             text-align: center;
             padding: 0.5em;
         }
+
         .form-inline {
             display: flex;
             justify-content: space-between;
@@ -60,10 +77,6 @@
             height: 100vh;
         }
 
-        /*.card {*/
-        /*    width: 100%;*/
-        /*    margin: 0 auto;*/
-        /*}*/
         .custom-card .card-body {
             padding: 0;
         }
@@ -99,6 +112,12 @@
             opacity: 90%;
             width: 100%;
             margin-top: 3em;
+        }
+
+        .text-footer {
+            width: 30vw;
+            margin: 1em auto;
+
         }
 
         .footer-end {
@@ -349,8 +368,8 @@
         <!-- Section: Form -->
 
         <!-- Section: Text -->
-        <section class="p-1 mb-4">
-            <p class="w-50 ml-auto mr-auto">
+        <section id="text-footer" class="text-footer p-1 mb-4" >
+            <p >
                 Welcome to Our Hotel, your home away from home. <br> Nestled in the heart of [City],
                 we offer a blend of comfort and luxury tailored to your needs. Whether you're here for business or
                 leisure,
@@ -415,8 +434,6 @@
     </div>
     <!-- Copyright -->
 </footer>
-
-
-<th:block th:replace="~{fragments/scripts}"></th:block>
+<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

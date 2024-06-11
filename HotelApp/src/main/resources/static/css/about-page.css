@@ -6,14 +6,6 @@
         width: 100vw;
     }
 }
-
-body {
-    background-image: url("../images/hotel2.jpg");
-    background-size: 100% 100vh; /* Use viewport height for better responsiveness */
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
 .text {
     display: flex;
     justify-content: space-around;
@@ -49,10 +41,6 @@ body {
     border-radius: 30px;
     padding: 1em;
 }
-
-/*.container {*/
-/*    width: 60vw;*/
-/*}*/
 
 .comments-and-form {
     display: flex;

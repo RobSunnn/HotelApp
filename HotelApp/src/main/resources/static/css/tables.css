@@ -1,0 +1,106 @@
+@media (max-width: 770px) {
+    #table {
+        display: block;
+        padding: 0;
+    }
+    #table thead,
+    #table thead tr,
+    #table tbody ,
+    #table tbody tr,
+    #table th,
+    #table td,
+    #table tr {
+        width: 100%;
+    }
+
+    #fullMessage > p {
+        width: 100% !important;
+    }
+}
+
+table,
+h2,
+h4 {
+    text-align: center;
+}
+
+.custom-table {
+    /*position: static;*/
+    display: flex;
+    gap: 3em;
+    justify-content: center;
+    flex-direction: column;
+    cursor: auto;
+    overflow-y: auto;
+    border: 5px solid chocolate; /* Adds a line between rows */
+}
+
+.custom-table th, .custom-table td {
+    padding: 8px;
+    border: 2px solid chocolate; /* Adds a line between rows */
+}
+
+.container {
+    margin: 5em auto;
+    opacity: 90%;
+}
+
+#table tr.selected > td {
+    background-color: white; /* Light grey background */
+    color: black !important; /* Override font color */
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-top: 2em;
+    text-align: center;
+}
+
+.buttons a {
+    align-self: center;
+}
+
+#table {
+    cursor: context-menu;
+    max-height: 40vh; /* Adjust the max-height as needed */
+    overflow-y: auto;
+    border-collapse: collapse;
+}
+
+#table th, #table td, #table tr {
+    color: white;
+    border: 2px solid #ddd; /* Adds a line between rows */
+}
+
+#fullMessage {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 30px;
+    background-color: #f9f9f9;
+    max-width: 100%; /* Adjust based on your layout */
+    max-height: 100%; /* Adjust based on your layout */
+    overflow-y: auto; /* Adds a scrollbar if content is too long */
+    word-wrap: break-word; /* Breaks long words */
+    word-break: break-all; /* Breaks long words */
+    white-space: pre-wrap; /* Preserves whitespace */
+    text-align: center;
+}
+
+#fullMessage > p {
+    background-color: #333333;
+    color: white;
+    border: 3px solid #ffffff;
+    outline: 3px solid black;
+    border-radius: 10px;
+    padding: 0.3em 0.8em 0.3em 0.8em;
+    width: 50%;
+    margin: 0 auto 1em auto;
+}
+
+#fullMessage > p:last-child {
+    width: 100%;
+}

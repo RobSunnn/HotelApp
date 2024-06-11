@@ -17,8 +17,8 @@
     <h1>Sorry, but you don't have rights to see this page</h1>
     <a href="/" class="btn btn-primary">Go back</a>
 </div>
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 <!--<script src="/js/test.js"></script>-->
 <!--<script type="text/javascript"-->
 <!--        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>-->

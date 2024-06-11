@@ -1,46 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
-    <th:block th:insert="~{fragments/head}"></th:block>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Footer</title>
-    <style>
-        /* Custom styles for the footer */
-
-        @media (max-width: 990px) {
-            .video {
-               display: none;
-
-            }
-        }
-        footer {
-            position: relative;
-            bottom: 0;
-            left: 0;
-            opacity: 90%;
-            width: 100%;
-            margin-top: 3em;
-        }
-
-        .footer-end {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-evenly;
-        }
-
-        .video {
-
-
-        }
-
-    </style>
 </head>
 
 <body >
 
 <!-- Footer -->
-<footer th:fragment="footer" class="bg-body-tertiary bg-dark text-center">
+<footer th:fragment="footer" class="bg-body-tertiary bg-dark text-center" >
     <!-- Grid container -->
     <div class="container p-4">
         <!-- Section: Social media -->
@@ -66,12 +35,14 @@
             </a>
 
             <!-- Linkedin -->
-            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="https://www.linkedin.com/in/roberto-spasov-3305a4228/" role="button">
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1"
+               href="https://www.linkedin.com/in/roberto-spasov-3305a4228/" role="button">
                 <i class="fab fa-linkedin-in fa-2xl"></i>
             </a>
 
             <!-- Github -->
-            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="https://github.com/RobSunnn" role="button">
+            <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="https://github.com/RobSunnn"
+               role="button">
                 <i class="fab fa-github fa-2xl"></i>
             </a>
         </section>
@@ -81,64 +52,59 @@
         <section>
             <!--/*@thymesVar id="addSubscriberBindingModel" type="AddSubscriberBindingModel"*/-->
             <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
-                <!--Grid row-->
-
+                <!-- Grid row -->
                 <input type="hidden" name="redirectUrl" th:value="${pageUrl}" />
                 <div class="row d-flex justify-content-center">
-                    <!--Grid column-->
+                    <!-- Grid column -->
                     <div class="col-auto">
-                        <p class="pt-2">
+                        <p class="text-white pt-2">
                             <strong>Sign up for our newsletter</strong>
                         </p>
                     </div>
-                    <!--Grid column-->
+                    <!-- Grid column -->
 
-                    <!--Grid column-->
+                    <!-- Grid column -->
                     <div class="col-md-5 col-12">
                         <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4 border">
-                            <input type="email" required id="form5Example24" class="form-control" name="subscriberEmail" />
-                            <label class="form-label text-white" for="form5Example24">Email address</label>
+
+                            <input type="email" required id="form" class="form-control" name="subscriberEmail" />
+
+                            <label class="form-label text-white" for="form">Email address</label>
+
                         </div>
-
                     </div>
-                    <!--Grid column-->
+                    <!-- Grid column -->
 
-                    <!--Grid column-->
+                    <!-- Grid column -->
                     <div class="col-auto">
                         <!-- Submit button -->
                         <button data-mdb-ripple-init type="submit" class="btn btn-primary mb-4">
                             Subscribe
                         </button>
                     </div>
-
-                    <!--Grid column-->
+                    <!-- Grid column -->
                 </div>
-                <!--Grid row-->
+                <!-- Grid row -->
                 <div th:if="${successSubscribeMessage}" style="color: green;">
-                    <p th:text="${successSubscribeMessage}"></p>
-                </div>
-                <div th:if="${failMessage}" style="color: red;">
-                    <p th:text="${failMessage}"></p>
-                </div>
-            </form>
 
+                    <p th:text="${successSubscribeMessage}"></p>
+
+                </div>
+
+                <div th:if="${failMessage}" style="color: red;">
+
+                    <p th:text="${failMessage}"></p>
+
+                </div>
+
+            </form>
         </section>
         <!-- Section: Form -->
 
-        <!-- Section: Text -->
-        <section class="p-1 mb-4">
-            <p class="w-50 ml-auto mr-auto">
-                Welcome to Our Hotel, your home away from home. <br> Nestled in the heart of [City],
-                we offer a blend of comfort and luxury tailored to your needs. Whether you're here for business or leisure,
-                our modern amenities, exceptional service, and prime location ensure a memorable stay.
-                Discover the perfect retreat with us, where every guest is treated like family.
-            </p>
-        </section>
-        <!-- Section: Text -->
 
         <!-- Section: Links -->
-        <section>
+        <section class="mt-5">
             <!--Grid row-->
 
             <div class="footer-end">
@@ -164,9 +130,9 @@
                 </div>
 
                 <div class="video">
-                    <div>
-                        <div >
-                            <video controls>
+                    <div class="">
+                        <div class="">
+                            <video controls width="320">
 
                                 <source src="/images/10154095086876282.mp4" type="video/mp4"/>
 
@@ -182,6 +148,15 @@
 
         </section>
 
+        <section id="text-footer" class="text-footer p-1 mb-4" >
+            <p class="text-white">
+                Welcome to Our Hotel, your home away from home. <br> Nestled in the heart of [City],
+                we offer a blend of comfort and luxury tailored to your needs. Whether you're here for business or
+                leisure,
+                our modern amenities, exceptional service, and prime location ensure a memorable stay.
+                Discover the perfect retreat with us, where every guest is treated like family.
+            </p>
+        </section>
     </div>
     <!-- Grid container -->
 
@@ -193,6 +168,6 @@
     <!-- Copyright -->
 </footer>
 <!-- Footer -->
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

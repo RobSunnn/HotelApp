@@ -1,0 +1,63 @@
+@media (max-width: 990px) {
+    option {
+        font-size: 0.9rem !important;
+    }
+
+    #checkboxes-container {
+        font-size: 0.9rem !important;
+    }
+}
+
+
+/*.card {*/
+/*    width: 100%; !* Make each card take up full width within the flex container *!*/
+/*    max-width: 300px; !* Set a maximum width for each card *!*/
+/*}*/
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 3em;
+    margin: 5em auto;
+    flex-wrap: wrap;
+}
+
+option {
+    color: black;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.card {
+    margin-bottom: 5em;
+}
+
+.checkbox-item {
+    margin: 0;
+}
+
+#checkboxes-container {
+    margin: 0 auto;
+    font-size: 1.1rem;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+}
+
+#success-card {
+    justify-content: center;
+    align-self: center;
+    width: 50%;
+    justify-self: center;
+    margin: 6em auto;
+    padding: 3em;
+    text-align: center;
+}
+
+#cards-holder {
+    display: flex;
+    flex-grow: 1;
+    margin-bottom: 10em;
+}

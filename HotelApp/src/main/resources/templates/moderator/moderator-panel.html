@@ -3,49 +3,14 @@
 <head>
 <th:block th:insert="~{fragments/head :: head}"></th:block>
     <title>Moderator Dashboard</title>
-
-    <style>
-        /* Add custom styles here */
-        body {
-            background-image: url("/images/hotel2.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-
-        }
-
-        main {
-            display: flex;
-        }
-
-        section {
-            display: flex;
-            flex-grow: 1;
-            margin-bottom: 10em;
-        }
-
-        .card {
-            width: 100%; /* Make each card take up full width within the flex container */
-            max-width: 300px; /* Set a maximum width for each card */
-        }
-
-        .cards {
-            display: flex;
-            justify-content: center;
-            gap: 3em;
-            margin: 5em auto;
-            flex-wrap: wrap;
-        }
-
-    </style>
 </head>
-<body>
+<body class="hero" style="background-image: url('/images/hotel2.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <main>
-    <section>
+    <section id="cards-holder">
         <div class="cards">
 
-            <div class="card">
+            <div class="custom-card">
 
                 <div class="card-body bg-dark text-white">
                     <h5 class="card-title">Add Guest to Hotel</h5>
@@ -58,7 +23,7 @@
 
             </div>
 
-            <div class="card">
+            <div class="custom-card">
 
                 <div class="card-body bg-dark text-white">
                     <h5 class="card-title">CHECK OUT</h5>
@@ -70,7 +35,7 @@
 
             </div>
 
-            <div class="card" th:unless="${allNotApprovedComments == 0}">
+            <div class="custom-card" th:unless="${allNotApprovedComments == 0}">
 
                 <div class="card-body bg-danger text-white">
                     <h5 class="card-title">See comments</h5>
@@ -82,7 +47,7 @@
 
             </div>
 
-            <div class="card" th:unless="${allContactRequests == 0}">
+            <div class="custom-card" th:unless="${allContactRequests == 0}">
 
                 <div class="card-body bg-danger text-white">
                     <h5 class="card-title">See Contact Requests</h5>
@@ -100,7 +65,7 @@
 
     </section>
 </main>
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<!--<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>-->
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

@@ -1,6 +1,20 @@
 @import url(reset.css);
 @import url(contact-page.css);
 @import url(about-page.css);
+@import url(moderator.css);
+@import url(profile.css);
+@import url(tables.css);
+@import url(footer.css);
+
+
+.hero {
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 
 .is-invalid~.invalid-feedback {
     position: unset;

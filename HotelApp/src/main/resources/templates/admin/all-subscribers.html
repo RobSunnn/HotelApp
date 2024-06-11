@@ -3,54 +3,11 @@
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Subscribers</title>
-
-    <style>
-        body {
-            background-image: url("/images/hotel.jpg");
-            background-size: cover; /* Use viewport height for better responsiveness */
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-        table,
-        h2 {
-            text-align: center;
-        }
-
-        .container {
-            margin: 5em auto;
-            opacity: 90%;
-        }
-
-        .custom-table {
-            /*position: static;*/
-            display: flex;
-            gap: 3em;
-            justify-content: center;
-            flex-direction: column;
-            cursor: auto;
-            overflow-y: auto;
-            border: 5px solid chocolate; /* Adds a line between rows */
-        }
-
-        .custom-table th, .custom-table td {
-            padding: 8px;
-            border: 2px solid chocolate; /* Adds a line between rows */
-        }
-        .buttons {
-            margin-top: 2em;
-            text-align: center;
-        }
-    </style>
 </head>
-<body>
-
+<body class="hero" style="background-image: url('/images/hotel.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
-
-
 <div class="container p-3 bg-dark rounded">
     <h2 class="text-white mt-2">Subscribers</h2>
-
     <div class="form-group custom-table">
         <table class="bg-white" id="commentTable">
             <thead>
@@ -58,7 +15,6 @@
                 <th>Email</th>
                 <th>Count Subscriptions</th>
                 <th>Time of Subscription</th>
-
             </tr>
             </thead>
             <tbody>
@@ -70,21 +26,12 @@
             </tr>
             </tbody>
         </table>
-
-
-
-
     </div>
-
     <div class="buttons">
         <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
-        <!--            <a th:href="@{/admin}" class="btn btn-success" >Make Guest <br> User</a>-->
-        <!--            <a th:href="@{/admin}" class="btn btn-secondary" >See Guest <br> Profile</a>-->
-        <!--            <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>-->
     </div>
 </div>
-
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

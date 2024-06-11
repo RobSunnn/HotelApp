@@ -4,139 +4,56 @@
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Not approved comments</title>
 </head>
-
-<style>
-    body {
-        background-image: url("/images/hotel2.jpg");
-        background-size: cover; /* Use viewport height for better responsiveness */
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-
-    table,
-    h2,
-    h4 {
-        text-align: center;
-    }
-
-    .container {
-        margin-top: 5em;
-    }
-
-    .custom-dropdown {
-        /*position: relative;*/
-        display: flex;
-        gap: 3em;
-        justify-content: center;
-        flex-direction: column;
-        margin-top: 2em;
-
-    }
-
-    .buttons {
-        display: flex;
-        justify-content: center;
-        gap: 1em;
-    }
-
-    .buttons a {
-        align-self: center;
-    }
-
-    #commentTable {
-        cursor: pointer;
-        border: 5px solid #ddd; /* Adds a line between rows */
-        max-height: 10vh; /* Adjust the max-height as needed */
-        overflow-y: auto;
-    }
-
-    #commentTable tr.selected {
-        background-color: lightgray; /* Light grey background */
-        color: white;
-    }
-
-    #commentTable th, #commentTable td {
-        padding: 8px;
-        border: 2px solid #ddd; /* Adds a line between rows */
-    }
-
-    #fullMessage {
-        padding:30px;
-        background-color: #f9f9f9;
-        max-width: 100%; /* Adjust based on your layout */
-        max-height: 100%; /* Adjust based on your layout */
-        overflow-y: auto; /* Adds a scrollbar if content is too long */
-        word-wrap: break-word; /* Breaks long words */
-        word-break: break-all; /* Breaks long words */
-        white-space: pre-wrap; /* Preserves whitespace */
-        text-align: center;
-        border: 5px solid black; /* Adds a line between rows */
-
-    }
-</style>
-<body>
+<body class="hero" style="background-image: url('/images/hotel2.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
 <div class="container p-3 bg-dark rounded">
-
     <h2 class="text-white mt-2">New Comments</h2>
-
-    <div class="custom-dropdown p-3">
-        <table class="table bg-white" id="commentTable">
+        <table class="table" id="table">
             <thead>
             <tr>
-                <th  scope="col">Date</th>
-                <th  scope="col">Time</th>
-                <th scope="col">Author</th>
-                <th scope="col">Comment</th>
+                <th style="width: 10%">Date</th>
+                <th style="width: 10%">Time</th>
+                <th style="width: 40%">Author</th>
+                <th>Comment</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="comment, iterStat : ${allNotApprovedComments}" th:data-full-text="${comment.commentContent}" th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${comment.id}">
-                <th scope="row" th:${iterStat}>1</th>
+            <tr th:each="comment, iterStat : ${allNotApprovedComments}"
+                th:data-full-text="${comment.commentContent}"
+                th:data-content-author="${comment.author}"
+                th:classappend="${iterStat.index == 0} ? 'selected'"
+                th:data-content-id="${comment.id}">
+                <td style="width: 10%" th:text="${#temporals.format(comment.created, 'yyyy-MM-dd')}"></td>
+                <td style="width: 10%" th:text="${#temporals.format(comment.created.toLocalTime(), 'HH')} + ':' + (${comment.created.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${comment.created.toLocalTime().getMinute()}"></td>
 
-                <td th:text="${comment.created.toLocalDate()}"></td>
-                <td th:text="${comment.created.toLocalTime().getHour()} + ':' + ${comment.created.toLocalTime().getMinute()}"></td>
-                <td th:text="${comment.author}"></td>
-                <td th:text="${#strings.abbreviate(comment.commentContent, 30)}"></td>
+                <td style="width: 40%" th:text="${#strings.abbreviate(comment.author, 30)}"></td>
+                <td th:text="${#strings.abbreviate(comment.commentContent, 50)}"></td>
             </tr>
             </tbody>
         </table>
-
         <h4 class="text-white">Comment content will be displayed here</h4>
         <div id="fullMessage"></div>
-
-    </div>
-
-
     <br>
     <br>
     <div class="buttons">
-
         <a th:href="@{/moderator}" class="btn btn-info">Go back to your panel</a>
-
         <form th:action="@{/moderator/approveComment}" th:method="POST">
             <input type="hidden" id="selectedContentId" name="id"/>
             <button type="submit" class="btn btn-success">Approve</button>
         </form>
-
         <form th:action="@{/moderator/approveAll}" th:method="POST">
             <input type="hidden" name="id"/>
             <button type="submit" class="btn btn-primary">Approve All</button>
         </form>
-
         <form th:action="@{/moderator/commentNotApproved}" th:method="POST">
             <input type="hidden" id="notApprovedCommentId" name="id"/>
             <button type="submit" class="btn btn-danger">Don't Approve</button>
         </form>
-
-
     </div>
-
-
 </div>
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 <script src="/js/commentsAndContactRequestsScript.js"></script>
 </body>
 </html>

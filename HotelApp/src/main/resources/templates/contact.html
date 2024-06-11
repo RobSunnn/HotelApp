@@ -3,7 +3,6 @@
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Contact</title>
-    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="hero" style="background-image: url('/images/contact-us.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
@@ -73,13 +72,12 @@
                                   class="invalid-feedback text-white bg-danger rounded"></small>
 
                        </div>
-                       <br>
+
                        <small th:if="${successContactRequestMessage}" th:text="${successContactRequestMessage}"
                               class="alert alert-success text-black  rounded"></small>
+                       <button type="submit" class="btn btn-success mt-3">Send</button>
 
                    </div>
-
-                   <button type="submit" class="btn btn-success mt-3">Send</button>
 
                </section>
 

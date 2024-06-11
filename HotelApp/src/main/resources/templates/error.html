@@ -64,7 +64,7 @@
     <p ></p>
     <a th:href="@{/}" class="error-link">Go to Home</a>
 </div>
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

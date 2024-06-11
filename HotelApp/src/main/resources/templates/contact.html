@@ -5,7 +5,7 @@
     <title>Contact</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
+<body class="hero" style="background-image: url('/images/contact-us.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <div class="content">
 
@@ -102,9 +102,7 @@
     </div>
 
 </div>
-
-<th:block th:replace="~{/fragments/footer}"></th:block>
-<!--<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>-->
-
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

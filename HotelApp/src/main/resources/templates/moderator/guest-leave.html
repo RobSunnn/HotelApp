@@ -3,70 +3,21 @@
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Guest want to leave</title>
-
-    <style>
-        body {
-            background-image: url("/images/hotel1.jpg");
-            background-size: cover; /* Use viewport height for better responsiveness */
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-        table,
-        h2,
-        h4 {
-            text-align: center;
-        }
-        .custom-dropdown {
-            /*position: relative;*/
-            display: flex;
-            gap: 3em;
-            justify-content: center;
-            flex-direction: column;
-            margin-top: 2em;
-
-        }
-
-        .back-btn {
-            text-align: center;
-        }
-
-        #commentTable {
-            cursor: auto;
-            border: 5px solid #ddd; /* Adds a line between rows */
-            max-height: 10vh; /* Adjust the max-height as needed */
-            overflow-y: auto;
-        }
-        /*#commentTable tr.selected {*/
-        /*    background-color: black; !* Light grey background *!*/
-        /*    color: white;*/
-        /*}*/
-        #commentTable th, #commentTable td {
-            padding: 8px;
-            border: 2px solid #ddd; /* Adds a line between rows */
-        }
-
-        .container {
-            margin: 5em auto;
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
+<body class="hero" style="background-image: url('/images/hotel2.jpg');">
 
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <div class="container p-3 bg-dark rounded">
-    <form th:action="@{/guests/leave}" th:method="POST">
+    <div>
         <h2 class="text-white mt-2">All Guests in Hotel</h2>
-
-        <div class="custom-dropdown p-3">
-            <table class="bg-white" id="commentTable">
+            <table class="table" id="table">
                 <thead>
                 <tr>
                     <th>Guest Full Name</th>
                     <th>Age</th>
                     <th>Document ID</th>
                     <th>Room Number</th>
-
                 </tr>
                 </thead>
                 <tbody>
@@ -85,14 +36,14 @@
                 </tbody>
             </table>
 
-            </div>
-    </form>
+
+    </div>
 
     <div class="back-btn">
         <a th:href="@{/moderator}" class="btn btn-info">Go back <br> to your panel</a>
     </div>
 </div>
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

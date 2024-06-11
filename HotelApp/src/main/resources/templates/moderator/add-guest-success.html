@@ -3,33 +3,17 @@
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Adding Guest Successful</title>
-
-    <style>
-        h1,
-        h3{
-            padding-bottom: 1em;
-        }
-
-        .card {
-            justify-content: center;
-            align-self: center;
-            width: 50%;
-            justify-self: center;
-            margin: 6em auto;
-            padding: 3em;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
+<body class="hero" style="background-image: url('/images/success.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
-<div class="card bg-dark text-white">
-    <h1>Guest added Successfully!</h1>
+<div class="card bg-dark text-white" id="success-card">
+    <h1 class="pb-1">Guest added Successfully!</h1>
     <h2>Welcome to our Application!</h2>
-    <h3>Thank you for choosing us!</h3>
+    <h3 class="pb-1">Thank you for choosing us!</h3>
     <a href="/moderator" class="btn btn-success">Go To Your Panel</a>
 </div>
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

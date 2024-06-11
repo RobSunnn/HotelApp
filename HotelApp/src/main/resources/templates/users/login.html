@@ -8,14 +8,6 @@
     <link rel="stylesheet" href="/css/styles.css">
 
     <style>
-        body {
-            background-image: url("/images/login-img.jpg");
-            background-size: 100% 100vh; /* Use viewport height for better responsiveness */
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            /*transition: background-image 1s ease;*/
-            /*transition-delay: 3s;*/
-        }
 
 
         .is-invalid ~ .invalid-feedback {
@@ -29,7 +21,7 @@
     </style>
 </head>
 
-<body>
+<body class="hero" style="background-image: url('/images/login-img.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <main>
     <div class="container">
@@ -80,7 +72,7 @@
     </div>
 
 </main>
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<!--<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>-->
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

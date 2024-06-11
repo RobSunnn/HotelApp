@@ -30,7 +30,7 @@
         <h3>Thank you for choosing us!</h3>
         <a href="/users/login" class="btn btn-success">Go To Login Page</a>
     </div>
-<th:block th:insert="~{/fragments/footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

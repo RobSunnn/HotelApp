@@ -93,7 +93,7 @@
             </thead>
             <tbody>
             <tr th:each="comment, iterStat : ${allNotApprovedComments}" th:data-full-text="${comment.commentContent}" th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${comment.id}">
-                <th scope="row" th:${iterStat}>1</th>
+
 
                 <td th:text="${comment.created.toLocalDate()}"></td>
                 <td th:text="${comment.created.toLocalTime().getHour()} + ':' + ${comment.created.toLocalTime().getMinute()}"></td>
@@ -136,7 +136,7 @@
 
 </div>
 <th:block th:insert="~{/fragments/footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+
 <script src="/js/commentsAndContactRequestsScript.js"></script>
 </body>
 </html>

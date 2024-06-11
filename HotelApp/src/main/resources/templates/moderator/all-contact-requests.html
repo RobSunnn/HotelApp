@@ -99,12 +99,12 @@
             <tr class="" th:each="request, iterStat : ${allNotCheckedContactRequest}" th:data-full-text="${request.message}"
                 th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${request.id}">
 
-                <td class="text-black" th:text="${request.created.toLocalDate()}"></td>
+                <td th:text="${request.created.toLocalDate()}"></td>
                 <td th:text="${request.created.toLocalTime().getHour()} + ':' + ${request.created.toLocalTime().getMinute()}"></td>
-                <td th:text="${request.name}"></td>
-                <td th:text="${request.email}"></td>
+                <td th:text="${#strings.abbreviate(request.name, 15)}"></td>
+                <td th:text="${#strings.abbreviate(request.email, 15)}"></td>
                 <td th:text="${request.phoneNumber}"></td>
-                <td th:text="${#strings.abbreviate(request.message, 30)}"></td>
+                <td th:text="${#strings.abbreviate(request.message, 20)}"></td>
             </tr>
             </tbody>
         </table>

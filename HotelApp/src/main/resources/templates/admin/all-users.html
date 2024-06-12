@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <title>All Users</title>
+
+    <style>
+        .heading {
+            border: 5px solid yellow;
+            outline: 5px solid gray;
+            background-color: #7e86a1;
+            width: 50%;
+            color: white;
+            max-width: 100%;
+            margin: 3em auto 0 auto;
+            padding: 1em;
+            border-radius: 20%;
+        }
+    </style>
+</head>
+<body class="hero" style="background-image: url('/images/hotel1.jpg');">
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<div class="heading">
+    <h2 class="mt-2 bg-dark">All Users In The Application</h2>
+</div>
+<div class="container p-3 bg-dark rounded">
+    <table class="table" id="table" th:object="${allUsers}">
+        <thead>
+        <tr>
+            <th>User Picture</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Functions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${allUsers}" th:data-user-email="${user.email}">
+            <td style="width: 10vw">
+                <img class="profile-picture" th:if="${user.getProfilePictureBase64() != ''}"
+                     th:src="'data:image/jpeg;base64,' + ${user.getProfilePictureBase64()}"
+                     alt="Profile Picture">
+                <img class="profile-picture" th:if="${user.getProfilePictureBase64() == ''}"
+                     th:src="@{/images/minion.gif}"
+                     alt="Default Profile Picture">
+            </td>
+            <td style="width: 10vw" th:text="${user.getFullName()}"></td>
+            <td style="width: 10vw" th:text="${user.getEmail()}"></td>
+            <td style="width: 10vw" class="roles" th:text="${user.getRoleNames()}"></td>
+            <td style="width: 40vw">
+                <div class="buttons-holder">
+                    <form th:action="@{/admin/makeUserAdmin}" th:method="POST">
+                        <button type="button" class="role-button btn btn-success" id="makeAdmin">Make Admin</button>
+                    </form>
+                    <form th:action="@{/admin/makeUserModerator}" th:method="POST">
+                        <button type="button" class="role-button btn btn-warning" id="makeModerator">Make Moderator</button>
+                    </form>
+                    <form th:action="@{/admin/takeRights}" th:method="POST">
+                        <button type="button" class="role-button btn btn-danger" id="makeUser">Make User</button>
+                    </form>
+                </div>
+                <div id="result" class="result mt-3"></div>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="col-md-12 text-center mt-5">
+        <div>
+            <div class="col-md-12 text-white text-center">
+                <p>
+                    Page <span th:text="${allUsers.getNumber() + 1}"></span>
+                    of <span th:text="${allUsers.getTotalPages()}"></span>
+                </p>
+            </div>
+        </div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- Previous button -->
+                <li class="page-item " th:classappend="${allUsers.number == 0} ? 'disabled' : ''">
+                    <a class="page-link rounded text-white border btn btn-secondary" th:href="@{${'/admin/allUsers'}(page=${allUsers.number - 1})}">Previous</a>
+                </li>
+                <!-- Next button -->
+                <li class="page-item" th:classappend="${allUsers.number == allUsers.totalPages - 1} ? 'disabled' : ''">
+                    <a id="next-btn" class="page-link rounded text-white border btn btn-secondary " th:href="@{${'/admin/allUsers'}(page=${allUsers.number + 1})}">Next</a>
+                </li>
+            </ul>
+            <a href="/admin" class="rounded text-white border btn btn-primary">Go Back To Admin Panel</a>
+
+        </nav>
+    </div>
+</div>
+
+
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{/fragments/scripts :: scripts}"></th:block>
+<script src="/js/userRolesScript.js"></script>
+</body>
+</html>

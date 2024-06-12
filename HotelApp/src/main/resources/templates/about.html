@@ -58,17 +58,22 @@
                 <div class="message" th:classappend="${iterStat.index >= 5} ? 'hidden'">
 
                     <div class="comment-title">
+                      <div class="comment-title-content d-flex">
+                          <h6>Date:</h6>
 
-                        <h5 class="date" th:text="'Date: ' + ${comment.created.toLocalDate()}">Author</h5>
+                          <h5 class="date" th:text="${comment.created.toLocalDate()}">Author</h5>
 
-                        <h5 class="author" th:text="'Author: ' + ${comment.author}">Author</h5>
+                      </div>
 
-
+                    <div class="comment-title-content">
+                        <h6>Author:</h6>
+                        <h5 class="author" th:text="${comment.author}">Author</h5>
+                    </div>
                     </div>
                     <div class="message-text">
                         <p th:attr="data-full-text=${comment.commentContent}"
                            th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
-                           th:classappend="${comment.commentContent.length() > 70} ? 'truncated' : ''"></p>
+                           th:classappend="${comment.commentContent.length() > 40} ? 'truncated' : ''"></p>
                     </div>
                     <button class="showWholeComment btn btn-info" th:if="${comment.commentContent.length() > 40}">Show
                         More
@@ -116,7 +121,7 @@
 
     <div class="form-container">
 
-        <section id="comments" class="py-5">
+        <section id="comments-form">
 
             <div class="container text-center">
 

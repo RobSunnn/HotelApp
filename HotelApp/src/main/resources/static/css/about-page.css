@@ -1,11 +1,3 @@
-@media (max-width: 990px) {
-    .comments-and-form {
-        flex-wrap: wrap;
-    }
-    .form-container {
-        width: 100vw;
-    }
-}
 .text {
     display: flex;
     justify-content: space-around;
@@ -16,9 +8,14 @@
 
 .form-container {
     display: flex;
-    width: 40vw;
+    flex-wrap: wrap;
     justify-content: center;
-    max-width: 100%;
+    height: 50%;
+    align-self: center;
+}
+
+.comments-container {
+    align-self: center;
 }
 
 .page-counter {
@@ -44,22 +41,30 @@
 
 .comments-and-form {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 2em;
 }
 
-#comments {
+#comments-form {
     color: white;
     border-radius: 20%;
-    margin-bottom: 5em;
-    width: 80%;
-    max-width: 100%;
     opacity: 85%;
     background-color: #2e2d2c;
+    margin-right: 5em;
+    width: 100ch;
+    max-width: 40ch;
+    min-height: 20vh;
 }
 
 .comment-title {
     display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 1em;
     gap: 1em;
+}
+
+.comment-title-content {
+    flex-direction: column;
 }
 
 .message-text,
@@ -120,11 +125,12 @@
     padding: 1.5em;
     color: white;
     text-align: center;
-    width: 100%;
+    align-content: center;
+    width: 100ch;
     max-width: 40ch;
+    min-height: 20vh;
     background-color: chocolate;
     margin: 0 auto;
-    min-height: 200px;
     overflow: hidden;
     opacity: 80%;
     border-radius: 50px;
@@ -132,4 +138,34 @@
 
 .allComments, #controls {
     transition: opacity 1.3s ease-in-out;
+}
+
+
+
+@media (max-width: 1450px) {
+    .comments-and-form {
+        flex-wrap: wrap;
+        gap: 0;
+    }
+    #comments-form  {
+        width:40vw;
+        min-height: 20vh;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 990px) {
+    .card-info:last-child {
+        display: none;
+    }
+    .comments-and-form {
+        flex-wrap: wrap;
+        gap: 0;
+    }
+    #comments-form  {
+        width: 100ch;
+        max-width: 40ch;
+        min-height: 20vh;
+        margin-right: 0;
+    }
 }

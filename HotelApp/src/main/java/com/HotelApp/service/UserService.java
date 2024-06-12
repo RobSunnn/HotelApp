@@ -4,6 +4,8 @@ import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -24,7 +26,7 @@ public interface UserService {
 
     void takeRights(String email);
 
-    List<UserView> findAllUsers();
+    Page<UserView> findAllUsers(Pageable pageable);
 
     UserView findUserDetails(String userEmail);
 

@@ -18,12 +18,12 @@ public class UsersRestController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/allUsers")
-    public ResponseEntity<List<UserView>> allUsers() {
-        List<UserView> allUsers = userService.findAllUsers();
-        return ResponseEntity.ok(allUsers);
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("/allUsers")
+//    public ResponseEntity<List<UserView>> allUsers() {
+//        List<UserView> allUsers = userService.findAllUsers();
+//        return ResponseEntity.ok(allUsers);
+//    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{userEmail}")

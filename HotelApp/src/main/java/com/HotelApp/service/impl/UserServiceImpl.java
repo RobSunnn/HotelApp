@@ -7,7 +7,6 @@ import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
-import com.HotelApp.domain.models.service.CustomUserDetails;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.RoleService;
@@ -18,6 +17,7 @@ import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.common.constants.ValidationConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,9 +39,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
-import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
 
 @Service
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
             throw new ForbiddenUserException("You can't see this user :)");
         }
 
-        return modelMapper().map(user, UserView.class);
+        return mapAsUserView(user);
     }
 
     private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel) {
@@ -237,13 +237,25 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public List<UserView> findAllUsers() {
-        return userRepository
-                .findAll()
-                .stream()
+    public Page<UserView> findAllUsers(Pageable pageable) {
+        List<UserEntity> allUsers = userRepository.findAll();
+
+        List<UserEntity> filteredUsers = allUsers.stream()
                 .skip(1)
-                .map(user -> modelMapper().map(user, UserView.class))
                 .toList();
+
+        List<UserView> userViews = filteredUsers.stream()
+                .map(UserServiceImpl::mapAsUserView)
+                .collect(Collectors.toList());
+
+        int pageSize = pageable.getPageSize();
+        int pageNumber = pageable.getPageNumber();
+        int fromIndex = pageNumber * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, userViews.size());
+
+        List<UserView> currentPage = userViews.subList(fromIndex, toIndex);
+
+        return new PageImpl<>(currentPage, pageable, userViews.size());
     }
 
     @Override
@@ -253,7 +265,7 @@ public class UserServiceImpl implements UserService {
         return mapAsUserView(user);
     }
 
-    private UserView mapAsUserView(UserEntity user) {
+    private static UserView mapAsUserView(UserEntity user) {
         UserView userView = new UserView()
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())

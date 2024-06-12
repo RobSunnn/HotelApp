@@ -1,9 +1,9 @@
 package com.HotelApp.domain.models.view;
 
 import com.HotelApp.domain.entity.RoleEntity;
-
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserView {
 
@@ -23,7 +23,8 @@ public class UserView {
 
     private List<RoleEntity> roles;
 
-    public UserView() {}
+    public UserView() {
+    }
 
     public String getFullName() {
         return fullName;
@@ -99,5 +100,11 @@ public class UserView {
 
     public String getProfilePictureBase64() {
         return userImage != null ? Base64.getEncoder().encodeToString(userImage) : "";
+    }
+
+    public String getRoleNames() {
+        return roles.stream()
+                .map(roleEntity -> roleEntity.getName().name())
+                .collect(Collectors.joining(", "));
     }
 }

@@ -1,10 +1,11 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.models.view.GuestView;
-import com.HotelApp.domain.models.view.HappyGuestView;
-import com.HotelApp.domain.models.view.RoomView;
-import com.HotelApp.domain.models.view.SubscriberView;
+import com.HotelApp.domain.models.view.*;
 import com.HotelApp.service.HotelService;
+import com.HotelApp.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +21,11 @@ public class HotelController {
 
     private final HotelService hotelService;
 
-    public HotelController(HotelService hotelService) {
+    private final UserService userService;
+
+    public HotelController(HotelService hotelService, UserService userService) {
         this.hotelService = hotelService;
+        this.userService = userService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -41,6 +45,21 @@ public class HotelController {
 
         return "admin/admin-panel";
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/allUsers")
+    public String allUsersPage(Model model,
+                               @PageableDefault(
+                                       size = 7,
+                                       sort = "id"
+                               )
+                               Pageable pageable) {
+
+        Page<UserView> allUsers = userService.findAllUsers(pageable);
+        model.addAttribute("allUsers", allUsers);
+        return "admin/all-users";
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/freeRooms")

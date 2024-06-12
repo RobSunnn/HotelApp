@@ -4,7 +4,6 @@
     <th:block th:replace="~{fragments/head :: head}"></th:block>
 
     <title>Rooms</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
 
 
@@ -39,28 +38,6 @@
 <body>
 
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
-
-
-<!--<div class="container" th:each="room : ${allRooms.getContent()}">-->
-<!--    <div class="row">-->
-<!--        <div class="col-md-12">-->
-<!--            <div class="card mb-4">-->
-<!--                <div class="row bg-dark text-white no-gutters">-->
-<!--                    <div class="col-md-4">-->
-<!--                        <img th:src=${room.getPictureUrl} class="card-img" alt="...">-->
-<!--                    </div>-->
-<!--                    <div class="col-md-8">-->
-<!--                        <div class="card-body">-->
-<!--                            <h5 class="card-title" th:text="${room.getName()}">Name</h5>-->
-<!--                            <p class="card-text" th:text="${room.getDescription()}">Description</p>-->
-<!--                        </div>-->
-<!--                        <a href="#">Details</a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <main>
     <div class="cards d-flex">
         <div class="container-fluid" th:each="room : ${allRooms.getContent()}">
@@ -106,12 +83,11 @@
             <ul class="pagination justify-content-center">
                 <!-- Previous button -->
                 <li class="page-item" th:classappend="${allRooms.number == 0} ? 'disabled' : ''">
-                    <a class="page-link mr-2 rounded" th:href="@{${'/allRoomTypes'}(page=${allRooms.number - 1})}">Previous</a>
+                    <a class="page-link rounded text-white border btn btn-secondary" th:href="@{${'/allRoomTypes'}(page=${allRooms.number - 1})}">Previous</a>
                 </li>
-
                 <!-- Next button -->
                 <li class="page-item" th:classappend="${allRooms.number == allRooms.totalPages - 1} ? 'disabled' : ''">
-                    <a class="page-link pr-4 pl-4 rounded" th:href="@{${'/allRoomTypes'}(page=${allRooms.number + 1})}">Next</a>
+                    <a class="page-link rounded text-white border btn btn-secondary" th:href="@{${'/allRoomTypes'}(page=${allRooms.number + 1})}">Next</a>
                 </li>
             </ul>
         </nav>

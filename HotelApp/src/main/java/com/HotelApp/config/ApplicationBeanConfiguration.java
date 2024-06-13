@@ -1,14 +1,9 @@
 package com.HotelApp.config;
 
-import com.HotelApp.service.exception.ForbiddenUserException;
-import com.HotelApp.service.exception.UserNotFoundException;
+//import com.HotelApp.util.ApplicationShutdownHook;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-
-import java.util.Properties;
 
 @Configuration
 public class ApplicationBeanConfiguration {
@@ -18,7 +13,10 @@ public class ApplicationBeanConfiguration {
         return new ModelMapper();
     }
 
-
+//    @Bean
+//    public ApplicationShutdownHook applicationShutdownHook() {
+//        return new ApplicationShutdownHook();
+//    }
 //    @Bean
 //    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
 //        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();

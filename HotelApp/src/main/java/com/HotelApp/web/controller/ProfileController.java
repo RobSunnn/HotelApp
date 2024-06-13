@@ -1,7 +1,5 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.common.constants.BindingConstants;
-import com.HotelApp.common.constants.ValidationConstants;
 import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.view.UserView;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>All Users</title>
@@ -35,7 +36,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${allUsers}" th:data-user-email="${user.email}">
+<!--        <div th:data-user-email="${#strings.encrypt(user.email.toString())}"></div>-->
+        <tr th:each="user : ${allUsers}" th:data-encrypted="${user.encryptedEmail}">
             <td style="width: 10vw">
                 <img class="profile-picture" th:if="${user.getProfilePictureBase64() != ''}"
                      th:src="'data:image/jpeg;base64,' + ${user.getProfilePictureBase64()}"
@@ -43,20 +45,17 @@
                 <img class="profile-picture" th:if="${user.getProfilePictureBase64() == ''}"
                      th:src="@{/images/minion.gif}"
                      alt="Default Profile Picture">
+
             </td>
             <td style="width: 10vw" th:text="${user.getFullName()}"></td>
             <td style="width: 10vw" th:text="${user.getEmail()}"></td>
             <td style="width: 10vw" class="roles" th:text="${user.getRoleNames()}"></td>
             <td style="width: 40vw">
                 <div class="buttons-holder">
-                    <form th:action="@{/admin/makeUserAdmin}" th:method="POST">
-                        <button type="button" class="role-button btn btn-success" id="makeAdmin">Make Admin</button>
-                    </form>
-                    <form th:action="@{/admin/makeUserModerator}" th:method="POST">
-                        <button type="button" class="role-button btn btn-warning" id="makeModerator">Make Moderator</button>
-                    </form>
-                    <form th:action="@{/admin/takeRights}" th:method="POST">
-                        <button type="button" class="role-button btn btn-danger" id="makeUser">Make User</button>
+                    <form>
+                        <button type="button" name="command" class="role-button btn btn-success" id="makeAdmin">Make Admin</button>
+                        <button type="button" name="command" class="role-button btn btn-warning" id="makeModerator">Make Moderator</button>
+                        <button type="button" name="command" class="role-button btn btn-danger" id="makeUser">Make User</button>
                     </form>
                 </div>
                 <div id="result" class="result mt-3"></div>

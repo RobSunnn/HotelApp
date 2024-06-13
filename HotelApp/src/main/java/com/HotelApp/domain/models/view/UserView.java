@@ -17,6 +17,8 @@ public class UserView {
 
     private String email;
 
+    private String encryptedEmail;
+
     private Integer age;
 
     private byte[] userImage;
@@ -68,6 +70,15 @@ public class UserView {
 
     public UserView setEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public String getEncryptedEmail() {
+        return encryptedEmail;
+    }
+
+    public UserView setEncryptedEmail(String encryptedEmail) {
+        this.encryptedEmail = encryptedEmail;
         return this;
     }
 

@@ -1,4 +1,3 @@
-
 const baseUrl = 'http://localhost:8080/admin';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,35 +6,32 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonsArr.forEach(b => b.addEventListener('click', (e) => {
         const command = e.target.textContent;
         Array.from(resultElements).forEach(result => result.innerHTML = '');
-        const userEmail = e.target.closest('tr').dataset.userEmail;
+        const encrypted = e.target.closest('tr').dataset.encrypted;
 
-        let urlForPostRequest;
         let message;
 
         switch(command) {
             case "Make Admin":
-                urlForPostRequest = 'makeUserAdmin';
                 message = 'User has been granted admin rights!';
                 break;
             case "Make Moderator":
-                urlForPostRequest = 'makeUserModerator';
                 message = 'User has been granted moderator rights!';
                 break;
             case "Make User":
-                urlForPostRequest = 'takeRights';
                 message = 'User rights have been revoked!';
                 break;
         }
 
         const result = e.target.closest('td').querySelector('.result');
         result.innerHTML = '';
-        if (userEmail) {
+        if (encrypted) {
             const csrfTokenElement = document.querySelector('input[name="_csrf"]');
             const userObj = {
-                userEmail: userEmail
+                encrypted: encrypted,
+                command: command
             };
 
-            fetch(`${baseUrl}/${urlForPostRequest}/${userEmail}`, {
+            fetch(`${baseUrl}/changeUserRoles`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': csrfTokenElement.value,
@@ -48,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     htmlParagraphElement.textContent = message;
                     result.appendChild(htmlParagraphElement);
 
-                    reloadRoles(userEmail)
+                    reloadRoles(encrypted)
                         .then(roleNames => {
                             // Update roles field in the table
                             const rolesField = e.target.closest('tr').querySelector('.roles');
@@ -70,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
 });
 
-function reloadRoles(userEmail) {
-    return fetch(`${baseUrl}/${userEmail}`)
+function reloadRoles(encrypted) {
+    return fetch(`${baseUrl}/info?encrypted=${encodeURIComponent(encrypted)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch user roles');
@@ -79,6 +75,11 @@ function reloadRoles(userEmail) {
             return response.json();
         })
         .then(result => {
+            console.log('User roles:', result);
             return result.roleNames;
+        })
+        .catch(err => {
+            console.error('Error reloading roles:', err);
+            throw err;
         });
 }

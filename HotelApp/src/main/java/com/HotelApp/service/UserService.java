@@ -10,8 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
 public interface UserService {
 
     boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
@@ -20,11 +18,8 @@ public interface UserService {
 
     UserView findUserByEmail(String email);
 
-    void makeUserAdmin(String email);
+    void changeUserRole(String email, String command);
 
-    void makeUserModerator(String email);
-
-    void takeRights(String email);
 
     Page<UserView> findAllUsers(Pageable pageable);
 

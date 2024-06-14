@@ -3,7 +3,9 @@ package com.HotelApp.util;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
@@ -37,6 +39,22 @@ public class EncryptionUtil {
         System.out.println("encrUtil decrypt info");
 
         return new String(decryptedBytes);
+    }
+
+    public static String decrypt(String encryptedData, String Base64Iv, String key) throws Exception {
+        byte[] iv = Base64.getDecoder().decode(Base64Iv);
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
+
+        byte[] sharedSecretKey = Base64.getDecoder().decode(key);
+        SecretKeySpec keySpec = new SecretKeySpec(sharedSecretKey, ALGORITHM);
+
+        Cipher cipher = Cipher.getInstance(ALGORITHM + "/CBC/PKCS5Padding"); // Specify mode and padding
+        cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+
+        byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
+        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 
     public static String keyToString(SecretKey secretKey) {

@@ -3,15 +3,16 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
 
@@ -50,7 +51,7 @@ public class UserController {
     }
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping("/register")
+    @GetMapping(value = "/register", produces = "text/html")
     public String register() {
         return "users/register";
     }
@@ -60,18 +61,26 @@ public class UserController {
         return "users/registration-success";
     }
 
-    @PreAuthorize("isAnonymous()")
-    @PostMapping("/register")
-    public String register(@Valid UserRegisterBindingModel userRegisterBindingModel,
-                           BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
+    @PostMapping(value = "/register", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> register(@Valid UserRegisterBindingModel userRegisterBindingModel,
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes) {
+
+
+
         boolean registrationSuccessful = userService
                 .registerUser(userRegisterBindingModel, bindingResult, redirectAttributes);
 
+        Map<String, Object> responseBody = new HashMap<>();
         if (registrationSuccessful) {
-            return "redirect:/users/registrationSuccess";
+            responseBody.put("success", true);
+            responseBody.put("redirectUrl", "/users/registrationSuccess");
+            return ResponseEntity.ok().body(responseBody);
         } else {
-            return "redirect:/users/register";
+            responseBody.put("success", false);
+            responseBody.put("errors", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(responseBody);
         }
     }
 }

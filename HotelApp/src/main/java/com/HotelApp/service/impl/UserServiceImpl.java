@@ -34,14 +34,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
     private final UserDetailsService userDetailsService;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
-    private final SecretKey secretKey;
+
     public UserServiceImpl(UserRepository userRepository,
                            RoleService roleService,
                            HotelServiceImpl hotelService,
@@ -70,13 +69,40 @@ public class UserServiceImpl implements UserService {
         this.userDetailsService = userDetailsService;
         this.request = request;
         this.response = response;
-        this.secretKey = KeyManager.getSecretKey();
     }
 
     @Transactional
     @Override
     public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (checkIfEmailExist(userRegisterBindingModel.getEmail())) {
+
+
+        String decryptedEmail = decryptEmail(userRegisterBindingModel.getEmail(),
+                userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
+
+        String decryptedPass = "";
+        String decryptedConfirmPass = "";
+        try {
+            decryptedPass = EncryptionUtil.decrypt(userRegisterBindingModel.getPassword(), userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
+            decryptedConfirmPass = EncryptionUtil.decrypt(userRegisterBindingModel.getConfirmPassword(), userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
+
+        } catch (Exception ignored) {
+        }
+        if (Objects.requireNonNull(decryptedPass).isEmpty()) {
+            bindingResult.addError(new FieldError("userRegisterBindingModel",
+                    "password", "Password is empty."));
+        } else if (Objects.requireNonNull(decryptedConfirmPass).isEmpty()) {
+            bindingResult.addError(new FieldError("userRegisterBindingModel",
+                    "confirmPassword", "Confirm your password, please."));
+        } else if (!decryptedPass.equals(decryptedConfirmPass)) {
+            bindingResult.addError(new FieldError("userRegisterBindingModel",
+                    "confirmPassword", "Password mismatch"));
+        }
+        
+        userRegisterBindingModel.setEmail(decryptedEmail);
+        userRegisterBindingModel.setPassword(decryptedPass);
+        userRegisterBindingModel.setConfirmPassword(decryptedConfirmPass);
+
+        if (checkIfEmailExist(decryptedEmail)) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
                     "email", ValidationConstants.EMAIL_EXIST));
         }
@@ -94,6 +120,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return user.getEmail() != null;
+    }
+
+    @Override
+    public String decryptEmail(String email, String ivParam, String key) {
+        try {
+            return EncryptionUtil.decrypt(email, ivParam, key);
+        } catch (Exception ignored) {
+            throw new IllegalArgumentException("Invalid encrypted email data");
+        }
     }
 
     @Override
@@ -124,9 +159,6 @@ public class UserServiceImpl implements UserService {
 
     private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel) {
 
-        if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
-            return new UserEntity(); // TODO: better solution for field match or throw exception
-        }
 
         UserEntity user = new UserEntity()
                 .setEmail(userRegisterBindingModel.getEmail().trim())
@@ -155,18 +187,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changeUserRole(String encryptedInfo, String command) {
-        // Find the user by email
-
         String decryptedEmail = null;
-        try {
-            // Decrypt the encrypted email received from the form submission
-            decryptedEmail = EncryptionUtil.decrypt(encryptedInfo);
 
-            // Perform update operation with decrypted email
-            // userService.updateEmail(userId, decryptedEmail);
+        try {
+            decryptedEmail = EncryptionUtil.decrypt(encryptedInfo);
         } catch (Exception ignored) {
-            // Handle decryption or update errors
-//            e.printStackTrace();
         }
 
         Optional<UserEntity> userOptional = userRepository.findByEmail(decryptedEmail);
@@ -181,11 +206,8 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User not found for email: " + decryptedEmail);
         }
 
-
-
         switch (command) {
             case "Make Admin":
-                // Fetch the ADMIN role
                 RoleEntity adminRole = roleService.getAllRoles()
                         .stream()
                         .filter(role -> role.getName().name().equals("ADMIN"))
@@ -233,10 +255,7 @@ public class UserServiceImpl implements UserService {
                 user.setRoles(List.of(roleUser));
                 userRepository.save(user);
                 break;
-
         }
-
-
     }
 
 
@@ -272,14 +291,14 @@ public class UserServiceImpl implements UserService {
         UserView userView = new UserView()
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
+                .setEmail(user.getEmail())
                 .setFullName(user.getFirstName() + " " + user.getLastName())
                 .setAge(user.getAge())
                 .setRoles(user.getRoles());
 
         try {
             String encryptedEmail = EncryptionUtil.encrypt(user.getEmail());
-            userView.setEncryptedEmail(encryptedEmail); // Store encrypted email
-            userView.setEmail(user.getEmail()); // Store decrypted email
+            userView.setEncryptedEmail(encryptedEmail);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -444,7 +463,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
     }
-
 
 
 //    private static SecretKey generateKey() {

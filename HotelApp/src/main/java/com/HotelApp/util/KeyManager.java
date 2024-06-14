@@ -1,6 +1,5 @@
 package com.HotelApp.util;
 
-
 import javax.crypto.SecretKey;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,7 +9,7 @@ import java.time.Instant;
 public class KeyManager {
 
     private static final String SECRET_KEY_FILE = "secret.key";
-    private static final Duration EXPIRATION_DURATION = Duration.ofSeconds(10);
+    private static final Duration EXPIRATION_DURATION = Duration.ofMinutes(10);
 
     private static SecretKey secretKey;
     private static Instant keyUpdateTime;

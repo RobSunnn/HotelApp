@@ -20,6 +20,7 @@ public interface UserService {
 
     void changeUserRole(String email, String command);
 
+    String decryptEmail(String email, String ivParam, String key);
 
     Page<UserView> findAllUsers(Pageable pageable);
 

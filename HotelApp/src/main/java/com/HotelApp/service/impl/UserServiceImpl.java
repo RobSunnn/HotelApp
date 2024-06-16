@@ -19,6 +19,7 @@ import com.HotelApp.util.EncryptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
@@ -69,10 +71,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public Map<String, Object> registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         String decryptedEmail = decryptEmail(userRegisterBindingModel.getEmail(),
                 userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
-
+        boolean successfulRegistration = false;
+        Map<String, Object> responseBody = new HashMap<>();
         String decryptedPass = "";
         String decryptedConfirmPass = "";
         try {
@@ -91,7 +94,7 @@ public class UserServiceImpl implements UserService {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
                     "confirmPassword", "Password mismatch"));
         }
-        
+
         userRegisterBindingModel.setEmail(decryptedEmail);
         userRegisterBindingModel.setPassword(decryptedPass);
         userRegisterBindingModel.setConfirmPassword(decryptedConfirmPass);
@@ -107,13 +110,18 @@ public class UserServiceImpl implements UserService {
             redirectAttributes
                     .addFlashAttribute(BINDING_RESULT_PATH +
                             USER_REGISTER_BINDING_MODEL, bindingResult);
-            return false;
+            responseBody.put("success", false);
+            responseBody.put("errors", bindingResult.getAllErrors());
+            return responseBody;
         }
 
         UserEntity user = mapAsUser(userRegisterBindingModel);
         userRepository.save(user);
+        successfulRegistration = true;
 
-        return user.getEmail() != null;
+        responseBody.put("success", true);
+        responseBody.put("redirectUrl", "/users/registrationSuccess");
+        return responseBody;
     }
 
     @Override

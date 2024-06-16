@@ -79,7 +79,7 @@
                     <!-- Grid column -->
                     <div class="col-auto">
                         <!-- Submit button -->
-                        <button data-mdb-ripple-init type="submit" class="btn btn-primary mb-4">
+                        <button data-mdb-ripple-init type="submit" id="subscribe-btn" class="btn btn-primary mb-4">
                             Subscribe
                         </button>
                     </div>
@@ -132,7 +132,7 @@
                 <div class="video">
                     <div class="">
                         <div class="">
-                            <video controls width="320">
+                            <video controls width="300">
 
                                 <source src="/images/10154095086876282.mp4" type="video/mp4"/>
 
@@ -168,6 +168,12 @@
     <!-- Copyright -->
 </footer>
 <!-- Footer -->
-
+<script>
+     let subscribeButton = document.getElementById('subscribe-btn');
+   subscribeButton.addEventListener('click', function() {
+        console.log('Hello');
+    document.getElementById('.subscribe-btn').scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
 </body>
 </html>

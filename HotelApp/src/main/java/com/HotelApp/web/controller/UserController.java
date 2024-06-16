@@ -69,18 +69,10 @@ public class UserController {
 
 
 
-        boolean registrationSuccessful = userService
+        Map<String, Object> registrationSuccessful = userService
                 .registerUser(userRegisterBindingModel, bindingResult, redirectAttributes);
 
-        Map<String, Object> responseBody = new HashMap<>();
-        if (registrationSuccessful) {
-            responseBody.put("success", true);
-            responseBody.put("redirectUrl", "/users/registrationSuccess");
-            return ResponseEntity.ok().body(responseBody);
-        } else {
-            responseBody.put("success", false);
-            responseBody.put("errors", bindingResult.getAllErrors());
-            return ResponseEntity.badRequest().body(responseBody);
-        }
+        return ResponseEntity.ok(registrationSuccessful);
+
     }
 }

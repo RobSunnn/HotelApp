@@ -3,46 +3,25 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{/fragments/head :: head}"></th:block>
     <title>NavBar</title>
-    <style>
-
-        @media (max-width: 992px) {
-            .navbar {
-                 background-color: #2e2d2c;
-            }
-        }
-
-        .form-inline {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            /*width: 130%;*/
-        }
-
-        /*.navbar {*/
-        /*    margin-bottom: 3em;*/
-        /*    background-image: url("/images/hotel.jpg");*/
-        /*}*/
-        .navbar .nav-link {
-            color: #fff !important;
-        }
-
-    </style>
 </head>
 
 <body>
 <!-- Navbar -->
 <header th:fragment="navbar">
-    <nav class="navbar navbar-expand-lg navbar-dark d-lg-block" style="z-index: 2000;">
-        <div class="container-fluid">
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-dark d-lg-block" style="z-index: 2000;">
+        <div class="container-fluid text-center">
 
-            <a class="navbar-brand nav-link" href="/">
-                <strong>Hotel App</strong>
-            </a>
+          <div class="logo-text">
+              <a class="navbar-brand nav-link" href="/">
+                  <i class="fa-solid fa-hotel fa-2xl"></i>
+                  <strong>Hotel App</strong>
+              </a>
+          </div>
             <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#toggler"
                     aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-bars fa-xl"></i></span>
 
             </button>
             <div class="collapse navbar-collapse" id="toggler">
@@ -53,6 +32,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/about">About us</a>
                     </li>
+
                     <li  class="nav-item">
                         <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
                     </li>
@@ -64,17 +44,16 @@
                 <ul class="navbar-nav list-inline" id="custom-box">
 
                     <li>
-                        <a th:unless="${#authorization.expression('isAuthenticated()')}" class=" btn-outline-light btn-lg m-2" href="/users/register"
+                        <a th:unless="${#authorization.expression('isAuthenticated()')}" class="sign-up btn-outline-light btn-lg m-2" href="/users/register"
                            role="button">Sign Up</a>
-                        <a th:unless="${#authorization.expression('isAuthenticated()')}" class=" btn-outline-light btn-lg m-2" href="/users/login"
+                        <a th:unless="${#authorization.expression('isAuthenticated()')}" class="sign-in btn-outline-light btn-lg m-2" href="/users/login"
                            role="button" rel="nofollow">Sign In</a>
                     </li>
                     <!-- Icons -->
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <div class="form-inline my-2 my-lg-0 border px-3">
-                            <div class="logged-user text-white p-2">
-                                Welcome, <a style="font-weight: 700" th:href="@{/users/profile}">
-                                <th:block th:text="${#authentication.principal.fullName}"></th:block>
+                    <li id="box" sec:authorize="isAuthenticated()" >
+                        <div class="form-inline my-2 my-lg-0 px-3">
+                            <div class="logged-user text-white p-2">Welcome, <a style="font-weight: 700" th:href="@{/users/profile}">
+                                <span><th:block th:text="${#authentication.principal.fullName}"></th:block></span>
                             </a>!
                             </div>
 

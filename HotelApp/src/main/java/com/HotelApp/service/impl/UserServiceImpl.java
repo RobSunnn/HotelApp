@@ -16,7 +16,6 @@ import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.common.constants.ValidationConstants;
 import com.HotelApp.util.EncryptionUtil;
-import com.HotelApp.util.KeyManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.*;
@@ -32,9 +31,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
@@ -74,8 +70,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-
-
         String decryptedEmail = decryptEmail(userRegisterBindingModel.getEmail(),
                 userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
 
@@ -464,12 +458,4 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
     }
 
-
-//    private static SecretKey generateKey() {
-//        try {
-//            return EncryptionUtil.generateKey();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

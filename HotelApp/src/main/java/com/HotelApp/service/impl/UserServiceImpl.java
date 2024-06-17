@@ -9,17 +9,18 @@ import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.repository.UserRepository;
+import com.HotelApp.service.helpers.CachedUserService;
 import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
+import com.HotelApp.service.helpers.UserTransformationService;
 import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
 import com.HotelApp.common.constants.ValidationConstants;
-import com.HotelApp.util.EncryptionUtil;
+import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,34 +55,37 @@ public class UserServiceImpl implements UserService {
     private final UserDetailsService userDetailsService;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
+    private final CachedUserService cachedUserService;
+    private final UserTransformationService userTransformationService;
 
     public UserServiceImpl(UserRepository userRepository,
                            RoleService roleService,
                            HotelServiceImpl hotelService,
                            UserDetailsService userDetailsService,
                            HttpServletRequest request,
-                           HttpServletResponse response) {
+                           HttpServletResponse response, CachedUserService cachedUserService, UserTransformationService userTransformationService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.hotelService = hotelService;
         this.userDetailsService = userDetailsService;
         this.request = request;
         this.response = response;
+        this.cachedUserService = cachedUserService;
+        this.userTransformationService = userTransformationService;
+
     }
 
     @Transactional
     @Override
-    public Map<String, Object> registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         String decryptedEmail = decryptEmail(userRegisterBindingModel.getEmail(),
                 userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
-        boolean successfulRegistration = false;
-        Map<String, Object> responseBody = new HashMap<>();
+
         String decryptedPass = "";
         String decryptedConfirmPass = "";
         try {
             decryptedPass = EncryptionUtil.decrypt(userRegisterBindingModel.getPassword(), userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
             decryptedConfirmPass = EncryptionUtil.decrypt(userRegisterBindingModel.getConfirmPassword(), userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
-
         } catch (Exception ignored) {
         }
         if (Objects.requireNonNull(decryptedPass).isEmpty()) {
@@ -98,30 +102,23 @@ public class UserServiceImpl implements UserService {
         userRegisterBindingModel.setEmail(decryptedEmail);
         userRegisterBindingModel.setPassword(decryptedPass);
         userRegisterBindingModel.setConfirmPassword(decryptedConfirmPass);
-
         if (checkIfEmailExist(decryptedEmail)) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
                     "email", ValidationConstants.EMAIL_EXIST));
         }
-
         if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel);
             redirectAttributes
                     .addFlashAttribute(BINDING_RESULT_PATH +
                             USER_REGISTER_BINDING_MODEL, bindingResult);
-            responseBody.put("success", false);
-            responseBody.put("errors", bindingResult.getAllErrors());
-            return responseBody;
+            return false;
         }
 
         UserEntity user = mapAsUser(userRegisterBindingModel);
         userRepository.save(user);
-        successfulRegistration = true;
 
-        responseBody.put("success", true);
-        responseBody.put("redirectUrl", "/users/registrationSuccess");
-        return responseBody;
+        return user.getEmail() != null;
     }
 
     @Override
@@ -156,7 +153,7 @@ public class UserServiceImpl implements UserService {
             throw new ForbiddenUserException("You can't see this user :)");
         }
 
-        return mapAsUserView(user);
+        return userTransformationService.mapAsUserView(user);
     }
 
     private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel) {
@@ -260,17 +257,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @Override
     public Page<UserView> findAllUsers(Pageable pageable) {
-        List<UserEntity> allUsers = userRepository.findAll();
+        List<UserEntity> allUsers = cachedUserService.findAllUsers();
 
         List<UserEntity> filteredUsers = allUsers.stream()
                 .skip(1)
-                .toList();
-
-        List<UserView> userViews = filteredUsers.stream()
-                .map(this::mapAsUserView)
                 .collect(Collectors.toList());
+
+        List<UserView> userViews = userTransformationService.transformUsers(filteredUsers);
 
         int pageSize = pageable.getPageSize();
         int pageNumber = pageable.getPageNumber();
@@ -286,37 +281,8 @@ public class UserServiceImpl implements UserService {
     public UserView findUserDetails(String userEmail) {
         UserEntity user = findUser(userEmail);
 
-        return mapAsUserView(user);
+        return userTransformationService.mapAsUserView(user);
     }
-
-    private UserView mapAsUserView(UserEntity user) {
-        UserView userView = new UserView()
-                .setFirstName(user.getFirstName())
-                .setLastName(user.getLastName())
-                .setEmail(user.getEmail())
-                .setFullName(user.getFirstName() + " " + user.getLastName())
-                .setAge(user.getAge())
-                .setRoles(user.getRoles());
-
-        try {
-            String encryptedEmail = EncryptionUtil.encrypt(user.getEmail());
-            userView.setEncryptedEmail(encryptedEmail);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        Blob userImage = user.getUserImage();
-
-        if (userImage != null) {
-            try {
-                userView.setUserImage(userImage.getBytes(1, (int) userImage.length()));
-            } catch (SQLException ignored) {
-            }
-        }
-
-        return userView;
-    }
-
 
     @Override
     public void addUserImage(MultipartFile image, String userEmail, RedirectAttributes redirectAttributes) {

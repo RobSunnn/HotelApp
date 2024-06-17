@@ -1,4 +1,4 @@
-package com.HotelApp.util;
+package com.HotelApp.util.encryptionUtil;
 
 import javax.crypto.SecretKey;
 import java.nio.file.Files;

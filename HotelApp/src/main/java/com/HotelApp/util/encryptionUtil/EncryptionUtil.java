@@ -1,4 +1,4 @@
-package com.HotelApp.util;
+package com.HotelApp.util.encryptionUtil;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -48,7 +48,7 @@ public class EncryptionUtil {
         byte[] sharedSecretKey = Base64.getDecoder().decode(key);
         SecretKeySpec keySpec = new SecretKeySpec(sharedSecretKey, ALGORITHM);
 
-        Cipher cipher = Cipher.getInstance(ALGORITHM + "/CBC/PKCS5Padding"); // Specify mode and padding
+        Cipher cipher = Cipher.getInstance(ALGORITHM + "/CBC/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 
         byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);

@@ -67,6 +67,44 @@
     </div>
 
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+<script>
+    async function encryptAndSubmit() {
+        try {
+            const key = CryptoJS.lib.WordArray.random(32); // 256-bit key
+            const iv = CryptoJS.lib.WordArray.random(16);
+            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+
+            const encryptedEmail = CryptoJS.AES.encrypt(email, key, { iv: iv }).toString();
+            const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
+
+
+            // Prepare the data to send
+            const formData = new FormData();
+            formData.append('encryptedEmail', encryptedEmail);
+            formData.append('encryptedPass', encryptedPassword);
+            formData.append('iv', CryptoJS.enc.Base64.stringify(iv));
+            formData.append('key', CryptoJS.enc.Base64.stringify(key));
+
+            // Send the encrypted data
+            await fetch('/perform_login', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': csrfTokenElement.value,
+                }
+            });
+
+        } catch (error) {
+            console.error('Error during registration:', error);
+        }
+    }
+</script>
+
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>

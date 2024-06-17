@@ -3,7 +3,6 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.service.UserService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -48,7 +47,6 @@ public class HotelController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @Cacheable(cacheNames = "allUsers")
     @GetMapping("/allUsers")
     public String allUsersPage(Model model,
                                @PageableDefault(

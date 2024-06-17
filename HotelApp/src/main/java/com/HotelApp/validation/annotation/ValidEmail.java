@@ -17,8 +17,6 @@ public @interface ValidEmail {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    String keyParam() default "key"; // Change as per your frontend implementation
-    String ivParam() default "iv";   // Change as per your frontend implementation
 }
 
 

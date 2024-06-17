@@ -7,6 +7,7 @@ import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.repository.CommentRepository;
 import com.HotelApp.service.CommentService;
 import com.HotelApp.service.HotelService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -71,7 +72,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(value = "commentsCache")
     public Page<CommentView> getApprovedComments(Pageable pageable) {
+        System.out.println("PAGEABLE");
         return commentRepository.findByApprovedTrue(pageable)
                 .map(CommentServiceImpl::mapAsCommentView);
     }

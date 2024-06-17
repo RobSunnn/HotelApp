@@ -12,7 +12,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://localhost:3306/hotel_app?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC"
     username: ${DB_USER:root}
-    password: ${DB_PASS:43k1malkO}
+    password: ${DB_PASS:1234}
   servlet:
     multipart:
       max-file-size: 15MB

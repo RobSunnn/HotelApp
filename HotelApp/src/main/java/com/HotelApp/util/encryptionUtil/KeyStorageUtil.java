@@ -1,10 +1,10 @@
-package com.HotelApp.util;
+package com.HotelApp.util.encryptionUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static com.HotelApp.util.KeyManager.isKeyExpired;
+import static com.HotelApp.util.encryptionUtil.KeyManager.isKeyExpired;
 
 
 public class KeyStorageUtil {

@@ -57,7 +57,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     @Override
     @Scheduled(cron = "@daily")
     public void clearCheckedContactRequests() {
-        System.out.println(LocalDateTime.now());
+
         contactRequestRepository
                 .deleteAll(contactRequestRepository.findAll()
                         .stream()

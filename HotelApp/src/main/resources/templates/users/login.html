@@ -20,7 +20,8 @@
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <main>
     <div class="container">
-        <form th:action="@{/users/login}" th:method="POST">
+
+        <form id="login-form" action="/users/login" method="post">
             <div class="container mt-5">
                 <div class="row justify-content-center">
                     <div class="col-md-6">
@@ -37,7 +38,7 @@
 
                                         <label for="email">Email address</label>
                                         <input type="text" class="form-control" id="email" name="email"
-                                               th:value="*{email}" placeholder="Enter email">
+                                               placeholder="Enter email">
 
                                     </div>
 
@@ -49,11 +50,8 @@
 
                                     </div>
 
-                                    <p th:if="${bad_credentials}" class="errors alert alert-danger">
-                                        Invalid username or password.
-                                    </p>
-
-                                    <button type="submit" class="btn btn-info btn-lg">Login</button>
+                                    <div id="error-message"></div>
+                                    <button type="submit">Login</button>
 
                                 </form>
 
@@ -70,28 +68,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 
 <script>
-    async function encryptAndSubmit() {
+    document.getElementById('login-form').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const key = CryptoJS.lib.WordArray.random(32); // 256-bit key
+        const iv = CryptoJS.lib.WordArray.random(16);
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const encryptedEmail = CryptoJS.AES.encrypt(email, key, { iv: iv }).toString();
+        const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
+
+        const formData = new FormData();
+        formData.append('encryptedEmail', encryptedEmail);
+        formData.append('encryptedPass', encryptedPassword);
+        formData.append('iv', CryptoJS.enc.Base64.stringify(iv));
+        formData.append('key', CryptoJS.enc.Base64.stringify(key));
         try {
-            const key = CryptoJS.lib.WordArray.random(32); // 256-bit key
-            const iv = CryptoJS.lib.WordArray.random(16);
-            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-
-            const encryptedEmail = CryptoJS.AES.encrypt(email, key, { iv: iv }).toString();
-            const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
-
-
-            // Prepare the data to send
-            const formData = new FormData();
-            formData.append('encryptedEmail', encryptedEmail);
-            formData.append('encryptedPass', encryptedPassword);
-            formData.append('iv', CryptoJS.enc.Base64.stringify(iv));
-            formData.append('key', CryptoJS.enc.Base64.stringify(key));
-
-            // Send the encrypted data
-            await fetch('/perform_login', {
+            const response = await fetch(this.action, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -99,10 +94,18 @@
                 }
             });
 
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                const result = await response.json();
+                let errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = result.message || 'Login failed';
+                errorMessage.classList.add("errors", "alert", "alert-danger");
+            }
         } catch (error) {
-            console.error('Error during registration:', error);
+            document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
         }
-    }
+    });
 </script>
 
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>

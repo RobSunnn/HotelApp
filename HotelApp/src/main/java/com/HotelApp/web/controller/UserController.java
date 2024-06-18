@@ -2,7 +2,10 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -41,13 +44,18 @@ public class UserController {
     }
 
     @PostMapping("/login-error")
-    public String onFailure(@ModelAttribute("email") String email,
-                            Model model) {
-
-        model.addAttribute(EMAIL, email);
-        model.addAttribute(BAD_CREDENTIALS, "true");
-
-        return "users/login";
+    public ResponseEntity<Map<String, String>> onFailure(HttpServletRequest request) {
+        String loginErrorFlag = "";
+        if (request.getAttribute("LOGIN_ERROR_FLAG") != null) {
+             loginErrorFlag = request.getAttribute("LOGIN_ERROR_FLAG").toString();
+        }
+        Map<String, String> response = new HashMap<>();
+        if ("true".equals(loginErrorFlag)) {
+            response.put("message", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        response.put("message", "Login success");
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("isAnonymous()")

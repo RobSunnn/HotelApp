@@ -63,7 +63,8 @@ public class UserServiceImpl implements UserService {
                            HotelServiceImpl hotelService,
                            UserDetailsService userDetailsService,
                            HttpServletRequest request,
-                           HttpServletResponse response, CachedUserService cachedUserService, UserTransformationService userTransformationService) {
+                           HttpServletResponse response, CachedUserService cachedUserService,
+                           UserTransformationService userTransformationService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.hotelService = hotelService;
@@ -363,6 +364,11 @@ public class UserServiceImpl implements UserService {
                 "Profile info updated successfully.");
 
         return true;
+    }
+
+    @Override
+    public List<UserView> findUsers() {
+        return userRepository.findAll().stream().map(userTransformationService::mapAsUserView).toList();
     }
 
     @Override

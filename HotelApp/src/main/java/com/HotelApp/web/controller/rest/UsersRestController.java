@@ -6,6 +6,7 @@ import com.HotelApp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/admin")
@@ -17,17 +18,18 @@ public class UsersRestController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/info")
-    public ResponseEntity<UserView> userByEmail(@RequestParam("encrypted") String encryptedEmail) {
+    public ResponseEntity<?> userByEmail(@RequestParam("encrypted") String encryptedEmail) {
         UserView user = userService.findUserByEmail(encryptedEmail);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(user.getRoleNames());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/changeUserRoles")
-    public ResponseEntity<String> makeUserAdmin(@RequestBody UserRoleChangeRequest request) {
+    @PostMapping("/secret")
+    public ResponseEntity<?> makeUserAdmin(@RequestBody UserRoleChangeRequest request) {
         userService.changeUserRole(request.getEncrypted(), request.getCommand());
-        return ResponseEntity.ok("redirect:/admin");
+        return ResponseEntity.ok(new ModelAndView("redirect:/admin"));
     }
 
 }

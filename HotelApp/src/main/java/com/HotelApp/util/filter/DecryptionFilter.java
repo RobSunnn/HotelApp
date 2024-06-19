@@ -46,6 +46,7 @@ public class DecryptionFilter implements Filter {
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    request.setAttribute("LOGIN_ERROR_FLAG", "false");
                 } else {
                     request.setAttribute("LOGIN_ERROR_FLAG", "true");
                     throw new RuntimeException("Bad Credentials");

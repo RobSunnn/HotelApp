@@ -48,15 +48,10 @@ public class HotelController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/allUsers")
-    public String allUsersPage(Model model,
-                               @PageableDefault(
-                                       size = 7,
-                                       sort = "id"
-                               )
-                               Pageable pageable) {
-
-        Page<UserView> allUsers = userService.findAllUsers(pageable);
-        model.addAttribute("allUsers", allUsers);
+    public String allUsersPage(Model model) {
+        List<UserView> users = userService.findUsers();
+//        Page<UserView> allUsers = userService.findAllUsers(pageable);
+        model.addAttribute("allUsers", users);
         return "admin/all-users";
     }
 

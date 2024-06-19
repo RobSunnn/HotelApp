@@ -99,7 +99,7 @@
             } else {
                 const result = await response.json();
                 let errorMessage = document.getElementById('error-message');
-                errorMessage.textContent = result.message || 'Login failed';
+                errorMessage.textContent = result.message;
                 errorMessage.classList.add("errors", "alert", "alert-danger");
             }
         } catch (error) {

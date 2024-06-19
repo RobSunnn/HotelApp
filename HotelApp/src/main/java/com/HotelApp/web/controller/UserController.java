@@ -8,10 +8,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
@@ -20,10 +21,10 @@ import java.util.Map;
 import static com.HotelApp.common.constants.BindingConstants.*;
 
 
-@Controller
+@RestController
 @RequestMapping("/users")
 public class UserController {
-
+    private static final String LOGIN_ERROR_FLAG = "LOGIN_ERROR_FLAG";
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -38,17 +39,16 @@ public class UserController {
     }
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping("/login")
-    public String login() {
-        return "users/login";
+    @GetMapping(value = "/login")
+    public ModelAndView login() {
+        return new ModelAndView("users/login");
     }
 
-    @PostMapping("/login-error")
-    public ResponseEntity<Map<String, String>> onFailure(HttpServletRequest request) {
-        String loginErrorFlag = "";
-        if (request.getAttribute("LOGIN_ERROR_FLAG") != null) {
-             loginErrorFlag = request.getAttribute("LOGIN_ERROR_FLAG").toString();
-        }
+
+    @PostMapping(value = "/login", produces = "application/json")
+    public ResponseEntity<?> login(HttpServletRequest request) {
+        String loginErrorFlag = request.getAttribute(LOGIN_ERROR_FLAG).toString();
+
         Map<String, String> response = new HashMap<>();
         if ("true".equals(loginErrorFlag)) {
             response.put("message", "Invalid username or password");
@@ -64,11 +64,15 @@ public class UserController {
         return "users/register";
     }
 
-    @GetMapping("/registrationSuccess")
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping(value = "/registrationSuccess", produces = "text/html")
     public String registrationSuccess() {
         return "users/registration-success";
     }
 
+
+    @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/register", produces = "application/json")
     @ResponseBody
     public ResponseEntity<?> register(@Valid UserRegisterBindingModel userRegisterBindingModel,

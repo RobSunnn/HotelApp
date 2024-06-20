@@ -79,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
                 .map(CommentServiceImpl::mapAsCommentView);
     }
 
-    private CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
+    CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
         return new CommentEntity()
                 .setCommentContent(addCommentBindingModel.getCommentContent().trim())
                 .setApproved(false)

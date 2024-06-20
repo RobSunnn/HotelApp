@@ -16,12 +16,14 @@ public class ApplicationCacheConfiguration {
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager(
                 "allUsersCache", "userViewsCache", "commentsCache");
+        System.out.println("Cache Manager Build");
 
         cacheManager.setCaffeine(caffeineCacheBuilder());
         return cacheManager;
     }
 
-    Caffeine<Object, Object> caffeineCacheBuilder() {
+    private Caffeine<Object, Object> caffeineCacheBuilder() {
+        System.out.println("Caffeine Build");
         return Caffeine.newBuilder()
                 .expireAfterWrite(10, TimeUnit.MINUTES)
                 .maximumSize(100);

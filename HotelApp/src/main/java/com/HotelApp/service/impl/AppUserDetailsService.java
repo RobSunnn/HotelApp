@@ -27,13 +27,16 @@ public class AppUserDetailsService implements UserDetailsService {
 
     private static UserDetails mapFromEntity(UserEntity userEntity) {
         // Create a custom UserDetails implementation
-        CustomUserDetails userDetails = new CustomUserDetails(
+
+        return new CustomUserDetails(
                 userEntity.getEmail(), // Use email as username
                 userEntity.getPassword(),
-                userEntity.getRoles().stream().map(AppUserDetailsService::mapRoles).toList()
+                userEntity.getRoles()
+                        .stream()
+                        .map(AppUserDetailsService::mapRoles)
+                        .toList(),
+                userEntity.getFullName()
         );
-        userDetails.setFullName(userEntity.getFullName()); // Set the full name
-        return userDetails;
     }
 
     private static GrantedAuthority mapRoles(RoleEntity userRoleEntity) {

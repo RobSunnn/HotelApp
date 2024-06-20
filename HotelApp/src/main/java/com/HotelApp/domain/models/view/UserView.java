@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 public class UserView {
 
-    private Long id;
-
     private String firstName;
 
     private String lastName;
@@ -34,15 +32,6 @@ public class UserView {
 
     public UserView setFullName(String fullName) {
         this.fullName = fullName;
-        return this;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public UserView setId(Long id) {
-        this.id = id;
         return this;
     }
 

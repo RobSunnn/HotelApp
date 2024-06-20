@@ -16,6 +16,7 @@ public class UserTransformationService {
 
     @Cacheable(value = "userViewsCache", key = "'allUserViews'")
     public List<UserView> transformUsers(List<UserEntity> users) {
+        System.out.println("Transforming users to user views");
         return users.stream()
                 .map(this::mapAsUserView)
                 .collect(Collectors.toList());

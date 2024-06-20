@@ -16,9 +16,9 @@ public class CachedUserService {
         this.userRepository = userRepository;
     }
 
-    @Cacheable("allUsersCache")
+    @Cacheable(value = "allUsersCache", key = "'allUsers'")
     public List<UserEntity> findAllUsers() {
-        System.out.println("CACHE USERS HERe");
-        return userRepository.findAll();
+        System.out.println("Fetching users from database");
+        return userRepository.findAll().stream().skip(1).toList();
     }
 }

@@ -25,7 +25,7 @@ public interface UserService {
 
     String decryptEmail(String email, String ivParam, String key);
 
-    Page<UserView> findAllUsers(Pageable pageable);
+    List<UserView> findAllUsers();
 
     UserView findUserDetails(String userEmail);
 
@@ -35,5 +35,4 @@ public interface UserService {
 
     boolean changeUserPassword(String userEmail, ChangeUserPasswordBindingModel changeUserPasswordBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
 
-    List<UserView> findUsers();
 }

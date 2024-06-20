@@ -25,7 +25,6 @@ import java.util.Optional;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
 @Service
-@Primary
 public class GuestServiceImpl implements GuestService {
 
     private final GuestRepository guestRepository;

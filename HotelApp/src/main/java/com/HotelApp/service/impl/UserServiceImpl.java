@@ -259,26 +259,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserView> findAllUsers(Pageable pageable) {
-        List<UserEntity> allUsers = cachedUserService.findAllUsers();
-
-        List<UserEntity> filteredUsers = allUsers.stream()
-                .skip(1)
-                .collect(Collectors.toList());
-
-        List<UserView> userViews = userTransformationService.transformUsers(filteredUsers);
-
-        int pageSize = pageable.getPageSize();
-        int pageNumber = pageable.getPageNumber();
-        int fromIndex = pageNumber * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, userViews.size());
-
-        List<UserView> currentPage = userViews.subList(fromIndex, toIndex);
-
-        return new PageImpl<>(currentPage, pageable, userViews.size());
-    }
-
-    @Override
     public UserView findUserDetails(String userEmail) {
         UserEntity user = findUser(userEmail);
 
@@ -367,8 +347,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserView> findUsers() {
-        return userRepository.findAll().stream().map(userTransformationService::mapAsUserView).toList();
+    public List<UserView> findAllUsers() {
+        return userTransformationService
+                .transformUsers(cachedUserService.findAllUsers());
     }
 
     @Override

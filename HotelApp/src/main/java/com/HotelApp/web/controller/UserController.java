@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/login", produces = "text/html")
     public ModelAndView login() {
         return new ModelAndView("users/login");
     }
@@ -60,15 +61,15 @@ public class UserController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping(value = "/register", produces = "text/html")
-    public String register() {
-        return "users/register";
+    public ModelAndView register() {
+        return new ModelAndView("users/register");
     }
 
 
     @PreAuthorize("isAnonymous()")
     @GetMapping(value = "/registrationSuccess", produces = "text/html")
-    public String registrationSuccess() {
-        return "users/registration-success";
+    public ModelAndView registrationSuccess() {
+        return new ModelAndView("users/registration-success");
     }
 
 

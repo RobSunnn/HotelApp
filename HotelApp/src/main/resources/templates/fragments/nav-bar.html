@@ -50,20 +50,20 @@
                            role="button" rel="nofollow">Sign In</a>
                     </li>
                     <!-- Icons -->
-                    <li id="box" sec:authorize="isAuthenticated()" >
-                        <div class="form-inline my-2 my-lg-0 px-3">
-                            <div class="logged-user text-white p-2">Welcome, <a style="font-weight: 700" th:href="@{/users/profile}">
-                                <span><th:block th:text="${#authentication.principal.fullName}"></th:block></span>
-                            </a>!
-                            </div>
+<!--                    <li id="box" sec:authorize="isAuthenticated()" >-->
+<!--                        <div class="form-inline my-2 my-lg-0 px-3">-->
+<!--                            <div class="logged-user text-white p-2">Welcome, <a style="font-weight: 700" th:href="@{/users/profile}">-->
+<!--                                <span><th:block th:text="${#authentication.principal.fullName}"></th:block></span>-->
+<!--                            </a>!-->
+<!--                            </div>-->
 
-                            <form th:method="post" th:action="@{/users/logout}">
-                                <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
-                                       value="Logout">
-                            </form>
+<!--                            <form th:method="post" th:action="@{/users/logout}">-->
+<!--                                <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"-->
+<!--                                       value="Logout">-->
+<!--                            </form>-->
 
-                        </div>
-                    </li>
+<!--                        </div>-->
+<!--                    </li>-->
                 </ul>
             </div>
         </div>

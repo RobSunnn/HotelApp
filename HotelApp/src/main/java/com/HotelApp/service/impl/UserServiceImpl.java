@@ -20,7 +20,6 @@ import com.HotelApp.common.constants.ValidationConstants;
 import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.data.domain.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +39,6 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
 import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
@@ -63,7 +61,8 @@ public class UserServiceImpl implements UserService {
                            HotelServiceImpl hotelService,
                            UserDetailsService userDetailsService,
                            HttpServletRequest request,
-                           HttpServletResponse response, CachedUserService cachedUserService,
+                           HttpServletResponse response,
+                           CachedUserService cachedUserService,
                            UserTransformationService userTransformationService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
@@ -158,8 +157,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel) {
-
-
         UserEntity user = new UserEntity()
                 .setEmail(userRegisterBindingModel.getEmail().trim())
                 .setAge(userRegisterBindingModel.getAge())

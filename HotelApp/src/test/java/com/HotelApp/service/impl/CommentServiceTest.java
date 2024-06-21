@@ -8,9 +8,11 @@ import com.HotelApp.repository.CommentRepository;
 import com.HotelApp.service.HotelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
     @Mock
@@ -48,7 +50,7 @@ class CommentServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+
         addCommentBindingModel = new AddCommentBindingModel()
                 .setAuthor("Test Author")
                 .setCommentContent("Testing comment content.");

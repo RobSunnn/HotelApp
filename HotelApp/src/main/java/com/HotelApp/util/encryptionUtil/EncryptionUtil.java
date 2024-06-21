@@ -1,5 +1,9 @@
 package com.HotelApp.util.encryptionUtil;
 
+import com.HotelApp.util.SessionExpirationListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -12,11 +16,13 @@ import java.util.Base64;
 public class EncryptionUtil {
 
     private static final String ALGORITHM = "AES";
+    private static final Logger log = LoggerFactory.getLogger(EncryptionUtil.class);
+
 
     public static SecretKey generateKey() throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
         keyGen.init(256); // for AES-256
-        System.out.println("encrUtil generates key");
+        log.info("Encryption Util generates key");
         return keyGen.generateKey();
     }
 
@@ -26,7 +32,7 @@ public class EncryptionUtil {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, KeyManager.getSecretKey());
         byte[] encryptedBytes = cipher.doFinal(data.getBytes());
-        System.out.println("encrUtil enctrypt info");
+        log.info("Encryption Util encrypts info");
 
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
@@ -36,7 +42,8 @@ public class EncryptionUtil {
         cipher.init(Cipher.DECRYPT_MODE, KeyManager.getSecretKey());
         byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
         byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-        System.out.println("encrUtil decrypt info");
+        log.info("Encryption Util decrypts info");
+
 
         return new String(decryptedBytes);
     }
@@ -54,16 +61,17 @@ public class EncryptionUtil {
         byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
         byte[] decryptedBytes = cipher.doFinal(decodedBytes);
 
+        log.info("Encryption Util decrypts info from front end");
         return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 
     public static String keyToString(SecretKey secretKey) {
-        System.out.println("keytoString from encrUtil");
+        log.info("Key to String from Encryption Util");
         return Base64.getEncoder().encodeToString(secretKey.getEncoded());
     }
 
     public static SecretKey stringToKey(String keyString) {
-        System.out.println("stringToKey from encrUtil");
+        log.info("String To Key from Encryption Util");
 
         byte[] decodedKey = Base64.getDecoder().decode(keyString);
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");

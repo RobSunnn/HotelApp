@@ -1,5 +1,8 @@
 package com.HotelApp.util.encryptionUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.SecretKey;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,6 +13,7 @@ public class KeyManager {
 
     private static final String SECRET_KEY_FILE = "secret.key";
     private static final Duration EXPIRATION_DURATION = Duration.ofMinutes(10);
+    private static final Logger log = LoggerFactory.getLogger(KeyManager.class);
 
     private static SecretKey secretKey;
     private static Instant keyUpdateTime;
@@ -19,14 +23,13 @@ public class KeyManager {
             if (!Files.exists(Paths.get(SECRET_KEY_FILE))) {
                 // Generate and store the key if it doesn't exist
                 regenerateKey();
-                System.out.println("KEY IS REGENERATED FROM SAFE FILE");
+                log.info("KEY IS REGENERATED FROM SAFE FILE");
             } else {
                 // Retrieve the stored key
                 String keyString = KeyStorageUtil.retrieveKey();
                 secretKey = EncryptionUtil.stringToKey(keyString);
                 keyUpdateTime = Instant.now(); // Assume the key is freshly loaded
-                System.out.println("KEY IS SAVED IN A SAFE FILE");
-
+                log.info("KEY IS SAVED IN A SAFE FILE");
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize encryption key", e);
@@ -42,20 +45,19 @@ public class KeyManager {
                 throw new RuntimeException("Failed to regenerate encryption key", e);
             }
         }
-        System.out.println("SPRING TAKES KEY");
+        log.info("SPRING TAKES KEY");
+
         return secretKey;
     }
 
     protected static boolean isKeyExpired() {
         // If keyUpdateTime is null, it means the key has never been set or expired
         if (keyUpdateTime == null) {
-            System.out.println("KEY IS EXPIRED");
+            log.info("KEY IS EXPIRED");
             return true;
         }
-
         // Calculate the expiration time by adding the expiration duration to the last update time
         Instant expirationTime = keyUpdateTime.plus(EXPIRATION_DURATION);
-
         // Check if the current time is after the calculated expiration time
         return Instant.now().isAfter(expirationTime);
     }
@@ -63,11 +65,10 @@ public class KeyManager {
     private static void regenerateKey() throws Exception {
         // Generate a new key
         secretKey = EncryptionUtil.generateKey();
-        System.out.println("KEY IS GENERATED");
+        log.info("KEY IS GENERATED");
         // Store the new key string
         String keyString = EncryptionUtil.keyToString(secretKey);
         KeyStorageUtil.storeKey(keyString);
-
         // Update the key update time to now
         keyUpdateTime = Instant.now();
     }

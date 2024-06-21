@@ -3,6 +3,8 @@ package com.HotelApp.service.helpers;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.util.encryptionUtil.EncryptionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,13 @@ import java.util.stream.Collectors;
 @Service
 public class UserTransformationService {
 
+    private static final Logger log = LoggerFactory.getLogger(UserTransformationService.class);
+
+
     @Cacheable(value = "userViewsCache", key = "'allUserViews'")
     public List<UserView> transformUsers(List<UserEntity> users) {
-        System.out.println("Transforming users to user views");
+        log.info("Transforming users to user views");
+
         return users.stream()
                 .map(this::mapAsUserView)
                 .collect(Collectors.toList());

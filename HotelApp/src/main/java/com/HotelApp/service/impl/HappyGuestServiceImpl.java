@@ -5,6 +5,7 @@ import com.HotelApp.repository.HappyGuestRepository;
 import com.HotelApp.service.HappyGuestService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +26,5 @@ public class HappyGuestServiceImpl implements HappyGuestService {
     public Optional<HappyGuestEntity> findByDocumentId(String documentId) {
         return happyGuestRepository.findByDocumentId(documentId);
     }
-
 
 }

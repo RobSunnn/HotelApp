@@ -53,7 +53,7 @@ public class ContactController {
     }
 
     @PostMapping("/contactForm")
-    public String sendMail(@Valid ContactRequestBindingModel contactRequestBindingModel,
+    public String sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
 

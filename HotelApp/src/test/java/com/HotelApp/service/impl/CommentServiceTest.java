@@ -77,9 +77,9 @@ class CommentServiceTest {
     @Test
     public void testAddCommentToDatabase_NoErrors() {
         // Given
-        when(bindingResult.hasErrors()).thenReturn(false);
-        when(hotelService.getHotelInfo()).thenReturn(hotelInfo);
-        when(commentRepository.save(any(CommentEntity.class))).thenReturn(commentEntity);
+//        when(bindingResult.hasErrors()).thenReturn(false);
+//        when(hotelService.getHotelInfo()).thenReturn(hotelInfo);
+//        when(commentRepository.save(any(CommentEntity.class))).thenReturn(commentEntity);
 
         // When
         commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
@@ -107,6 +107,10 @@ class CommentServiceTest {
     public void testApproveAll() {
         // Given
         List<CommentEntity> comments = new ArrayList<>();
+        CommentEntity comment = new CommentEntity();
+        comment.setApproved(false);
+        comments.add(comment);
+
         CommentEntity comment1 = new CommentEntity();
         comment1.setApproved(false);
         comments.add(comment1);
@@ -121,12 +125,13 @@ class CommentServiceTest {
         commentService.approveAll();
 
         // Then
+        verify(commentRepository, times(1)).save(comment);
         verify(commentRepository, times(1)).save(comment1);
         verify(commentRepository, never()).save(comment2);
     }
 
     @Test
-    public void testDoNotApprove() {
+    public void testDoNotApprove_Success() {
         // Given
         Long id = 1L;
         when(commentRepository.findById(id)).thenReturn(Optional.of(commentEntity));

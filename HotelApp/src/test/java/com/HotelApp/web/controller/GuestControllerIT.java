@@ -11,19 +11,15 @@ import com.HotelApp.repository.GuestRepository;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.repository.RoomRepository;
 import com.HotelApp.service.GuestService;
-import com.HotelApp.service.HotelService;
-import jakarta.validation.constraints.AssertTrue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -38,7 +34,6 @@ import java.time.LocalDateTime;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -66,7 +61,7 @@ class GuestControllerIT {
     @Autowired
     private CategoriesRepository categoriesRepository;
 
-    @Autowired
+    @Mock
     private HotelRepository hotelRepository;
 
     @Mock
@@ -75,8 +70,6 @@ class GuestControllerIT {
     @Mock
     private RedirectAttributes redirectAttributes;
 
-    @Mock
-    private HotelService hotelService;
 
     @BeforeEach
     void setUp() {
@@ -84,7 +77,6 @@ class GuestControllerIT {
         guestRepository.deleteAll();
         roomRepository.deleteAll();
         hotelRepository.deleteAll();
-        hotelRepository.save(mockHotelInfoEntity());
     }
 
     @AfterEach
@@ -109,7 +101,6 @@ class GuestControllerIT {
     @Test
     @WithMockUser(value = "moderator@test.bg", roles = {"MODERATOR"})
     void testAddGuestFormSuccess() throws Exception {
-        when(hotelService.getHotelInfo()).thenReturn(mockHotelInfoEntity());
         AddGuestBindingModel addGuestBindingModel = new AddGuestBindingModel()
                 .setFirstName("Testing")
                 .setLastName("ADD GUEST")
@@ -117,6 +108,7 @@ class GuestControllerIT {
                 .setDocumentId("ABC321")
                 .setDaysToStay(3)
                 .setRoomNumber(1);
+        roomRepository.save(mockRoom());
 
         mockMvc.perform(post("/guests/add")
                         .flashAttr("addGuestBindingModel", addGuestBindingModel))
@@ -220,5 +212,14 @@ class GuestControllerIT {
         category.setId(1L);
 
         return category;
+    }
+
+    private RoomEntity mockRoom() {
+        return new RoomEntity()
+                .setRoomNumber(1)
+                .setReserved(false)
+                .setPrice(BigDecimal.valueOf(1000))
+                .setCategory(mockCategory())
+                .setHotelInfoEntity(mockHotelInfoEntity());
     }
 }

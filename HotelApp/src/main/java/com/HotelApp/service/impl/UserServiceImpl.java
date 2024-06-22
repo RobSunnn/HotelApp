@@ -204,15 +204,13 @@ public class UserServiceImpl implements UserService {
         }
 
         switch (command) {
-            case "Make Admin":
+            case "Make Admin" -> {
                 RoleEntity adminRole = roleService.getAllRoles()
                         .stream()
                         .filter(role -> role.getName().name().equals("ADMIN"))
                         .findFirst()
                         .orElseThrow(() -> new IllegalStateException("ADMIN role not found"));
-
                 List<RoleEntity> allRoles = roleService.getAllRoles();
-
                 boolean isAdmin = user.getRoles().stream()
                         .anyMatch(role -> role.getName().name().equals(adminRole.getName().name()));
                 // Check if the user already has the ADMIN role
@@ -223,27 +221,24 @@ public class UserServiceImpl implements UserService {
                 } else {
                     System.out.println("User is already an admin.");
                 }
-                break;
-            case "Make Moderator":
+            }
+            case "Make Moderator" -> {
                 RoleEntity userRole = roleService.getAllRoles()
                         .stream()
                         .filter(role -> role.getName().name().equals("USER"))
                         .findFirst()
                         .orElseThrow(() -> new IllegalStateException("USER role not found"));
-
                 RoleEntity moderatorRole = roleService.getAllRoles()
                         .stream()
                         .filter(role -> role.getName().name().equals("MODERATOR"))
                         .findFirst()
                         .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
-
                 boolean isModerator = user.getRoles().stream()
                         .anyMatch(role -> role.getName().name().equals("MODERATOR"));
-
                 user.setRoles(List.of(userRole, moderatorRole));
                 userRepository.save(user);
-                break;
-            case "Make User":
+            }
+            case "Make User" -> {
                 RoleEntity roleUser = roleService.getAllRoles()
                         .stream()
                         .filter(role -> role.getName().name().equals("USER"))
@@ -251,7 +246,7 @@ public class UserServiceImpl implements UserService {
                         .orElseThrow(() -> new IllegalStateException("USER role not found"));
                 user.setRoles(List.of(roleUser));
                 userRepository.save(user);
-                break;
+            }
         }
     }
 

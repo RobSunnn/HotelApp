@@ -14,6 +14,8 @@ public class RoomView {
 
     private CategoryEntity category;
 
+    private boolean isReserved;
+
     public RoomView() {
     }
 
@@ -50,6 +52,15 @@ public class RoomView {
 
     public RoomView setCategory(CategoryEntity category) {
         this.category = category;
+        return this;
+    }
+
+    public boolean isReserved() {
+        return isReserved;
+    }
+
+    public RoomView setReserved(boolean reserved) {
+        isReserved = reserved;
         return this;
     }
 }

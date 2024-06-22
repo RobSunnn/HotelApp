@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Free Rooms</title>
+</head>
+<body>
+<div>
+  <div class="form-group">
+    <label for="freeRooms">Select guest</label>
+    <select id="freeRooms" name="freeRooms" class="custom-select">
+      <option value="" selected disabled>Check free rooms</option>
+      <option th:each="room : ${freeRooms}" th:text="${room.getCategory().name} + ' - Room number: ' + ${room.getRoomNumber()}"></option>
+    </select>
+  </div>
+</div>
+
+</body>
+</html>

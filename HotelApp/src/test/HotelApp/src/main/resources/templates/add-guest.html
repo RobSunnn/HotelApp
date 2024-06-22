@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Guest</title>
+
+</head>
+<body>
+
+<div th:insert="~{/fragments/nav-bar}"></div>
+
+<form th:action="@{/guests/add}" th:method="POST" th:object="${addGuestBindingModel}">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h4>Add Guest To Hotel</h4>
+          </div>
+          <div class="card-body">
+            <form>
+
+              <div class="form-group">
+
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" th:errorclass="is-invalid" th:field="*{firstName}" name="firstName" placeholder="Enter guest first name...">
+
+                <small id="firstNameError" th:errors="*{firstName}" class="invalid-feedback text-white  bg-danger rounded"></small>
+
+              </div>
+
+              <div class="form-group">
+
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" th:errorclass="is-invalid" th:field="*{lastName}" name="lastName" placeholder="Enter guest last name...">
+
+                <small id="lastNameError" th:errors="*{lastName}" class="invalid-feedback text-white  bg-danger rounded"></small>
+
+              </div>
+
+              <div class="form-group">
+
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" th:errorclass="is-invalid" th:field="*{email}" name="email" placeholder="Enter guest email...">
+
+                <small id="emailError" th:errors="*{email}" class="invalid-feedback text-white  bg-danger rounded"></small>
+
+              </div>
+
+              <div class="form-group">
+
+                <label for="age">Age</label>
+                <input type="number" class="form-control" id="age" th:errorclass="is-invalid" th:field="*{age}" name="age" placeholder="Enter guest age...">
+
+                <small id="ageError" th:errors="*{age}" class="invalid-feedback text-white  bg-danger rounded"></small>
+
+              </div>
+
+              <div class="form-group">
+
+                <label for="documentId">Document Number</label>
+                <input type="text" class="form-control" id="documentId" th:errorclass="is-invalid" th:field="*{documentId}" name="documentId" placeholder="Enter guest id number...">
+
+                <small id="documentIdError" th:errors="*{documentId}" class="invalid-feedback text-white  bg-danger rounded"></small>
+
+              </div>
+
+              <div class="form-group">
+
+                <label for="daysToStay">Enter the days that guest want to stay</label>
+                <input type="number" class="form-control" id="daysToStay" th:errorclass="is-invalid" th:field="*{daysToStay}" name="daysToStay" placeholder="Enter the days that guest want to stay">
+
+                <small id="daysToStayError" th:errors="*{daysToStay}" class="invalid-feedback text-white  bg-danger rounded"></small>
+
+              </div>
+
+              <div class="form-group p-3">
+                <!--                  <label class="p-0" for="category"></label>-->
+                <input class="m-0" type="checkbox" name="category"
+                       th:each="category : ${categories}"  th:value="${category.name()}" th:text="${category.name()}" data-index="${status.index}">
+              </div>
+
+
+              <div>
+                <div class="form-group" id="freeRooms" hidden>
+
+                  <label for="roomNumber">Free Rooms</label>
+                  <select id="roomNumber" name="roomNumber"   th:errorclass="is-invalid" th:field="*{roomNumber}" class="custom-select">
+                    <option value="" selected disabled>Select room</option>
+                  </select>
+
+                  <small id="roomNumberError" th:errors="*{roomNumber}" class="invalid-feedback text-white  bg-danger rounded"></small>
+
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Add Guest To Hotel</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<div th:insert="~{/fragments/footer}"></div>
+<script src="/js/roomsFetch.js"></script>
+</body>
+</html>

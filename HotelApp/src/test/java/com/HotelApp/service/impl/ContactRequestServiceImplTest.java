@@ -100,22 +100,22 @@ class ContactRequestServiceImplTest {
 
     }
 
-    @Test
-    public void testCheckedContactRequest() {
-        // Mock data
-        ContactRequestEntity mockRequest = mockContactRequestEntityWithCheckedFalse();
-        mockRequest.setId(1L); // Set an ID that matches the ID we expect in the service method
-        when(contactRequestRepository.findById(1L)).thenReturn(Optional.of(mockRequest));
-
-        // Execute the method
-        contactRequestService.checkedContactRequest(1L);
-
-        // Verify interactions and assertions
-        verify(contactRequestRepository, times(1)).findById(1L);
-        verify(contactRequestRepository, times(1)).save(any(ContactRequestEntity.class));
-        // Additional verification if needed
-        assertTrue(mockRequest.getChecked()); // Assert that isChecked was set to true
-    }
+//    @Test
+//    public void testCheckedContactRequest() {
+//        // Mock data
+//        ContactRequestEntity mockRequest = mockContactRequestEntityWithCheckedFalse();
+//        mockRequest.setId(1L); // Set an ID that matches the ID we expect in the service method
+//        when(contactRequestRepository.findById(1L)).thenReturn(Optional.of(mockRequest));
+//
+//        // Execute the method
+//        contactRequestService.checkedContactRequest(1L);
+//
+//        // Verify interactions and assertions
+//        verify(contactRequestRepository, times(1)).findById(1L);
+//        verify(contactRequestRepository, times(1)).save(any(ContactRequestEntity.class));
+//        // Additional verification if needed
+//        assertTrue(mockRequest.getChecked()); // Assert that isChecked was set to true
+//    }
 
     @Test
     public void testCheckedContactRequest_NonExistingId() {

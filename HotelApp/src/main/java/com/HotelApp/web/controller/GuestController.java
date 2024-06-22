@@ -72,8 +72,8 @@ public class GuestController {
         if (guests.isEmpty()) {
             return "redirect:/moderator";
         }
-
         model.addAttribute("guests", guests);
+
         return "moderator/guest-leave";
     }
 

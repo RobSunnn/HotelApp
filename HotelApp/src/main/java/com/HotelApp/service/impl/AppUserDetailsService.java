@@ -2,15 +2,16 @@ package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
-import com.HotelApp.domain.models.service.CustomUserDetails;
+import com.HotelApp.domain.models.service.CustomUser;
 import com.HotelApp.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class AppUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -26,9 +27,8 @@ public class AppUserDetailsService implements UserDetailsService {
     }
 
     private static UserDetails mapFromEntity(UserEntity userEntity) {
-        // Create a custom UserDetails implementation
 
-        return new CustomUserDetails(
+        return new CustomUser(
                 userEntity.getEmail(), // Use email as username
                 userEntity.getPassword(),
                 userEntity.getRoles()

@@ -1,5 +1,6 @@
 package com.HotelApp.util.filter;
 
+import com.HotelApp.service.impl.AppUserDetailsService;
 import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import jakarta.servlet.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,18 +9,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 
+import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
+
 @Component
 public class DecryptionFilter implements Filter {
 
-    private final ApplicationContext applicationContext;
+    private final AppUserDetailsService appUserDetailsService;
+
 
     @Autowired
-    public DecryptionFilter(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public DecryptionFilter(AppUserDetailsService appUserDetailsService) {
+        this.appUserDetailsService = appUserDetailsService;
     }
 
     @Override
@@ -36,25 +41,25 @@ public class DecryptionFilter implements Filter {
                 String decryptedUsername = EncryptionUtil.decrypt(encryptedUsername, iv, key);
                 String decryptedPassword = EncryptionUtil.decrypt(encryptedPassword, iv, key);
 
-                UserDetailsService userDetailsService = applicationContext.getBean(UserDetailsService.class);
-                PasswordEncoder passwordEncoder = applicationContext.getBean(PasswordEncoder.class);
-
                 // Manually authenticate the user
-                UserDetails userDetails = userDetailsService.loadUserByUsername(decryptedUsername);
+                UserDetails userDetails = appUserDetailsService.loadUserByUsername(decryptedUsername);
                 if (userDetails != null &&
-                        passwordEncoder.matches(decryptedPassword, userDetails.getPassword())) {
+                        passwordEncoder().matches(decryptedPassword, userDetails.getPassword())) {
+
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+
                     request.setAttribute("LOGIN_ERROR_FLAG", "false");
                 } else {
                     request.setAttribute("LOGIN_ERROR_FLAG", "true");
-                    throw new RuntimeException("Bad Credentials");
+                    throw new UsernameNotFoundException("Invalid username or password.");
                 }
                 request.setAttribute("username", decryptedUsername);
                 request.setAttribute("password", decryptedPassword);
             } catch (Exception e) {
                 request.setAttribute("LOGIN_ERROR_FLAG", "true");
+                // Handle decryption failure or any other exceptions
             }
         }
 
@@ -66,6 +71,4 @@ public class DecryptionFilter implements Filter {
 
     @Override
     public void destroy() {}
-
-
 }

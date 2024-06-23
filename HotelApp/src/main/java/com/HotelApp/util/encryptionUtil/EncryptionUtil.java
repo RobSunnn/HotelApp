@@ -1,6 +1,5 @@
 package com.HotelApp.util.encryptionUtil;
 
-import com.HotelApp.util.SessionExpirationListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +33,15 @@ public class EncryptionUtil {
         byte[] encryptedBytes = cipher.doFinal(data.getBytes());
         log.info("Encryption Util encrypts info");
 
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+
+
+    public static String encrypt(String data, SecretKey key, String iv) throws Exception {
+        IvParameterSpec ivSpec = new IvParameterSpec(Base64.getDecoder().decode(iv));
+        Cipher cipher = Cipher.getInstance(ALGORITHM + "/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
@@ -75,5 +83,18 @@ public class EncryptionUtil {
 
         byte[] decodedKey = Base64.getDecoder().decode(keyString);
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+    }
+    public static String encrypt(String data, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+    public static String decrypt(String encryptedData, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
+        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 }

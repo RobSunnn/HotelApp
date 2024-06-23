@@ -62,7 +62,7 @@ public class KeyManager {
         return Instant.now().isAfter(expirationTime);
     }
 
-    private static void regenerateKey() throws Exception {
+    static void regenerateKey() throws Exception {
         // Generate a new key
         secretKey = EncryptionUtil.generateKey();
         log.info("KEY IS GENERATED");

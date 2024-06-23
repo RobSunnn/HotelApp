@@ -59,11 +59,6 @@ public class ApplicationSecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new AppUserDetailsService(userRepository);
-    }
-
-    @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

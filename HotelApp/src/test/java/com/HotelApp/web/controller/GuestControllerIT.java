@@ -6,6 +6,7 @@ import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
+import com.HotelApp.domain.models.service.CustomUser;
 import com.HotelApp.repository.CategoriesRepository;
 import com.HotelApp.repository.GuestRepository;
 import com.HotelApp.repository.HotelRepository;
@@ -20,7 +21,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,7 +76,15 @@ class GuestControllerIT {
 
 
     @BeforeEach
-    void setUp() {
+    void setUp() {// Example setup in a test case
+        CustomUser customUser = new CustomUser(
+                "moderator@test.bg", "password",
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_MODERATOR")),
+                "Moderator Full Name"
+        );
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                customUser, null, customUser.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         guestRepository.deleteAll();
         roomRepository.deleteAll();
@@ -87,7 +99,6 @@ class GuestControllerIT {
     }
 
     @Test
-    @WithMockUser(value = "moderator@test.bg", roles = {"MODERATOR"})
     void testAddGuestPageAttributes() throws Exception {
         mockMvc.perform(get("/guests/add"))
                 .andExpect(status().isOk())
@@ -99,7 +110,6 @@ class GuestControllerIT {
 
 
     @Test
-    @WithMockUser(value = "moderator@test.bg", roles = {"MODERATOR"})
     void testAddGuestFormSuccess() throws Exception {
         AddGuestBindingModel addGuestBindingModel = new AddGuestBindingModel()
                 .setFirstName("Testing")
@@ -123,7 +133,6 @@ class GuestControllerIT {
     }
 
     @Test
-    @WithMockUser(value = "moderator@test.bg", roles = {"MODERATOR"})
     void testAddGuestFormValidationFail() throws Exception {
         AddGuestBindingModel addGuestBindingModel = new AddGuestBindingModel();
 
@@ -146,7 +155,6 @@ class GuestControllerIT {
     }
 
     @Test
-    @WithMockUser(value = "moderator@test.bg", roles = {"MODERATOR"})
     void testGuestLeavePageWithAttributes() throws Exception {
         HotelInfoEntity hotelInfoEntity = hotelRepository.save(mockHotelInfoEntity());
 
@@ -186,7 +194,6 @@ class GuestControllerIT {
     }
 
     @Test
-    @WithMockUser(value = "moderator@test.bg", roles = {"MODERATOR"})
     void testGuestLeaveWithoutAttributes() throws Exception {
         mockMvc.perform(get("/guests/leave"))
                 .andExpect(status().is3xxRedirection())

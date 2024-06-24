@@ -76,7 +76,6 @@ class SubscriberServiceImplTest {
         model.setSubscriberEmail("new@example.com");
         HotelInfoEntity hotelInfo = new HotelInfoEntity();
 
-        when(bindingResult.hasErrors()).thenReturn(false);
         when(subscriberRepository.findByEmail("new@example.com")).thenReturn(Optional.empty());
         when(hotelService.getHotelInfo()).thenReturn(hotelInfo);
 

@@ -4,7 +4,7 @@ import com.HotelApp.service.HotelService;
 import com.HotelApp.service.CategoryService;
 import com.HotelApp.service.RoomService;
 import com.HotelApp.service.RoomTypesService;
-import com.HotelApp.service.impl.TestService;
+//import com.HotelApp.service.impl.TestService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -18,18 +18,17 @@ public class DBRunner implements CommandLineRunner {
 
     private final CategoryService categoryService;
 
-    private final TestService testService;
+//    private final TestService testService;
 
     public DBRunner(HotelService hotelService,
                     RoomService roomService,
                     RoomTypesService roomTypesService,
-                    CategoryService categoryService,
-                    TestService testService) {
+                    CategoryService categoryService) {
         this.hotelService = hotelService;
         this.roomService = roomService;
         this.roomTypesService = roomTypesService;
         this.categoryService = categoryService;
-        this.testService = testService;
+
     }
 
     @Override
@@ -42,9 +41,9 @@ public class DBRunner implements CommandLineRunner {
             hotelService.init();
         }
 
-        if (testService.getCount() == 0) {
-            testService.initTestEntity();
-        }
+//        if (testService.getCount() == 0) {
+//            testService.initTestEntity();
+//        }
 
         if (categoryService.getCount() == 0) {
             categoryService.initCategories();

@@ -37,9 +37,6 @@ class ContactControllerIT {
     private ContactRequestService contactRequestService;
 
     @Autowired
-    private SubscriberService subscriberService;
-
-    @Autowired
     private ContactRequestRepository contactRequestRepository;
 
     @Autowired
@@ -65,7 +62,6 @@ class ContactControllerIT {
 
     @Test
     void contactRequest_With_ValidData() throws Exception {
-        // Create the contact request model with valid data
         ContactRequestBindingModel contactRequestBindingModel = new ContactRequestBindingModel()
                 .setName("Valid Name")
                 .setEmail("test@mail.bg")
@@ -97,7 +93,10 @@ class ContactControllerIT {
                 .andExpect(redirectedUrl("/contact"))
                 .andExpect(flash().attributeCount(2))
                 .andExpect(result -> {
-                    BindingResult resultFromFlash = (BindingResult) result.getFlashMap().get(BindingResult.MODEL_KEY_PREFIX + "contactRequestBindingModel");
+
+                    BindingResult resultFromFlash = (BindingResult) result
+                            .getFlashMap()
+                            .get(BindingResult.MODEL_KEY_PREFIX + "contactRequestBindingModel");
 
                     assertEquals(2, resultFromFlash.getErrorCount());
                     assertTrue(resultFromFlash.hasFieldErrors("message"));

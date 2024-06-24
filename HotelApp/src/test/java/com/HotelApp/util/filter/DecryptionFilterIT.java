@@ -24,7 +24,6 @@ import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncod
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 class DecryptionFilterIT {
 
     @Autowired
@@ -44,30 +43,24 @@ class DecryptionFilterIT {
 
     @Test
     public void testDecryptionFilter_Success() throws Exception {
-        // Given
-        String originalUsername = "testuser";
-        String originalPassword = "testpassword";
+        String originalUsername = "testUser";
+        String originalPassword = "testPassword";
 
         // Simulate encryption from frontend (JavaScript)
         SecretKey key = EncryptionUtil.generateKey();
         String keyString = EncryptionUtil.keyToString(key);
-        byte[] ivBytes = new byte[16];
 
+        byte[] ivBytes = new byte[16];
         String iv = Base64.getEncoder().encodeToString(ivBytes);
 
         String encryptedUsername = EncryptionUtil.encrypt(originalUsername, key, iv);
         String encryptedPassword = EncryptionUtil.encrypt(originalPassword, key, iv);
 
-        UserDetails userDetails = User.withUsername(originalUsername).password(originalPassword).authorities("ROLE_USER").build();
+        UserDetails userDetails = User
+                .withUsername(originalUsername)
+                .password(passwordEncoder().encode(originalPassword))
+                .authorities("ROLE_USER").build();
         when(appUserDetailsService.loadUserByUsername(originalUsername)).thenReturn(userDetails);
-
-        PasswordEncoder passwordEncoderMock;
-        try (MockedStatic<PasswordEncoder> mockedPasswordEncoder = mockStatic(PasswordEncoder.class)) {
-             passwordEncoderMock = mock(PasswordEncoder.class);
-        }
-
-        // Mock PasswordEncoder matches method
-        when(passwordEncoderMock.matches(userDetails.getPassword(), originalPassword)).thenReturn(true);
 
         // Mock servlet request parameters
         when(servletRequest.getParameter("encryptedEmail")).thenReturn(encryptedUsername);
@@ -75,19 +68,15 @@ class DecryptionFilterIT {
         when(servletRequest.getParameter("iv")).thenReturn(iv);
         when(servletRequest.getParameter("key")).thenReturn(keyString);
 
-        // When
         decryptionFilter.doFilter(servletRequest, servletResponse, filterChain);
 
-        // Then
-        verify(servletRequest, times(2)).setAttribute("LOGIN_ERROR_FLAG", "true");
+        verify(servletRequest, times(1)).setAttribute("LOGIN_ERROR_FLAG", "false");
         verify(filterChain).doFilter(any(), any());
-
     }
 
 
     @Test
     public void testDecryptionFilter_DecryptionFailure() throws Exception {
-        // Given
         String encryptedUsername = "invalidEncryptedUsername";
         String encryptedPassword = "invalidEncryptedPassword";
         String iv = "invalidIv";
@@ -99,25 +88,22 @@ class DecryptionFilterIT {
         when(servletRequest.getParameter("iv")).thenReturn(iv);
         when(servletRequest.getParameter("key")).thenReturn(key);
 
-        // When
         decryptionFilter.doFilter(servletRequest, servletResponse, filterChain);
 
-        // Then
         verify(servletRequest, times(1)).setAttribute("LOGIN_ERROR_FLAG", "true");
         verify(filterChain).doFilter(any(), any());
     }
 
     @Test
     public void testDecryptionFilter_UserNotFound() throws Exception {
-        // Given
         String originalUsername = "testuser";
         String originalPassword = "testpassword";
 
         // Simulate encryption from frontend (JavaScript)
         SecretKey key = EncryptionUtil.generateKey();
         String keyString = EncryptionUtil.keyToString(key);
-        byte[] ivBytes = new byte[16];
 
+        byte[] ivBytes = new byte[16];
         String iv = Base64.getEncoder().encodeToString(ivBytes);
 
         String encryptedUsername = EncryptionUtil.encrypt(originalUsername, key, iv);
@@ -132,17 +118,14 @@ class DecryptionFilterIT {
         when(servletRequest.getParameter("iv")).thenReturn(iv);
         when(servletRequest.getParameter("key")).thenReturn(keyString);
 
-        // When
         decryptionFilter.doFilter(servletRequest, servletResponse, filterChain);
 
-        // Then
         verify(servletRequest, times(2)).setAttribute("LOGIN_ERROR_FLAG", "true");
         verify(filterChain).doFilter(any(), any());
     }
 
     @Test
     public void testDecryptionFilter_PasswordMismatch() throws Exception {
-        // Given
         String originalUsername = "testuser";
         String originalPassword = "testpassword";
         String incorrectPassword = "incorrectpassword";
@@ -160,16 +143,15 @@ class DecryptionFilterIT {
         // Mock behavior for UserDetailsService and PasswordEncoder
         UserDetails userDetails = mock(UserDetails.class);
         when(appUserDetailsService.loadUserByUsername(originalUsername)).thenReturn(userDetails);
+
         // Mock servlet request parameters
         when(servletRequest.getParameter("encryptedEmail")).thenReturn(encryptedUsername);
         when(servletRequest.getParameter("encryptedPass")).thenReturn(encryptedPassword);
         when(servletRequest.getParameter("iv")).thenReturn(iv);
         when(servletRequest.getParameter("key")).thenReturn(keyString);
 
-        // When
         decryptionFilter.doFilter(servletRequest, servletResponse, filterChain);
 
-        // Then
         verify(servletRequest, times(2)).setAttribute("LOGIN_ERROR_FLAG", "true");
         verify(filterChain).doFilter(any(), any());
     }

@@ -17,9 +17,7 @@ public class EncryptionUtilTest {
     @BeforeEach
     public void setUp() throws Exception {
         // Generate a mock key for testing purposes
-        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        keyGen.init(256);
-        secretKey = keyGen.generateKey();
+        secretKey = EncryptionUtil.generateKey();
     }
 
     @Test

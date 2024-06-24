@@ -23,7 +23,7 @@ public interface UserService {
 
     void changeUserRole(String email, String command);
 
-    String decryptEmail(String email, String ivParam, String key);
+    String decrypt(String encrypted, String ivParam, String key);
 
     List<UserView> findAllUsers();
 

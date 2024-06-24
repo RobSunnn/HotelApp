@@ -2,7 +2,7 @@ package com.HotelApp.common.constants;
 
 public class ValidationConstants {
 
-    public static final String FIRST_AND_LAST_NAME_NOT_BLANK = "You need to tell us what is your first name.";
+    public static final String FIRST_AND_LAST_NAME_NOT_BLANK = "You need to tell us what is your name.";
 
     public static final String FIRST_AND_LAST_NAME_LENGTH = "Your name should contain at least 2 characters.";
 

@@ -46,13 +46,10 @@ class AppUserDetailsServiceTest {
 
     @Test
     public void testLoadUserByUsername_UserFound() {
-        // Given
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(userEntity));
 
-        // When
         UserDetails userDetails = appUserDetailsService.loadUserByUsername("test@example.com");
 
-        // Then
         assertNotNull(userDetails);
         assertEquals(userEntity.getEmail(), userDetails.getUsername());
         assertEquals(userEntity.getPassword(), userDetails.getPassword());
@@ -62,10 +59,8 @@ class AppUserDetailsServiceTest {
 
     @Test
     public void testLoadUserByUsername_UserNotFound() {
-        // Given
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
 
-        // When / Then
         assertThrows(UsernameNotFoundException.class, () -> {
             appUserDetailsService.loadUserByUsername("test@example.com");
         });

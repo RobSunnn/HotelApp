@@ -23,7 +23,6 @@ public class HotelServiceImpl implements HotelService {
         this.hotelRepository = hotelRepository;
     }
 
-    /* Taking care of hotel info entity */
     @Override
     public Long getCount() {
         return hotelRepository.count();

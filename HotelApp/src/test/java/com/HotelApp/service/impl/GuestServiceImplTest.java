@@ -69,7 +69,6 @@ class GuestServiceImplTest {
         GuestEntity guestEntity = new GuestEntity();
         guestEntity.setDocumentId("123");
 
-        when(bindingResult.hasErrors()).thenReturn(false);
         when(roomRepository.findByRoomNumber(1)).thenReturn(room);
         when(hotelService.getHotelInfo()).thenReturn(mockHotelInfoEntity());
         when(guestRepository.save(any(GuestEntity.class))).thenReturn(guestEntity);
@@ -90,7 +89,6 @@ class GuestServiceImplTest {
         room.setReserved(true);
 
         GuestEntity guest = mockGuest();
-
         HotelInfoEntity hotelInfo = mockHotelInfoEntity();
         HappyGuestEntity happyGuest = new HappyGuestEntity();
         happyGuest.setTimesThatGuestHaveBeenToHotel(2);

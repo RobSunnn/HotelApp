@@ -78,23 +78,26 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        String decryptedEmail = decryptEmail(userRegisterBindingModel.getEmail(),
+        String decryptedEmail = decrypt(userRegisterBindingModel.getEmail(),
                 userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
 
-        String decryptedPass = "";
-        String decryptedConfirmPass = "";
-        try {
-            decryptedPass = EncryptionUtil.decrypt(userRegisterBindingModel.getPassword(), userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
-            decryptedConfirmPass = EncryptionUtil.decrypt(userRegisterBindingModel.getConfirmPassword(), userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
-        } catch (Exception ignored) {
-        }
+        String decryptedPass = decrypt(userRegisterBindingModel.getPassword(),
+                userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
+
+        String decryptedConfirmPass = decrypt(userRegisterBindingModel.getConfirmPassword(),
+                userRegisterBindingModel.getIv(), userRegisterBindingModel.getKey());
+
         if (Objects.requireNonNull(decryptedPass).isEmpty()) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
                     "password", "Password is empty."));
-        } else if (Objects.requireNonNull(decryptedConfirmPass).isEmpty()) {
+        }
+
+        if (Objects.requireNonNull(decryptedConfirmPass).isEmpty()) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
                     "confirmPassword", "Confirm your password, please."));
-        } else if (!decryptedPass.equals(decryptedConfirmPass)) {
+        }
+
+        if (!decryptedPass.equals(decryptedConfirmPass)) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
                     "confirmPassword", "Password mismatch"));
         }
@@ -103,7 +106,7 @@ public class UserServiceImpl implements UserService {
         userRegisterBindingModel.setPassword(decryptedPass);
         userRegisterBindingModel.setConfirmPassword(decryptedConfirmPass);
         if (checkIfEmailExist(decryptedEmail)) {
-            bindingResult.addError(new FieldError("userRegisterBindingModel",
+            bindingResult.addError(new FieldError(USER_REGISTER_BINDING_MODEL,
                     "email", ValidationConstants.EMAIL_EXIST));
         }
         if (bindingResult.hasErrors()) {
@@ -122,11 +125,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String decryptEmail(String email, String ivParam, String key) {
+    public String decrypt(String encrypted, String ivParam, String key) {
         try {
-            return EncryptionUtil.decrypt(email, ivParam, key);
-        } catch (Exception ignored) {
-            throw new IllegalArgumentException("Invalid encrypted email data");
+            return EncryptionUtil.decrypt(encrypted, ivParam, key);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid encrypted data");
         }
     }
 

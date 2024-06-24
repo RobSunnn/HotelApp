@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -62,9 +63,6 @@ class GuestControllerIT {
     @Autowired
     private RoomRepository roomRepository;
 
-    @Autowired
-    private CategoriesRepository categoriesRepository;
-
     @Mock
     private HotelRepository hotelRepository;
 
@@ -85,7 +83,9 @@ class GuestControllerIT {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 customUser, null, customUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
         guestRepository.deleteAll();
         roomRepository.deleteAll();
         hotelRepository.deleteAll();
@@ -118,11 +118,12 @@ class GuestControllerIT {
                 .setDocumentId("ABC321")
                 .setDaysToStay(3)
                 .setRoomNumber(1);
+
         roomRepository.save(mockRoom());
 
         mockMvc.perform(post("/guests/add")
                         .flashAttr("addGuestBindingModel", addGuestBindingModel))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/guests/addGuestSuccess"));
 
         addGuestBindingModel.setDocumentId("newValue");
@@ -141,7 +142,10 @@ class GuestControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(redirectedUrl("/guests/add"))
                 .andExpect(result -> {
-                    BindingResult resultFromFlash = (BindingResult) result.getFlashMap().get(BindingResult.MODEL_KEY_PREFIX + "addGuestBindingModel");
+
+                    BindingResult resultFromFlash = (BindingResult) result
+                            .getFlashMap()
+                            .get(BindingResult.MODEL_KEY_PREFIX + "addGuestBindingModel");
 
                     assertEquals(6, resultFromFlash.getErrorCount());
                     assertTrue(resultFromFlash.hasFieldErrors("firstName"));
@@ -198,8 +202,7 @@ class GuestControllerIT {
         mockMvc.perform(get("/guests/leave"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/moderator"));
-//                .andExpect(model().attributeExists("guests"))
-//                .andExpect(model().attribute("guests", hasSize(0)));
+
     }
 
     private HotelInfoEntity mockHotelInfoEntity() {

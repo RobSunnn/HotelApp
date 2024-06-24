@@ -91,10 +91,12 @@ class HotelServiceImplTest {
     @Test
     void testSeeAllFreeRooms() {
         HotelInfoEntity hotelInfo = new HotelInfoEntity();
+
         RoomEntity freeRoom = new RoomEntity();
         freeRoom.setReserved(false);
         RoomEntity reservedRoom = new RoomEntity();
         reservedRoom.setReserved(true);
+
         hotelInfo.setRooms(List.of(freeRoom, reservedRoom));
         when(hotelRepository.findById(1L)).thenReturn(Optional.of(hotelInfo));
 

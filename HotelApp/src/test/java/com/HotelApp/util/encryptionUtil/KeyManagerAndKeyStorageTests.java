@@ -8,6 +8,7 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class KeyManagerAndKeyStorageTests {
 
     private static final String ORIGINAL_DATA = "Integration Test Data";
+    private static final Path PATH = Paths.get("secret.key");
 
     @BeforeEach
     void setUp() throws IOException {
@@ -72,8 +74,9 @@ public class KeyManagerAndKeyStorageTests {
     }
 
     private void deleteSecretKeyFile() throws IOException {
-        if (Files.exists(Paths.get("secret.key"))) {
-            Files.delete(Paths.get("secret.key"));
+
+        if (Files.exists(PATH)) {
+            Files.delete(PATH);
         }
     }
 }

@@ -59,7 +59,6 @@ public class DecryptionFilter implements Filter {
                 request.setAttribute("password", decryptedPassword);
             } catch (Exception e) {
                 request.setAttribute("LOGIN_ERROR_FLAG", "true");
-                // Handle decryption failure or any other exceptions
             }
         }
 

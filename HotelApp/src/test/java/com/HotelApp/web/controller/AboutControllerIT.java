@@ -46,9 +46,6 @@ class AboutControllerIT {
     private MockMvc mockMvc;
 
     @Autowired
-    private CommentService commentService;
-
-    @Autowired
     private CommentRepository commentRepository;
 
     @BeforeEach
@@ -72,12 +69,6 @@ class AboutControllerIT {
         List<CommentEntity> comments = new ArrayList<>();
         comments.add(comment);
         commentRepository.saveAll(comments);
-//
-//        Page<CommentView> mockedPage = new PageImpl<>(comments, PageRequest.of(0, 3), comments.size());
-//
-//        // Mock the behavior of the service method
-//        when(commentService.getApprovedComments(PageRequest.of(0, 3))).thenReturn(mockedPage);
-
 
         mockMvc.perform(get("/about"))
                 .andExpect(status().isOk())
@@ -125,6 +116,4 @@ class AboutControllerIT {
 
         assertEquals(0, commentRepository.count());
     }
-
-
 }

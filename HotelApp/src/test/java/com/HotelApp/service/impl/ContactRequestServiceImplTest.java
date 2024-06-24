@@ -55,8 +55,7 @@ class ContactRequestServiceImplTest {
         when(contactRequestRepository.save(any(ContactRequestEntity.class))).thenReturn(savedEntity);
 
         // Execute the method
-        contactRequestService.sendContactForm(bindingModel, bindingResult, redirectAttributes);
-
+        assertTrue(contactRequestService.sendContactForm(bindingModel, bindingResult, redirectAttributes));
         // Verify interactions and assertions
         verify(hotelService, times(1)).getHotelInfo();
         verify(contactRequestRepository, times(1)).save(any(ContactRequestEntity.class));
@@ -65,16 +64,13 @@ class ContactRequestServiceImplTest {
 
     @Test
     public void testSendContactForm_WithErrors() {
-        // Mock data with errors
         ContactRequestBindingModel bindingModel = new ContactRequestBindingModel();
 
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        // Execute the method
-        contactRequestService.sendContactForm(bindingModel, bindingResult, redirectAttributes);
+        assertFalse(contactRequestService.sendContactForm(bindingModel, bindingResult, redirectAttributes));
 
-        // Verify interactions and assertions
         verify(bindingResult, times(1)).hasErrors();
         verify(redirectAttributes, times(1)).addFlashAttribute(eq("contactRequestBindingModel"), eq(bindingModel));
     }
@@ -86,40 +82,30 @@ class ContactRequestServiceImplTest {
         mockRequests.add(mockContactRequestEntityWithCheckedTrue());
         mockRequests.add(mockContactRequestEntityWithCheckedTrue());
         mockRequests.add(mockContactRequestEntityWithCheckedTrue());
-        mockRequests.add(mockContactRequestEntityWithCheckedTrue());
-        mockRequests.add(mockContactRequestEntityWithCheckedTrue());
 
         when(contactRequestRepository.findAll()).thenReturn(mockRequests);
 
-        // Execute the method
         contactRequestService.clearCheckedContactRequests();
 
-        // Verify interactions and assertions
         verify(contactRequestRepository, times(1)).findAll();
         verify(contactRequestRepository, times(1)).deleteAll(mockRequests);
-
     }
 
-//    @Test
-//    public void testCheckedContactRequest() {
-//        // Mock data
-//        ContactRequestEntity mockRequest = mockContactRequestEntityWithCheckedFalse();
-//        mockRequest.setId(1L); // Set an ID that matches the ID we expect in the service method
-//        when(contactRequestRepository.findById(1L)).thenReturn(Optional.of(mockRequest));
-//
-//        // Execute the method
-//        contactRequestService.checkedContactRequest(1L);
-//
-//        // Verify interactions and assertions
-//        verify(contactRequestRepository, times(1)).findById(1L);
-//        verify(contactRequestRepository, times(1)).save(any(ContactRequestEntity.class));
-//        // Additional verification if needed
-//        assertTrue(mockRequest.getChecked()); // Assert that isChecked was set to true
-//    }
+    @Test
+    public void testCheckedContactRequest() {
+        ContactRequestEntity mockRequest = mockContactRequestEntityWithCheckedFalse();
+        mockRequest.setId(1L);
+
+        when(contactRequestRepository.findAll()).thenReturn(List.of(mockRequest));
+
+         contactRequestService.checkedContactRequest(1L);
+
+        verify(contactRequestRepository, times(1)).save(any(ContactRequestEntity.class));
+        assertTrue(mockRequest.getChecked()); // Assert that isChecked was set to true
+    }
 
     @Test
     public void testCheckedContactRequest_NonExistingId() {
-        // Execute and assert exception thrown
         assertThrows(RuntimeException.class, () -> contactRequestService.checkedContactRequest(1L));
     }
 

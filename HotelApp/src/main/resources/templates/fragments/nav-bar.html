@@ -54,8 +54,6 @@
                         <div class="form-inline my-2 my-lg-0 px-3">
                             <div class="logged-user text-white p-2">Welcome, <a style="font-weight: 700" th:href="@{/users/profile}">
                                 <span><th:block th:text="${#authentication.principal.fullName}"></th:block></span>
-<!--                                <th:block th:text="${#authentication.principal.username} ?: ${#authentication.principal.fullName}"></th:block>-->
-
                             </a>!
                             </div>
 

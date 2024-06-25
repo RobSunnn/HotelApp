@@ -67,7 +67,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void doNotApprove(Long id) {
-        CommentEntity comment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        CommentEntity comment = commentRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
         commentRepository.delete(comment);
     }
 

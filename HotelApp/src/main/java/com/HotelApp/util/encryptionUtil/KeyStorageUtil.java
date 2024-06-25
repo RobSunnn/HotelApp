@@ -19,7 +19,7 @@ public class KeyStorageUtil {
 
     public static void storeKey(String keyString) throws IOException {
         Files.write(Paths.get(KEY_FILE), keyString.getBytes());
-        log.info("KEY IS STORED IN FROM THE STORAGE UTIL");
+        log.info("KEY IS STORED IN A SAFE FILE");
     }
 
     public static String retrieveKey() throws IOException {

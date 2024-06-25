@@ -17,6 +17,7 @@ public class SessionExpirationListener implements HttpSessionListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
+
         log.info("Session created");
 
     }

@@ -4,10 +4,13 @@ import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,7 @@ import static com.HotelApp.common.constants.BindingConstants.*;
 @RequestMapping("/users")
 public class AuthenticationController {
     private static final String LOGIN_ERROR_FLAG = "LOGIN_ERROR_FLAG";
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
     private final UserService userService;
 
     public AuthenticationController(UserService userService) {
@@ -54,6 +58,11 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         response.put("message", "Login success");
+//        String test = SecurityContextHolder.getContext().getAuthentication().getName();
+//        if (test != null) {
+//            log.info("User with email have logged in: {}", test);
+//        }
+
         return ResponseEntity.ok(response);
     }
 

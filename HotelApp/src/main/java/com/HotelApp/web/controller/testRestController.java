@@ -1,4 +1,4 @@
-//package com.HotelApp.web.controller;
+//package com.HotelApp.web.ControllerTest;
 //
 //import com.HotelApp.service.impl.TestService;
 //import org.springframework.http.MediaType;

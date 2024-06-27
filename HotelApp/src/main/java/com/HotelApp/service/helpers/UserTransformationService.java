@@ -28,7 +28,7 @@ public class UserTransformationService {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(value = "singleUserView", key = "'singleUserView'")
+//    @Cacheable(value = "singleUserView", key = "'singleUserView'")
     public UserView mapAsUserView(UserEntity user) {
         UserView userView = new UserView()
                 .setFirstName(user.getFirstName())

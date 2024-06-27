@@ -17,7 +17,7 @@ VALUES
 
 INSERT INTO users(id, first_name, last_name, email, age, password)
 VALUES
-    (2, 'Admin', 'Adminov', 'admin@adminov.com', 666, '$2a$10$UR6PZq8ugBOwyBvUc36lYOyxz5A8cmjwtYQ6epEESfCxD8dK1GOwe');
+    (2, 'Admin', 'Adminov', 'hotel@adminov.com', 666, '$2a$10$UR6PZq8ugBOwyBvUc36lYOyxz5A8cmjwtYQ6epEESfCxD8dK1GOwe');
 
 INSERT INTO users_roles (`user_id`, `roles_id`)
 VALUES (2, 1);

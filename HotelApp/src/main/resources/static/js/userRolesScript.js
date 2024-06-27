@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             switch (command) {
                 case "Make Admin":
-                    message = 'User has been granted admin rights!';
+                    message = 'User has been granted hotel rights!';
                     break;
                 case "Make Moderator":
                     message = 'User has been granted moderator rights!';

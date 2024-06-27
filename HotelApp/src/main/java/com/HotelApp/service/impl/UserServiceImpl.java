@@ -183,7 +183,7 @@ public class UserServiceImpl implements UserService {
     }
 
 //todo: add hotelInfoEntity to this service to save logs, like when
-    // user is made admin to save a message with date and who is making the post if it is possible
+    // user is made hotel to save a message with date and who is making the post if it is possible
 
     @Override
     public void changeUserRole(String encryptedInfo, String command) {
@@ -222,7 +222,7 @@ public class UserServiceImpl implements UserService {
                     user.setRoles(allRoles);
                     userRepository.save(user);
                 } else {
-                    System.out.println("User is already an admin.");
+                    System.out.println("User is already an hotel.");
                 }
             }
             case "Make Moderator" -> {
@@ -397,8 +397,11 @@ public class UserServiceImpl implements UserService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(newEmail);
 
         // Create a new authentication token
-        UsernamePasswordAuthenticationToken newAuth =
-                new UsernamePasswordAuthenticationToken(userDetails, userDetails.getUsername(), userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                userDetails.getUsername(),
+                userDetails.getAuthorities()
+        );
 
         newAuth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

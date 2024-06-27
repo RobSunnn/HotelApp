@@ -35,10 +35,10 @@
         </table>
     </div>
     <div class="buttons">
-        <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
-        <a th:href="@{/admin}" class="btn btn-success">Make Guest <br> User</a>
-        <a th:href="@{/admin}" class="btn btn-secondary">See Guest <br> Profile</a>
-        <a th:href="@{/admin}" class="btn btn-danger">BAN <br> Guest</a>
+        <a th:href="${session.previousUrl}" class="btn btn-primary">Go back <br> to your panel</a>
+<!--        <a th:href="@{/hotel}" class="btn btn-success">Make Guest <br> User</a>-->
+<!--        <a th:href="@{/hotel}" class="btn btn-secondary">See Guest <br> Profile</a>-->
+<!--        <a th:href="@{/hotel}" class="btn btn-danger">BAN <br> Guest</a>-->
     </div>
 </div>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>

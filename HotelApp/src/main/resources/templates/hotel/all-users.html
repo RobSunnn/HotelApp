@@ -6,16 +6,15 @@
     <title>All Users</title>
 
     <style>
-        .heading {
-            border: 5px solid yellow;
-            outline: 5px solid gray;
-            background-color: #7e86a1;
-            width: 50%;
-            color: white;
-            max-width: 100%;
-            margin: 3em auto 0 auto;
+
+        .search-field {
+            margin: 0 auto;
+            background-color: #555555;
             padding: 1em;
-            border-radius: 20%;
+        }
+
+        .search-field > label {
+            color: white;
         }
 
         .pagination {
@@ -39,8 +38,8 @@
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-6">
-            <label for="searchInput">Search here</label>
+        <div class="search-field col-md-6 rounded">
+            <label for="searchInput">You can search for user here</label>
             <input type="text" id="searchInput" class="form-control" placeholder="Search...">
         </div>
     </div>

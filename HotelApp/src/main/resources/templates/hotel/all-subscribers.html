@@ -28,7 +28,7 @@
         </table>
     </div>
     <div class="buttons">
-        <a th:href="@{/admin}" class="btn btn-primary">Go back <br> to your panel</a>
+        <a th:href="${session.previousUrl}" class="btn btn-primary">Go back <br> to your panel</a>
     </div>
 </div>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>

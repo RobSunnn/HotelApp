@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
@@ -127,4 +129,14 @@ public class HotelServiceImpl implements HotelService {
         return getHotelInfo().getTotalProfit();
     }
 
+    @Transactional
+    @Override
+    public Map<String, Integer> getInfoForHotel() {
+        Map<String, Integer> counts = new HashMap<>();
+        counts.put("freeRoomsCount", seeAllFreeRooms().size());
+        counts.put("allGuestsCount", seeAllGuests().size());
+        counts.put("totalSubscribers", seeAllSubscribers().size());
+        counts.put("happyGuestsCount", seeAllHappyGuests().size());
+        return counts;
+    }
 }

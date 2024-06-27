@@ -25,8 +25,6 @@ public class EncryptionUtil {
         return keyGen.generateKey();
     }
 
-    // Encrypt a string
-
     public static String encrypt(String data) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, KeyManager.getSecretKey());
@@ -63,6 +61,15 @@ public class EncryptionUtil {
         return new String(decryptedBytes);
     }
 
+    public static String decrypt(String encryptedData, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
+        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
+
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
+    }
+
     public static String decrypt(String encryptedData, String Base64Iv, String key) throws Exception {
         byte[] iv = Base64.getDecoder().decode(Base64Iv);
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
@@ -77,15 +84,6 @@ public class EncryptionUtil {
         byte[] decryptedBytes = cipher.doFinal(decodedBytes);
 
         log.info("Decrypting info from front end");
-        return new String(decryptedBytes, StandardCharsets.UTF_8);
-    }
-
-    public static String decrypt(String encryptedData, SecretKey key) throws Exception {
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
-        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-
         return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 

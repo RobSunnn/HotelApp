@@ -64,9 +64,11 @@
                                 </div>
                                 <div id="checkboxes-container" class="form-group p-1">
                                     <div class="checkbox-item" th:each="category, status : ${categories}">
-                                        <input type="checkbox" name="category" th:id="'category-' + ${status.index}"
-                                               th:value="${category.name()}"
-                                               th:data-index="${status.index}">
+                                        <label>
+                                            <input type="checkbox" name="category" th:id="'category-' + ${status.index}"
+                                                   th:value="${category.name()}"
+                                                   th:data-index="${status.index}">
+                                        </label>
                                         <label class="p-0" th:for="'category-' + ${status.index}">
                                             <span th:text="${category.name()}"></span>
                                         </label>

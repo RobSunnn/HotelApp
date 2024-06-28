@@ -1,6 +1,7 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.common.constants.BindingConstants;
+import com.HotelApp.common.constants.ValidationConstants;
 import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
@@ -14,15 +15,7 @@ import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import com.HotelApp.service.exception.UserNotFoundException;
-import com.HotelApp.common.constants.ValidationConstants;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.data.domain.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -35,14 +28,13 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
 import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -50,34 +42,59 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final HotelServiceImpl hotelService;
-    private final UserDetailsService userDetailsService;
-    private final HttpServletRequest request;
-    private final HttpServletResponse response;
-
+    private final UserTransformationService userTransformationService;
 
     public UserServiceImpl(UserRepository userRepository,
                            RoleService roleService,
                            HotelServiceImpl hotelService,
-                           UserDetailsService userDetailsService,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
+                           UserTransformationService userTransformationService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.hotelService = hotelService;
-        this.userDetailsService = userDetailsService;
-        this.request = request;
-        this.response = response;
-
+        this.userTransformationService = userTransformationService;
     }
 
     @Transactional
     @Override
-    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (checkIfEmailExist(userRegisterBindingModel.getEmail())) {
+    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+        String decryptedEmail = userTransformationService.decrypt(
+                userRegisterBindingModel.getEmail(),
+                userRegisterBindingModel.getIv(),
+                userRegisterBindingModel.getKey()
+        );
+
+        String decryptedPass = userTransformationService.decrypt(
+                userRegisterBindingModel.getPassword(),
+                userRegisterBindingModel.getIv(),
+                userRegisterBindingModel.getKey()
+        );
+
+        String decryptedConfirmPass = userTransformationService.decrypt(
+                userRegisterBindingModel.getConfirmPassword(),
+                userRegisterBindingModel.getIv(),
+                userRegisterBindingModel.getKey()
+        );
+
+        if (Objects.requireNonNull(decryptedPass).isEmpty()) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
-                    "email", ValidationConstants.EMAIL_EXIST));
+                    "password", "Password is empty."));
         }
 
+        if (Objects.requireNonNull(decryptedConfirmPass).isEmpty()) {
+            bindingResult.addError(new FieldError("userRegisterBindingModel",
+                    "confirmPassword", "Confirm your password, please."));
+        }
+
+        if (!decryptedPass.equals(decryptedConfirmPass)) {
+            bindingResult.addError(new FieldError("userRegisterBindingModel",
+                    "confirmPassword", "Password mismatch"));
+        }
+        if (checkIfEmailExist(decryptedEmail)) {
+            bindingResult.addError(new FieldError(USER_REGISTER_BINDING_MODEL,
+                    EMAIL, ValidationConstants.EMAIL_EXIST));
+        }
         if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel);
@@ -87,211 +104,117 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        UserEntity user = mapAsUser(userRegisterBindingModel);
-        userRepository.save(user);
+        userRegisterBindingModel.setEmail(decryptedEmail);
+        userRegisterBindingModel.setPassword(decryptedPass);
+        userRegisterBindingModel.setConfirmPassword(decryptedConfirmPass);
 
-        return user.getEmail() != null;
-    }
-
-    @Override
-    public boolean checkIfEmailExist(String email) {
-        Optional<UserEntity> user = userRepository.findByEmail(email);
-
-        return user.isPresent();
-    }
-
-    @Override
-    public UserView findUserByEmail(String email) {
-        UserEntity user = findUser(email);
-
-        if (user.getId() == 1) {
-            throw new ForbiddenUserException("You can't see this user :)");
-        }
-
-        return mapAsUserView(user);
-    }
-
-    private UserEntity mapAsUser(UserRegisterBindingModel userRegisterBindingModel) {
-
-        if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
-            return new UserEntity(); // TODO: better solution for field match or throw exception
-        }
-
-        UserEntity user = new UserEntity()
-                .setEmail(userRegisterBindingModel.getEmail().trim())
-                .setAge(userRegisterBindingModel.getAge())
-                .setFirstName(userRegisterBindingModel.getFirstName().trim())
-                .setLastName(userRegisterBindingModel.getLastName().trim())
-                .setPassword(passwordEncoder().encode(userRegisterBindingModel.getPassword()))
-                .setCreated(LocalDateTime.now())
-                .setHotelInfoEntity(hotelService.getHotelInfo());
+        UserEntity user = userTransformationService.mapAsUser(userRegisterBindingModel);
+        user.setHotelInfoEntity(hotelService.getHotelInfo());
 
         if (roleService.getCount() == 0) {
             roleService.initRoles();
         }
-
         if (userRepository.count() == 0) {
             user.setRoles(roleService.getAllRoles());
         } else {
             user.setRoles(roleService.getAllRoles().stream().filter(r -> r.getName().equals(RoleEnum.USER)).toList());
         }
 
-        return user;
+        userRepository.save(user);
+        return user.getEmail() != null;
     }
 
-//todo: add hotelInfoEntity to this service to save logs, like when
-    // user is made admin to save a message with date and who is making the post if it is possible
 
     @Override
-    public void makeUserAdmin(String email) {
-        // Find the user by email
-        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+    public boolean checkIfEmailExist(String email) {
+        Optional<UserEntity> user = userRepository.findByEmail(email);
+        return user.isPresent();
+    }
+
+    @Override
+    public UserView findUserByEmail(String email) {
+        String decryptedEmail = userTransformationService.decrypt(email);
+        UserEntity user = findUser(decryptedEmail);
+        if (user.getId() == 1) {
+            throw new ForbiddenUserException("You can't see this user :)");
+        }
+        return userTransformationService.mapAsUserView(user);
+    }
+
+
+    @Override
+    public void changeUserRole(String encryptedInfo, String command) {
+        String decryptedEmail = userTransformationService.decrypt(encryptedInfo);
+        Optional<UserEntity> userOptional = userRepository.findByEmail(decryptedEmail);
+        UserEntity user;
+
         if (userOptional.isPresent()) {
-            // Fetch the ADMIN role
-            RoleEntity adminRole = roleService.getAllRoles()
-                    .stream()
-                    .filter(role -> role.getName().name().equals("ADMIN"))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("ADMIN role not found"));
+            user = userOptional.get();
+            if (user.getId() == 1) {
+                throw new ForbiddenUserException("Don't try this.");
+            }
+        } else {
+            throw new UserNotFoundException("User not found for email: " + decryptedEmail);
+        }
 
-            List<RoleEntity> allRoles = roleService.getAllRoles();
+        switch (command) {
+            case "Make Admin" -> {
+                RoleEntity adminRole = roleService.getAllRoles()
+                        .stream()
+                        .filter(role -> role.getName().name().equals("ADMIN"))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException("ADMIN role not found"));
+                List<RoleEntity> allRoles = roleService.getAllRoles();
+                boolean isAdmin = user.getRoles().stream()
+                        .anyMatch(role -> role.getName().name().equals(adminRole.getName().name()));
 
-            UserEntity user = userOptional.get();
-
-            boolean isAdmin = user.getRoles().stream()
-                    .anyMatch(role -> role.getName().name().equals(adminRole.getName().name()));
-
-            // Check if the user already has the ADMIN role
-            if (!isAdmin) {
-                // Add the ADMIN role to the user
-                user.setRoles(allRoles);
+                if (!isAdmin) {
+                    user.setRoles(allRoles);
+                    userRepository.save(user);
+                } else {
+                    System.out.println("User is already an hotel.");
+                }
+            }
+            case "Make Moderator" -> {
+                RoleEntity userRole = roleService.getAllRoles()
+                        .stream()
+                        .filter(role -> role.getName().name().equals("USER"))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException("USER role not found"));
+                RoleEntity moderatorRole = roleService.getAllRoles()
+                        .stream()
+                        .filter(role -> role.getName().name().equals("MODERATOR"))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
+                boolean isModerator = user.getRoles().stream()
+                        .anyMatch(role -> role.getName().name().equals("MODERATOR"));
+                user.setRoles(List.of(userRole, moderatorRole));
                 userRepository.save(user);
-            } else {
-                System.out.println("User is already an admin.");
             }
-
-        } else {
-            // User not found
-            throw new UserNotFoundException("User not found for email: " + email);
-        }
-    }
-
-    @Override
-    public void makeUserModerator(String email) {
-        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
-
-        if (userOptional.isPresent()) {
-            UserEntity user = userOptional.get();
-
-            if (user.getId() == 1) {
-                throw new ForbiddenUserException("Don't try this.");
+            case "Make User" -> {
+                RoleEntity roleUser = roleService.getAllRoles()
+                        .stream()
+                        .filter(role -> role.getName().name().equals("USER"))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalStateException("USER role not found"));
+                user.setRoles(List.of(roleUser));
+                userRepository.save(user);
             }
-
-            RoleEntity userRole = roleService.getAllRoles()
-                    .stream()
-                    .filter(role -> role.getName().name().equals("USER"))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("USER role not found"));
-
-            RoleEntity moderatorRole = roleService.getAllRoles()
-                    .stream()
-                    .filter(role -> role.getName().name().equals("MODERATOR"))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
-
-            boolean isModerator = user.getRoles().stream()
-                    .anyMatch(role -> role.getName().name().equals("MODERATOR"));
-
-            user.setRoles(List.of(userRole, moderatorRole));
-            userRepository.save(user);
-
-        } else {
-            throw new UserNotFoundException("User not found for email: " + email);
         }
-
-    }
-
-    @Override
-    public void takeRights(String email) {
-        RoleEntity userRole = roleService.getAllRoles()
-                .stream()
-                .filter(role -> role.getName().name().equals("USER"))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("USER role not found"));
-
-        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
-
-        if (userOptional.isPresent()) {
-            UserEntity user = userOptional.get();
-
-            if (user.getId() == 1) {
-                throw new ForbiddenUserException("Don't try this.");
-            }
-
-            user.setRoles(List.of(userRole));
-            userRepository.save(user);
-
-        } else {
-            throw new UserNotFoundException("User not found for email: " + email);
-        }
-
-    }
-
-    public Page<UserView> findAllUsers(Pageable pageable) {
-        List<UserEntity> allUsers = userRepository.findAll();
-
-        List<UserEntity> filteredUsers = allUsers.stream()
-                .skip(1)
-                .toList();
-
-        List<UserView> userViews = filteredUsers.stream()
-                .map(UserServiceImpl::mapAsUserView)
-                .collect(Collectors.toList());
-
-        int pageSize = pageable.getPageSize();
-        int pageNumber = pageable.getPageNumber();
-        int fromIndex = pageNumber * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, userViews.size());
-
-        List<UserView> currentPage = userViews.subList(fromIndex, toIndex);
-
-        return new PageImpl<>(currentPage, pageable, userViews.size());
     }
 
     @Override
     public UserView findUserDetails(String userEmail) {
-        UserEntity user = findUser(userEmail);
-
-        return mapAsUserView(user);
-    }
-
-    private static UserView mapAsUserView(UserEntity user) {
-        UserView userView = new UserView()
-                .setFirstName(user.getFirstName())
-                .setLastName(user.getLastName())
-                .setFullName(user.getFirstName() + " " + user.getLastName())
-                .setAge(user.getAge())
-                .setEmail(user.getEmail())
-                .setRoles(user.getRoles());
-
-        Blob userImage = user.getUserImage();
-
-        if (userImage != null) {
-            try {
-                userView.setUserImage(userImage.getBytes(1, (int) userImage.length()));
-            } catch (SQLException ignored) {
-            }
-        }
-
-        return userView;
+        return userTransformationService.mapAsUserView(findUser(userEmail));
     }
 
     @Override
-    public void addUserImage(MultipartFile image, String userEmail, RedirectAttributes redirectAttributes) {
+    public void addUserImage(MultipartFile image,
+                             String userEmail,
+                             RedirectAttributes redirectAttributes) {
         if (image.getSize() > (5 * 1024 * 1024)) {
             throw new MaxUploadSizeExceededException(5 * 1024 * 1024);
         }
-
         if (image.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Please select a file.");
@@ -304,7 +227,6 @@ public class UserServiceImpl implements UserService {
         if (!isAllowedExtension(filename)) {
             throw new FileNotAllowedException("File type not supported.");
         }
-
         UserEntity user = findUser(userEmail);
 
         try {
@@ -321,10 +243,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
-    public boolean editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, String userEmail, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-
+    public boolean editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel,
+                                   String userEmail,
+                                   BindingResult bindingResult,
+                                   RedirectAttributes redirectAttributes) {
         UserEntity user = findUser(userEmail);
         boolean emailChanged = !user.getEmail().equals(editUserProfileBindingModel.getEmail());
 
@@ -350,17 +273,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        if (emailChanged) {
-            // Invalidate the session
-            request.getSession().invalidate();
-            // Clear cookies
-            Arrays.stream(request.getCookies()).forEach(cookie -> {
-                cookie.setMaxAge(0);
-                cookie.setPath("/");
-                response.addCookie(cookie);
-            });
-        }
-        reAuthenticateUser(editUserProfileBindingModel.getEmail());
+        userTransformationService.authenticateUser(editUserProfileBindingModel.getEmail());
         redirectAttributes.addFlashAttribute("successMessage",
                 "Profile info updated successfully.");
 
@@ -394,7 +307,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder().encode(changeUserPasswordBindingModel.getNewPassword()));
         userRepository.save(user);
 
-        reAuthenticateUser(userEmail);
+        userTransformationService.authenticateUser(userEmail);
         redirectAttributes.addFlashAttribute("successMessage",
                 "Password changed successfully.");
 
@@ -403,8 +316,7 @@ public class UserServiceImpl implements UserService {
 
     private boolean isAllowedExtension(String filename) {
         String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
-
-        return extension.equals("jpg") ||
+        return  extension.equals("jpg") ||
                 extension.equals("jpeg") ||
                 extension.equals("png") ||
                 extension.equals("svg") ||
@@ -412,25 +324,8 @@ public class UserServiceImpl implements UserService {
                 extension.equals("gif");
     }
 
-    private void reAuthenticateUser(String newEmail) {
-        // Load the new user details
-        UserDetails userDetails = userDetailsService.loadUserByUsername(newEmail);
-
-        // Create a new authentication token
-        UsernamePasswordAuthenticationToken newAuth =
-                new UsernamePasswordAuthenticationToken(userDetails, userDetails.getUsername(), userDetails.getAuthorities());
-
-        newAuth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-        // Set the new authentication token in the security context
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
-
-        // Update session with the new authentication
-        request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-    }
-
     private UserEntity findUser(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found"));
     }
 }

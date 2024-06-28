@@ -2,32 +2,28 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{/fragments/head :: head}"></th:block>
     <title>Welcome</title>
 
     <style>
         /* Height for devices larger than 576px */
-        @media (min-width: 992px) {
-            #carousel {
-                margin-top: -60px;
-            }
+        .navbar {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
+        }
+        .sign-in,
+        .sign-up {
+            display: none;
         }
 
         h2 {
             text-align: center;
             padding: 0.5em;
         }
-
-        .form-inline {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar .nav-link {
-            color: #fff !important;
-        }
-
+        /*#carousel {*/
+        /*    position: relative;*/
+        /*    z-index: 1; */
+        /*   */
+        /*}*/
 
         #carousel,
         .carousel-inner,
@@ -50,7 +46,7 @@
         .carousel-control-next,
         .carousel-control-prev {
             align-self: center;
-            height: 100vh;
+            height: 70vh;
             color: black;
         }
 
@@ -91,63 +87,26 @@
             padding: 2em;
         }
 
+        @media (min-width: 992px) {
+            #carousel {
+                margin-top: -63px;
+            }
+        }
+        @media (max-width: 991px) {
+            /*#carousel {*/
+            /*    margin-top: -200px;*/
+            /*}*/
+            #carousel  .carousel-control-next,
+            #carousel > .carousel-control-prev {
+                height: 30vh;
+                margin-top:18em;
+            }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark d-lg-block" style="z-index: 2000;">
-        <div class="container-fluid">
-
-            <a class="navbar-brand nav-link" href="/">
-                <strong>Hotel App</strong>
-            </a>
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#toggler"
-                    aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span><i class="fas fa-bars"></i></span>
-
-            </button>
-            <div class="collapse navbar-collapse" id="toggler">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact" rel="nofollow">Contact us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about">About us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
-                    </li>
-                    <li sec:authorize="hasRole('ADMIN')" class="nav-item">
-                        <a class="nav-link" href="/moderator">Moderator</a>
-                    </li>
-                </ul>
-
-                <ul class="navbar-nav list-inline" id="custom-box">
-
-
-                    <!-- Icons -->
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <div class="form-inline my-2 my-lg-0 border px-3">
-                            <div class="logged-user text-white p-2">
-                                Welcome, <a style="font-weight: 700" th:href="@{/users/profile}">
-                                <th:block th:text="${#authentication.principal.fullName}"></th:block>
-                            </a>!
-                            </div>
-
-                            <form th:method="post" th:action="@{/users/logout}">
-                                <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
-                                       value="Logout">
-                            </form>
-
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-</header>
+<th:block th:replace="~{/fragments/nav-bar :: navbar}"></th:block>
 
 <main>
     <div id="carousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
@@ -248,7 +207,7 @@
 
 </main>
 
-<th:block th:insert="~{fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>
 </html>

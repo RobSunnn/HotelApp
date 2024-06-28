@@ -5,113 +5,66 @@
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Footer</title>
 </head>
-
-<body >
-
-<!-- Footer -->
-<footer th:fragment="footer" class="bg-body-tertiary bg-dark text-center" >
-    <!-- Grid container -->
+<body>
+<footer th:fragment="footer" class="bg-body-tertiary bg-dark text-center">
     <div class="container p-4">
-        <!-- Section: Social media -->
         <section class="mb-4">
-            <!-- Facebook -->
             <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button">
                 <i class="fab fa-facebook-f fa-2xl"></i>
             </a>
-
-            <!-- Twitter -->
             <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button">
                 <i class="fab fa-twitter fa-2xl"></i>
             </a>
-
-            <!-- Google -->
             <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button">
                 <i class="fab fa-google fa-2xl"></i>
             </a>
-
-            <!-- Instagram -->
             <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="#" role="button">
                 <i class="fab fa-instagram fa-2xl"></i>
             </a>
-
-            <!-- Linkedin -->
             <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1"
                href="https://www.linkedin.com/in/roberto-spasov-3305a4228/" role="button">
                 <i class="fab fa-linkedin-in fa-2xl"></i>
             </a>
-
-            <!-- Github -->
             <a data-mdb-ripple-init class="btn btn-outline btn-floating m-1" href="https://github.com/RobSunnn"
                role="button">
                 <i class="fab fa-github fa-2xl"></i>
             </a>
         </section>
-        <!-- Section: Social media -->
-
-        <!-- Section: Form -->
         <section>
             <!--/*@thymesVar id="addSubscriberBindingModel" type="AddSubscriberBindingModel"*/-->
             <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
-                <!-- Grid row -->
-                <input type="hidden" name="redirectUrl" th:value="${pageUrl}" />
+                <input type="hidden" name="redirectUrl" th:value="${pageUrl}"/>
                 <div class="row d-flex justify-content-center">
-                    <!-- Grid column -->
                     <div class="col-auto">
                         <p class="text-white pt-2">
                             <strong>Sign up for our newsletter</strong>
                         </p>
                     </div>
-                    <!-- Grid column -->
-
-                    <!-- Grid column -->
                     <div class="col-md-5 col-12">
-                        <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4 border">
-
-                            <input type="email" required id="form" class="form-control" name="subscriberEmail" />
-
+                            <input type="email" required id="form" class="form-control text-white"
+                                   name="subscriberEmail"/>
                             <label class="form-label text-white" for="form">Email address</label>
-
                         </div>
                     </div>
-                    <!-- Grid column -->
-
-                    <!-- Grid column -->
                     <div class="col-auto">
-                        <!-- Submit button -->
-                        <button data-mdb-ripple-init type="submit" class="btn btn-primary mb-4">
+                        <button data-mdb-ripple-init type="submit" id="subscribe-btn" class="btn btn-primary mb-4">
                             Subscribe
                         </button>
                     </div>
-                    <!-- Grid column -->
                 </div>
-                <!-- Grid row -->
                 <div th:if="${successSubscribeMessage}" style="color: green;">
-
                     <p th:text="${successSubscribeMessage}"></p>
-
                 </div>
-
                 <div th:if="${failMessage}" style="color: red;">
-
                     <p th:text="${failMessage}"></p>
-
                 </div>
-
             </form>
         </section>
-        <!-- Section: Form -->
-
-
-        <!-- Section: Links -->
         <section class="mt-5">
-            <!--Grid row-->
-
             <div class="footer-end">
-                <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                     <h5 class="text-uppercase">Quick Links</h5>
-
                     <ul class="list-unstyled mb-0">
                         <li class="page-link">
                             <a class="page-item" href="/about">About Us</a>
@@ -126,16 +79,12 @@
                             <a class="page-item" href="#top">Go TOP</a>
                         </li>
                     </ul>
-
                 </div>
-
                 <div class="video">
                     <div class="">
                         <div class="">
-                            <video controls width="320">
-
+                            <video controls width="300">
                                 <source src="/images/10154095086876282.mp4" type="video/mp4"/>
-
                                 Download the
                                 <a href="/images/10154095086876282.mp4">MP4</a>
                                 video.
@@ -143,12 +92,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </section>
-
-        <section id="text-footer" class="text-footer p-1 mb-4" >
+        <section id="text-footer" class="text-footer p-1 mb-4">
             <p class="text-white">
                 Welcome to Our Hotel, your home away from home. <br> Nestled in the heart of [City],
                 we offer a blend of comfort and luxury tailored to your needs. Whether you're here for business or
@@ -158,16 +104,16 @@
             </p>
         </section>
     </div>
-    <!-- Grid container -->
-
-    <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-        © 2024
-        <a class="text-reset fw-bold" href="#"></a>
+        © 2024<a class="text-reset fw-bold" href="#"></a>
     </div>
-    <!-- Copyright -->
 </footer>
-<!-- Footer -->
-
+<script>
+    let subscribeButton = document.getElementById('subscribe-btn');
+    subscribeButton.addEventListener('click', function () {
+        console.log('Hello');
+        document.getElementById('.subscribe-btn').scrollIntoView({behavior: 'smooth'});
+    });
+</script>
 </body>
 </html>

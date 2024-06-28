@@ -31,7 +31,8 @@ public class ContactRequestEntity extends BaseEntity {
     @ManyToOne
     private HotelInfoEntity hotelInfoEntity;
 
-    public ContactRequestEntity() {}
+    public ContactRequestEntity() {
+    }
 
     public String getName() {
         return name;
@@ -85,10 +86,6 @@ public class ContactRequestEntity extends BaseEntity {
     public ContactRequestEntity setChecked(Boolean checked) {
         isChecked = checked;
         return this;
-    }
-
-    public HotelInfoEntity getHotelInfoEntity() {
-        return hotelInfoEntity;
     }
 
     public ContactRequestEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {

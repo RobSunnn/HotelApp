@@ -1,13 +1,12 @@
 package com.HotelApp.domain.models.view;
 
 import com.HotelApp.domain.entity.RoleEntity;
+
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserView {
-
-    private Long id;
 
     private String firstName;
 
@@ -16,6 +15,8 @@ public class UserView {
     private String fullName;
 
     private String email;
+
+    private String encryptedEmail;
 
     private Integer age;
 
@@ -32,15 +33,6 @@ public class UserView {
 
     public UserView setFullName(String fullName) {
         this.fullName = fullName;
-        return this;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public UserView setId(Long id) {
-        this.id = id;
         return this;
     }
 
@@ -68,6 +60,15 @@ public class UserView {
 
     public UserView setEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public String getEncryptedEmail() {
+        return encryptedEmail;
+    }
+
+    public UserView setEncryptedEmail(String encryptedEmail) {
+        this.encryptedEmail = encryptedEmail;
         return this;
     }
 

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <title>Admin</title>
+
+    <style>
+        body {
+            background-image: url("/images/hotel2.jpg");
+            background-size: 100% 100vh; /* Use viewport height for better responsiveness */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /*transition: background-image 1s ease;*/
+            /*transition-delay: 3s;*/
+        }
+
+
+        select {
+            overflow-y: auto;
+        }
+
+
+        .management-card {
+            width: 50%;
+            margin: 0 auto;
+            background-color: white;
+            font-size: 1rem;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 1em auto;
+            justify-content: center;
+
+        }
+
+        .all-content {
+            margin-top: 3em;
+            align-content: center;
+        }
+
+        .white-placeholder::placeholder {
+            color: white !important;
+        }
+
+        .black-placeholder::placeholder {
+            color: black !important;
+        }
+    </style>
+</head>
+<body>
+
+<th:block th:insert="~{fragments/nav-bar :: navbar}"></th:block>
+<div class="all-content">
+    <div class="management-card">
+        <div class="card-body bg-dark text-white text-center mt-5">
+            <h2 class="card-title">User Management</h2>
+            <h4 class="card-text">Here you can control user privileges</h4>
+            <a th:href="@{/admin/allUsers}" class="btn btn-primary">See All Users</a>
+        </div>
+        <h2 class="card-text p-2">Total Profit: <span th:text="${totalProfit} + ' $'" id="total-profit">$XXX</span></h2>
+    </div>
+    <h2 class="text-white mt-5">Hotel Overview</h2>
+    <div class="cards">
+        <div class="card">
+            <div class="card-body bg-dark text-white">
+                <h5 class="card-title">Rooms Overview</h5>
+                <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span></p>
+                <a th:href="@{/hotel/freeRooms}" class="btn btn-primary">Check Free Rooms</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body bg-dark text-white">
+                <h5 class="card-title">Guests Overview</h5>
+                <p class="card-text">Total Guests: <span th:text="${allGuestsCount}" id="totalGuestsCount">XX</span></p>
+                <a th:href="@{/hotel/allGuests}" class="btn btn-primary">See All Guests</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body bg-dark text-white">
+                <h5 class="card-title">Subscribers Overview</h5>
+                <p class="card-text">Total Subscribers: <span th:text="${totalSubscribers}" id="totalSubscribersCount">XX</span></p>
+                <a th:href="@{/hotel/allSubscribers}" class="btn btn-primary">See All Subscribers</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body bg-dark text-white">
+                <h5 class="card-title">Happy Guests Overview</h5>
+                <p class="card-text">Total Happy Guests: <span th:text="${happyGuestsCount}" id="happyGuests">XX</span></p>
+                <a th:href="@{/hotel/allHappyGuests}" class="btn btn-primary">See All Happy Guests</a>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+</body>
+</html>

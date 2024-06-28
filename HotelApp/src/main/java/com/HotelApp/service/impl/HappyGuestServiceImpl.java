@@ -26,5 +26,4 @@ public class HappyGuestServiceImpl implements HappyGuestService {
         return happyGuestRepository.findByDocumentId(documentId);
     }
 
-
 }

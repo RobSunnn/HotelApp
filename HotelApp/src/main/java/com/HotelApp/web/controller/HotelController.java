@@ -3,20 +3,19 @@ package com.HotelApp.web.controller;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/admin")
 public class HotelController {
 
     private final HotelService hotelService;
@@ -28,73 +27,67 @@ public class HotelController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping
-    public String adminPanel(Model model) {
-        int freeRoomsCount = hotelService.seeAllFreeRooms().size();
-        int allGuestsCount = hotelService.seeAllGuests().size();
-        int totalSubscribers = hotelService.seeAllSubscribers().size();
-        int happyGuestsCount = hotelService.seeAllHappyGuests().size();
+    @ModelAttribute
+    public void addAttributes(Model model, HttpSession session, HttpServletRequest request) {
+        Map<String, Integer> infoForHotel = hotelService.getInfoForHotel();
         BigDecimal totalProfit = hotelService.getTotalProfit();
+        List<UserView> users = hotelService.findAllUsers();
 
-        model.addAttribute("freeRoomsCount", freeRoomsCount);
-        model.addAttribute("allGuestsCount", allGuestsCount);
-        model.addAttribute("happyGuestsCount", happyGuestsCount);
         model.addAttribute("totalProfit", totalProfit);
-        model.addAttribute("totalSubscribers", totalSubscribers);
+        model.addAllAttributes(infoForHotel);
+        model.addAttribute("allUsers", users);
 
-        return "admin/admin-panel";
+        String previousUrl = request.getHeader("referer");
+        session.setAttribute("previousUrl", previousUrl);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/allUsers")
-    public String allUsersPage(Model model,
-                               @PageableDefault(
-                                       size = 7,
-                                       sort = "id"
-                               )
-                               Pageable pageable) {
+    @GetMapping("/admin")
+    public String adminPanel() {
+        return "hotel/admin-panel";
+    }
 
-        Page<UserView> allUsers = userService.findAllUsers(pageable);
-        model.addAttribute("allUsers", allUsers);
-        return "admin/all-users";
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/allUsers")
+    public String allUsersPage() {
+        return "hotel/all-users";
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/freeRooms")
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/hotel/freeRooms")
     public String freeRooms(Model model) {
         List<RoomView> freeRooms = hotelService.seeAllFreeRooms();
         model.addAttribute("freeRooms", freeRooms);
 
-        return "admin/free-rooms";
+        return "hotel/free-rooms";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/allGuests")
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/hotel/allGuests")
     public String allGuests(Model model) {
         List<GuestView> allGuests = hotelService.seeAllGuests();
         model.addAttribute("allGuests", allGuests);
 
-        return "admin/all-guests";
+        return "hotel/all-guests";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/allSubscribers")
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/hotel/allSubscribers")
     public String allSubscribers(Model model) {
         List<SubscriberView> allSubscribers = hotelService.seeAllSubscribers();
         model.addAttribute("allSubscribers", allSubscribers);
 
-        return "admin/all-subscribers";
+        return "hotel/all-subscribers";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/allHappyGuests")
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/hotel/allHappyGuests")
     public String allHappyGuests(Model model) {
         List<HappyGuestView> allHappyGuests = hotelService.seeAllHappyGuests();
         model.addAttribute("allHappyGuests", allHappyGuests);
 
-        return "admin/all-happy-guests";
+        return "hotel/all-happy-guests";
     }
 
 }

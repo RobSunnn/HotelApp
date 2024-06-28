@@ -16,6 +16,8 @@ public class ContactRequestView {
 
     private LocalDateTime created;
 
+    private Boolean isChecked;
+
     public ContactRequestView() {}
 
     public Long getId() {
@@ -69,6 +71,15 @@ public class ContactRequestView {
 
     public ContactRequestView setCreated(LocalDateTime created) {
         this.created = created;
+        return this;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public ContactRequestView setChecked(Boolean checked) {
+        isChecked = checked;
         return this;
     }
 }

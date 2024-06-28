@@ -13,10 +13,8 @@
             <div class="custom-card">
 
                 <div class="card-body bg-dark text-white">
-                    <h5 class="card-title">Add Guest to Hotel</h5>
-                    <p class="card-text">Here you can add guest to hotel, <br> so you are going to be albe to see <br> the
-                        free rooms in the hotel later,
-                        <br> and also to save some data about the guest to be easier in the future.</p>
+                    <h3 class="card-title">Add Guest to Hotel</h3>
+                    <p class="card-text">Here you can add guest to the hotel</p>
 
                     <a th:href="@{/guests/add}" class="btn btn-primary">Add guest</a>
                 </div>
@@ -26,9 +24,8 @@
             <div class="custom-card">
 
                 <div class="card-body bg-dark text-white">
-                    <h5 class="card-title">CHECK OUT</h5>
-                    <p class="card-text">Here you need to check out the Guest, <br>take money for the stay and to wish <br>
-                        the Guest a Happy New Year :D</p>
+                    <h3 class="card-title">CHECK OUT</h3>
+                    <p class="card-text">Here you need to check out the Guest</p>
 
                     <a th:href="@{/guests/leave}" class="btn btn-primary">Guest want to leave</a>
                 </div>
@@ -64,6 +61,127 @@
         <!-- Make fetch for quote here to make moderator happy :)-->
 
     </section>
+    <h2 class="text-white">Hotel Overview</h2>
+    <div class="cards">
+
+
+
+        <div class="card">
+
+            <div class="card-body bg-dark text-white">
+                <h5 class="card-title">Rooms Overview</h5>
+                <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span>
+                </p>
+                <a th:href="@{/hotel/freeRooms}" class="btn btn-primary">Check Free Rooms</a>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-body bg-dark text-white">
+                <h5 class="card-title">Guests Overview</h5>
+                <p class="card-text">Total Guests: <span th:text="${allGuestsCount}" id="totalGuestsCount">XX</span></p>
+                <a th:href="@{/hotel/allGuests}" class="btn btn-primary">See All Guests</a>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-body bg-dark text-white">
+                <h5 class="card-title">Subscribers Overview</h5>
+                <p class="card-text">Total Subscribers: <span th:text="${totalSubscribers}" id="totalSubscribersCount">XX</span>
+                </p>
+                <a th:href="@{/hotel/allSubscribers}" class="btn btn-primary">See All Subscribers</a>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-body bg-dark text-white">
+                <h5 class="card-title">Happy Guests Overview</h5>
+                <p class="card-text">Total Happy Guests: <span th:text="${happyGuestsCount}" id="happyGuests">XX</span>
+                </p>
+                <a th:href="@{/hotel/allHappyGuests}" class="btn btn-primary">See All Happy Guests</a>
+            </div>
+
+        </div>
+
+
+        <!--    <div class="userManagement">-->
+
+        <!--        <div class="card">-->
+
+        <!--            <div class="card-body bg-dark text-white">-->
+
+        <!--                <h5>User Management</h5>-->
+        <!--                <br>-->
+        <!--                <div class="form-group">-->
+
+        <!--                    <h6>You can find user by email, or you can list all users</h6>-->
+
+        <!--                    <label for="userSearch">Search User by Email:</label>-->
+        <!--                    <input type="text" class="form-control" id="userSearch" placeholder="Enter user email">-->
+        <!--                    &lt;!&ndash;                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>&ndash;&gt;-->
+
+        <!--                    <br>-->
+        <!--                    <a href="#" class="btn btn-primary" id="userFindBtn">Find user by email</a>-->
+        <!--                    <a href="#" class="btn btn-primary" id="getAllUsersBtn">List all users</a>-->
+
+
+        <!--                    <br>-->
+        <!--                    <br>-->
+
+        <!--                    <div id="usersDropdown" hidden>-->
+
+        <!--                        <label for="userSelect"> Select User:</label>-->
+        <!--                        <select class="form-control bg-white" id="userSelect" size="5">-->
+        <!--                            <option selected disabled class="text-white">Select User:</option>-->
+        <!--                        </select>-->
+
+        <!--                        <br>-->
+
+        <!--                        <div class="buttons">-->
+
+        <!--                            <form th:action="@{/hotel/makeUserAdmin}" th:method="POST">-->
+        <!--                                &lt;!&ndash;                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>&ndash;&gt;-->
+        <!--                                <button type="button" class="btn btn-success" id="makeAdmin">Make Admin</button>-->
+        <!--                            </form>-->
+
+        <!--                            <form th:action="@{/hotel/makeUserModerator}" th:method="POST">-->
+        <!--                                &lt;!&ndash;                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>&ndash;&gt;-->
+        <!--                                <button type="button" class="btn btn-warning" id="makeModerator">Make Moderator</button>-->
+        <!--                            </form>-->
+
+        <!--                            <form th:action="@{/hotel/takeRights}" th:method="POST">-->
+        <!--                                <button type="button" class="btn btn-danger" id="makeUser">Make User</button>-->
+        <!--                            </form>-->
+
+        <!--                            <form th:action="@{/hotel/banUser}" th:method="POST">-->
+        <!--                                <button type="button" class="btn btn-danger" id="banUser">BAN User</button>-->
+        <!--                            </form>-->
+        <!--                            <a th:href="@{/hotel}" class="btn btn-success" id="clearBtn">Clear</a>-->
+
+        <!--                        </div>-->
+
+        <!--                    </div>-->
+
+        <!--                </div>-->
+
+        <!--                <div id="result"></div>-->
+
+        <!--                <br><br>-->
+
+        <!--                <h2 class="card-text">Total Profit: <span th:text="${totalProfit} + ' $'" id="total-profit">$XXX</span>-->
+        <!--                </h2>-->
+
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+    </div>
 </main>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>

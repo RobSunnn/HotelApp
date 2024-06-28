@@ -7,8 +7,8 @@ import com.HotelApp.repository.CategoriesRepository;
 import com.HotelApp.repository.RoomTypeRepository;
 import com.HotelApp.service.RoomTypesService;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RoomTypesServiceImpl implements RoomTypesService {
@@ -24,7 +24,7 @@ public class RoomTypesServiceImpl implements RoomTypesService {
 
     @Override
     public Page<RoomTypeView> getRoomTypes(Pageable pageable) {
-     return roomTypeRepository.findAll(pageable)
+        return roomTypeRepository.findAll(pageable)
                 .map(RoomTypesServiceImpl::map);
     }
 
@@ -67,7 +67,7 @@ public class RoomTypesServiceImpl implements RoomTypesService {
 
         roomTypeRepository.save(new RoomTypeEntity("Presidential Room",
                 "Welcome to the epitome of luxury and refinement, where opulence meets sophistication in our distinguished presidential suite. From the moment you step inside, you''ll be enveloped in an atmosphere of grandeur and elegance, promising an unparalleled experience fit for royalty.",
-                4, "https://s7d2.scene7.com/is/image/ritzcarlton/RCCHENG_00057_conversion?$XlargeViewport100pct$",
+                4, "https://i.pinimg.com/564x/e6/2b/6c/e62b6c0597695706d32a37d61dc9d668.jpg",
                 categoriesRepository.findByName(CategoriesEnum.PRESIDENT)));
     }
 

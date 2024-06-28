@@ -100,4 +100,6 @@ public class AddGuestBindingModel {
         this.daysToStay = daysToStay;
         return this;
     }
+
+
 }

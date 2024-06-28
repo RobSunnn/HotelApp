@@ -7,118 +7,168 @@
     <title>Sign UP</title>
 
     <style>
-        body {
-            background-image: url("/images/register-img.jpg");
-            background-size: 100% 100vh;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+
+        .register-form {
+            width:50%;
+            max-width: 100%;
+            padding: 1.2em;
         }
 
-        .btn {
-            text-align: center;
+        .input-field {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .sign-up {
+            display: none;
+        }
+
+        @media (max-width: 750px) {
+            .register-form {
+                width: 80%;
+            }
         }
 
     </style>
 </head>
 
-<body>
+<body class="hero" style="background-image: url(/images/register-img.jpg)">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
-
 <main>
-    <form th:action="@{/users/register}" th:method="POST" th:object="${userRegisterBindingModel}">
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card bg-dark text-white">
-                        <div class="card-header bg-dark text-white">
-                            <h4>Registration</h4>
-                        </div>
-                        <div class="card-body">
-                            <form>
+    <form>
 
-                                <div class="container">
-                                    <div class="form-group">
+        <div class="register-form container bg-dark rounded">
+            <h2 class="text-white">Register</h2>
+            <div class="input-field form-group">
+                <label for="firstName" class="text-white">First Name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="Enter your first name...">
+                <small id="firstNameError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </div>
 
-                                        <label for="firstName">First Name</label>
-                                        <input type="text" class="form-control" id="firstName" th:errorclass="is-invalid"
-                                               th:field="*{firstName}" name="firstName" placeholder="Enter your first name...">
+            <div class="input-field form-group">
+                <label for="lastName" class="text-white">Last Name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="Enter your last name...">
+                <small id="lastNameError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </div>
 
-                                        <small id="firstNameError" th:errors="*{firstName}"
-                                               class="invalid-feedback  text-white  bg-danger rounded"></small>
+            <div class="input-field form-group">
+                <label for="email" class="text-white">Email address</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email...">
+                <small id="emailError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </div>
 
-                                    </div>
+            <div class="input-field form-group">
+                <label for="age" class="text-white">Age</label>
+                <input type="number" class="form-control" id="age" placeholder="Enter your age...">
+                <small id="ageError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </div>
 
-                                    <div class="form-group">
+            <div class="input-field form-group">
+                <label for="password" class="text-white">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter password...">
+                <small id="passwordError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </div>
 
-                                        <label for="lastName">Last Name</label>
-                                        <input type="text" class="form-control" id="lastName" th:errorclass="is-invalid"
-                                               th:field="*{lastName}" name="lastName" placeholder="Enter your last name...">
+            <div class="input-field form-group">
+                <label for="confirmPassword" class="text-white">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password...">
+                <small id="confirmPasswordError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </div>
 
-                                        <small id="lastNameError" th:errors="*{lastName}"
-                                               class="invalid-feedback text-white bg-danger rounded"></small>
-
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <label for="email">Email address</label>
-                                        <input type="email" class="form-control" id="email" th:errorclass="is-invalid"
-                                               th:field="*{email}" name="email" placeholder="Enter your email...">
-
-                                        <small id="emailError" th:errors="*{email}"
-                                               class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <label for="age">Age</label>
-                                        <input type="number" class="form-control" id="age" th:errorclass="is-invalid"
-                                               th:field="*{age}" name="age" placeholder="Enter your age...">
-
-                                        <small id="ageError" th:errors="*{age}"
-                                               class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <label for="password">Password</label>
-                                        <input type="password" class="form-control" id="password" th:errorclass="is-invalid"
-                                               th:field="*{password}" name="password" placeholder="Enter password...">
-
-                                        <small id="passwordError" th:errors="*{password}"
-                                               class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <label for="confirmPassword">Confirm Password</label>
-                                        <input type="password" class="form-control" id="confirmPassword"
-                                               th:errorclass="is-invalid" th:field="*{confirmPassword}" name="confirmPassword"
-                                               placeholder="Confirm your password...">
-
-                                        <small id="confirmPasswordError" th:errors="*{confirmPassword}"
-                                               class="invalid-feedback text-white  bg-danger rounded"></small>
-
-                                    </div>
-
-
-                                    <button type="submit" class="btn btn-info btn-lg">Register</button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <div class="buttons">
+                <button type="button" class="btn btn-primary btn-lg" onclick="encryptAndSubmit()">Register</button>
             </div>
         </div>
-
     </form>
+
 </main>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+<script>
+
+    function displayErrors(errors) {
+        // Clear previous errors
+        document.querySelectorAll('.invalid-feedback').forEach(el => el.textContent = '');
+        document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
+
+        if (errors.length > 0) {
+            // Scroll to the first error
+            const firstErrorField = errors[0].field;
+            const firstErrorElement = document.getElementById(firstErrorField);
+            if (firstErrorElement) {
+                firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Iterate over the errors array
+        errors.forEach(error => {
+            const errorElement = document.getElementById(`${error.field}Error`);
+            const inputElement = document.getElementById(error.field);
+            if (errorElement && inputElement) {
+                errorElement.textContent = error.defaultMessage;
+                inputElement.classList.add('is-invalid');
+            }
+        });
+    }
+
+    async function encryptAndSubmit() {
+        try {
+            const key = CryptoJS.lib.WordArray.random(32); // 256-bit key
+            const iv = CryptoJS.lib.WordArray.random(16);
+            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const age = document.getElementById('age').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            const encryptedEmail = CryptoJS.AES.encrypt(email, key, { iv: iv }).toString();
+            const encryptedPassword = CryptoJS.AES.encrypt(password, key, { iv: iv }).toString();
+            const encryptedConfirmPassword = CryptoJS.AES.encrypt(confirmPassword, key, { iv: iv }).toString();
+
+            // Prepare the data to send
+            const formData = new FormData();
+            formData.append('firstName', firstName);
+            formData.append('lastName', lastName);
+            formData.append('email', encryptedEmail);
+            formData.append('age', age);
+            formData.append('password', encryptedPassword);
+            formData.append('confirmPassword', encryptedConfirmPassword);
+            formData.append('iv', CryptoJS.enc.Base64.stringify(iv));
+            formData.append('key', CryptoJS.enc.Base64.stringify(key));
+
+            // Send the encrypted data
+            const response = await fetch('http://localhost:8080/users/register', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': csrfTokenElement.value,
+                }
+            });
+
+            const responseData = await response.json();
+            console.log(responseData);
+
+            if (responseData.success) {
+                if (responseData.redirectUrl) {
+                    // Redirect to the success page
+                    window.location.href = responseData.redirectUrl;
+                }
+            } else {
+                if (responseData.errors) {
+                    displayErrors(responseData.errors);
+                }
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+        }
+    }
+
+
+</script>
 </body>
 </html>

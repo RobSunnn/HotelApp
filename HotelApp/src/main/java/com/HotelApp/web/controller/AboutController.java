@@ -1,10 +1,8 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.models.binding.AddCommentBindingModel;
 import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.service.CommentService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH;
 import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
 
 @Controller
@@ -46,9 +43,7 @@ public class AboutController {
                         )
                         Pageable pageable) {
 
-
         Page<CommentView> allApprovedComments = commentService.getApprovedComments(pageable);
-
         model.addAttribute("comments", allApprovedComments);
         return "about";
     }

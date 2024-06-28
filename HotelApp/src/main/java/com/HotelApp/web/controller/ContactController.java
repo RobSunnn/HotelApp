@@ -1,6 +1,5 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.service.ContactRequestService;
@@ -10,10 +9,13 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static com.HotelApp.common.constants.BindingConstants.*;
+import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
 
 @Controller
 @RequestMapping("/contact")
@@ -27,11 +29,7 @@ public class ContactController {
     }
 
     @ModelAttribute
-    public void addAttributes(Model model, HttpServletRequest request) {
-        if (!model.containsAttribute(SUBSCRIBER_BINDING_MODEL)) {
-            model.addAttribute(SUBSCRIBER_BINDING_MODEL, new AddSubscriberBindingModel());
-        }
-
+    public void addAttributes(Model model) {
         if (!model.containsAttribute(CONTACT_REQUEST_BINDING_MODEL)) {
             model.addAttribute(CONTACT_REQUEST_BINDING_MODEL, new ContactRequestBindingModel());
         }
@@ -41,7 +39,6 @@ public class ContactController {
     public String contact() {
         return "contact";
     }
-
 
 
     @PostMapping("/subscribe")
@@ -55,9 +52,9 @@ public class ContactController {
     }
 
     @PostMapping("/contactForm")
-    public String sendMail(@Valid ContactRequestBindingModel contactRequestBindingModel,
-                           BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
+    public String sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel,
+                                     BindingResult bindingResult,
+                                     RedirectAttributes redirectAttributes) {
 
         contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult, redirectAttributes);
         return "redirect:/contact";

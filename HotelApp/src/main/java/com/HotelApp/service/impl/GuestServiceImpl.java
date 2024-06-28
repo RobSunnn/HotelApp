@@ -12,8 +12,8 @@ import com.HotelApp.repository.RoomRepository;
 import com.HotelApp.service.GuestService;
 import com.HotelApp.service.HappyGuestService;
 import com.HotelApp.service.HotelService;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,7 +25,6 @@ import java.util.Optional;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
 @Service
-@Primary
 public class GuestServiceImpl implements GuestService {
 
     private final GuestRepository guestRepository;
@@ -43,6 +42,7 @@ public class GuestServiceImpl implements GuestService {
     }
 
     @Override
+    @Transactional
     public boolean registerGuest(AddGuestBindingModel addGuestBindingModel,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {

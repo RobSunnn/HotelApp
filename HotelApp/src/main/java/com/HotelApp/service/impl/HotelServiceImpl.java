@@ -1,6 +1,7 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.HotelInfoEntity;
+import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.service.HotelService;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
@@ -19,11 +22,13 @@ public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
 
-    public HotelServiceImpl(HotelRepository hotelRepository) {
+    private final UserTransformationService userTransformationService;
+
+    public HotelServiceImpl(HotelRepository hotelRepository, UserTransformationService userTransformationService) {
         this.hotelRepository = hotelRepository;
+        this.userTransformationService = userTransformationService;
     }
 
-    /* Taking care of hotel info entity */
     @Override
     public Long getCount() {
         return hotelRepository.count();
@@ -122,10 +127,32 @@ public class HotelServiceImpl implements HotelService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<UserView> findAllUsers() {
+        List<UserEntity> allUsers = getHotelInfo()
+                .getUsers()
+                .stream()
+                .skip(1)
+                .toList();
+
+        return userTransformationService.transformUsers(allUsers);
+    }
+
     @Transactional
     @Override
     public BigDecimal getTotalProfit() {
         return getHotelInfo().getTotalProfit();
     }
 
+    @Transactional
+    @Override
+    public Map<String, Integer> getInfoForHotel() {
+        Map<String, Integer> counts = new HashMap<>();
+        counts.put("freeRoomsCount", seeAllFreeRooms().size());
+        counts.put("allGuestsCount", seeAllGuests().size());
+        counts.put("totalSubscribers", seeAllSubscribers().size());
+        counts.put("happyGuestsCount", seeAllHappyGuests().size());
+        return counts;
+    }
 }

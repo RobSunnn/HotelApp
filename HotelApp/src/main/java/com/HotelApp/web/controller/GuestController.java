@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -44,8 +45,8 @@ public class GuestController {
 
     @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping("/addGuestSuccess")
-    public String addGuestSuccess() {
-        return "moderator/add-guest-success";
+    public ModelAndView addGuestSuccess() {
+        return new ModelAndView("moderator/add-guest-success");
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -71,8 +72,8 @@ public class GuestController {
         if (guests.isEmpty()) {
             return "redirect:/moderator";
         }
-
         model.addAttribute("guests", guests);
+
         return "moderator/guest-leave";
     }
 

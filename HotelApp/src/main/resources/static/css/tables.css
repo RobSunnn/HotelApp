@@ -28,11 +28,10 @@ h4 {
 
 #table tbody {
     font-weight: 700;
-    cursor: auto;
+    cursor: pointer;
 }
 
 .custom-table {
-    /*position: static;*/
     display: flex;
     gap: 3em;
     justify-content: center;

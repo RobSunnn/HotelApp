@@ -77,4 +77,9 @@ public class RoomEntity extends BaseEntity {
         this.category = category;
         return this;
     }
+
+    public RoomEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {
+        this.hotelInfoEntity = hotelInfoEntity;
+        return this;
+    }
 }

@@ -7,6 +7,7 @@ import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.repository.CommentRepository;
 import com.HotelApp.service.CommentService;
 import com.HotelApp.service.HotelService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel,
-                                     BindingResult  bindingResult,
+                                     BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
@@ -66,17 +67,21 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void doNotApprove(Long id) {
-        CommentEntity comment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        CommentEntity comment = commentRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
         commentRepository.delete(comment);
     }
 
     @Override
+    @Cacheable(value = "commentsCache")
     public Page<CommentView> getApprovedComments(Pageable pageable) {
+        System.out.println("PAGEABLE");
         return commentRepository.findByApprovedTrue(pageable)
                 .map(CommentServiceImpl::mapAsCommentView);
     }
 
-    private CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
+    CommentEntity mapAsComment(AddCommentBindingModel addCommentBindingModel, HotelInfoEntity hotelInfo) {
         return new CommentEntity()
                 .setCommentContent(addCommentBindingModel.getCommentContent().trim())
                 .setApproved(false)

@@ -32,13 +32,13 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     }
 
     @Override
-    public void sendContactForm(ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public boolean sendContactForm(ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("contactRequestBindingModel", contactRequestBindingModel);
             redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "contactRequestBindingModel", bindingResult);
 
-            return;
+            return false;
         }
 
         ContactRequestEntity contactRequest = modelMapper().map(contactRequestBindingModel, ContactRequestEntity.class);
@@ -52,12 +52,13 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
         redirectAttributes.addFlashAttribute("successContactRequestMessage", "Contact Request Send, Thank You!");
         contactRequestRepository.save(contactRequest);
+
+        return true;
     }
 
     @Override
     @Scheduled(cron = "@daily")
     public void clearCheckedContactRequests() {
-        System.out.println(LocalDateTime.now());
         contactRequestRepository
                 .deleteAll(contactRequestRepository.findAll()
                         .stream()

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <title>All Guests in Hotel</title>
+</head>
+<body class="hero" style="background-image: url('/images/hotel1.jpg');">
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<div class="container p-3 bg-dark rounded">
+    <h2 class="text-white mt-2">All Guests in Hotel</h2>
+    <div class="form-group custom-table">
+        <table class="bg-white">
+            <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Document Id</th>
+                <th>Room Number</th>
+                <th>Check In Time</th>
+                <th>Check Out Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="guest, iterStat : ${allGuests}" th:data-full-text="${guest}"
+                th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${guest.id}">
+                <td th:text="${guest.fullName}"></td>
+                <td th:text="${guest.age}"></td>
+                <td th:text="${guest.documentId}"></td>
+                <td th:text="${guest.roomNumber}"></td>
+                <td th:text="${guest.checkInTime.toLocalDate()}"></td>
+                <td th:text="${guest.checkOutTime.toLocalDate()}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="buttons">
+        <a th:href="${session.previousUrl}" class="btn btn-primary">Go back <br> to your panel</a>
+<!--        <a th:href="@{/hotel}" class="btn btn-success">Make Guest <br> User</a>-->
+<!--        <a th:href="@{/hotel}" class="btn btn-secondary">See Guest <br> Profile</a>-->
+<!--        <a th:href="@{/hotel}" class="btn btn-danger">BAN <br> Guest</a>-->
+    </div>
+</div>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+</body>
+</html>

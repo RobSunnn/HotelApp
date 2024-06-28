@@ -7,8 +7,8 @@ import com.HotelApp.repository.CategoriesRepository;
 import com.HotelApp.repository.RoomTypeRepository;
 import com.HotelApp.service.RoomTypesService;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RoomTypesServiceImpl implements RoomTypesService {
@@ -24,7 +24,7 @@ public class RoomTypesServiceImpl implements RoomTypesService {
 
     @Override
     public Page<RoomTypeView> getRoomTypes(Pageable pageable) {
-     return roomTypeRepository.findAll(pageable)
+        return roomTypeRepository.findAll(pageable)
                 .map(RoomTypesServiceImpl::map);
     }
 

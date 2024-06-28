@@ -4,8 +4,6 @@ import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,10 +20,6 @@ public interface UserService {
     UserView findUserByEmail(String email);
 
     void changeUserRole(String email, String command);
-
-    String decrypt(String encrypted, String ivParam, String key);
-
-    List<UserView> findAllUsers();
 
     UserView findUserDetails(String userEmail);
 

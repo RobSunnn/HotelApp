@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel,
-                                     BindingResult  bindingResult,
+                                     BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {

@@ -11,7 +11,8 @@ public class SubscriberView {
 
     private Integer counterOfSubscriptions;
 
-    public SubscriberView() {}
+    public SubscriberView() {
+    }
 
     public Long getId() {
         return id;

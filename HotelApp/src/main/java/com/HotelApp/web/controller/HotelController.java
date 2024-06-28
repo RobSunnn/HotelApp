@@ -5,18 +5,11 @@ import com.HotelApp.service.HotelService;
 import com.HotelApp.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -38,9 +31,11 @@ public class HotelController {
     public void addAttributes(Model model, HttpSession session, HttpServletRequest request) {
         Map<String, Integer> infoForHotel = hotelService.getInfoForHotel();
         BigDecimal totalProfit = hotelService.getTotalProfit();
+        List<UserView> users = hotelService.findAllUsers();
 
         model.addAttribute("totalProfit", totalProfit);
         model.addAllAttributes(infoForHotel);
+        model.addAttribute("allUsers", users);
 
         String previousUrl = request.getHeader("referer");
         session.setAttribute("previousUrl", previousUrl);
@@ -54,10 +49,7 @@ public class HotelController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/allUsers")
-    public String allUsersPage(Model model) {
-        List<UserView> users = userService.findAllUsers();
-//        Page<UserView> allUsers = userService.findAllUsers(pageable);
-        model.addAttribute("allUsers", users);
+    public String allUsersPage() {
         return "hotel/all-users";
     }
 

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class HappyGuestView {
 
     private Long id;
+
     private String firstName;
 
     private String lastName;

@@ -12,6 +12,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class ApplicationWebConfiguration implements WebMvcConfigurer {
+
+    @Bean
+    public ServletContextInitializer servletContextInitializer() {
+        return servletContext -> servletContext.addListener(new SessionExpirationListener());
+    }
+
     @Bean
     public LoggingInterceptor loggingInterceptor() {
         return new LoggingInterceptor();
@@ -21,13 +27,5 @@ public class ApplicationWebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loggingInterceptor()).addPathPatterns("/**");
     }
-    @Bean
-    public ServletContextInitializer servletContextInitializer() {
-        return new ServletContextInitializer() {
-            @Override
-            public void onStartup(ServletContext servletContext)  {
-                servletContext.addListener(new SessionExpirationListener());
-            }
-        };
-    }
+
 }

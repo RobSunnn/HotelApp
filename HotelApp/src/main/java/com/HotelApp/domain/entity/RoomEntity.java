@@ -78,10 +78,6 @@ public class RoomEntity extends BaseEntity {
         return this;
     }
 
-    public HotelInfoEntity getHotelInfoEntity() {
-        return hotelInfoEntity;
-    }
-
     public RoomEntity setHotelInfoEntity(HotelInfoEntity hotelInfoEntity) {
         this.hotelInfoEntity = hotelInfoEntity;
         return this;

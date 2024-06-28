@@ -41,7 +41,6 @@ public class ContactController {
     }
 
 
-
     @PostMapping("/subscribe")
     public String subscribe(@Valid @ModelAttribute AddSubscriberBindingModel addSubscriberBindingModel,
                             BindingResult bindingResult,
@@ -54,8 +53,8 @@ public class ContactController {
 
     @PostMapping("/contactForm")
     public String sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel,
-                           BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
+                                     BindingResult bindingResult,
+                                     RedirectAttributes redirectAttributes) {
 
         contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult, redirectAttributes);
         return "redirect:/contact";

@@ -72,7 +72,6 @@ public class ProfileController {
     public String addProfilePicture(@RequestParam("profile-picture") MultipartFile image,
                                     RedirectAttributes redirectAttributes,
                                     @ModelAttribute("userEmail") String userEmail) {
-
         userService.addUserImage(image, userEmail, redirectAttributes);
         return "redirect:/users/profile";
     }
@@ -83,11 +82,14 @@ public class ProfileController {
                               BindingResult bindingResult,
                               RedirectAttributes redirectAttributes,
                               @ModelAttribute("userEmail") String userEmail) {
+        boolean editSuccessful = userService.editProfileInfo(
+                editUserProfileBindingModel,
+                userEmail,
+                bindingResult,
+                redirectAttributes
+        );
 
-        boolean editSuccess = userService
-                .editProfileInfo(editUserProfileBindingModel, userEmail, bindingResult, redirectAttributes);
-
-        if (!editSuccess) {
+        if (!editSuccessful) {
             return "redirect:/users/profile/editProfile";
         }
 
@@ -100,11 +102,14 @@ public class ProfileController {
                                        BindingResult bindingResult,
                                        RedirectAttributes redirectAttributes,
                                        @ModelAttribute("userEmail") String userEmail) {
+        boolean changePasswordSuccessful = userService.changeUserPassword(
+                userEmail,
+                changeUserPasswordBindingModel,
+                bindingResult,
+                redirectAttributes
+        );
 
-        boolean changePasswordSuccess = userService
-                .changeUserPassword(userEmail, changeUserPasswordBindingModel, bindingResult, redirectAttributes);
-
-        if (!changePasswordSuccess) {
+        if (!changePasswordSuccessful) {
             return "redirect:/users/profile/changePassword";
         }
 

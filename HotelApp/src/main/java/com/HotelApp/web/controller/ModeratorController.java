@@ -37,7 +37,6 @@ public class ModeratorController {
     public void addAttributes(Model model) {
         Map<String, Integer> infoForHotel = hotelService.getInfoForHotel();
         model.addAllAttributes(infoForHotel);
-
     }
 
     @PreAuthorize("hasRole('MODERATOR')")

@@ -12,7 +12,6 @@ public class CategoryEntity extends BaseEntity {
     private CategoriesEnum name;
 
     public CategoryEntity() {
-
     }
 
     public CategoryEntity(CategoriesEnum name) {

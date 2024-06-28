@@ -1,6 +1,7 @@
 package com.HotelApp.domain.models.view;
 
 import com.HotelApp.domain.entity.RoleEntity;
+
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;

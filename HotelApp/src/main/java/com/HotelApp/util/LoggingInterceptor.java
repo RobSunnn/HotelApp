@@ -3,9 +3,9 @@ package com.HotelApp.util;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 public class LoggingInterceptor implements HandlerInterceptor {
@@ -30,7 +30,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
     public void postHandle(@NotNull HttpServletRequest request,
                            @NotNull HttpServletResponse response,
                            @NotNull Object handler,
-                           ModelAndView modelAndView)  {
+                           ModelAndView modelAndView) {
 
     }
 
@@ -38,7 +38,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
     public void afterCompletion(@NotNull HttpServletRequest request,
                                 @NotNull HttpServletResponse response,
                                 @NotNull Object handler,
-                                Exception ex)  {
+                                Exception ex) {
         Long startTime = (Long) request.getAttribute("startTime");
         if (startTime != null) {
             long endTime = System.currentTimeMillis();
@@ -53,8 +53,6 @@ public class LoggingInterceptor implements HandlerInterceptor {
                         request.getRequestURL(), request.getMethod(), getClientIpAddress(request));
             }
         }
-
-
     }
 
     private String getClientIpAddress(@NotNull HttpServletRequest request) {

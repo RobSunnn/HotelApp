@@ -21,7 +21,8 @@ public class SubscriberEntity extends BaseEntity {
     @ManyToOne
     private HotelInfoEntity hotelInfoEntity;
 
-    public SubscriberEntity() {}
+    public SubscriberEntity() {
+    }
 
     public String getEmail() {
         return email;

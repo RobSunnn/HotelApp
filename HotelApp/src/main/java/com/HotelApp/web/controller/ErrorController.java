@@ -8,6 +8,6 @@ public class ErrorController {
 
     @GetMapping("/session-expired")
     public String sessionExpired() {
-        return "redirect:/session-expired?expired=true";
+        return "session-expired";
     }
 }

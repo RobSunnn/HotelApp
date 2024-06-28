@@ -4,7 +4,6 @@ public class UserRoleChangeRequest {
     private String command;
     private String encrypted;
 
-    // Getters and setters
     public String getCommand() {
         return command;
     }

@@ -1,6 +1,7 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.HotelInfoEntity;
+import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.service.HotelService;
@@ -21,8 +22,11 @@ public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
 
-    public HotelServiceImpl(HotelRepository hotelRepository) {
+    private final UserTransformationService userTransformationService;
+
+    public HotelServiceImpl(HotelRepository hotelRepository, UserTransformationService userTransformationService) {
         this.hotelRepository = hotelRepository;
+        this.userTransformationService = userTransformationService;
     }
 
     @Override
@@ -121,6 +125,18 @@ public class HotelServiceImpl implements HotelService {
                 .filter(contactRequest -> !contactRequest.getChecked())
                 .map(contactRequest -> modelMapper().map(contactRequest, ContactRequestView.class))
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<UserView> findAllUsers() {
+        List<UserEntity> allUsers = getHotelInfo()
+                .getUsers()
+                .stream()
+                .skip(1)
+                .toList();
+
+        return userTransformationService.transformUsers(allUsers);
     }
 
     @Transactional

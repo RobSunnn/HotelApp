@@ -29,16 +29,12 @@
                 <td th:text="${guest.roomNumber}"></td>
                 <td th:text="${guest.checkInTime.toLocalDate()}"></td>
                 <td th:text="${guest.checkOutTime.toLocalDate()}"></td>
-
             </tr>
             </tbody>
         </table>
     </div>
     <div class="buttons">
         <a th:href="${session.previousUrl}" class="btn btn-primary">Go back <br> to your panel</a>
-<!--        <a th:href="@{/hotel}" class="btn btn-success">Make Guest <br> User</a>-->
-<!--        <a th:href="@{/hotel}" class="btn btn-secondary">See Guest <br> Profile</a>-->
-<!--        <a th:href="@{/hotel}" class="btn btn-danger">BAN <br> Guest</a>-->
     </div>
 </div>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>

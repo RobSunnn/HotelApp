@@ -3,54 +3,8 @@
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Admin</title>
-
-    <style>
-        body {
-            background-image: url("/images/hotel2.jpg");
-            background-size: 100% 100vh; /* Use viewport height for better responsiveness */
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            /*transition: background-image 1s ease;*/
-            /*transition-delay: 3s;*/
-        }
-
-
-        select {
-            overflow-y: auto;
-        }
-
-
-        .management-card {
-            width: 50%;
-            margin: 0 auto;
-            background-color: white;
-            font-size: 1rem;
-        }
-
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 1em auto;
-            justify-content: center;
-
-        }
-
-        .all-content {
-            margin-top: 3em;
-            align-content: center;
-        }
-
-        .white-placeholder::placeholder {
-            color: white !important;
-        }
-
-        .black-placeholder::placeholder {
-            color: black !important;
-        }
-    </style>
 </head>
-<body>
-
+<body class="hero" style="background-image: url('/images/hotel2.jpg')">
 <th:block th:insert="~{fragments/nav-bar :: navbar}"></th:block>
 <div class="all-content">
     <div class="management-card">

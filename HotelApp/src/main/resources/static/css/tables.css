@@ -1,34 +1,7 @@
-@media (max-width: 770px) {
-    #table {
-        display: block;
-        padding: 0;
-    }
-
-    #table thead,
-    #table thead tr,
-    #table tbody,
-    #table tbody tr,
-    #table th,
-    #table td,
-    #table tr {
-        width: 100%;
-    }
-
-    #fullMessage > p {
-        width: 100% !important;
-    }
-}
-
 table,
 h2,
 h4 {
     text-align: center;
-
-}
-
-#table tbody {
-    font-weight: 700;
-    cursor: pointer;
 }
 
 .custom-table {
@@ -67,6 +40,29 @@ h4 {
 
 .buttons a {
     align-self: center;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 100px;
+    object-fit: fill;
+
+}
+
+.buttons-holder {
+    display: flex;
+    gap: 0.5em;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.disabled {
+    display: none;
+}
+
+#table tbody {
+    font-weight: 700;
+    cursor: pointer;
 }
 
 #table {
@@ -111,29 +107,11 @@ h4 {
     width: 100%;
 }
 
-.profile-picture {
-    width: 150px;
-    height: 100px;
-    object-fit: fill;
-
-}
-
 #table td, #table th {
     vertical-align: middle;
-}
-
-.buttons-holder {
-    display: flex;
-    gap: 0.5em;
-    justify-content: center;
-    flex-wrap: wrap;
 }
 
 #next-btn {
     padding-right: 2.9em;
     padding-left: 2.9em;
-}
-
-.disabled {
-    display: none;
 }

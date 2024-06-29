@@ -120,7 +120,7 @@ class DecryptionFilterIT {
 
         decryptionFilter.doFilter(servletRequest, servletResponse, filterChain);
 
-        verify(servletRequest, times(2)).setAttribute("LOGIN_ERROR_FLAG", "true");
+        verify(servletRequest, times(1)).setAttribute("LOGIN_ERROR_FLAG", "true");
         verify(filterChain).doFilter(any(), any());
     }
 
@@ -152,7 +152,7 @@ class DecryptionFilterIT {
 
         decryptionFilter.doFilter(servletRequest, servletResponse, filterChain);
 
-        verify(servletRequest, times(2)).setAttribute("LOGIN_ERROR_FLAG", "true");
+        verify(servletRequest, times(1)).setAttribute("LOGIN_ERROR_FLAG", "true");
         verify(filterChain).doFilter(any(), any());
     }
 

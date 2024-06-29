@@ -14,7 +14,6 @@ import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
-import com.HotelApp.service.exception.UserNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -154,7 +153,7 @@ public class UserServiceImpl implements UserService {
                 throw new ForbiddenUserException("Don't try this.");
             }
         } else {
-            throw new UserNotFoundException("User not found for email: " + decryptedEmail);
+            throw new UsernameNotFoundException("User not found for email: " + decryptedEmail);
         }
 
         switch (command) {

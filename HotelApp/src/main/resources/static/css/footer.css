@@ -1,19 +1,9 @@
-@media (max-width: 992px) {
-
-    #text-footer {
-        width: 60vw;
-        display: flex;
-        justify-content: center;
-
-    }
-}
-
 footer {
     color: white;
     bottom: 0;
     opacity: 90%;
     width: 100%;
-    margin-top: 3em;
+    margin-top: 13em;
 }
 
 .text-footer {
@@ -30,3 +20,4 @@ footer {
 video:hover {
     width: 500px;
 }
+

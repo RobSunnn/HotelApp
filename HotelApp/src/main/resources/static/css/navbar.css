@@ -14,21 +14,3 @@
     font-weight: 700;
     color: #fff !important;
 }
-@media (max-width: 991px) {
-    .form-inline {
-        width: 84%;
-        margin: 0 auto;
-        border: 3px solid white;
-        font-size: 1.2rem;
-    }
-
-    .nav-item {
-        /*background-color: #7e86a1;*/
-        width: 30%;
-        margin: 0.5em auto;
-        /*border: 3px solid white;*/
-        /*outline: 4px solid black;*/
-        /*border-radius: 30%;*/
-        opacity: 85%;
-    }
-}

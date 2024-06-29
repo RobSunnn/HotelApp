@@ -1,35 +1,39 @@
-@media (max-width: 990px) {
-    option {
-        font-size: 0.9rem !important;
-    }
-
-    #checkboxes-container {
-        font-size: 0.9rem !important;
-    }
+select {
+    overflow-y: auto;
 }
 
-
-/*.card {*/
-/*    width: 100%; !* Make each card take up full width within the flex container *!*/
-/*    max-width: 300px; !* Set a maximum width for each card *!*/
-/*}*/
+.management-card {
+    width: 50%;
+    margin: 0 auto;
+    background-color: white;
+    font-size: 1rem;
+}
 
 .cards {
     display: flex;
+    flex-wrap: wrap;
+    margin: 1em auto;
     justify-content: center;
     gap: 3em;
-    margin: 5em auto;
-    flex-wrap: wrap;
+}
+
+.all-content {
+    margin-top: 3em;
+    align-content: center;
+}
+
+.white-placeholder::placeholder {
+    color: white !important;
+}
+
+.black-placeholder::placeholder {
+    color: black !important;
 }
 
 option {
     color: black;
     font-size: 1.5rem;
     text-align: center;
-}
-
-.card {
-    margin-bottom: 5em;
 }
 
 .checkbox-item {
@@ -59,5 +63,5 @@ option {
 #cards-holder {
     display: flex;
     flex-grow: 1;
-    margin-bottom: 10em;
+    margin: 5em auto;
 }

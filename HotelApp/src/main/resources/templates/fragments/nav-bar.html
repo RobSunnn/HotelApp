@@ -36,10 +36,10 @@
                 </ul>
                 <ul class="navbar-nav list-inline" id="custom-box">
                     <li>
-                        <a th:unless="${#authorization.expression('isAuthenticated()')}"
+                        <a sec:authorize="isAnonymous()"
                            class="sign-up btn-outline-light btn-lg m-2" href="/users/register"
                            role="button">Sign Up</a>
-                        <a th:unless="${#authorization.expression('isAuthenticated()')}"
+                        <a sec:authorize="isAnonymous()"
                            class="sign-in btn-outline-light btn-lg m-2" href="/users/login"
                            role="button" rel="nofollow">Sign In</a>
                     </li>

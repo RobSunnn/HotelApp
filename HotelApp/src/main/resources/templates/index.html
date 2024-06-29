@@ -4,115 +4,12 @@
 <head>
     <th:block th:replace="~{/fragments/head :: head}"></th:block>
     <title>Welcome</title>
-
-    <style>
-        /* Height for devices larger than 576px */
-        .navbar {
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
-        }
-        .sign-in,
-        .sign-up {
-            display: none;
-        }
-
-        h2 {
-            text-align: center;
-            padding: 0.5em;
-        }
-        /*#carousel {*/
-        /*    position: relative;*/
-        /*    z-index: 1; */
-        /*   */
-        /*}*/
-
-        #carousel,
-        .carousel-inner,
-        .carousel-item,
-        .carousel-item.active {
-            height: 100vh;
-        }
-
-        #roomCarousel {
-            height: 50vh;
-        }
-
-        #roomCarousel .carousel-inner,
-        #roomCarousel .carousel-item,
-        #roomCarousel .carousel-control-next,
-        #roomCarousel .carousel-control-prev{
-            height: 50vh;
-        }
-
-        .carousel-control-next,
-        .carousel-control-prev {
-            align-self: center;
-            height: 70vh;
-            color: black;
-        }
-
-        .carousel-item {
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center center;
-            height: 100vh;
-        }
-
-        .custom-card .card-body {
-            padding: 0;
-        }
-        .custom-card {
-            display: flex;
-            width: 100%;
-            height: 60vh;
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-        .custom-card .card-img {
-            display: block;
-            width: 65%;
-            max-width: 100%;
-            height: 60vh;
-        }
-        .card-img img {
-            width: 100%;
-            max-width: 100%;
-            height: 60vh;
-            margin-right: 3em;
-        }
-        .custom-card .room-text {
-            background-color: #a0a1a1;
-            width: 100%;
-            height: 60vh;
-            align-content: center;
-            padding: 2em;
-        }
-
-        @media (min-width: 992px) {
-            #carousel {
-                margin-top: -63px;
-            }
-        }
-        @media (max-width: 991px) {
-            /*#carousel {*/
-            /*    margin-top: -200px;*/
-            /*}*/
-            #carousel  .carousel-control-next,
-            #carousel > .carousel-control-prev {
-                height: 30vh;
-                margin-top:18em;
-            }
-        }
-    </style>
 </head>
 <body>
-
 <th:block th:replace="~{/fragments/nav-bar :: navbar}"></th:block>
-
 <main>
     <div id="carousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
-
         <div id="carouselIndicators" class="carousel slide" data-mdb-ride="carousel">
-            <!-- Dynamic Carousel Indicators -->
             <ol class="carousel-indicators">
                 <li th:each="image, iterStat : ${imageUrls}"
                     th:data-mdb-target="'#carouselIndicators'"
@@ -120,11 +17,7 @@
                     th:classappend="${iterStat.index == 0} ? 'active'">
                 </li>
             </ol>
-
-            <!-- Dynamic Carousel Items -->
-            <!-- Inner -->
             <div class="carousel-inner">
-                <!-- Single item -->
                 <div th:each="image, iterStat : ${imageUrls}" class="carousel-item"
                      th:classappend="${iterStat.index == 0} ? 'active'"
                      th:style="'background-image: url(' + ${image} + ');'">
@@ -144,11 +37,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
-        <!-- Carousel Controls -->
         <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-mdb-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -158,9 +48,7 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-
     <h2>Our Rooms</h2>
-
     <div id="roomCarousel" class="carousel slide carousel-fade shadow-2-strong"  data-mdb-ride="carousel">
         <div id="carouselRoomsIndicators" class="carousel slide" data-mdb-ride="carousel">
             <ol class="carousel-indicators">
@@ -170,14 +58,12 @@
                     th:classappend="${iterStat.index == 0} ? 'active'">
                 </li>
             </ol>
-
             <div class="carousel-inner">
                 <div th:each="room, iterStat : ${allRooms.getContent()}"
                      class="carousel-item"
                      th:classappend="${iterStat.index == 0} ? ' active'">
                     <div class="mask d-flex justify-content-center align-items-center">
                         <div class="custom-card text-center">
-
                            <div class="card-body d-flex">
                                <div class="card-img">
                                    <img th:src="${room.getPictureUrl()}" alt="">
@@ -187,14 +73,11 @@
                                    <p class="card-text text-black" th:text="${room.getDescription()}"></p>
                                </div>
                            </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-        <!-- Carousel Controls -->
         <a class="carousel-control-prev" href="#carouselRoomsIndicators" role="button" data-mdb-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -204,9 +87,7 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-
 </main>
-
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
 </body>

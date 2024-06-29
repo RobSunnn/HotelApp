@@ -88,14 +88,14 @@ public class UserTransformationService {
         // Load the user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         // Create an authentication token
-        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 userDetails.getUsername(),
                 userDetails.getAuthorities()
         );
-        newAuth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         // Set the new authentication token in the security context
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         // Update session with the new authentication
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
     }

@@ -43,7 +43,6 @@ public class DecryptionFilter implements Filter {
                         passwordEncoder().matches(decryptedPassword, userDetails.getPassword())) {
                     request.setAttribute("LOGIN_ERROR_FLAG", "false");
                 } else {
-                    request.setAttribute("LOGIN_ERROR_FLAG", "true");
                     throw new UsernameNotFoundException("Invalid username or password.");
                 }
                 request.setAttribute("username", decryptedUsername);

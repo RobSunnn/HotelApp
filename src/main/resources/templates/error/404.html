@@ -4,15 +4,25 @@
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Page Not Found</title>
     <style>
-        .container {
+        .content > img {
             margin: 0 auto;
+            width: 80%;
+            padding: 2em;
+        }
+
+        .content {
+            margin: 15em auto;
+            width: 50%;
+            background-color: #555555;
+            color: white;
+            padding: 2em;
         }
     </style>
 </head>
-<body>
+<body class="hero" style="background-image: url('/images/hotel.jpg')">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 
-<div class="container">
+<div class="content">
     <img src="/images/not-found.png" alt="">
     <p>Sorry, the page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
 
@@ -20,12 +30,8 @@
     <a href="/" class="btn btn-primary">Go back</a>
 </div>
 
-<input type="hidden" id="token"/>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>
 
-<!--<script src="/js/test.js"></script>-->
-<!--<script type="text/javascript"-->
-<!--        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>-->
 </html>

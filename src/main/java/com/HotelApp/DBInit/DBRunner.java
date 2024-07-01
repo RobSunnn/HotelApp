@@ -32,7 +32,7 @@ public class DBRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (roomTypesService.getRoomTypesCount() == 0) {
             roomTypesService.initRoomTypes();
         }

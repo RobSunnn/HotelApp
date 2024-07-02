@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -50,8 +51,8 @@ public class ProfileController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping()
-    public String profile() {
-        return "users/profile";
+    public ModelAndView profile() {
+        return new ModelAndView("users/profile");
     }
 
     @PreAuthorize("isAuthenticated()")

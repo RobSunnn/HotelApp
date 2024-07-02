@@ -3,8 +3,6 @@ package com.HotelApp.service.impl;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
-import com.HotelApp.repository.HotelRepository;
-import com.HotelApp.service.HotelService;
 import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

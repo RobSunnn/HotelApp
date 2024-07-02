@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
                     user.setRoles(allRoles);
                     userRepository.save(user);
                 } else {
-                    System.out.println("User is already an hotel.");
+                    System.out.println("User is already an admin.");
                 }
             }
             case "Make Moderator" -> {

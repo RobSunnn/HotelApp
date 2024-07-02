@@ -1,8 +1,9 @@
 package com.HotelApp.web.controller;
 
+import com.HotelApp.domain.entity.ForbiddenRequestEntity;
 import com.HotelApp.domain.models.view.*;
+import com.HotelApp.service.ForbiddenRequestsService;
 import com.HotelApp.service.HotelService;
-import com.HotelApp.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,11 +22,12 @@ public class HotelController {
 
     private final HotelService hotelService;
 
-    private final UserService userService;
+    private final ForbiddenRequestsService forbiddenRequestsService;
 
-    public HotelController(HotelService hotelService, UserService userService) {
+    public HotelController(HotelService hotelService,
+                           ForbiddenRequestsService forbiddenRequestsService) {
         this.hotelService = hotelService;
-        this.userService = userService;
+        this.forbiddenRequestsService = forbiddenRequestsService;
     }
 
     @ModelAttribute
@@ -32,10 +35,12 @@ public class HotelController {
         Map<String, Integer> infoForHotel = hotelService.getInfoForHotel();
         BigDecimal totalProfit = hotelService.getTotalProfit();
         List<UserView> users = hotelService.findAllUsers();
+        int forbiddenRequestsSize = forbiddenRequestsService.getAllNotChecked().size();
 
         model.addAttribute("totalProfit", totalProfit);
         model.addAllAttributes(infoForHotel);
         model.addAttribute("allUsers", users);
+        model.addAttribute("forbiddenRequestsSize", forbiddenRequestsSize);
 
         String previousUrl = request.getHeader("referer");
         session.setAttribute("previousUrl", previousUrl);
@@ -53,6 +58,16 @@ public class HotelController {
         return "hotel/all-users";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/hotel/forbiddenRequests")
+    public String forbiddenRequestsPage(Model model) {
+        List<ForbiddenRequestView> forbiddenRequests = forbiddenRequestsService.getAllNotChecked();
+        if (forbiddenRequests.isEmpty()) {
+            return "redirect:/admin";
+        }
+        model.addAttribute("forbiddenRequests", forbiddenRequests);
+        return "hotel/forbidden-requests";
+    }
 
     @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping("/hotel/freeRooms")
@@ -90,4 +105,9 @@ public class HotelController {
         return "hotel/all-happy-guests";
     }
 
+    @PostMapping("/hotel/checkForbiddenRequests")
+    public String checkAllForbiddenRequests() {
+        forbiddenRequestsService.checkAll();
+        return "redirect:/admin";
+    }
 }

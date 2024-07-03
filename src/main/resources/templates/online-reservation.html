@@ -3,11 +3,55 @@
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Online Reservation</title>
+
+    <style>
+        .reservation-card {
+            background-color: darkolivegreen;
+            color: white;
+            margin: 5em auto;
+            width: 50%;
+            padding: 5em;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20%;
+            text-align: center;
+        }
+
+        #additional-info {
+            margin: 0 auto;
+            width: 100%;
+        }
+
+    </style>
 </head>
-<body>
+<body class="hero" style="background-image: url('/images/hotel.jpg')">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+
+<div class="reservation-card">
+    <div>
+        <h2>You just need to press</h2>
+        <h2>the button and someone</h2>
+        <h2>from our team will contact you.</h2>
+    </div>
+    <div class="p-3">
+        <label for="additional-info">If you want to leave additional information you can write here</label>
+        <form th:action="@{/contact/onlineReservation}" th:method="POST">
+            <textarea id="additional-info" class="text-center" name="additionalInfo" onclick="emptyText()">Max 400 symbols</textarea>
+            <div><h4 th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></h4></div>
+            <br>
+            <div class="buttons">
+                <button type="submit" class="btn btn-light btn-lg">Make Reservation</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<script>
+    function emptyText(){
+        document.getElementById("additional-info").innerHTML = "";
+    }
+</script>
 </body>
 </html>

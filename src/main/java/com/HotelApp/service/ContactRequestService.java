@@ -13,4 +13,8 @@ public interface ContactRequestService {
     void allRequestsChecked();
 
     void clearCheckedContactRequests();
+
+    void makeOnlineReservation(String userEmail, String additionalInfo);
+
+    void checkedOnlineReservation(Long reservationId);
 }

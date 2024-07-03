@@ -2,6 +2,7 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.domain.models.view.ContactRequestView;
+import com.HotelApp.domain.models.view.OnlineReservationView;
 import com.HotelApp.service.CommentService;
 import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
@@ -44,9 +45,11 @@ public class ModeratorController {
     public String moderatorPanel(Model model) {
         int allNotApprovedComments = hotelService.getAllNotApprovedComments().size();
         int allContactRequests = hotelService.getAllNotCheckedContactRequest().size();
+        int allOnlineReservations = hotelService.getAllNotCheckedOnlineReservations().size();
 
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
         model.addAttribute("allContactRequests", allContactRequests);
+        model.addAttribute("allOnlineReservations", allOnlineReservations);
 
         return "moderator/moderator-panel";
     }
@@ -61,6 +64,18 @@ public class ModeratorController {
 
         model.addAttribute("allNotApprovedComments", allNotApprovedComments);
         return "moderator/not-approved-comments";
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/onlineReservations")
+    public String onlineReservations(Model model) {
+        List<OnlineReservationView> allNotCheckedOnlineReservations = hotelService.getAllNotCheckedOnlineReservations();
+        if (allNotCheckedOnlineReservations.isEmpty()) {
+            return "redirect:/moderator";
+        }
+
+        model.addAttribute("allNotCheckedOnlineReservations", allNotCheckedOnlineReservations);
+        return "moderator/online-reservations";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -108,5 +123,12 @@ public class ModeratorController {
     public String allContactRequestsChecked() {
         contactRequestService.allRequestsChecked();
         return "redirect:/moderator/contactRequests";
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("/onlineReservationChecked")
+    public String onlineReservationChecked(@RequestParam("reservationId") Long reservationId) {
+        contactRequestService.checkedOnlineReservation(reservationId);
+        return "redirect:/moderator/onlineReservations";
     }
 }

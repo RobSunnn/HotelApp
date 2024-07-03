@@ -45,5 +45,9 @@ public interface HotelService {
     @Transactional
     Map<String, Integer> getInfoForHotel();
 
+    @Transactional
     List<UserView> findAllUsers();
+
+    @Transactional
+    List<OnlineReservationView> getAllNotCheckedOnlineReservations();
 }

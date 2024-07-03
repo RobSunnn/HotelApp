@@ -41,6 +41,15 @@
                     <a th:href="@{/moderator/contactRequests}" class="btn btn-primary">Contact Requests</a>
                 </div>
             </div>
+            <div class="card" th:unless="${allOnlineReservations == 0}">
+                <div class="card-body bg-danger text-white">
+                    <h5 class="card-title">See Online Reservations</h5>
+                    <p class="card-text"></p>
+                    <p th:if="${allOnlineReservations == 1}"  th:text="'You have ' + ${allOnlineReservations} + ' online reservation!'"></p>
+                    <p th:if="${allOnlineReservations > 1}"  th:text="'You have ' + ${allOnlineReservations} + ' online reservations!'"></p>
+                    <a th:href="@{/moderator/onlineReservations}" class="btn btn-primary">Online Reservations</a>
+                </div>
+            </div>
         </div>
         <!-- Make fetch for quote here to make moderator happy :)-->
     </section>

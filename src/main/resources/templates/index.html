@@ -4,6 +4,18 @@
 <head>
     <th:block th:replace="~{/fragments/head :: head}"></th:block>
     <title>Welcome</title>
+
+    <style>
+        .auth-card {
+            background-color: #2e2d2c;
+            padding: 5em;
+            opacity: 80%;
+            border-radius: 50%;
+        }
+        .auth-card-btn{
+            background-color: darkolivegreen;
+        }
+    </style>
 </head>
 <body>
 <th:block th:replace="~{/fragments/nav-bar :: navbar}"></th:block>
@@ -21,17 +33,38 @@
                 <div th:each="image, iterStat : ${imageUrls}" class="carousel-item"
                      th:classappend="${iterStat.index == 0} ? 'active'"
                      th:style="'background-image: url(' + ${image} + ');'">
-                    <div th:unless="${#authorization.expression('isAuthenticated()')}" class="mask"
+                    <div sec:authorize="isAnonymous()" class="mask"
                          style="background-color: rgba(0, 0, 0, 0.6); width: 100%; height: 100%;">
                         <div class="d-flex justify-content-center align-items-center h-100">
                             <div class="text-white text-center">
                                 <div>
-                                    <a th:unless="${#authorization.expression('isAuthenticated()')}"
+                                    <a sec:authorize="isAnonymous()"
                                        class="btn btn-outline-light btn-lg m-2" href="/users/login" role="button"
                                        rel="nofollow">Sign In</a>
-                                    <a th:unless="${#authorization.expression('isAuthenticated()')}"
+                                    <a sec:authorize="isAnonymous()"
                                        class="btn btn-outline-light btn-lg m-2" href="/users/register" role="button">Sign
                                         Up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div sec:authorize="isAuthenticated()" class="mask"
+                         style=" width: 100%; height: 100%;">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="text-white text-center">
+                                <div>
+                                    <div class="auth-card">
+                                        <h2>Welcome</h2>
+                                        <h3>to our application,</h3>
+                                        <h1><th:block th:text="${#authentication.principal.fullName}"></th:block></h1>
+                                        <a sec:authorize="isAuthenticated()"
+                                           class="auth-card-btn btn btn-outline-light btn-lg m-2" href="/users/profile" role="button"
+                                           rel="nofollow">Your Profile</a>
+                                        <a sec:authorize="isAuthenticated()"
+                                           class="auth-card-btn btn btn-outline-light btn-lg m-2" href="/contact/onlineReservation" role="button">
+                                            Make Online Reservation
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

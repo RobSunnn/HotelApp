@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+    <title>Online Reservations</title>
+</head>
+<body>
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+
+<div class="container p-3 bg-dark rounded">
+    <div>
+        <h2 class="text-white mt-2">All Guests in Hotel</h2>
+        <table class="table" id="table">
+            <thead>
+            <tr>
+                <th>Guest Full Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Additional Info</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reservation : ${allNotCheckedOnlineReservations}">
+                <td th:text="${reservation.fullName}"></td>
+                <td th:text="${reservation.age}"></td>
+                <td th:text="${reservation.email}"></td>
+                <td th:text="${reservation.timestamp}"></td>
+                <td th:text="${reservation.additionalInfo}"></td>
+                <td>
+                    <form th:action="@{/moderator/onlineReservationChecked}" th:method="POST" style="display:inline;">
+                        <input type="hidden" name="reservationId" th:value="${reservation.id}" />
+                        <button type="submit" class="btn btn-success">Done</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="back-btn">
+        <a th:href="@{/moderator}" class="btn btn-info">Go back <br> to your panel</a>
+    </div>
+</div>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+</body>
+</html>

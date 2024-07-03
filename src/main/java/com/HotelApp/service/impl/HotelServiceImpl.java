@@ -139,6 +139,17 @@ public class HotelServiceImpl implements HotelService {
         return userTransformationService.transformUsers(allUsers);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<OnlineReservationView> getAllNotCheckedOnlineReservations() {
+        return getHotelInfo()
+                .getOnlineReservations()
+                .stream()
+                .filter(onlineReservationEntity -> !onlineReservationEntity.isChecked())
+                .map(onlineReservationEntity -> modelMapper().map(onlineReservationEntity, OnlineReservationView.class))
+                .toList();
+    }
+
     @Transactional
     @Override
     public BigDecimal getTotalProfit() {

@@ -39,9 +39,10 @@ public class ApplicationSecurityConfiguration {
                                         "/users/registrationSuccess", "/users/login-error").permitAll()
                                 .requestMatchers("/allRoomTypes", "/about/**",
                                         "/contact/**", "/error", "/session-expired").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/moderator/**", "/guests/**",
                                         "/hotel/**").hasRole("MODERATOR")
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/contact/onlineReservation").authenticated()
                                 .anyRequest().authenticated()
                 ).formLogin(AbstractHttpConfigurer::disable)
                 .logout(

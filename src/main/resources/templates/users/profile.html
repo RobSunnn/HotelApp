@@ -26,7 +26,7 @@
                     <div th:if="${successMessage}" class="alert alert-success mt-1" role="alert">
                         <span th:text="${successMessage}"></span>
                     </div>
-                    <div th:if="${errorMessage}" class="alert alert-danger mt-1" role="alert">
+                    <div th:if="${errorMessage}" id="errorMessage" class="alert alert-danger mt-1" role="alert">
                         <span th:text="${errorMessage}"></span>
                     </div>
                     <form id="profile-form" th:action="@{/users/profile/addProfileImage}" th:method="POST"

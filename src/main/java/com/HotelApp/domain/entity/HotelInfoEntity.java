@@ -42,6 +42,9 @@ public class HotelInfoEntity extends BaseEntity {
     @OneToMany(mappedBy = "hotelInfoEntity", fetch = FetchType.LAZY)
     private List<ContactRequestEntity> contactRequests;
 
+    @OneToMany(mappedBy = "hotelInfoEntity", fetch = FetchType.LAZY)
+    private List<OnlineReservationEntity> onlineReservations;
+
     public HotelInfoEntity() {
         this.rooms = new ArrayList<>();
         this.users = new ArrayList<>();
@@ -147,6 +150,15 @@ public class HotelInfoEntity extends BaseEntity {
 
     public HotelInfoEntity setContactRequests(List<ContactRequestEntity> contactRequests) {
         this.contactRequests = contactRequests;
+        return this;
+    }
+
+    public List<OnlineReservationEntity> getOnlineReservations() {
+        return onlineReservations;
+    }
+
+    public HotelInfoEntity setOnlineReservations(List<OnlineReservationEntity> onlineReservations) {
+        this.onlineReservations = onlineReservations;
         return this;
     }
 }

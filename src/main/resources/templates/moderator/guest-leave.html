@@ -19,15 +19,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="guest : ${guests}" >
-                    <form th:action="@{/guests/leave}" th:method="POST">
-                        <input type="hidden" id="selectedGuestId" th:name="roomNumber" th:value="${guest.roomNumber}"/>
-                        <td th:text="${guest.fullName}"></td>
-                        <td th:text="${guest.age}"></td>
-                        <td th:text="${guest.documentId}"></td>
-                        <td th:text="${guest.roomNumber}"></td>
-                        <td><button type="submit" class="btn btn-success">Check Out</button></td>
-                    </form>
+                <tr th:each="guest : ${guests}">
+                    <td th:text="${guest.fullName}"></td>
+                    <td th:text="${guest.age}"></td>
+                    <td th:text="${guest.documentId}"></td>
+                    <td th:text="${guest.roomNumber}"></td>
+                    <td>
+                        <form th:action="@{/guests/leave}" th:method="POST" style="display:inline;">
+                            <input type="hidden" name="roomNumber" th:value="${guest.roomNumber}" />
+                            <button type="submit" class="btn btn-success">Check Out</button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>

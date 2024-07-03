@@ -6,13 +6,13 @@ import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.SubscriberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
@@ -20,6 +20,8 @@ import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BIN
 @Controller
 @RequestMapping("/contact")
 public class ContactController {
+    private static final int TEXT_MAXIMUM_LENGTH = 400;
+
     private final SubscriberService subscriberService;
     private final ContactRequestService contactRequestService;
 
@@ -38,6 +40,18 @@ public class ContactController {
     @GetMapping
     public String contact() {
         return "contact";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/onlineReservation")
+    public String onlineReservation() {
+        return "online-reservation";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/onlineReservationSuccess")
+    public String onlineReservationSuccess() {
+        return "users/online-reservation-success";
     }
 
 
@@ -59,4 +73,20 @@ public class ContactController {
         contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult, redirectAttributes);
         return "redirect:/contact";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/onlineReservation")
+    public String onlineReservation(@RequestParam("additionalInfo") String additionalInfo,
+                                    RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+        if (additionalInfo.length() > TEXT_MAXIMUM_LENGTH) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Text is too long.");
+            return "redirect:/contact/onlineReservation";
+        }
+
+        contactRequestService.makeOnlineReservation(userEmail, additionalInfo);
+        return "redirect:/contact/onlineReservationSuccess";
+    }
+
 }

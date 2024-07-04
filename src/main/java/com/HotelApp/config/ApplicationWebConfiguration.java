@@ -3,13 +3,11 @@ package com.HotelApp.config;
 import com.HotelApp.repository.ForbiddenRequestRepository;
 import com.HotelApp.util.LoggingInterceptor;
 import com.HotelApp.util.SessionExpirationListener;
-import jakarta.servlet.ServletContext;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 

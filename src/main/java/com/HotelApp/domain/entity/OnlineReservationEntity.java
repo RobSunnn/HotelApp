@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "online_reservations")
-public class OnlineReservationEntity extends BaseEntity{
+public class OnlineReservationEntity extends BaseEntity {
 
     private String fullName;
 
@@ -29,7 +29,8 @@ public class OnlineReservationEntity extends BaseEntity{
 
     //TODO: phone number after you put it in the user entity
 
-    public OnlineReservationEntity() {}
+    public OnlineReservationEntity() {
+    }
 
     public String getFullName() {
         return fullName;

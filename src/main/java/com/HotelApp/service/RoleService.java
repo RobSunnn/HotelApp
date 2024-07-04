@@ -11,4 +11,8 @@ public interface RoleService {
     long getCount();
 
     List<RoleEntity> getAllRoles();
+
+    List<RoleEntity> getModeratorRole();
+
+    RoleEntity getUserRole();
 }

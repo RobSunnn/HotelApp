@@ -14,6 +14,7 @@ import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,11 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -158,48 +163,18 @@ public class UserServiceImpl implements UserService {
 
         switch (command) {
             case "Make Admin" -> {
-                RoleEntity adminRole = roleService.getAllRoles()
-                        .stream()
-                        .filter(role -> role.getName().name().equals("ADMIN"))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalStateException("ADMIN role not found"));
                 List<RoleEntity> allRoles = roleService.getAllRoles();
-                boolean isAdmin = user.getRoles().stream()
-                        .anyMatch(role -> role.getName().name().equals(adminRole.getName().name()));
-
-                if (!isAdmin) {
-                    user.setRoles(allRoles);
-                    userRepository.save(user);
-                } else {
-                    System.out.println("User is already an admin.");
-                }
+                user.setRoles(allRoles);
             }
             case "Make Moderator" -> {
-                RoleEntity userRole = roleService.getAllRoles()
-                        .stream()
-                        .filter(role -> role.getName().name().equals("USER"))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalStateException("USER role not found"));
-                RoleEntity moderatorRole = roleService.getAllRoles()
-                        .stream()
-                        .filter(role -> role.getName().name().equals("MODERATOR"))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
-                boolean isModerator = user.getRoles().stream()
-                        .anyMatch(role -> role.getName().name().equals("MODERATOR"));
-                user.setRoles(List.of(userRole, moderatorRole));
-                userRepository.save(user);
+                user.setRoles(roleService.getModeratorRole());
             }
             case "Make User" -> {
-                RoleEntity roleUser = roleService.getAllRoles()
-                        .stream()
-                        .filter(role -> role.getName().name().equals("USER"))
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalStateException("USER role not found"));
-                user.setRoles(List.of(roleUser));
-                userRepository.save(user);
+                user.setRoles(List.of(roleService.getUserRole()));
             }
         }
+        userRepository.save(user);
+        userTransformationService.evictUserViewsCache();
     }
 
     @Override
@@ -222,16 +197,35 @@ public class UserServiceImpl implements UserService {
 
         String filename = image.getOriginalFilename();
         assert filename != null;
-
-        if (!isAllowedExtension(filename)) {
+        String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+        if (!isAllowedExtension(extension)) {
             throw new FileNotAllowedException("File type not supported.");
         }
         UserEntity user = findUser(userEmail);
 
         try {
-            byte[] imageBytes = image.getBytes();
-            Blob blob = new SerialBlob(imageBytes);
+            // Read the image
+            BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
+            // Convert image to RGB format if necessary
+            BufferedImage rgbImage = new BufferedImage(
+                    bufferedImage.getWidth(),
+                    bufferedImage.getHeight(),
+                    BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics = rgbImage.createGraphics();
+            graphics.drawImage(bufferedImage, 0, 0, null);
+            graphics.dispose();
+            // Compress the image
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            Thumbnails.of(rgbImage)
+                    .size(500, 500)  // Resize the image to a max width/height of 500px
+                    .outputQuality(0.3)  // Adjust the quality (1.0 is max quality, 0.3 is 30% quality)
+                    .outputFormat(extension)
+                    .toOutputStream(outputStream);
+
+            byte[] compressedImageBytes = outputStream.toByteArray();
+            Blob blob = new SerialBlob(compressedImageBytes);
             user.setUserImage(blob);
+
             redirectAttributes.addFlashAttribute("successMessage",
                     "Profile picture uploaded successfully.");
 
@@ -240,6 +234,7 @@ public class UserServiceImpl implements UserService {
         } catch (SQLException | IOException e) {
             throw new RuntimeException("Failed to upload image", e);
         }
+        userTransformationService.evictUserViewsCache();
     }
 
     @Override
@@ -266,7 +261,6 @@ public class UserServiceImpl implements UserService {
 
         user.setFirstName(editUserProfileBindingModel.getFirstName().trim());
         user.setLastName(editUserProfileBindingModel.getLastName().trim());
-
         user.setEmail(editUserProfileBindingModel.getEmail().trim());
         user.setAge(editUserProfileBindingModel.getAge());
 
@@ -275,6 +269,7 @@ public class UserServiceImpl implements UserService {
         userTransformationService.authenticateUser(editUserProfileBindingModel.getEmail());
         redirectAttributes.addFlashAttribute("successMessage",
                 "Profile info updated successfully.");
+        userTransformationService.evictUserViewsCache();
 
         return true;
     }
@@ -313,13 +308,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    private boolean isAllowedExtension(String filename) {
-        String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
-        return  extension.equals("jpg") ||
+    private boolean isAllowedExtension(String extension) {
+        return extension.equals("jpg") ||
                 extension.equals("jpeg") ||
                 extension.equals("png") ||
                 extension.equals("svg") ||
-                extension.equals("avif") ||
                 extension.equals("gif");
     }
 

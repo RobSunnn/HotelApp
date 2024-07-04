@@ -1,10 +1,9 @@
 package com.HotelApp.DBInit;
 
-import com.HotelApp.service.HotelService;
 import com.HotelApp.service.CategoryService;
+import com.HotelApp.service.HotelService;
 import com.HotelApp.service.RoomService;
 import com.HotelApp.service.RoomTypesService;
-//import com.HotelApp.service.impl.TestService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -52,7 +51,6 @@ public class DBRunner implements CommandLineRunner {
         if (roomService.getCount() == 0) {
             roomService.initRooms(hotelService.getHotelInfo());
         }
-
 
 
     }

@@ -18,7 +18,8 @@ public class OnlineReservationView {
 
     private boolean isChecked;
 
-    public OnlineReservationView() {}
+    public OnlineReservationView() {
+    }
 
     public Long getId() {
         return id;

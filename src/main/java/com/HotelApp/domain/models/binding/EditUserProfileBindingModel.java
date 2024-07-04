@@ -27,7 +27,8 @@ public class EditUserProfileBindingModel {
     @Max(value = 100, message = INVALID_AGE_OVER_100)
     private Integer age;
 
-    public EditUserProfileBindingModel() {}
+    public EditUserProfileBindingModel() {
+    }
 
     public String getFirstName() {
         return firstName;

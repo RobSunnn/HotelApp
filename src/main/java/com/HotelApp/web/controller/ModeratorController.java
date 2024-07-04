@@ -6,14 +6,11 @@ import com.HotelApp.domain.models.view.OnlineReservationView;
 import com.HotelApp.service.CommentService;
 import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 

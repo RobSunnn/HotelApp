@@ -14,7 +14,8 @@ public class CommentView {
 
     private String author;
 
-    public CommentView() {}
+    public CommentView() {
+    }
 
     public Long getId() {
         return id;

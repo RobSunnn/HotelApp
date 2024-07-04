@@ -10,7 +10,8 @@ public class ForbiddenRequestView {
     private LocalDateTime timestamp;
     private boolean isChecked;
 
-    public ForbiddenRequestView() {}
+    public ForbiddenRequestView() {
+    }
 
     public String getUrl() {
         return url;

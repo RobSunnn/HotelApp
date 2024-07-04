@@ -33,4 +33,25 @@ public class RoleServiceImpl implements RoleService {
     public List<RoleEntity> getAllRoles() {
         return roleRepository.findAll();
     }
+
+    @Override
+    public List<RoleEntity> getModeratorRole() {
+        RoleEntity userRole = getUserRole();
+        RoleEntity moderatorRole = getAllRoles()
+                .stream()
+                .filter(role -> role.getName().name().equals("MODERATOR"))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
+
+        return List.of(userRole, moderatorRole);
+    }
+
+    @Override
+    public RoleEntity getUserRole() {
+        return getAllRoles()
+                .stream()
+                .filter(role -> role.getName().name().equals("USER"))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("USER role not found"));
+    }
 }

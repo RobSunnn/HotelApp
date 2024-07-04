@@ -1,6 +1,5 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.entity.ForbiddenRequestEntity;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.service.ForbiddenRequestsService;
 import com.HotelApp.service.HotelService;

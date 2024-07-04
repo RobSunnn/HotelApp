@@ -7,6 +7,7 @@ import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,6 +43,11 @@ public class UserTransformationService {
         return users.stream()
                 .map(this::mapAsUserView)
                 .collect(Collectors.toList());
+    }
+
+    @CacheEvict(value = "userViewsCache", key = "'allUserViews'")
+    public void evictUserViewsCache() {
+        log.info("Evicting user views cache");
     }
 
     protected UserView mapAsUserView(UserEntity user) {

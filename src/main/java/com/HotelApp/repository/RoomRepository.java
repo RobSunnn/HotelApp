@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
     RoomEntity findByRoomNumber(Integer roomNumber);
+
     List<RoomEntity> findRoomByCategoryName(CategoriesEnum category);
 }

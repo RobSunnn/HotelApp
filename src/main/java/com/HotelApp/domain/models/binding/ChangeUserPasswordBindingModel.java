@@ -3,7 +3,8 @@ package com.HotelApp.domain.models.binding;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import static com.HotelApp.common.constants.ValidationConstants.*;
+import static com.HotelApp.common.constants.ValidationConstants.EMPTY_PASSWORD;
+import static com.HotelApp.common.constants.ValidationConstants.PASSWORD_LENGTH;
 
 public class ChangeUserPasswordBindingModel {
 
@@ -17,7 +18,8 @@ public class ChangeUserPasswordBindingModel {
 
     private String confirmNewPassword;
 
-    public ChangeUserPasswordBindingModel() {}
+    public ChangeUserPasswordBindingModel() {
+    }
 
     public String getOldPassword() {
         return oldPassword;

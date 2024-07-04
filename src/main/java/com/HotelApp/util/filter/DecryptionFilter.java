@@ -4,8 +4,6 @@ import com.HotelApp.service.impl.AppUserDetailsService;
 import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import jakarta.servlet.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -35,7 +33,7 @@ public class DecryptionFilter implements Filter {
 
         if (encryptedUsername != null && encryptedPassword != null) {
             try {
-                String decryptedUsername = EncryptionUtil.decrypt(encryptedUsername, iv, key);
+                String decryptedUsername = EncryptionUtil.decrypt(encryptedUsername, iv, key).trim();
                 String decryptedPassword = EncryptionUtil.decrypt(encryptedPassword, iv, key);
                 UserDetails userDetails = appUserDetailsService.loadUserByUsername(decryptedUsername);
 

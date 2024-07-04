@@ -18,7 +18,8 @@ public class ContactRequestView {
 
     private Boolean isChecked;
 
-    public ContactRequestView() {}
+    public ContactRequestView() {
+    }
 
     public Long getId() {
         return id;

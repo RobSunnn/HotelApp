@@ -22,12 +22,15 @@
             justify-content: center;
             margin-top: 20px;
         }
+
         .page-item {
             margin: 0 5px;
         }
+
         .page-item button {
             cursor: pointer;
         }
+
         .page-item.active button {
             font-weight: bold;
             text-decoration: underline;
@@ -55,7 +58,7 @@
                     <th>Functions</th>
                 </tr>
                 </thead>
-                <tbody >
+                <tbody>
                 <!-- Table body will be populated dynamically -->
                 </tbody>
             </table>
@@ -122,11 +125,6 @@
                 makeAdminButton.className = 'role-button btn btn-success';
                 makeAdminButton.id = 'makeAdmin';
                 makeAdminButton.textContent = 'Make Admin';
-                makeAdminButton.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    handleButtonClick(user.encryptedEmail, 'admin');
-                });
-                form.appendChild(makeAdminButton);
 
                 const makeModeratorButton = document.createElement('button');
                 makeModeratorButton.type = 'submit';
@@ -134,11 +132,6 @@
                 makeModeratorButton.className = 'role-button btn btn-warning';
                 makeModeratorButton.id = 'makeModerator';
                 makeModeratorButton.textContent = 'Make Moderator';
-                makeModeratorButton.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    handleButtonClick(user.encryptedEmail, 'moderator');
-                });
-                form.appendChild(makeModeratorButton);
 
                 const makeUserButton = document.createElement('button');
                 makeUserButton.type = 'submit';
@@ -146,11 +139,45 @@
                 makeUserButton.className = 'role-button btn btn-danger';
                 makeUserButton.id = 'makeUser';
                 makeUserButton.textContent = 'Make User';
+
+                form.appendChild(makeAdminButton);
+                form.appendChild(makeModeratorButton);
+                form.appendChild(makeUserButton);
+
+
+                if (user.roleNames.includes("ADMIN")) {
+                    makeAdminButton.setAttribute("disabled", "")
+                }
+                makeAdminButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    handleButtonClick(user.encryptedEmail, 'admin');
+                    makeAdminButton.setAttribute("disabled", "");
+                    makeModeratorButton.removeAttribute("disabled");
+                    makeUserButton.removeAttribute("disabled");
+                });
+
+
+                if (user.roleNames.includes("MODERATOR") && !user.roleNames.includes("ADMIN")) {
+                    makeModeratorButton.setAttribute("disabled", "")
+                }
+                makeModeratorButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    handleButtonClick(user.encryptedEmail, 'moderator');
+                    makeModeratorButton.setAttribute("disabled", "");
+                    makeAdminButton.removeAttribute("disabled");
+                    makeUserButton.removeAttribute("disabled");
+                });
+
+                if (user.roleNames.includes("USER") && !user.roleNames.includes("MODERATOR") && !user.roleNames.includes("ADMIN")) {
+                    makeUserButton.setAttribute("disabled", "")
+                }
                 makeUserButton.addEventListener('click', function (e) {
                     e.preventDefault();
                     handleButtonClick(user.encryptedEmail, 'user');
+                    makeAdminButton.removeAttribute("disabled");
+                    makeModeratorButton.removeAttribute("disabled");
+                    makeUserButton.setAttribute("disabled", "")
                 });
-                form.appendChild(makeUserButton);
 
                 buttonsHolderDiv.appendChild(form);
                 functionsTd.appendChild(buttonsHolderDiv);
@@ -232,7 +259,8 @@
             });
         }
     });
-</script><th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+</script>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{/fragments/scripts :: scripts}"></th:block>
 <script src="/js/userRolesScript.js"></script>
 </body>

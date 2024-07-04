@@ -24,7 +24,8 @@ public class HappyGuestView {
 
     private LocalDateTime lastCheckOut;
 
-    public HappyGuestView() {}
+    public HappyGuestView() {
+    }
 
     public Long getId() {
         return id;

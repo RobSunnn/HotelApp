@@ -33,13 +33,6 @@ public class AuthenticationRestController {
         this.userTransformationService = userTransformationService;
     }
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        if (!model.containsAttribute(USER_REGISTER_BINDING_MODEL)) {
-            model.addAttribute(USER_REGISTER_BINDING_MODEL, new UserRegisterBindingModel());
-        }
-    }
-
     @PreAuthorize("isAnonymous()")
     @GetMapping(value = "/login", produces = "text/html")
     public ModelAndView login() {

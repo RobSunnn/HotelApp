@@ -26,7 +26,6 @@
                 th:data-content-id="${comment.id}">
                 <td style="width: 10%" th:text="${#temporals.format(comment.created, 'yyyy-MM-dd')}"></td>
                 <td style="width: 10%" th:text="${#temporals.format(comment.created.toLocalTime(), 'HH')} + ':' + (${comment.created.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${comment.created.toLocalTime().getMinute()}"></td>
-
                 <td style="width: 40%" th:text="${#strings.abbreviate(comment.author, 30)}"></td>
                 <td th:text="${#strings.abbreviate(comment.commentContent, 50)}"></td>
             </tr>
@@ -53,6 +52,6 @@
 </div>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
-<script src="/js/commentsAndContactRequestsScript.js"></script>
+<script src="/js/tablesHelperScript.js"></script>
 </body>
 </html>

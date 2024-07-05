@@ -4,7 +4,9 @@ import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/users/profile")
@@ -27,23 +33,12 @@ public class ProfileController {
     }
 
     @ModelAttribute
-    public void addAttributes(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        UserView user = userService.findUserDetails(userEmail);
+    public void addAttributes(Model model, HttpSession session) {
+        // Generate a token and store it in the session
+        String token = UUID.randomUUID().toString();
+        session.setAttribute("userToken", token);
+        model.addAttribute("userToken", token);
 
-        model.addAttribute("userDetails", user);
-        model.addAttribute("userEmail", userEmail);
-
-        EditUserProfileBindingModel editUserProfileBindingModel = new EditUserProfileBindingModel();
-        editUserProfileBindingModel.setFirstName(user.getFirstName());
-        editUserProfileBindingModel.setLastName(user.getLastName());
-        editUserProfileBindingModel.setEmail(user.getEmail());
-        editUserProfileBindingModel.setAge(user.getAge());
-
-        if (!model.containsAttribute("editUserProfileBindingModel")) {
-            model.addAttribute("editUserProfileBindingModel", editUserProfileBindingModel);
-        }
         if (!model.containsAttribute("changeUserPasswordBindingModel")) {
             model.addAttribute("changeUserPasswordBindingModel", new ChangeUserPasswordBindingModel());
         }
@@ -56,9 +51,24 @@ public class ProfileController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @GetMapping("/details")
+    @ResponseBody
+    public UserView getUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+        return userService.findUserDetails(userEmail);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/editProfile")
     public String editProfileInfo() {
         return "users/edit-profile";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/editSuccess")
+    public String editProfileSuccess() {
+        return "users/edit-profile-success";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -71,38 +81,46 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/addProfileImage")
     public String addProfilePicture(@RequestParam("profile-picture") MultipartFile image,
-                                    RedirectAttributes redirectAttributes,
-                                    @ModelAttribute("userEmail") String userEmail) {
+                                    RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
         userService.addUserImage(image, userEmail, redirectAttributes);
         return "redirect:/users/profile";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/editUserProfile")
-    public String editProfile(@Valid EditUserProfileBindingModel editUserProfileBindingModel,
-                              BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes,
-                              @ModelAttribute("userEmail") String userEmail) {
+    @ResponseBody
+    public ResponseEntity<?> editProfile(@Valid EditUserProfileBindingModel editUserProfileBindingModel,
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
         boolean editSuccessful = userService.editProfileInfo(
                 editUserProfileBindingModel,
                 userEmail,
                 bindingResult,
                 redirectAttributes
         );
-
-        if (!editSuccessful) {
-            return "redirect:/users/profile/editProfile";
+        Map<String, Object> response = new HashMap<>();
+        if (editSuccessful) {
+            response.put("success", true);
+            response.put("redirectUrl", "/users/profile/editSuccess");
+            return ResponseEntity.ok().body(response);
+        } else {
+            response.put("success", false);
+            response.put("errors", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(response);
         }
-
-        return "redirect:/users/profile";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/changePassword")
     public String changePasswordOfUser(@Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
                                        BindingResult bindingResult,
-                                       RedirectAttributes redirectAttributes,
-                                       @ModelAttribute("userEmail") String userEmail) {
+                                       RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
         boolean changePasswordSuccessful = userService.changeUserPassword(
                 userEmail,
                 changeUserPasswordBindingModel,

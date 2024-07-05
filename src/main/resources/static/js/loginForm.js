@@ -1,7 +1,7 @@
 document.getElementById('login-form').addEventListener('submit', async function (e) {
     e.preventDefault(); // Prevent the default form submission
 
-    const key = CryptoJS.lib.WordArray.random(32); // 256-bit key
+    const key = CryptoJS.lib.WordArray.random(32);
     const iv = CryptoJS.lib.WordArray.random(16);
     const csrfTokenElement = document.querySelector('input[name="_csrf"]');
     const email = document.getElementById('email').value;

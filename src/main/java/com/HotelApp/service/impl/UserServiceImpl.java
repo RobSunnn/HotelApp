@@ -14,6 +14,7 @@ import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
+import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -195,9 +196,9 @@ public class UserServiceImpl implements UserService {
             return;
         }
 
-        String filename = image.getOriginalFilename();
-        assert filename != null;
+        String filename = Objects.requireNonNull(image.getOriginalFilename());
         String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+
         if (!isAllowedExtension(extension)) {
             throw new FileNotAllowedException("File type not supported.");
         }
@@ -232,7 +233,8 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
         } catch (SQLException | IOException e) {
-            throw new RuntimeException("Failed to upload image", e);
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Something went wrong. Please choose different file.");
         }
         userTransformationService.evictUserViewsCache();
     }
@@ -242,8 +244,20 @@ public class UserServiceImpl implements UserService {
                                    String userEmail,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes) {
+        String decryptedEmail = userTransformationService.decrypt(
+                editUserProfileBindingModel.getEmail(),
+                editUserProfileBindingModel.getIv(),
+                editUserProfileBindingModel.getKey()
+        );
+
+        if (decryptedEmail.isEmpty()) {
+            bindingResult.addError(new FieldError("userRegisterBindingModel",
+                    "email", "Please enter email."));
+            return false;
+        }
+
         UserEntity user = findUser(userEmail);
-        boolean emailChanged = !user.getEmail().equals(editUserProfileBindingModel.getEmail());
+        boolean emailChanged = !user.getEmail().equals(decryptedEmail);
 
         if (checkIfEmailExist(editUserProfileBindingModel.getEmail()) && emailChanged) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
@@ -261,12 +275,12 @@ public class UserServiceImpl implements UserService {
 
         user.setFirstName(editUserProfileBindingModel.getFirstName().trim());
         user.setLastName(editUserProfileBindingModel.getLastName().trim());
-        user.setEmail(editUserProfileBindingModel.getEmail().trim());
+        user.setEmail(decryptedEmail);
         user.setAge(editUserProfileBindingModel.getAge());
 
         userRepository.save(user);
 
-        userTransformationService.authenticateUser(editUserProfileBindingModel.getEmail());
+        userTransformationService.authenticateUser(decryptedEmail);
         redirectAttributes.addFlashAttribute("successMessage",
                 "Profile info updated successfully.");
         userTransformationService.evictUserViewsCache();

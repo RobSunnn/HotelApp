@@ -14,19 +14,12 @@
             <div class="profile-card p-3 py-4">
                 <div class="text-center">
                     <div class="image-frame">
-                        <img class="" th:if="${userDetails.getProfilePictureBase64() != ''}"
-                             th:src="'data:image/jpeg;base64,' + ${userDetails.getProfilePictureBase64()}"
-                             alt="Profile Picture">
-                    </div>
-                    <div class="image-frame">
-                        <img class="" th:if="${userDetails.getProfilePictureBase64() == ''}"
-                             th:src="@{/images/minion.gif}"
-                             alt="Default Profile Picture">
+                        <img id="profile-picture-image" class="" src="" alt="Profile Picture">
                     </div>
                     <div th:if="${successMessage}" class="alert alert-success mt-1" role="alert">
                         <span th:text="${successMessage}"></span>
                     </div>
-                    <div th:if="${errorMessage}" id="errorMessage" class="alert alert-danger mt-1" role="alert">
+                    <div th:if="${errorMessage}" class="alert alert-danger mt-1" role="alert">
                         <span th:text="${errorMessage}"></span>
                     </div>
                     <form id="profile-form" th:action="@{/users/profile/addProfileImage}" th:method="POST"
@@ -39,35 +32,57 @@
                         <button type="submit" class="btn btn-success">Change profile picture</button>
                     </form>
                     <div class="text-center mt-5 bg-white">
-                        <h4 th:text="'Name:'">Name of</h4>
-                        <h3 th:text="${userDetails.getFullName()}">User</h3>
+                        <h4>Name:</h4>
+                        <h3 id="fullName">User</h3>
                         <br>
-                        <h4 th:text="'Roles:'">Roles of</h4>
-                        <span class="bg-info p-1 m-1 px-4 rounded text-white"
-                              th:each="role : ${userDetails.getRoles()}" th:text="${role.getName()}">User</span>
+                        <h4>Roles:</h4>
+                        <div id="roles"></div>
                         <br>
                         <br>
-                        <h4 class="mt-2 mb-0" th:text="'Age:'">Age of</h4>
-                        <h3 class="mt-2 mb-0" th:text="${userDetails.getAge()} + ' years'">User</h3>
-                        <br>
-                        <h4 class="mt-2 mb-0" th:text="'Email: '">Email of</h4>
-                        <h3 class="mt-2 mb-0" th:text="${userDetails.getEmail()}">User</h3>
-                        <br>
-                        <div class="buttons">
-                            <a th:href="@{/}" class="btn mb-5 btn-outline-primary px-4">Back</a>
-                            <a th:href="@{/users/profile/editProfile}"
-                               class="btn mb-5 btn-outline-success bg-dark px-4">Edit
-                                Profile</a>
-                            <a th:href="@{/users/profile/changePassword}"
-                               class="btn mb-5 btn-outline-primary px-4 bg-dark">Change
-                                Password</a>
-                        </div>
+                        <h4 class="mt-2 mb-0">Age:</h4>
+                        <h3 class="mt-2 mb-0" id="age">User Age</h3>
+                            <br>
+                            <h4 class="mt-2 mb-0">Email:</h4>
+                            <h3 class="mt-2 mb-0" id="email">User Email</h3>
+                                <br>
+                                <div class="buttons">
+                                    <a th:href="@{/}" class="btn mb-5 btn-outline-primary px-4">Back</a>
+                                    <a th:href="@{/users/profile/editProfile}"
+                                       class="btn mb-5 btn-outline-success bg-dark px-4">Edit Profile</a>
+                                    <a th:href="@{/users/profile/changePassword}"
+                                       class="btn mb-5 btn-outline-primary px-4 bg-dark">Change Password</a>
+                                </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const userToken = /*[[${userToken}]]*/ 'userToken';
+
+        fetch(`/users/profile/details?token=${userToken}`)
+            .then(response => response.json())
+            .then(userDetails => {
+                document.getElementById('profile-picture-image').src = userDetails.profilePictureBase64 ? 'data:image/jpeg;base64,' + userDetails.profilePictureBase64 : '/images/minion.gif';
+                document.getElementById('fullName').innerText = userDetails.fullName;
+                document.getElementById('age').innerText = userDetails.age + ' years';
+                document.getElementById('email').innerText = userDetails.email;
+
+                const rolesContainer = document.getElementById('roles');
+                userDetails.roles.forEach(role => {
+                    const roleElement = document.createElement('span');
+                    roleElement.className = 'bg-info p-1 m-1 px-4 rounded text-white';
+                    roleElement.innerText = role.name;
+                    rolesContainer.appendChild(roleElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching user details:', error);
+            });
+    });
+</script>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 <script src="/js/fileValidationScript.js"></script>

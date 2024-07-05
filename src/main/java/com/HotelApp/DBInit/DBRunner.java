@@ -17,8 +17,6 @@ public class DBRunner implements CommandLineRunner {
 
     private final CategoryService categoryService;
 
-//    private final TestService testService;
-
     public DBRunner(HotelService hotelService,
                     RoomService roomService,
                     RoomTypesService roomTypesService,
@@ -40,10 +38,6 @@ public class DBRunner implements CommandLineRunner {
             hotelService.init();
         }
 
-//        if (testService.getCount() == 0) {
-//            testService.initTestEntity();
-//        }
-
         if (categoryService.getCount() == 0) {
             categoryService.initCategories();
         }
@@ -51,7 +45,5 @@ public class DBRunner implements CommandLineRunner {
         if (roomService.getCount() == 0) {
             roomService.initRooms(hotelService.getHotelInfo());
         }
-
-
     }
 }

@@ -1,5 +1,6 @@
 package com.HotelApp.domain.models.binding;
 
+import com.HotelApp.validation.annotation.ValidEmail;
 import jakarta.validation.constraints.*;
 
 import static com.HotelApp.common.constants.ValidationConstants.*;
@@ -17,7 +18,7 @@ public class EditUserProfileBindingModel {
     private String lastName;
 
     @NotBlank(message = EMAIL_NOT_BLANK)
-    @Email(message = INVALID_EMAIL)
+    @ValidEmail(message = INVALID_EMAIL)
     @Size(max = 100, message = EMAIL_TOO_LONG)
     private String email;
 
@@ -26,6 +27,10 @@ public class EditUserProfileBindingModel {
     @Min(value = 18, message = MINIMUM_AGE)
     @Max(value = 100, message = INVALID_AGE_OVER_100)
     private Integer age;
+
+    private String iv;
+
+    private String key;
 
     public EditUserProfileBindingModel() {
     }
@@ -63,6 +68,24 @@ public class EditUserProfileBindingModel {
 
     public EditUserProfileBindingModel setAge(Integer age) {
         this.age = age;
+        return this;
+    }
+
+    public String getIv() {
+        return iv;
+    }
+
+    public EditUserProfileBindingModel setIv(String iv) {
+        this.iv = iv;
+        return this;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public EditUserProfileBindingModel setKey(String key) {
+        this.key = key;
         return this;
     }
 }

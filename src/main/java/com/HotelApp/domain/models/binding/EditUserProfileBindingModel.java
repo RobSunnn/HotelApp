@@ -19,7 +19,7 @@ public class EditUserProfileBindingModel {
 
     @NotBlank(message = EMAIL_NOT_BLANK)
     @ValidEmail(message = INVALID_EMAIL)
-    @Size(max = 100, message = EMAIL_TOO_LONG)
+//    @Size(max = 100, message = EMAIL_TOO_LONG)
     private String email;
 
     @NotNull(message = INVALID_AGE)

@@ -21,7 +21,6 @@ public class UserRegisterBindingModel {
 
     @NotBlank(message = EMAIL_NOT_BLANK)
     @ValidEmail(message = INVALID_EMAIL)
-    @Size(max = 100, message = EMAIL_TOO_LONG)
     private String email;
 
     @NotNull(message = INVALID_AGE)
@@ -36,10 +35,6 @@ public class UserRegisterBindingModel {
 
     @NotBlank(message = CONFIRM_PASSWORD)
     private String confirmPassword;
-
-    private String iv;
-
-    private String key;
 
     public UserRegisterBindingModel() {
     }
@@ -98,21 +93,4 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    public String getIv() {
-        return iv;
-    }
-
-    public UserRegisterBindingModel setIv(String iv) {
-        this.iv = iv;
-        return this;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public UserRegisterBindingModel setKey(String key) {
-        this.key = key;
-        return this;
-    }
 }

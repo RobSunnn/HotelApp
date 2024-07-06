@@ -2,8 +2,6 @@ document.getElementById("register-button").addEventListener('click', encryptAndS
 
 async function encryptAndSubmit() {
     try {
-        const key = CryptoJS.lib.WordArray.random(32); // 256-bit key
-        const iv = CryptoJS.lib.WordArray.random(16);
         const csrfTokenElement = document.querySelector('input[name="_csrf"]');
         const firstName = document.getElementById('firstName').value;
         const lastName = document.getElementById('lastName').value;
@@ -12,9 +10,9 @@ async function encryptAndSubmit() {
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
 
-        const encryptedEmail = CryptoJS.AES.encrypt(email, key, {iv: iv}).toString();
-        const encryptedPassword = CryptoJS.AES.encrypt(password, key, {iv: iv}).toString();
-        const encryptedConfirmPassword = CryptoJS.AES.encrypt(confirmPassword, key, {iv: iv}).toString();
+        let encryptedEmail = await encryptData(email);
+        let encryptedPassword = await encryptData(password);
+        let encryptedConfirmPassword = await encryptData(confirmPassword);
 
         // Prepare the data to send
         const formData = new FormData();
@@ -24,8 +22,6 @@ async function encryptAndSubmit() {
         formData.append('age', age);
         formData.append('password', encryptedPassword);
         formData.append('confirmPassword', encryptedConfirmPassword);
-        formData.append('iv', CryptoJS.enc.Base64.stringify(iv));
-        formData.append('key', CryptoJS.enc.Base64.stringify(key));
 
         // Send the encrypted data
         const response = await fetch('http://localhost:8080/users/register', {

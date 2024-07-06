@@ -41,18 +41,17 @@ public class AuthenticationRestController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/login", produces = "application/json")
-    public ResponseEntity<?> login(HttpServletRequest request) {
-        String loginErrorFlag = request.getAttribute(LOGIN_ERROR_FLAG).toString();
+    public ResponseEntity<?> login(@RequestParam("encryptedEmail") String email,
+                                   @RequestParam("encryptedPass") String password) throws Exception {
+        boolean isSuccess = userTransformationService.authenticateUser(email, password);
 
         Map<String, String> response = new HashMap<>();
-        if ("true".equals(loginErrorFlag)) {
+        if (!isSuccess) {
             response.put("message", "Invalid username or password");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        String userEmail = request.getAttribute("username").toString();
-        userTransformationService.authenticateUser(userEmail);
-        response.put("message", "Login success");
 
+        response.put("message", "Login success");
         return ResponseEntity.ok(response);
     }
 

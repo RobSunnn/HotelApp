@@ -16,24 +16,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.getElementById("edit-profile-form").addEventListener("submit", async function (e) {
     e.preventDefault();
-    const key = CryptoJS.lib.WordArray.random(32);
-    const iv = CryptoJS.lib.WordArray.random(16);
+
     const csrfTokenElement = document.querySelector('input[name="_csrf"]');
     const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName').value;
     const email = document.getElementById('email').value;
     const age = document.getElementById('age').value;
 
-
-    const encryptedEmail = CryptoJS.AES.encrypt(email, key, {iv: iv}).toString();
+    let encryptedEmail = await encryptData(email);
 
     const formData = new FormData();
     formData.append('firstName', firstName);
     formData.append('lastName', lastName);
     formData.append('email', encryptedEmail);
     formData.append('age', age);
-    formData.append('iv', CryptoJS.enc.Base64.stringify(iv));
-    formData.append('key', CryptoJS.enc.Base64.stringify(key));
 
     try {
         const response = await fetch(this.action, {

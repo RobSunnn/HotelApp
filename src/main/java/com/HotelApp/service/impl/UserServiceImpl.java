@@ -65,21 +65,15 @@ public class UserServiceImpl implements UserService {
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
         String decryptedEmail = userTransformationService.decrypt(
-                userRegisterBindingModel.getEmail(),
-                userRegisterBindingModel.getIv(),
-                userRegisterBindingModel.getKey()
+                userRegisterBindingModel.getEmail()
         );
 
         String decryptedPass = userTransformationService.decrypt(
-                userRegisterBindingModel.getPassword(),
-                userRegisterBindingModel.getIv(),
-                userRegisterBindingModel.getKey()
+                userRegisterBindingModel.getPassword()
         );
 
         String decryptedConfirmPass = userTransformationService.decrypt(
-                userRegisterBindingModel.getConfirmPassword(),
-                userRegisterBindingModel.getIv(),
-                userRegisterBindingModel.getKey()
+                userRegisterBindingModel.getConfirmPassword()
         );
 
         if (Objects.requireNonNull(decryptedPass).isEmpty()) {
@@ -245,9 +239,7 @@ public class UserServiceImpl implements UserService {
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes) {
         String decryptedEmail = userTransformationService.decrypt(
-                editUserProfileBindingModel.getEmail(),
-                editUserProfileBindingModel.getIv(),
-                editUserProfileBindingModel.getKey()
+                editUserProfileBindingModel.getEmail()
         );
 
         if (decryptedEmail.isEmpty()) {
@@ -259,7 +251,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user = findUser(userEmail);
         boolean emailChanged = !user.getEmail().equals(decryptedEmail);
 
-        if (checkIfEmailExist(editUserProfileBindingModel.getEmail()) && emailChanged) {
+        if (checkIfEmailExist(decryptedEmail) && emailChanged) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
                     "email", ValidationConstants.EMAIL_EXIST));
         }
@@ -280,7 +272,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        userTransformationService.authenticateUser(decryptedEmail);
+        userTransformationService.reAuthenticateUser(decryptedEmail);
         redirectAttributes.addFlashAttribute("successMessage",
                 "Profile info updated successfully.");
         userTransformationService.evictUserViewsCache();
@@ -315,7 +307,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder().encode(changeUserPasswordBindingModel.getNewPassword()));
         userRepository.save(user);
 
-        userTransformationService.authenticateUser(userEmail);
+        userTransformationService.reAuthenticateUser(userEmail);
         redirectAttributes.addFlashAttribute("successMessage",
                 "Password changed successfully.");
 

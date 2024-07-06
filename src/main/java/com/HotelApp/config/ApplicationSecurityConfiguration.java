@@ -1,6 +1,6 @@
 package com.HotelApp.config;
 
-import com.HotelApp.util.filter.DecryptionFilter;
+//import com.HotelApp.util.filter.DecryptionFilter;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class ApplicationSecurityConfiguration {
 
 
-    private final DecryptionFilter decryptionFilter;
-
-    public ApplicationSecurityConfiguration(DecryptionFilter decryptionFilter) {
-        this.decryptionFilter = decryptionFilter;
-    }
+//    private final DecryptionFilter decryptionFilter;
+//
+//    public ApplicationSecurityConfiguration(DecryptionFilter decryptionFilter) {
+//        this.decryptionFilter = decryptionFilter;
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -38,7 +38,7 @@ public class ApplicationSecurityConfiguration {
                                 .requestMatchers("/", "/users/login", "/users/register",
                                         "/users/registrationSuccess", "/users/login-error").permitAll()
                                 .requestMatchers("/allRoomTypes", "/about/**",
-                                        "/contact/**", "/error", "/session-expired").permitAll()
+                                        "/contact/**", "/error", "/session-expired", "/get-public-key").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/moderator/**", "/guests/**",
                                         "/hotel/**").hasRole("MODERATOR")
@@ -51,7 +51,8 @@ public class ApplicationSecurityConfiguration {
                                 .deleteCookies("JSESSIONID")
                                 .clearAuthentication(true)
                                 .invalidateHttpSession(true)
-                ).addFilterBefore(decryptionFilter, UsernamePasswordAuthenticationFilter.class);
+                );
+//                .addFilterBefore(decryptionFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return httpSecurity.build();

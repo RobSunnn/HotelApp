@@ -3,6 +3,7 @@ package com.HotelApp.service.impl;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
+import com.HotelApp.util.encryptionUtil.EncryptionService;
 import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +31,13 @@ public class UserTransformationService {
 
     private final AppUserDetailsService userDetailsService;
     private final HttpServletRequest request;
+    private final EncryptionService encryptionService;
 
     public UserTransformationService(AppUserDetailsService userDetailsService,
-                                     HttpServletRequest request) {
+                                     HttpServletRequest request, EncryptionService encryptionService) {
         this.userDetailsService = userDetailsService;
         this.request = request;
+        this.encryptionService = encryptionService;
     }
 
     @Cacheable(value = "userViewsCache", key = "'allUserViews'")
@@ -60,7 +64,7 @@ public class UserTransformationService {
                 .setRoles(user.getRoles());
 
         try {
-            String encryptedEmail = EncryptionUtil.encrypt(user.getEmail());
+            String encryptedEmail = encryptionService.encrypt(user.getEmail());
             userView.setEncryptedEmail(encryptedEmail);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -88,7 +92,7 @@ public class UserTransformationService {
     }
 
 
-    public void authenticateUser(String email) {
+    public void reAuthenticateUser(String email) {
         // Load the user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         // Create an authentication token
@@ -104,19 +108,40 @@ public class UserTransformationService {
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
     }
 
-    protected String decrypt(String encrypted, String ivParam, String key) {
+    public boolean authenticateUser(String email, String password) throws Exception {
         try {
-            return EncryptionUtil.decrypt(encrypted, ivParam, key);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid encrypted data");
+            String decryptedEmail = encryptionService.decrypt(email);
+            String decryptedPassword = encryptionService.decrypt(password);
+
+            // Load the user details
+            UserDetails userDetails = userDetailsService.loadUserByUsername(decryptedEmail);
+            if (userDetails == null ||
+                    !passwordEncoder().matches(decryptedPassword, userDetails.getPassword())) {
+                return false;
+            }
+            // Create an authentication token
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    userDetails.getUsername(),
+                    userDetails.getAuthorities()
+            );
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            // Set the new authentication token in the security context
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            // Update session with the new authentication
+            request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
+            return true;
+        } catch (UsernameNotFoundException e) {
+            return false;
         }
     }
 
     protected String decrypt(String encrypted) {
         try {
-            return EncryptionUtil.decrypt(encrypted);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid encrypted data");
+            return encryptionService.decrypt(encrypted);
+        } catch (Exception ignored) {
+            return "";
         }
     }
 }

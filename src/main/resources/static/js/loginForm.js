@@ -1,20 +1,20 @@
 document.getElementById('login-form').addEventListener('submit', async function (e) {
     e.preventDefault(); // Prevent the default form submission
 
-    const key = CryptoJS.lib.WordArray.random(32);
-    const iv = CryptoJS.lib.WordArray.random(16);
-    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+    // Get email and password from the form
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const encryptedEmail = CryptoJS.AES.encrypt(email, key, {iv: iv}).toString();
-    const encryptedPassword = CryptoJS.AES.encrypt(password, key, {iv: iv}).toString();
+    let encryptedEmail = await encryptData(email);
+    let encryptedPassword = await encryptData(password);
+
+
+    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
 
     const formData = new FormData();
     formData.append('encryptedEmail', encryptedEmail);
     formData.append('encryptedPass', encryptedPassword);
-    formData.append('iv', CryptoJS.enc.Base64.stringify(iv));
-    formData.append('key', CryptoJS.enc.Base64.stringify(key));
+
     try {
         const response = await fetch(this.action, {
             method: 'POST',

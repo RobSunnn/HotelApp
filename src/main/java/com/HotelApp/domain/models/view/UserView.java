@@ -111,22 +111,4 @@ public class UserView {
                 .map(roleEntity -> roleEntity.getName().name())
                 .collect(Collectors.joining(", "));
     }
-
-    public String toJson() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static UserView fromJson(String json) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.readValue(json, UserView.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

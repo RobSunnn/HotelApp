@@ -6,6 +6,7 @@ import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.SubscriberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
 
@@ -66,12 +70,26 @@ public class ContactController {
     }
 
     @PostMapping("/contactForm")
-    public String sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel,
-                                     BindingResult bindingResult,
-                                     RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public ResponseEntity<?> sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel,
+                                             BindingResult bindingResult,
+                                             RedirectAttributes redirectAttributes) {
 
-        contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult, redirectAttributes);
-        return "redirect:/contact";
+        boolean isSuccessful = contactRequestService.sendContactForm(
+                contactRequestBindingModel,
+                bindingResult,
+                redirectAttributes
+        );
+        Map<String, Object> responseBody = new HashMap<>();
+        if (isSuccessful) {
+            responseBody.put("success", true);
+            responseBody.put("redirectUrl", "/contact");
+            return ResponseEntity.ok().body(responseBody);
+        } else {
+            responseBody.put("success", false);
+            responseBody.put("errors", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(responseBody);
+        }
     }
 
     @PreAuthorize("isAuthenticated()")

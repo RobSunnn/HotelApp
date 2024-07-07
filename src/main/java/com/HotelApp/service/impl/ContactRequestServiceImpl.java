@@ -10,6 +10,9 @@ import com.HotelApp.repository.ContactRequestRepository;
 import com.HotelApp.repository.OnlineReservationRepository;
 import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
+import com.HotelApp.util.encryptionUtil.EncryptionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,16 +30,23 @@ import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 @Service
 public class ContactRequestServiceImpl implements ContactRequestService {
 
+    private static final Logger log = LoggerFactory.getLogger(ContactRequestServiceImpl.class);
     private final ContactRequestRepository contactRequestRepository;
 
     private final OnlineReservationRepository onlineReservationRepository;
 
     private final HotelService hotelService;
 
-    public ContactRequestServiceImpl(ContactRequestRepository contactRequestRepository, OnlineReservationRepository onlineReservationRepository, HotelService hotelService) {
+    private final EncryptionService encryptionService;
+
+    public ContactRequestServiceImpl(ContactRequestRepository contactRequestRepository,
+                                     OnlineReservationRepository onlineReservationRepository,
+                                     HotelService hotelService,
+                                     EncryptionService encryptionService) {
         this.contactRequestRepository = contactRequestRepository;
         this.onlineReservationRepository = onlineReservationRepository;
         this.hotelService = hotelService;
+        this.encryptionService = encryptionService;
     }
 
     @Override
@@ -48,22 +58,27 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
             return false;
         }
+        try {
+            String decryptedEmail = encryptionService.decrypt(contactRequestBindingModel.getEmail());
+            String decryptedPhone = encryptionService.decrypt(contactRequestBindingModel.getPhoneNumber());
+            HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+            ContactRequestEntity contactRequest = new ContactRequestEntity()
+                    .setName(contactRequestBindingModel.getName().trim())
+                    .setEmail(decryptedEmail)
+                    .setPhoneNumber(decryptedPhone)
+                    .setMessage(contactRequestBindingModel.getMessage().trim())
+                    .setChecked(false)
+                    .setCreated(LocalDateTime.now())
+                    .setHotelInfoEntity(hotelInfo);
 
-        ContactRequestEntity contactRequest = modelMapper()
-                .map(contactRequestBindingModel, ContactRequestEntity.class);
-        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+            contactRequestRepository.save(contactRequest);
 
-        contactRequest.setName(contactRequest.getName().trim());
-        contactRequest.setMessage(contactRequest.getMessage().trim());
-        contactRequest.setChecked(false);
-        contactRequest.setCreated(LocalDateTime.now());
-        contactRequest.setHotelInfoEntity(hotelInfo);
+            return true;
 
-        redirectAttributes.addFlashAttribute("successContactRequestMessage",
-                "Contact Request Send, Thank You!");
-        contactRequestRepository.save(contactRequest);
-
-        return true;
+        } catch (Exception e) {
+            log.warn("Failed to decrypt.");
+            return false;
+        }
     }
 
     @Override

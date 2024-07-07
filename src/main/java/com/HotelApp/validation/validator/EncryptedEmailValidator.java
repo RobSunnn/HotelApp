@@ -19,7 +19,8 @@ public class EncryptedEmailValidator implements ConstraintValidator<ValidEmail, 
         try {
             String decryptedEmail = encryptionService.decrypt(encryptedEmail);
             String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
-            return decryptedEmail.matches(emailPattern);
+            boolean matches = decryptedEmail.matches(emailPattern);
+            return matches;
         } catch (Exception e) {
             return false;
         }

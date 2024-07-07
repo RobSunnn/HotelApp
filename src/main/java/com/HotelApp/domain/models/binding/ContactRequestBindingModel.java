@@ -1,6 +1,6 @@
 package com.HotelApp.domain.models.binding;
 
-import jakarta.validation.constraints.Email;
+import com.HotelApp.validation.annotation.ValidEmail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -11,7 +11,7 @@ public class ContactRequestBindingModel {
     private String name;
 
     @NotBlank(message = "Enter your email.")
-    @Email(message = "Enter a valid email...")
+    @ValidEmail(message = "Enter a valid email...")
     @Size(max = 100, message = "Your email is too long!")
     private String email;
 

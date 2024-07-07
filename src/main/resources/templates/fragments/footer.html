@@ -32,7 +32,7 @@
         </section>
         <section>
             <!--/*@thymesVar id="addSubscriberBindingModel" type="AddSubscriberBindingModel"*/-->
-            <form th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
+            <form id="subscribe-form" th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
                 <input type="hidden" name="redirectUrl" th:value="${pageUrl}"/>
                 <div class="row d-flex justify-content-center">
                     <div class="col-auto">

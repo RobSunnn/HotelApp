@@ -1,0 +1,182 @@
+@media (max-width: 1450px) {
+    /* About Page */
+    .comments-and-form {
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    #comments-form {
+        width: 40vw;
+        min-height: 20vh;
+        margin-right: 0;
+    }
+
+    /* EO: About Page */
+
+}
+
+@media (max-width: 992px) {
+    /*Navbar*/
+    .form-inline {
+        width: 84%;
+        margin: 0 auto;
+        border: 3px solid white;
+        font-size: 1.2rem;
+    }
+
+    #carousel {
+        margin-top: -63px;
+    }
+
+    .nav-item {
+        /*background-color: #7e86a1;*/
+        width: 30%;
+        margin: 0.5em auto;
+        /*border: 3px solid white;*/
+        /*outline: 4px solid black;*/
+        /*border-radius: 30%;*/
+        opacity: 85%;
+    }
+
+    /*EO: Navbar*/
+    /*Index*/
+    #carousel .carousel-control-next,
+    #carousel > .carousel-control-prev {
+        height: 30vh;
+        margin-top: 18em;
+    }
+
+    /*EO: Index*/
+    /* About Page */
+    .card-info:last-child {
+        display: none;
+    }
+
+    .comments-and-form {
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    #comments-form {
+        width: 100ch;
+        max-width: 40ch;
+        min-height: 20vh;
+        margin-right: 0;
+    }
+
+    /* EO: About Page */
+    /* Contact Page */
+    .forms-container {
+        margin: 0 auto;
+    }
+
+    .form-and-text {
+        flex-wrap: wrap;
+    }
+
+    .content-text {
+        flex-wrap: wrap;
+    }
+
+    .content {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    #contact-form {
+        width: 70vw;
+    }
+
+    #subscribeForm {
+        width: 15rem;
+    }
+
+    /* EO: Contact Page */
+    /*Footer*/
+    #text-footer {
+        width: 60vw;
+        display: flex;
+        justify-content: center;
+
+    }
+
+    video {
+        width: 200px;
+    }
+
+    video:hover {
+        width: 300px;
+    }
+
+    /* EO: Footer */
+    /*Add Guest*/
+    option {
+        font-size: 0.9rem !important;
+    }
+
+    #checkboxes-container {
+        font-size: 0.9rem !important;
+    }
+
+    /*EO: Add Guest*/
+}
+
+@media (max-width: 770px) {
+    /*Profile*/
+    #main {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    /*EO: Profile*/
+    /*Register*/
+    .register-form {
+        width: 80%;
+    }
+
+    /*EO: Register*/
+    /*Tables*/
+    #table {
+        display: block;
+        padding: 0;
+    }
+
+    #table thead,
+    #table thead tr,
+    #table tbody,
+    #table tbody tr,
+    #table th,
+    #table td,
+    #table tr {
+        width: 100%;
+    }
+
+    #fullMessage > p {
+        width: 100% !important;
+    }
+
+    /*EO: Tables*/
+}
+
+@media (max-width: 450px) {
+    /*Footer*/
+    video {
+        width: 100px;
+    }
+
+    video:hover {
+        width: 150px;
+    }
+
+    /* EO: Footer */
+
+}
+
+@media (min-width: 992px) {
+    /*Index*/
+    #carousel {
+        margin-top: -63px;
+    }
+
+    /*EO: Index*/
+}

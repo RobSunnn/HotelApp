@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <title>Not approved comments</title>
+</head>
+<body class="hero" style="background-image: url('/images/hotel2.jpg');">
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+
+<div class="container p-3 bg-dark rounded">
+    <h2 class="text-white mt-2">New Comments</h2>
+        <table class="table" id="table">
+            <thead>
+            <tr>
+                <th style="width: 10%">Date</th>
+                <th style="width: 10%">Time</th>
+                <th style="width: 40%">Author</th>
+                <th>Comment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="comment, iterStat : ${allNotApprovedComments}"
+                th:data-full-text="${comment.commentContent}"
+                th:data-content-author="${comment.author}"
+                th:classappend="${iterStat.index == 0} ? 'selected'"
+                th:data-content-id="${comment.id}">
+                <td style="width: 10%" th:text="${#temporals.format(comment.created, 'yyyy-MM-dd')}"></td>
+                <td style="width: 10%" th:text="${#temporals.format(comment.created.toLocalTime(), 'HH')} + ':' + (${comment.created.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${comment.created.toLocalTime().getMinute()}"></td>
+                <td style="width: 40%" th:text="${#strings.abbreviate(comment.author, 30)}"></td>
+                <td th:text="${#strings.abbreviate(comment.commentContent, 50)}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 class="text-white">Comment content will be displayed here</h4>
+        <div id="fullMessage"></div>
+    <br><br>
+    <div class="buttons">
+        <a th:href="@{/moderator}" class="btn btn-info">Go back to your panel</a>
+        <form th:action="@{/moderator/approveComment}" th:method="POST">
+            <input type="hidden" id="selectedContentId" name="id"/>
+            <button type="submit" class="btn btn-success">Approve</button>
+        </form>
+        <form th:action="@{/moderator/approveAll}" th:method="POST">
+            <input type="hidden" name="id"/>
+            <button type="submit" class="btn btn-primary">Approve All</button>
+        </form>
+        <form th:action="@{/moderator/commentNotApproved}" th:method="POST">
+            <input type="hidden" id="notApprovedCommentId" name="id"/>
+            <button type="submit" class="btn btn-danger">Don't Approve</button>
+        </form>
+    </div>
+</div>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<script src="/js/tablesHelperScript.js"></script>
+</body>
+</html>

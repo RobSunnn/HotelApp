@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <title>Edit Profile</title>
+</head>
+
+<style>
+    body {
+        margin: 0 auto;
+    }
+
+    label {
+        width: 30rem;
+    }
+
+    small {
+        text-align: center;
+    }
+
+    input {
+        text-align: center;
+    }
+
+    .form-container {
+        display: flex;
+        text-align: left;
+        margin: 10em auto;
+        justify-content: center;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+</style>
+<body>
+
+<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+
+<div class="form-container">
+
+    <form id="edit-profile-form" action="/users/profile/editUserProfile" >
+        <div class="form-group">
+            <label> First name
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter your first name...">
+                <small id="firstNameError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label> Last name
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter your last name...">
+                <small id="lastNameError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label> Email
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email...">
+                <small id="emailError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label> Age
+                <input type="number" class="form-control" id="age" name="age" placeholder="Enter your age...">
+                <small id="ageError" class="invalid-feedback text-white bg-danger rounded"></small>
+            </label>
+        </div>
+
+        <div class="buttons">
+            <button type="submit" id="submit-btn" class="btn btn-success">Submit</button>
+            <a href="/users/profile" class="btn btn-info">Back</a>
+        </div>
+    </form>
+
+</div>
+<script src="/js/encryptionScript.js"></script>
+<script src="/js/editProfileScript.js"></script>
+<script src="/js/displayErrorsScript.js"></script>
+<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+</body>
+</html>

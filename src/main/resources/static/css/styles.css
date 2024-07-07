@@ -1,0 +1,52 @@
+@import url(reset.css);
+@import url(navbar.css);
+@import url(index.css);
+@import url(contact-page.css);
+@import url(about-page.css);
+@import url(panels.css);
+@import url(profile.css);
+@import url(tables.css);
+@import url(footer.css);
+@import url(responsive.css);
+
+.hero {
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.errors {
+    width: 50%;
+    margin: 0 auto;
+    font-size: 1.1rem;
+}
+
+.is-invalid~.invalid-feedback {
+    position: unset;
+}
+
+.container small {
+    text-align: center;
+    font-size: 0.9rem;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.login-form {
+    margin-top: 5em;
+    margin-bottom: 15em;
+}
+
+.register-form {
+    width:50%;
+    max-width: 100%;
+    padding: 1.2em;
+}
+
+.input-field {
+    width: 80%;
+    margin: 0 auto;
+}

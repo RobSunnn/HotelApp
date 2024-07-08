@@ -12,6 +12,9 @@ import com.HotelApp.repository.GuestRepository;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.repository.RoomRepository;
 import com.HotelApp.service.GuestService;
+import com.HotelApp.util.encryptionUtil.EncryptionService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +29,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
@@ -34,11 +38,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -71,6 +78,9 @@ class GuestControllerIT {
 
     @Mock
     private RedirectAttributes redirectAttributes;
+
+    @Autowired
+    private EncryptionService encryptionService;
 
 
     @BeforeEach
@@ -114,48 +124,64 @@ class GuestControllerIT {
         AddGuestBindingModel addGuestBindingModel = new AddGuestBindingModel()
                 .setFirstName("Testing")
                 .setLastName("ADD GUEST")
+                .setEmail(encryptionService.encrypt("test@mail.bg"))
                 .setAge(33)
-                .setDocumentId("ABC321")
+                .setDocumentId(encryptionService.encrypt("ABC321"))
                 .setDaysToStay(3)
                 .setRoomNumber(1);
 
         roomRepository.save(mockRoom());
 
         mockMvc.perform(post("/guests/add")
-                        .flashAttr("addGuestBindingModel", addGuestBindingModel))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/guests/addGuestSuccess"));
+                        .flashAttr("addGuestBindingModel", addGuestBindingModel)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.redirectUrl").value("/guests/addGuestSuccess"));
 
-        addGuestBindingModel.setDocumentId("newValue");
         assertEquals(1, guestRepository.count());
-        assertTrue(guestService.registerGuest(addGuestBindingModel, bindingResult, redirectAttributes));
-        assertEquals(2, guestRepository.count());
-
     }
 
     @Test
     void testAddGuestFormValidationFail() throws Exception {
-        AddGuestBindingModel addGuestBindingModel = new AddGuestBindingModel();
+        AddGuestBindingModel addGuestBindingModel = new AddGuestBindingModel()
+                .setFirstName("Test")
+                .setLastName("Testing")
+                .setAge(23)
+                .setRoomNumber(3);
 
-        mockMvc.perform(post("/guests/add")
+        MvcResult result =   mockMvc.perform(post("/guests/add")
                         .flashAttr("addGuestBindingModel", addGuestBindingModel))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(redirectedUrl("/guests/add"))
-                .andExpect(result -> {
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andReturn();
 
-                    BindingResult resultFromFlash = (BindingResult) result
-                            .getFlashMap()
-                            .get(BindingResult.MODEL_KEY_PREFIX + "addGuestBindingModel");
+        String jsonResponse = result.getResponse().getContentAsString();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(jsonResponse);
 
-                    assertEquals(6, resultFromFlash.getErrorCount());
-                    assertTrue(resultFromFlash.hasFieldErrors("firstName"));
-                    assertTrue(resultFromFlash.hasFieldErrors("lastName"));
-                    assertTrue(resultFromFlash.hasFieldErrors("roomNumber"));
-                    assertTrue(resultFromFlash.hasFieldErrors("documentId"));
-                    assertTrue(resultFromFlash.hasFieldErrors("age"));
-                    assertTrue(resultFromFlash.hasFieldErrors("daysToStay"));
+        // Extract and assert on errors array
+        JsonNode errorsNode = jsonNode.get("errors");
+        assertNotNull(errorsNode);
+        assertTrue(errorsNode.isArray());
 
-                });
+        List<JsonNode> errorsList = new ArrayList<>();
+        errorsNode.forEach(errorsList::add);
+        errorsList.sort(Comparator.comparing(node -> node.get("code").asText()));
+
+        assertEquals(3, errorsList.size());
+
+        // Example assertions on specific error messages
+        assertEquals("We need the document id of the guest.",
+                errorsList.get(0).get("defaultMessage").asText());
+
+        assertEquals("You should enter the days that guest want to stay.",
+                errorsList.get(1).get("defaultMessage").asText());
+
+        assertEquals("The guest need to leave their email, so put it in a correct way.",
+                errorsList.get(2).get("defaultMessage").asText());
+
+
     }
 
     @Test

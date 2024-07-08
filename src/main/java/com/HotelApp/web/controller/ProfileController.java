@@ -92,8 +92,8 @@ public class ProfileController {
     @PostMapping("/editUserProfile")
     @ResponseBody
     public ResponseEntity<?> editProfile(@Valid EditUserProfileBindingModel editUserProfileBindingModel,
-                                      BindingResult bindingResult,
-                                      RedirectAttributes redirectAttributes) {
+                                         BindingResult bindingResult,
+                                         RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         boolean editSuccessful = userService.editProfileInfo(
@@ -116,7 +116,8 @@ public class ProfileController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/changePassword")
-    public String changePasswordOfUser(@Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
+    @ResponseBody
+    public ResponseEntity<?> changePasswordOfUser(@Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
                                        BindingResult bindingResult,
                                        RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -127,11 +128,16 @@ public class ProfileController {
                 bindingResult,
                 redirectAttributes
         );
-
-        if (!changePasswordSuccessful) {
-            return "redirect:/users/profile/changePassword";
+        Map<String, Object> response = new HashMap<>();
+        if (changePasswordSuccessful) {
+            response.put("success", true);
+            response.put("redirectUrl", "/users/profile");
+            return ResponseEntity.ok().body(response);
+        } else {
+            response.put("success", false);
+            response.put("errors", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(response);
         }
-
-        return "redirect:/users/profile";
     }
 }
+

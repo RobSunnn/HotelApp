@@ -1,5 +1,6 @@
 package com.HotelApp.domain.models.binding;
 
+import com.HotelApp.validation.annotation.ValidEmail;
 import jakarta.validation.constraints.*;
 
 public class AddGuestBindingModel {
@@ -14,7 +15,7 @@ public class AddGuestBindingModel {
     @Size(max = 30, message = "Last name of the guest is too long.")
     private String lastName;
 
-    @Email(message = "The guest want to leave their email, so put it in a correct way.")
+    @ValidEmail(message = "The guest need to leave their email, so put it in a correct way.")
     @Size(max = 100, message = "Email of the guest is too long.")
     private String email;
 
@@ -25,7 +26,7 @@ public class AddGuestBindingModel {
     private Integer age;
 
     @NotBlank(message = "We need the document id of the guest.")
-    @Size(max = 50, message = "Document id of the guest is too long.")
+    @Size(max = 200, message = "Document id of the guest is too long.")
     private String documentId;
 
     @NotNull(message = "Room number is required!")

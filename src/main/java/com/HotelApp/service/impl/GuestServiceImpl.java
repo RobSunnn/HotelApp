@@ -1,6 +1,7 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.common.constants.BindingConstants;
+import com.HotelApp.common.constants.ValidationConstants;
 import com.HotelApp.domain.entity.GuestEntity;
 import com.HotelApp.domain.entity.HappyGuestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
@@ -12,9 +13,12 @@ import com.HotelApp.repository.RoomRepository;
 import com.HotelApp.service.GuestService;
 import com.HotelApp.service.HappyGuestService;
 import com.HotelApp.service.HotelService;
+import com.HotelApp.util.encryptionUtil.EncryptionService;
+import com.HotelApp.validation.annotation.ValidEmail;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
@@ -22,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.BindingConstants.GUEST_REGISTER_BINDING_MODEL;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
 @Service
@@ -31,14 +36,16 @@ public class GuestServiceImpl implements GuestService {
     private final RoomRepository roomRepository;
     private final HappyGuestService happyGuestService;
     private final HotelService hotelService;
+    private final EncryptionService encryptionService;
 
     public GuestServiceImpl(GuestRepository guestRepository,
                             RoomRepository roomRepository,
-                            HappyGuestService happyGuestService, HotelService hotelService) {
+                            HappyGuestService happyGuestService, HotelService hotelService, EncryptionService encryptionService) {
         this.guestRepository = guestRepository;
         this.roomRepository = roomRepository;
         this.happyGuestService = happyGuestService;
         this.hotelService = hotelService;
+        this.encryptionService = encryptionService;
     }
 
     @Override
@@ -48,25 +55,39 @@ public class GuestServiceImpl implements GuestService {
                                  RedirectAttributes redirectAttributes) {
         //TODO: check if documentID exits in database
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes
-                    .addFlashAttribute(BindingConstants.GUEST_REGISTER_BINDING_MODEL, addGuestBindingModel);
-            redirectAttributes
-                    .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH
-                            + BindingConstants.GUEST_REGISTER_BINDING_MODEL, bindingResult);
+        try {
+            String decryptedEmail = encryptionService.decrypt(addGuestBindingModel.getEmail());
 
+            String decryptedDocument = encryptionService.decrypt(addGuestBindingModel.getDocumentId());
+            if (decryptedDocument.isEmpty()) {
+                bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
+                        "documentId", "Document ID should not be empty!"));
+            }
+            addGuestBindingModel.setEmail(decryptedEmail);
+            addGuestBindingModel.setDocumentId(decryptedDocument);
+
+            if (bindingResult.hasErrors()) {
+                redirectAttributes
+                        .addFlashAttribute(GUEST_REGISTER_BINDING_MODEL, addGuestBindingModel);
+                redirectAttributes
+                        .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH
+                                + GUEST_REGISTER_BINDING_MODEL, bindingResult);
+
+                return false;
+            }
+
+            RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
+            HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+
+            hotelService.takeMoney(room.getPrice().multiply(BigDecimal.valueOf(addGuestBindingModel.getDaysToStay())));
+            room.setReserved(true);
+            roomRepository.save(room);
+            GuestEntity guest = guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
+
+            return guest.getDocumentId() != null;
+        } catch (Exception e) {
             return false;
         }
-
-        RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
-        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
-
-        hotelService.takeMoney(room.getPrice().multiply(BigDecimal.valueOf(addGuestBindingModel.getDaysToStay())));
-        room.setReserved(true);
-        roomRepository.save(room);
-        GuestEntity guest = guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
-
-        return guest.getDocumentId() != null;
     }
 
     @Override

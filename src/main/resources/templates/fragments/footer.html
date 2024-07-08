@@ -31,8 +31,7 @@
             </a>
         </section>
         <section>
-            <!--/*@thymesVar id="addSubscriberBindingModel" type="AddSubscriberBindingModel"*/-->
-            <form id="subscribe-form" th:action="@{/contact/subscribe}" th:method="POST" th:object="${addSubscriberBindingModel}">
+            <form id="subscribe-form" th:action="@{/contact/subscribe}" th:method="POST">
                 <input type="hidden" name="redirectUrl" th:value="${pageUrl}"/>
                 <div class="row d-flex justify-content-center">
                     <div class="col-auto">
@@ -42,22 +41,20 @@
                     </div>
                     <div class="col-md-5 col-12">
                         <div data-mdb-input-init class="form-outline mb-4 border">
-                            <input type="email" required id="form" class="form-control text-white"
-                                   name="subscriberEmail"/>
-                            <label class="form-label text-white" for="form">Email address</label>
+                            <input type="text" id="subscriberEmail" class="form-control text-white"/>
+                            <label class="form-label text-white" for="subscriberEmail">Email address</label>
+                            <div id="subscriberEmailError" class="invalid-feedback text-white bg-danger rounded"></div>
+                        </div>
+                        <div class="col-auto">
+                            <button data-mdb-ripple-init type="submit" id="subscribe-btn" class="btn btn-primary mb-4">
+                                Subscribe
+                            </button>
                         </div>
                     </div>
-                    <div class="col-auto">
-                        <button data-mdb-ripple-init type="submit" id="subscribe-btn" class="btn btn-primary mb-4">
-                            Subscribe
-                        </button>
+                    <div id="successSubscribeMessage" class="alert alert-success text-black rounded mt-3"
+                         style="display:none;">
+                        <small></small>
                     </div>
-                </div>
-                <div th:if="${successSubscribeMessage}" style="color: green;">
-                    <p th:text="${successSubscribeMessage}"></p>
-                </div>
-                <div th:if="${failMessage}" style="color: red;">
-                    <p th:text="${failMessage}"></p>
                 </div>
             </form>
         </section>
@@ -106,7 +103,59 @@
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
         © 2024<a class="text-reset fw-bold" href="#"></a>
     </div>
+    <script src="/js/encryptionScript.js"></script>
+    <script src="/js/displayErrorsScript.js"></script>
+    <script>
+        document.getElementById("subscribe-form").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+            const subscriberEmail = document.getElementById('subscriberEmail').value;
+            console.log(subscriberEmail)
+
+            let encryptedEmail = await encryptData(subscriberEmail);
+            const formData = new FormData();
+            formData.append('subscriberEmail', encryptedEmail);
+            console.log(encryptedEmail)
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfTokenElement.value,
+                    }
+                });
+
+                const responseData = await response.json();
+
+
+                if (responseData.success) {
+                    if (responseData.redirectUrl) {
+                        sessionStorage.setItem('subscribeSuccess', "Thank you for subscribing!");
+                        window.location.href = responseData.redirectUrl;
+
+                    }
+                } else {
+                    if (responseData.errors) {
+                        displayErrors(responseData.errors);
+                    }
+                }
+            } catch (error) {
+                document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
+            }
+
+        })
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const successMessage = sessionStorage.getItem('subscribeSuccess');
+            if (successMessage) {
+                const messageElement = document.getElementById('successSubscribeMessage');
+                messageElement.querySelector('small').textContent = successMessage;
+                messageElement.style.display = 'block';
+                messageElement.scrollIntoView({behavior: 'smooth', block: 'center'});
+                sessionStorage.removeItem('subscribeSuccess');
+            }
+        });
+    </script>
 </footer>
-<script src="/js/subscribeScript.js"></script>
+
 </body>
 </html>

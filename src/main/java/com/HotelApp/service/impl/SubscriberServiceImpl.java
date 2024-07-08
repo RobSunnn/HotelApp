@@ -7,6 +7,7 @@ import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.repository.SubscriberRepository;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.service.SubscriberService;
+import com.HotelApp.util.encryptionUtil.EncryptionService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,13 +22,17 @@ public class SubscriberServiceImpl implements SubscriberService {
 
     private final HotelService hotelService;
 
-    public SubscriberServiceImpl(SubscriberRepository subscriberRepository, HotelService hotelService) {
+    private final EncryptionService encryptionService;
+
+    public SubscriberServiceImpl(SubscriberRepository subscriberRepository, HotelService hotelService, EncryptionService encryptionService) {
         this.subscriberRepository = subscriberRepository;
         this.hotelService = hotelService;
+        this.encryptionService = encryptionService;
     }
 
+
     @Override
-    public void addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel,
+    public boolean addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
 
@@ -36,25 +41,28 @@ public class SubscriberServiceImpl implements SubscriberService {
             redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.SUBSCRIBER_BINDING_MODEL, bindingResult);
             redirectAttributes.addFlashAttribute("failMessage", "Please enter valid email.");
 
-            return;
+            return false;
         }
 
-        Optional<SubscriberEntity> checkSubscriber = subscriberRepository.findByEmail(addSubscriberBindingModel.getSubscriberEmail());
-        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+        try {
+            String decryptedEmail = encryptionService.decrypt(addSubscriberBindingModel.getSubscriberEmail());
+            addSubscriberBindingModel.setSubscriberEmail(decryptedEmail);
+            Optional<SubscriberEntity> checkSubscriber = subscriberRepository.findByEmail(decryptedEmail);
+            HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
 
-        if (checkSubscriber.isPresent()) {
-            SubscriberEntity subscriber = checkSubscriber.get();
-            subscriber.setCounterOfSubscriptions(subscriber.getCounterOfSubscriptions() + 1);
-            sendBonusVoucher();
-            subscriberRepository.save(subscriber);
-            redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
+            if (checkSubscriber.isPresent()) {
+                SubscriberEntity subscriber = checkSubscriber.get();
+                subscriber.setCounterOfSubscriptions(subscriber.getCounterOfSubscriptions() + 1);
+                sendBonusVoucher();
+                subscriberRepository.save(subscriber);
+                return true;
+            }
 
-            return;
+            subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-
-        redirectAttributes.addFlashAttribute("successSubscribeMessage", "Thank you for subscribing!");
-        subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
-
     }
 
     private void sendBonusVoucher() {

@@ -6,6 +6,7 @@ import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.SubscriberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -60,13 +61,27 @@ public class ContactController {
 
 
     @PostMapping("/subscribe")
-    public String subscribe(@Valid @ModelAttribute AddSubscriberBindingModel addSubscriberBindingModel,
+    @ResponseBody
+    public ResponseEntity<?> subscribe(@Valid AddSubscriberBindingModel addSubscriberBindingModel,
                             BindingResult bindingResult,
                             RedirectAttributes redirectAttributes,
                             HttpServletRequest request) {
         String redirectUrl = request.getHeader("referer").split("8080")[1];
-        subscriberService.addNewSubscriber(addSubscriberBindingModel, bindingResult, redirectAttributes);
-        return "redirect:" + redirectUrl;
+        boolean isSuccessful = subscriberService.addNewSubscriber(addSubscriberBindingModel, bindingResult, redirectAttributes);
+
+        Map<String, Object> responseBody = new HashMap<>();
+        if (isSuccessful) {
+            responseBody.put("success", true);
+            responseBody.put("redirectUrl", redirectUrl);
+            responseBody.put("message", "Thank you for subscribing!");
+
+            return ResponseEntity.ok().body(responseBody);
+        } else {
+            responseBody.put("success", false);
+            responseBody.put("errors", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(responseBody);
+        }
+
     }
 
     @PostMapping("/contactForm")

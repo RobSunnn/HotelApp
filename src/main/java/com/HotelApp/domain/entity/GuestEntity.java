@@ -17,7 +17,7 @@ public class GuestEntity extends BaseEntity {
     @Column(nullable = false)
     private String lastName;
 
-    @Column //TODO: think if we need the email?
+    @Column
     private String email;
 
     @Column(nullable = false)

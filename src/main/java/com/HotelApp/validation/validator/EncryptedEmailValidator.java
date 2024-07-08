@@ -5,7 +5,6 @@ import com.HotelApp.validation.annotation.ValidEmail;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import static com.HotelApp.util.encryptionUtil.EncryptionUtil.decrypt;
 
 public class EncryptedEmailValidator implements ConstraintValidator<ValidEmail, String> {
     private final EncryptionService encryptionService;

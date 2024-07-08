@@ -1,59 +1,146 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const userToken = /*[[${userToken}]]*/ 'userTokenPlaceholder';
+    const userToken = /*[[${userToken}]]*/ 'userToken';
 
     fetch(`/users/profile/details?token=${userToken}`)
         .then(response => response.json())
         .then(userDetails => {
-            document.getElementById('firstName').value = userDetails.firstName;
-            document.getElementById('lastName').value = userDetails.lastName;
-            document.getElementById('email').value = userDetails.email;
-            document.getElementById('age').value = userDetails.age;
+            document.getElementById('profile-picture-image').src = userDetails.profilePictureBase64 ? 'data:image/jpeg;base64,' + userDetails.profilePictureBase64 : '/images/minion.gif';
+            document.getElementById('fullName').innerText = userDetails.fullName;
+            document.getElementById('age').innerText = userDetails.age + ' years';
+            document.getElementById('email').innerText = userDetails.email;
+
+            const rolesContainer = document.getElementById('roles');
+            userDetails.roles.forEach(role => {
+                const roleElement = document.createElement('span');
+                roleElement.className = 'bg-info p-1 m-1 px-4 rounded text-white';
+                roleElement.innerText = role.name;
+                rolesContainer.appendChild(roleElement);
+            });
         })
         .catch(error => {
             console.error('Error fetching user details:', error);
         });
 });
+const editProfileForm = document.getElementById("edit-profile-form");
+if (editProfileForm) {
 
-document.getElementById("edit-profile-form").addEventListener("submit", async function (e) {
-    e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function() {
+        const userToken = /*[[${userToken}]]*/ 'userTokenPlaceholder';
 
-    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-    const email = document.getElementById('email').value;
-    const age = document.getElementById('age').value;
+        fetch(`/users/profile/details?token=${userToken}`)
+            .then(response => response.json())
+            .then(userDetails => {
+                document.getElementById('firstName').value = userDetails.firstName;
+                document.getElementById('lastName').value = userDetails.lastName;
+                document.getElementById('email').value = userDetails.email;
+                document.getElementById('age').value = userDetails.age;
+            })
+            .catch(error => {
+                console.error('Error fetching user details:', error);
+            });
+    });
 
-    let encryptedEmail = await encryptData(email);
 
-    const formData = new FormData();
-    formData.append('firstName', firstName);
-    formData.append('lastName', lastName);
-    formData.append('email', encryptedEmail);
-    formData.append('age', age);
+    editProfileForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-    try {
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': csrfTokenElement.value,
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const email = document.getElementById('email').value;
+        const age = document.getElementById('age').value;
+
+        let encryptedEmail = await encryptData(email);
+
+        const formData = new FormData();
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('email', encryptedEmail);
+        formData.append('age', age);
+
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': csrfTokenElement.value,
+                }
+            });
+
+            const responseData = await response.json();
+
+
+            if (responseData.success) {
+                if (responseData.redirectUrl) {
+                    window.location.href = responseData.redirectUrl;
+                }
+            } else {
+                if (responseData.errors) {
+                    displayErrors(responseData.errors);
+                }
             }
-        });
-
-        const responseData = await response.json();
-
-
-        if (responseData.success) {
-            if (responseData.redirectUrl) {
-                window.location.href = responseData.redirectUrl;
-            }
-        } else {
-            if (responseData.errors) {
-                displayErrors(responseData.errors);
-            }
+        } catch (error) {
+            document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
         }
-    } catch (error) {
-        document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
-    }
 
-})
+    })
+}
+
+let changePasswordForm = document.getElementById('change-password-form');
+if (changePasswordForm) {
+    changePasswordForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+        let encryptedOldPassword = await encryptData(oldPassword);
+        let encryptedNewPassword = await encryptData(newPassword);
+        let encryptedConfirmNewPassword = await encryptData(confirmNewPassword);
+        console.log(encryptedOldPassword)
+
+        const formData = new FormData();
+        formData.append('oldPassword', encryptedOldPassword);
+        formData.append('newPassword', encryptedNewPassword);
+        formData.append('confirmNewPassword', encryptedConfirmNewPassword);
+
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': csrfTokenElement.value,
+                }
+            });
+
+            const responseData = await response.json();
+
+            if (responseData.success) {
+                if (responseData.redirectUrl) {
+                    sessionStorage.setItem('successPasswordChange', "Your password is changed successfully!");
+                    window.location.href = responseData.redirectUrl;
+                }
+            } else {
+                if (responseData.errors) {
+                    displayErrors(responseData.errors);
+                }
+            }
+        } catch (error) {
+            document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
+        }
+
+    })
+
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const successMessage = sessionStorage.getItem('successPasswordChange');
+    if (successMessage) {
+        const messageElement = document.getElementById('successMessage');
+        messageElement.querySelector('small').textContent = successMessage;
+        messageElement.style.display = 'block';
+        sessionStorage.removeItem('successPasswordChange');
+    }
+});

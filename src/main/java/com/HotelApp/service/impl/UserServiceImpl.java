@@ -14,7 +14,6 @@ import com.HotelApp.service.RoleService;
 import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
-import com.HotelApp.util.encryptionUtil.EncryptionUtil;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -283,14 +282,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean changeUserPassword(String userEmail,
                                       ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
-                                      BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes) {
         UserEntity user = findUser(userEmail);
+        String decryptedOldPassword = userTransformationService.decrypt(changeUserPasswordBindingModel.getOldPassword());
+        String decryptedNewPassword = userTransformationService.decrypt(changeUserPasswordBindingModel.getNewPassword());
+        String decryptedConfirmNewPassword = userTransformationService.decrypt(changeUserPasswordBindingModel.getConfirmNewPassword());
 
-        if (!passwordEncoder().matches(changeUserPasswordBindingModel.getOldPassword(), user.getPassword())) {
+        if (!passwordEncoder().matches(decryptedOldPassword, user.getPassword())) {
             bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
                     "oldPassword", ValidationConstants.OLD_PASS_MISMATCH));
         }
-        if (!changeUserPasswordBindingModel.getNewPassword().equals(changeUserPasswordBindingModel.getConfirmNewPassword())) {
+        if (decryptedNewPassword.isEmpty()) {
+            bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
+                    "newPassword", ValidationConstants.EMPTY_PASSWORD));
+        }
+        if (!decryptedNewPassword.equals(decryptedConfirmNewPassword) || decryptedConfirmNewPassword.isEmpty()) {
             bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
                     "confirmNewPassword", ValidationConstants.CONFIRM_PASSWORD));
         }
@@ -304,7 +311,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        user.setPassword(passwordEncoder().encode(changeUserPasswordBindingModel.getNewPassword()));
+        user.setPassword(passwordEncoder().encode(decryptedNewPassword));
         userRepository.save(user);
 
         userTransformationService.reAuthenticateUser(userEmail);

@@ -19,6 +19,9 @@
                     <div th:if="${successMessage}" class="alert alert-success mt-1" role="alert">
                         <span th:text="${successMessage}"></span>
                     </div>
+                    <div id="successMessage" class="alert alert-success text-black rounded mt-3" style="display:none;">
+                        <small></small>
+                    </div>
                     <div th:if="${errorMessage}" class="alert alert-danger mt-1" role="alert">
                         <span th:text="${errorMessage}"></span>
                     </div>
@@ -58,31 +61,7 @@
         </div>
     </div>
 </main>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const userToken = /*[[${userToken}]]*/ 'userToken';
-
-        fetch(`/users/profile/details?token=${userToken}`)
-            .then(response => response.json())
-            .then(userDetails => {
-                document.getElementById('profile-picture-image').src = userDetails.profilePictureBase64 ? 'data:image/jpeg;base64,' + userDetails.profilePictureBase64 : '/images/minion.gif';
-                document.getElementById('fullName').innerText = userDetails.fullName;
-                document.getElementById('age').innerText = userDetails.age + ' years';
-                document.getElementById('email').innerText = userDetails.email;
-
-                const rolesContainer = document.getElementById('roles');
-                userDetails.roles.forEach(role => {
-                    const roleElement = document.createElement('span');
-                    roleElement.className = 'bg-info p-1 m-1 px-4 rounded text-white';
-                    roleElement.innerText = role.name;
-                    rolesContainer.appendChild(roleElement);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching user details:', error);
-            });
-    });
-</script>
+<script src="/js/editProfileScript.js"></script>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 <script src="/js/fileValidationScript.js"></script>

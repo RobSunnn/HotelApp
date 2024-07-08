@@ -10,7 +10,7 @@
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <main>
     <div class="login-form">
-        <form id="login-form" action="/users/login" method="post">
+        <form id="login-form" th:action="@{/users/login}" th:method="POST">
             <div class="container mt-5">
                 <div class="row justify-content-center">
                     <div class="col-md-6">

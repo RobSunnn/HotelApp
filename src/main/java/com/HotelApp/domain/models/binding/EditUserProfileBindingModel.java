@@ -28,10 +28,6 @@ public class EditUserProfileBindingModel {
     @Max(value = 100, message = INVALID_AGE_OVER_100)
     private Integer age;
 
-    private String iv;
-
-    private String key;
-
     public EditUserProfileBindingModel() {
     }
 
@@ -71,21 +67,4 @@ public class EditUserProfileBindingModel {
         return this;
     }
 
-    public String getIv() {
-        return iv;
-    }
-
-    public EditUserProfileBindingModel setIv(String iv) {
-        this.iv = iv;
-        return this;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public EditUserProfileBindingModel setKey(String key) {
-        this.key = key;
-        return this;
-    }
 }

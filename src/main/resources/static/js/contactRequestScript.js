@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 document.getElementById("contact-form").addEventListener("submit", async function (e) {
-    e.preventDefault()
+    e.preventDefault();
     const name = document.getElementById('name').value;
     const phoneNumber = document.getElementById('contactPhoneNumber').value;
     const email = document.getElementById('email').value;
@@ -44,7 +44,6 @@ document.getElementById("contact-form").addEventListener("submit", async functio
             if (responseData.redirectUrl) {
                 sessionStorage.setItem('successContactRequestMessage', "Your request was successful! Thank you.");
                 window.location.href = responseData.redirectUrl;
-                // document.getElementById('success').textContent = "Contact request sent successfully."
             }
         } else {
             if (responseData.errors) {

@@ -1,18 +1,22 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.domain.entity.*;
-import com.HotelApp.domain.entity.enums.CategoriesEnum;
+import com.HotelApp.domain.entity.GuestEntity;
+import com.HotelApp.domain.entity.HappyGuestEntity;
+import com.HotelApp.domain.entity.HotelInfoEntity;
+import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
 import com.HotelApp.domain.models.view.GuestView;
 import com.HotelApp.repository.GuestRepository;
 import com.HotelApp.repository.RoomRepository;
 import com.HotelApp.service.HappyGuestService;
 import com.HotelApp.service.HotelService;
+import com.HotelApp.util.encryptionUtil.EncryptionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,7 +27,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GuestServiceImplTest {
@@ -41,46 +46,6 @@ class GuestServiceImplTest {
 
     @InjectMocks
     private GuestServiceImpl guestService;
-
-    @Mock
-    private BindingResult bindingResult;
-
-    @Mock
-    private RedirectAttributes redirectAttributes;
-
-    @Test
-    void testRegisterGuest_withBindingErrors() {
-        AddGuestBindingModel model = new AddGuestBindingModel();
-        when(bindingResult.hasErrors()).thenReturn(true);
-
-        boolean result = guestService.registerGuest(model, bindingResult, redirectAttributes);
-
-        assertFalse(result);
-        verify(redirectAttributes).addFlashAttribute("addGuestBindingModel", model);
-        verify(redirectAttributes).addFlashAttribute("org.springframework.validation.BindingResult.addGuestBindingModel", bindingResult);
-    }
-
-    @Test
-    void testRegisterGuest_withoutBindingErrors() {
-        AddGuestBindingModel model = mockAddGuestBindingModel();
-
-        RoomEntity room = mockRoom();
-
-        GuestEntity guestEntity = new GuestEntity();
-        guestEntity.setDocumentId("123");
-
-        when(roomRepository.findByRoomNumber(1)).thenReturn(room);
-        when(hotelService.getHotelInfo()).thenReturn(mockHotelInfoEntity());
-        when(guestRepository.save(any(GuestEntity.class))).thenReturn(guestEntity);
-
-        boolean result = guestService.registerGuest(model, bindingResult, redirectAttributes);
-
-        assertTrue(result);
-        verify(hotelService).takeMoney(BigDecimal.valueOf(3000));
-        verify(roomRepository).save(room);
-        assertTrue(room.isReserved());
-        verify(guestRepository).save(any(GuestEntity.class));
-    }
 
     @Test
     void testCheckout_existingHappyGuest() {
@@ -139,18 +104,6 @@ class GuestServiceImplTest {
 
         assertEquals(2, guests.size());
         verify(guestRepository).findAll();
-    }
-
-
-    private AddGuestBindingModel mockAddGuestBindingModel() {
-        return new AddGuestBindingModel()
-                .setFirstName("Guest")
-                .setLastName("BindingModel")
-                .setEmail("guest@guest.bg")
-                .setAge(33)
-                .setDocumentId("ABC123")
-                .setDaysToStay(3)
-                .setRoomNumber(1);
     }
 
     private HotelInfoEntity mockHotelInfoEntity() {

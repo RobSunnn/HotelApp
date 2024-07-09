@@ -139,7 +139,7 @@ class ContactControllerIT {
     @Test
     void subscribe_With_ValidEmail() throws Exception {
         AddSubscriberBindingModel addSubscriberBindingModel = new AddSubscriberBindingModel()
-                .setSubscriberEmail("valid@email.bg");
+                .setSubscriberEmail(encryptionService.encrypt("valid@email.bg"));
 
         String refererUrl = "http://localhost:8080/somePage";
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -149,9 +149,10 @@ class ContactControllerIT {
                         .flashAttr("addSubscriberBindingModel", addSubscriberBindingModel)
                         .header("referer", refererUrl)
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/somePage"))
-                .andExpect(flash().attribute("successSubscribeMessage", "Thank you for subscribing!"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.redirectUrl").value("/somePage"))
+                .andExpect(jsonPath("$.message").value("Thank you for subscribing!"));
 
         assertEquals(1, subscriberRepository.count());
     }
@@ -169,9 +170,8 @@ class ContactControllerIT {
                         .flashAttr("addSubscriberBindingModel", addSubscriberBindingModel)
                         .header("referer", refererUrl)
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/somePage"))
-                .andExpect(flash().attribute("failMessage", "Please enter valid email."));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false));
 
         assertEquals(0, subscriberRepository.count());
     }

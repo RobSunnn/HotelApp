@@ -67,7 +67,12 @@ public class ContactController {
                             RedirectAttributes redirectAttributes,
                             HttpServletRequest request) {
         String redirectUrl = request.getHeader("referer").split("8080")[1];
-        boolean isSuccessful = subscriberService.addNewSubscriber(addSubscriberBindingModel, bindingResult, redirectAttributes);
+
+        boolean isSuccessful = subscriberService.addNewSubscriber(
+                addSubscriberBindingModel,
+                bindingResult,
+                redirectAttributes
+        );
 
         Map<String, Object> responseBody = new HashMap<>();
         if (isSuccessful) {

@@ -1,13 +1,24 @@
-// let subscribeButton = document.getElementById('subscribe-btn');
-// subscribeButton.addEventListener('click', function () {
-//     console.log('Hello');
-//     document.getElementById('.subscribe-btn').scrollIntoView({behavior: 'smooth'});
-// });
+document.getElementById("subscribe-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const csrfTokenElement = document.querySelector('input[name="_csrf"]');
+    const subscriberEmail = document.getElementById('subscriberEmail').value;
+    console.log(subscriberEmail)
 
-document.getElementById('subscribe-form').addEventListener('submit', function (event) {
-    event.preventDefault();  // Prevent the default form submission
-    console.log('Hello');
-    document.getElementById('subscribe-form').scrollIntoView({behavior: 'smooth'});
-    // Optionally, you can submit the form programmatically after the scroll
-    // event.target.submit();
+    let encryptedEmail = await encryptData(subscriberEmail);
+    const formData = new FormData();
+    formData.append('subscriberEmail', encryptedEmail);
+
+    let action = this.action;
+    await sendData(action, formData, csrfTokenElement);
+})
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const successMessage = sessionStorage.getItem('subscribeSuccess');
+    if (successMessage) {
+        const messageElement = document.getElementById('successSubscribeMessage');
+        messageElement.querySelector('small').textContent = successMessage;
+        messageElement.style.display = 'block';
+        messageElement.scrollIntoView({behavior: 'smooth', block: 'center'});
+        sessionStorage.removeItem('subscribeSuccess');
+    }
 });

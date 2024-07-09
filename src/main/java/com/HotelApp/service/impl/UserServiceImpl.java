@@ -242,8 +242,10 @@ public class UserServiceImpl implements UserService {
         );
 
         if (decryptedEmail.isEmpty()) {
-            bindingResult.addError(new FieldError("userRegisterBindingModel",
-                    "email", "Please enter email."));
+            bindingResult.addError(new FieldError(
+                    "userRegisterBindingModel",
+                    "email", "Please enter email.")
+            );
             return false;
         }
 
@@ -251,16 +253,21 @@ public class UserServiceImpl implements UserService {
         boolean emailChanged = !user.getEmail().equals(decryptedEmail);
 
         if (checkIfEmailExist(decryptedEmail) && emailChanged) {
-            bindingResult.addError(new FieldError("userRegisterBindingModel",
-                    "email", ValidationConstants.EMAIL_EXIST));
+            bindingResult.addError(new FieldError(
+                    "userRegisterBindingModel",
+                    "email", ValidationConstants.EMAIL_EXIST)
+            );
         }
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes
-                    .addFlashAttribute("editUserProfileBindingModel", editUserProfileBindingModel);
-            redirectAttributes
-                    .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH +
-                            "editUserProfileBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute(
+                    "editUserProfileBindingModel",
+                    editUserProfileBindingModel
+            );
+            redirectAttributes.addFlashAttribute(
+                    BindingConstants.BINDING_RESULT_PATH + "editUserProfileBindingModel",
+                    bindingResult
+            );
             return false;
         }
 
@@ -272,8 +279,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         userTransformationService.reAuthenticateUser(decryptedEmail);
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Profile info updated successfully.");
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                "Profile info updated successfully."
+        );
         userTransformationService.evictUserViewsCache();
 
         return true;
@@ -285,9 +294,15 @@ public class UserServiceImpl implements UserService {
                                       BindingResult bindingResult,
                                       RedirectAttributes redirectAttributes) {
         UserEntity user = findUser(userEmail);
-        String decryptedOldPassword = userTransformationService.decrypt(changeUserPasswordBindingModel.getOldPassword());
-        String decryptedNewPassword = userTransformationService.decrypt(changeUserPasswordBindingModel.getNewPassword());
-        String decryptedConfirmNewPassword = userTransformationService.decrypt(changeUserPasswordBindingModel.getConfirmNewPassword());
+        String decryptedOldPassword = userTransformationService.decrypt(
+                changeUserPasswordBindingModel.getOldPassword()
+        );
+        String decryptedNewPassword = userTransformationService.decrypt(
+                changeUserPasswordBindingModel.getNewPassword()
+        );
+        String decryptedConfirmNewPassword = userTransformationService.decrypt(
+                changeUserPasswordBindingModel.getConfirmNewPassword()
+        );
 
         if (!passwordEncoder().matches(decryptedOldPassword, user.getPassword())) {
             bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
@@ -303,11 +318,14 @@ public class UserServiceImpl implements UserService {
         }
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes
-                    .addFlashAttribute(CHANGE_PASSWORD_BINDING_MODEL, changeUserPasswordBindingModel);
-            redirectAttributes
-                    .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH +
-                            CHANGE_PASSWORD_BINDING_MODEL, bindingResult);
+            redirectAttributes.addFlashAttribute(
+                    CHANGE_PASSWORD_BINDING_MODEL,
+                    changeUserPasswordBindingModel
+            );
+            redirectAttributes.addFlashAttribute(
+                    BindingConstants.BINDING_RESULT_PATH + CHANGE_PASSWORD_BINDING_MODEL,
+                    bindingResult
+            );
             return false;
         }
 
@@ -315,8 +333,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         userTransformationService.reAuthenticateUser(userEmail);
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Password changed successfully.");
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                "Password changed successfully."
+        );
 
         return true;
     }

@@ -1,13 +1,3 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    const successMessage = sessionStorage.getItem('successContactRequestMessage');
-    if (successMessage) {
-        const messageElement = document.getElementById('successMessage');
-        messageElement.querySelector('small').textContent = successMessage;
-        messageElement.style.display = 'block';
-        sessionStorage.removeItem('successContactRequestMessage');
-    }
-});
-
 document.getElementById("contact-form").addEventListener("submit", async function (e) {
     e.preventDefault();
     const name = document.getElementById('name').value;
@@ -22,7 +12,6 @@ document.getElementById("contact-form").addEventListener("submit", async functio
     const csrfTokenElement = document.querySelector('input[name="_csrf"]');
 
     const formData = new FormData();
-
     formData.append('name', name);
     formData.append('email', encryptedEmail);
     if (phoneNumber) {
@@ -30,28 +19,16 @@ document.getElementById("contact-form").addEventListener("submit", async functio
     }
     formData.append('message', message);
 
-    try {
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': csrfTokenElement.value,
-            }
-        });
-        const responseData = await response.json();
+    let action = this.action;
+    await sendData(action, formData, csrfTokenElement);
+});
 
-        if (responseData.success) {
-            if (responseData.redirectUrl) {
-                sessionStorage.setItem('successContactRequestMessage', "Your request was successful! Thank you.");
-                window.location.href = responseData.redirectUrl;
-            }
-        } else {
-            if (responseData.errors) {
-                displayErrors(responseData.errors);
-            }
-        }
-    } catch (error) {
-        document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
+document.addEventListener('DOMContentLoaded', (event) => {
+    const successMessage = sessionStorage.getItem('successContactRequestMessage');
+    if (successMessage) {
+        const messageElement = document.getElementById('successMessage');
+        messageElement.querySelector('small').textContent = successMessage;
+        messageElement.style.display = 'block';
+        sessionStorage.removeItem('successContactRequestMessage');
     }
-
-})
+});

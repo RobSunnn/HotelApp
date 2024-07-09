@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Footer</title>
@@ -105,57 +104,7 @@
     </div>
     <script src="/js/encryptionScript.js"></script>
     <script src="/js/displayErrorsScript.js"></script>
-    <script>
-        document.getElementById("subscribe-form").addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const csrfTokenElement = document.querySelector('input[name="_csrf"]');
-            const subscriberEmail = document.getElementById('subscriberEmail').value;
-            console.log(subscriberEmail)
-
-            let encryptedEmail = await encryptData(subscriberEmail);
-            const formData = new FormData();
-            formData.append('subscriberEmail', encryptedEmail);
-            console.log(encryptedEmail)
-            try {
-                const response = await fetch(this.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfTokenElement.value,
-                    }
-                });
-
-                const responseData = await response.json();
-
-
-                if (responseData.success) {
-                    if (responseData.redirectUrl) {
-                        sessionStorage.setItem('subscribeSuccess', "Thank you for subscribing!");
-                        window.location.href = responseData.redirectUrl;
-
-                    }
-                } else {
-                    if (responseData.errors) {
-                        displayErrors(responseData.errors);
-                    }
-                }
-            } catch (error) {
-                document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
-            }
-
-        })
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const successMessage = sessionStorage.getItem('subscribeSuccess');
-            if (successMessage) {
-                const messageElement = document.getElementById('successSubscribeMessage');
-                messageElement.querySelector('small').textContent = successMessage;
-                messageElement.style.display = 'block';
-                messageElement.scrollIntoView({behavior: 'smooth', block: 'center'});
-                sessionStorage.removeItem('subscribeSuccess');
-            }
-        });
-    </script>
+    <script src="/js/subscribeScript.js"></script>
 </footer>
-
 </body>
 </html>

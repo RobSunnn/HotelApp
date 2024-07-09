@@ -1,32 +1,32 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const userToken = /*[[${userToken}]]*/ 'userToken';
+const userToken = /*[[${userToken}]]*/ 'userToken';
 
-    fetch(`/users/profile/details?token=${userToken}`)
-        .then(response => response.json())
-        .then(userDetails => {
-            document.getElementById('profile-picture-image').src = userDetails.profilePictureBase64 ? 'data:image/jpeg;base64,' + userDetails.profilePictureBase64 : '/images/minion.gif';
-            document.getElementById('fullName').innerText = userDetails.fullName;
-            document.getElementById('age').innerText = userDetails.age + ' years';
-            document.getElementById('email').innerText = userDetails.email;
+document.addEventListener('DOMContentLoaded', function () {
+    let userPicture = document.getElementById('profile-picture-image');
+    if (userPicture) {
+        fetch(`/users/profile/details?token=${userToken}`)
+            .then(response => response.json())
+            .then(userDetails => {
+                userPicture.src = userDetails.profilePictureBase64 ? 'data:image/jpeg;base64,' + userDetails.profilePictureBase64 : '/images/minion.gif';
+                document.getElementById('fullName').innerText = userDetails.fullName;
+                document.getElementById('age').innerText = userDetails.age + ' years';
+                document.getElementById('email').innerText = userDetails.email;
 
-            const rolesContainer = document.getElementById('roles');
-            userDetails.roles.forEach(role => {
-                const roleElement = document.createElement('span');
-                roleElement.className = 'bg-info p-1 m-1 px-4 rounded text-white';
-                roleElement.innerText = role.name;
-                rolesContainer.appendChild(roleElement);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching user details:', error);
+                const rolesContainer = document.getElementById('roles');
+                userDetails.roles.forEach(role => {
+                    const roleElement = document.createElement('span');
+                    roleElement.className = 'bg-info p-1 m-1 px-4 rounded text-white';
+                    roleElement.innerText = role.name;
+                    rolesContainer.appendChild(roleElement);
+                });
+            }).catch(error => {
+            console.log('Error fetching user details:', error);
         });
+    }
 });
+
 const editProfileForm = document.getElementById("edit-profile-form");
 if (editProfileForm) {
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const userToken = /*[[${userToken}]]*/ 'userTokenPlaceholder';
-
+    document.addEventListener('DOMContentLoaded', function () {
         fetch(`/users/profile/details?token=${userToken}`)
             .then(response => response.json())
             .then(userDetails => {
@@ -36,10 +36,9 @@ if (editProfileForm) {
                 document.getElementById('age').value = userDetails.age;
             })
             .catch(error => {
-                console.error('Error fetching user details:', error);
+                console.log('Error fetching user details:', error);
             });
     });
-
 
     editProfileForm.addEventListener("submit", async function (e) {
         e.preventDefault();
@@ -58,37 +57,14 @@ if (editProfileForm) {
         formData.append('email', encryptedEmail);
         formData.append('age', age);
 
-        try {
-            const response = await fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': csrfTokenElement.value,
-                }
-            });
-
-            const responseData = await response.json();
-
-
-            if (responseData.success) {
-                if (responseData.redirectUrl) {
-                    window.location.href = responseData.redirectUrl;
-                }
-            } else {
-                if (responseData.errors) {
-                    displayErrors(responseData.errors);
-                }
-            }
-        } catch (error) {
-            document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
-        }
-
-    })
+        let action = this.action;
+        await sendData(action, formData, csrfTokenElement);
+    });
 }
 
 let changePasswordForm = document.getElementById('change-password-form');
 if (changePasswordForm) {
-    changePasswordForm.addEventListener('submit', async function(e) {
+    changePasswordForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const csrfTokenElement = document.querySelector('input[name="_csrf"]');
@@ -106,33 +82,9 @@ if (changePasswordForm) {
         formData.append('newPassword', encryptedNewPassword);
         formData.append('confirmNewPassword', encryptedConfirmNewPassword);
 
-        try {
-            const response = await fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': csrfTokenElement.value,
-                }
-            });
-
-            const responseData = await response.json();
-
-            if (responseData.success) {
-                if (responseData.redirectUrl) {
-                    sessionStorage.setItem('successPasswordChange', "Your password is changed successfully!");
-                    window.location.href = responseData.redirectUrl;
-                }
-            } else {
-                if (responseData.errors) {
-                    displayErrors(responseData.errors);
-                }
-            }
-        } catch (error) {
-            document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
-        }
-
-    })
-
+        let action = this.action;
+        await sendData(action, formData, csrfTokenElement);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {

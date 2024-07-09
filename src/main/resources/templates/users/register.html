@@ -8,7 +8,7 @@
 <body class="hero" style="background-image: url(/images/register-img.jpg)">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <main>
-    <form>
+    <form id="register-form" th:action="@{/users/register}">
         <div class="register-form container bg-dark rounded" >
             <h2 class="text-white">Register</h2>
             <div class="input-field form-group">
@@ -42,17 +42,13 @@
                 <small id="confirmPasswordError" class="invalid-feedback text-white bg-danger rounded"></small>
             </div>
             <div class="buttons">
-                <button type="button" id="register-button" class="btn btn-primary btn-lg">Register</button>
+                <button type="submit" id="register-button" class="btn btn-primary btn-lg">Register</button>
             </div>
         </div>
     </form>
 </main>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
-
-<script src="/js/encryptionScript.js"></script>
 <script src="/js/registerForm.js"></script>
-<script src="/js/displayErrorsScript.js"></script>
-
 </body>
 </html>

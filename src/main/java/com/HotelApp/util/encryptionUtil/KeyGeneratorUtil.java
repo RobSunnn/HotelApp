@@ -11,13 +11,13 @@ import java.util.Base64;
 
 public class KeyGeneratorUtil {
 
-    private static final String PRIVATE_KEY_FILE = "src/main/resources/keys/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = "src/main/resources/keys/public_key.pem";
+    private static final String PRIVATE_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
+    private static final String PUBLIC_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
 
     public static void generateKeyPair() throws NoSuchAlgorithmException, IOException {
         // Generate an RSA key pair
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
-        keyPairGen.initialize(2048);
+        keyPairGen.initialize(1024);
         KeyPair pair = keyPairGen.generateKeyPair();
         
         // Get the private and public keys

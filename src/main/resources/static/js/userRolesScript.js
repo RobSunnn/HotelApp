@@ -10,10 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const command = e.target.textContent.trim();
             const encrypted = e.target.closest('tr').dataset.encrypted;
-            console.log('Encrypted Email:', encrypted);
 
             let message;
-
             switch (command) {
                 case "Make Admin":
                     message = 'User has been granted admin rights!';
@@ -53,15 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         return response.json();
                     })
                     .then(responseData => {
-                        // Handle successful response
-                        console.log('Server response:', responseData);
 
                         let htmlParagraphElement = document.createElement('p');
                         htmlParagraphElement.textContent = message;
                         const result = e.target.closest('td').querySelector('.result');
                         result.appendChild(htmlParagraphElement);
 
-                        // Example: Reload roles or update UI based on response
                         reloadRoles(encrypted)
                             .then(roleNames => {
                                 // Update roles field in the table

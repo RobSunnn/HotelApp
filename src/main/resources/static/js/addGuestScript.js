@@ -21,27 +21,7 @@ document.getElementById("add-guest-form").addEventListener("submit", async funct
     formData.append('daysToStay', daysToStay);
     formData.append('roomNumber', roomNumber);
 
-    try {
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': csrfTokenElement.value,
-            }
-        });
-        const responseData = await response.json();
-
-        if (responseData.success) {
-            if (responseData.redirectUrl) {
-                window.location.href = responseData.redirectUrl;
-            }
-        } else {
-            if (responseData.errors) {
-                displayErrors(responseData.errors);
-            }
-        }
-    } catch (error) {
-        document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
-    }
+    let action = this.action;
+    await sendData(action, formData, csrfTokenElement);
 
 })

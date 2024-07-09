@@ -15,8 +15,8 @@ import java.util.Base64;
 @Service
 public class KeyService {
 
-    private static final String PRIVATE_KEY_FILE = "src/main/resources/keys/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = "src/main/resources/keys/public_key.pem";
+    private static final String PRIVATE_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
+    private static final String PUBLIC_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
 
     private PrivateKey privateKey;
     private PublicKey publicKey;

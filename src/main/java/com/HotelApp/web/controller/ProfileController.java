@@ -33,15 +33,9 @@ public class ProfileController {
     }
 
     @ModelAttribute
-    public void addAttributes(Model model, HttpSession session) {
-        // Generate a token and store it in the session
+    public void addAttributes(HttpSession session) {
         String token = UUID.randomUUID().toString();
         session.setAttribute("userToken", token);
-        model.addAttribute("userToken", token);
-
-        if (!model.containsAttribute("changeUserPasswordBindingModel")) {
-            model.addAttribute("changeUserPasswordBindingModel", new ChangeUserPasswordBindingModel());
-        }
     }
 
     @PreAuthorize("isAuthenticated()")

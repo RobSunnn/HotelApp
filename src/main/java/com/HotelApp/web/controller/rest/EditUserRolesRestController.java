@@ -10,11 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/admin")
-public class UsersRestController {
+public class EditUserRolesRestController {
 
     private final UserService userService;
 
-    public UsersRestController(UserService userService) {
+    public EditUserRolesRestController(UserService userService) {
         this.userService = userService;
     }
 

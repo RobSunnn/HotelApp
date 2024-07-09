@@ -3,12 +3,10 @@ package com.HotelApp.web.controller.rest;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.service.UserService;
 import com.HotelApp.service.impl.UserTransformationService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,8 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.HotelApp.common.constants.BindingConstants.USER_REGISTER_BINDING_MODEL;
 
 
 @RestController
@@ -45,13 +41,15 @@ public class AuthenticationRestController {
                                    @RequestParam("encryptedPass") String password) throws Exception {
         boolean isSuccess = userTransformationService.authenticateUser(email, password);
 
-        Map<String, String> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         if (!isSuccess) {
             response.put("message", "Invalid username or password");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
+        response.put("success", true);
         response.put("message", "Login success");
+        response.put("redirectUrl", "/");
         return ResponseEntity.ok(response);
     }
 
@@ -68,8 +66,11 @@ public class AuthenticationRestController {
                                       BindingResult bindingResult,
                                       RedirectAttributes redirectAttributes) {
 
-        boolean registrationSuccessful = userService
-                .registerUser(userRegisterBindingModel, bindingResult, redirectAttributes);
+        boolean registrationSuccessful = userService.registerUser(
+                userRegisterBindingModel,
+                bindingResult,
+                redirectAttributes
+        );
 
         Map<String, Object> responseBody = new HashMap<>();
         if (registrationSuccessful) {

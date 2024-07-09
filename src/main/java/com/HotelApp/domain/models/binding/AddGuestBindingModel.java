@@ -16,7 +16,7 @@ public class AddGuestBindingModel {
     private String lastName;
 
     @ValidEmail(message = "The guest need to leave their email, so put it in a correct way.")
-    @Size(max = 100, message = "Email of the guest is too long.")
+//    @Size(max = 120, message = "Email of the guest is too long.")
     private String email;
 
     @Positive(message = "Age cannot be negative!")

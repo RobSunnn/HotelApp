@@ -7,12 +7,16 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -46,10 +50,20 @@ public class AuthenticationRestController {
             response.put("message", "Invalid username or password");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-
         response.put("success", true);
         response.put("message", "Login success");
-        response.put("redirectUrl", "/");
+        List<? extends GrantedAuthority> isAdmin = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .filter(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))
+                .toList();
+        if (!isAdmin.isEmpty()) {
+            response.put("redirectUrl", "/admin");
+        } else {
+            response.put("redirectUrl", "/");
+        }
         return ResponseEntity.ok(response);
     }
 

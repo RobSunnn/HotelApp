@@ -59,12 +59,6 @@ class GuestControllerIT {
     private MockMvc mockMvc;
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private GuestService guestService;
-
-    @Autowired
     private GuestRepository guestRepository;
 
     @Autowired
@@ -73,18 +67,12 @@ class GuestControllerIT {
     @Mock
     private HotelRepository hotelRepository;
 
-    @Mock
-    private BindingResult bindingResult;
-
-    @Mock
-    private RedirectAttributes redirectAttributes;
-
     @Autowired
     private EncryptionService encryptionService;
 
 
     @BeforeEach
-    void setUp() {// Example setup in a test case
+    void setUp() {
         CustomUser customUser = new CustomUser(
                 "moderator@test.bg", "password",
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_MODERATOR")),
@@ -93,8 +81,6 @@ class GuestControllerIT {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 customUser, null, customUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         guestRepository.deleteAll();
         roomRepository.deleteAll();
@@ -151,8 +137,9 @@ class GuestControllerIT {
                 .setRoomNumber(3);
 
         MvcResult result =   mockMvc.perform(post("/guests/add")
-                        .flashAttr("addGuestBindingModel", addGuestBindingModel))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                        .flashAttr("addGuestBindingModel", addGuestBindingModel)
+                        .with(csrf()))
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andReturn();
 

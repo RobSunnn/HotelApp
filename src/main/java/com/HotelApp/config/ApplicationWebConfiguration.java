@@ -36,12 +36,4 @@ public class ApplicationWebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(loggingInterceptor()).addPathPatterns("/**");
     }
 
-
-    @Bean
-    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatCustomizer() {
-        return factory -> factory.addConnectorCustomizers(connector -> {
-            connector.setMaxPostSize(10 * 1024 * 1024); // 6MB
-        });
-    }
-
 }

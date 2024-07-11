@@ -104,6 +104,7 @@ public class HotelController {
         return "hotel/all-happy-guests";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/hotel/checkForbiddenRequests")
     public String checkAllForbiddenRequests() {
         forbiddenRequestsService.checkAll();

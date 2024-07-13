@@ -1,9 +1,15 @@
-.navbar {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
-}
-
 h2 {
     text-align: center;
+}
+
+.auth-card {
+    background-color: #2e2d2c;
+    padding: 5em;
+    opacity: 80%;
+    border-radius: 50%;
+}
+.auth-card-btn {
+    background-color: darkolivegreen !important;
 }
 
 #carousel,

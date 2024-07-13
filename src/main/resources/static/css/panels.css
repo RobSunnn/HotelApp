@@ -18,7 +18,7 @@ select {
 }
 
 .all-content {
-    margin-top: 3em;
+    margin-top: 5em;
     align-content: center;
 }
 
@@ -63,5 +63,5 @@ option {
 #cards-holder {
     display: flex;
     flex-grow: 1;
-    margin: 5em auto;
+    margin: 6em auto;
 }

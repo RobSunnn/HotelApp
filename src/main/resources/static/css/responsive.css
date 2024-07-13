@@ -28,13 +28,13 @@
         margin-top: -63px;
     }
 
+    .navbar .navbar-brand {
+        margin-left: 0.3em;
+    }
+
     .nav-item {
-        /*background-color: #7e86a1;*/
         width: 30%;
         margin: 0.5em auto;
-        /*border: 3px solid white;*/
-        /*outline: 4px solid black;*/
-        /*border-radius: 30%;*/
         opacity: 85%;
     }
 

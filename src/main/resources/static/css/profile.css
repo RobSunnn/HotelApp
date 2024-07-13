@@ -4,11 +4,6 @@
     margin: 1em auto 1em 2.5em;
 }
 
-#profile-form {
-    width: 100%;
-    text-align: center;
-}
-
 .file-input-container input[type="file"] {
     display: inline-block;
 }
@@ -36,4 +31,13 @@
 
 .image-frame:hover {
     transform: scale(1.35);
+}
+
+#main {
+    margin-top: 6em !important;
+}
+
+#profile-form {
+    width: 100%;
+    text-align: center;
 }

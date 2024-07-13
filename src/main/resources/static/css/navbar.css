@@ -1,5 +1,7 @@
 .navbar {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9));
+    border-radius: 10px;
+    outline: 1px solid bisque;
 }
 .form-inline {
     display: flex;
@@ -8,8 +10,29 @@
     border: 3px solid white;
 }
 
+.nav-item:hover {
+    background-color: white;
+    border-radius: 10px;
+}
+
+.navbar .nav-link:hover {
+    color: black !important;
+}
+
+.navbar .navbar-brand,
 .navbar .nav-link {
     font-size: 1.1rem;
     font-weight: 700;
     color: #fff !important;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    color: green !important;
+    text-align: center;
+    padding: 10px;
+    z-index: 4000;
+    transition: top 0.4s !important;
 }

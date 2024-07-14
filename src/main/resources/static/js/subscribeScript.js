@@ -2,7 +2,6 @@ document.getElementById("subscribe-form").addEventListener("submit", async funct
     e.preventDefault();
     const csrfTokenElement = document.querySelector('input[name="_csrf"]');
     const subscriberEmail = document.getElementById('subscriberEmail').value;
-    console.log(subscriberEmail)
 
     let encryptedEmail = await encryptData(subscriberEmail);
     const formData = new FormData();

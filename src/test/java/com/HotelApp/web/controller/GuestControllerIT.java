@@ -156,9 +156,8 @@ class GuestControllerIT {
         errorsNode.forEach(errorsList::add);
         errorsList.sort(Comparator.comparing(node -> node.get("code").asText()));
 
-        assertEquals(3, errorsList.size());
+        assertEquals(4, errorsList.size());
 
-        // Example assertions on specific error messages
         assertEquals("We need the document id of the guest.",
                 errorsList.get(0).get("defaultMessage").asText());
 
@@ -168,7 +167,8 @@ class GuestControllerIT {
         assertEquals("The guest need to leave their email, so put it in a correct way.",
                 errorsList.get(2).get("defaultMessage").asText());
 
-
+        assertEquals("Document ID should not be empty!",
+                errorsList.get(3).get("defaultMessage").asText());
     }
 
     @Test

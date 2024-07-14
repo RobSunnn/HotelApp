@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Forbidden Page</title>
@@ -27,7 +27,8 @@
     <h1>Woah, you can't touch this!</h1>
     <h3>Unfortunately, you are not allowed to access the page you've requested. It seems you don't have sufficient permissions.</h3>
     <h3> If you have an account, you might have more luck if you log in.</h3>
-    <a href="/users/login" class="btn btn-primary">Open the login page</a>
+    <a sec:authorize="isAnonymous()" href="/users/login" class="btn btn-primary">Open the login page</a>
+    <a sec:authorize="isAuthenticated()" href="/" class="btn btn-primary">Go Home Page</a>
 </div>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>

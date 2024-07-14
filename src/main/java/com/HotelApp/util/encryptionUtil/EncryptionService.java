@@ -19,13 +19,17 @@ public class EncryptionService {
         this.keyService = keyService;
     }
 
-    public String decrypt(String encryptedData) throws Exception {
-        PrivateKey privateKey = keyService.getPrivateKey();
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decodedData = Base64.getDecoder().decode(encryptedData);
-        byte[] decryptedData = cipher.doFinal(decodedData);
-        return new String(decryptedData, StandardCharsets.UTF_8);
+    public String decrypt(String encryptedData) {
+        try {
+            PrivateKey privateKey = keyService.getPrivateKey();
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.DECRYPT_MODE, privateKey);
+            byte[] decodedData = Base64.getDecoder().decode(encryptedData);
+            byte[] decryptedData = cipher.doFinal(decodedData);
+            return new String(decryptedData, StandardCharsets.UTF_8);
+        } catch (Exception ignored) {
+            return "";
+        }
     }
 //    public String decrypt(String encryptedData) throws Exception {
 //        PrivateKey privateKey = keyService.getPrivateKey();

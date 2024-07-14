@@ -35,12 +35,12 @@ public class ContactController {
         this.contactRequestService = contactRequestService;
     }
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        if (!model.containsAttribute(CONTACT_REQUEST_BINDING_MODEL)) {
-            model.addAttribute(CONTACT_REQUEST_BINDING_MODEL, new ContactRequestBindingModel());
-        }
-    }
+//    @ModelAttribute
+//    public void addAttributes(Model model) {
+//        if (!model.containsAttribute(CONTACT_REQUEST_BINDING_MODEL)) {
+//            model.addAttribute(CONTACT_REQUEST_BINDING_MODEL, new ContactRequestBindingModel());
+//        }
+//    }
 
     @GetMapping
     public String contact() {

@@ -107,7 +107,7 @@ public class UserTransformationService {
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
     }
 
-    public boolean authenticateUser(String email, String password) throws Exception {
+    public boolean authenticateUser(String email, String password) {
         try {
             String decryptedEmail = encryptionService.decrypt(email);
             String decryptedPassword = encryptionService.decrypt(password);

@@ -340,7 +340,7 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-   private boolean isAllowedExtension(String extension) {
+    private boolean isAllowedExtension(String extension) {
         return extension.equals("jpg") ||
                 extension.equals("jpeg") ||
                 extension.equals("png") ||

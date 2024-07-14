@@ -6,6 +6,11 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -14,7 +19,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 public class LoggingInterceptor implements HandlerInterceptor {
     private static final Logger log = LoggerFactory.getLogger(LoggingInterceptor.class);
@@ -29,7 +39,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
     public void afterCompletion(@NonNull HttpServletRequest request,
                                 @NonNull HttpServletResponse response,
                                 @NonNull Object handler,
-                                Exception ex) {
+                                Exception ex) throws SocketException {
         int statusCode = response.getStatus();
 
         if (statusCode == HttpServletResponse.SC_FORBIDDEN) {
@@ -63,16 +73,47 @@ public class LoggingInterceptor implements HandlerInterceptor {
         return "Anonymous";
     }
 
-    private String getClientIpAddress(@NotNull HttpServletRequest request) {
+    private String getClientIpAddress(@NotNull HttpServletRequest request) throws SocketException {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip)) {
-
             return ip.split(",")[0].trim();
         }
+
         ip = request.getHeader("X-Real-IP");
         if (ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip)) {
             return ip;
         }
-        return request.getRemoteAddr();
+
+        ip = request.getRemoteAddr();
+        if (ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) {
+            try {
+                ip = getPublicIpAddress();
+            } catch (IOException e) {
+                log.error("Unable to get public IP address", e);
+                ip = getRealIpAddress(); // Fallback to local network IP
+            }
+        }
+
+        return ip;
+    }
+
+    private String getRealIpAddress() throws SocketException {
+        for (NetworkInterface networkInterface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+            for (InetAddress inetAddress : Collections.list(networkInterface.getInetAddresses())) {
+                if (!inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
+                    return inetAddress.getHostAddress();
+                }
+            }
+        }
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (IOException e) {
+            log.error("Unable to get localhost IP address", e);
+            return "Unknown";
+        }
+    }
+
+    private String getPublicIpAddress() throws IOException {
+        return PublicIpFetcher.getPublicIpAddress();
     }
 }

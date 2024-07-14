@@ -15,7 +15,8 @@
             <tr>
                 <th>IP</th>
                 <th>Method</th>
-                <th>When</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>URL</th>
                 <th>Username</th>
             </tr>
@@ -25,7 +26,8 @@
                 th:classappend="${iterStat.index == 0} ? 'selected'" >
                 <td th:text="${forbiddenRequest.ip}"></td>
                 <td th:text="${forbiddenRequest.method}"></td>
-                <td th:text="${forbiddenRequest.timestamp}"></td>
+                <td th:text="${#temporals.format(forbiddenRequest.timestamp, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#temporals.format(forbiddenRequest.timestamp.toLocalTime(), 'HH')} + ':' + (${forbiddenRequest.timestamp.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${forbiddenRequest.timestamp.toLocalTime().getMinute()}"></td>
                 <td th:text="${forbiddenRequest.url}"></td>
                 <td th:text="${forbiddenRequest.username}"></td>
             </tr>

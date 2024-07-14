@@ -17,8 +17,7 @@ async function encryptData(value) {
         // Return encrypted bytes as Base64-encoded string
         return forge.util.encode64(encryptedBytes);
     } catch (error) {
-        console.error("Encryption error:", error);
-        throw error; // Handle or throw an exception as appropriate
+        document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
     }
 }
 

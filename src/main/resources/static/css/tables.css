@@ -121,6 +121,7 @@ h4 {
     background-color: #555555;
     padding: 1em;
 }
+
 .search-field > input,
 .search-field > label {
     color: white !important;
@@ -135,6 +136,7 @@ h4 {
 .page-link {
     color: white !important;
 }
+
 .page-link:hover {
     color: black !important;
 }

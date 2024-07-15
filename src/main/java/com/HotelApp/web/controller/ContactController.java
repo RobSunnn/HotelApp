@@ -6,21 +6,17 @@ import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.SubscriberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
 
 @Controller
 @RequestMapping("/contact")
@@ -34,13 +30,6 @@ public class ContactController {
         this.subscriberService = subscriberService;
         this.contactRequestService = contactRequestService;
     }
-
-//    @ModelAttribute
-//    public void addAttributes(Model model) {
-//        if (!model.containsAttribute(CONTACT_REQUEST_BINDING_MODEL)) {
-//            model.addAttribute(CONTACT_REQUEST_BINDING_MODEL, new ContactRequestBindingModel());
-//        }
-//    }
 
     @GetMapping
     public String contact() {
@@ -63,9 +52,9 @@ public class ContactController {
     @PostMapping("/subscribe")
     @ResponseBody
     public ResponseEntity<?> subscribe(@Valid AddSubscriberBindingModel addSubscriberBindingModel,
-                            BindingResult bindingResult,
-                            RedirectAttributes redirectAttributes,
-                            HttpServletRequest request) {
+                                       BindingResult bindingResult,
+                                       RedirectAttributes redirectAttributes,
+                                       HttpServletRequest request) {
         String redirectUrl = request.getHeader("referer").split("8080")[1];
 
         boolean isSuccessful = subscriberService.addNewSubscriber(
@@ -92,8 +81,8 @@ public class ContactController {
     @PostMapping("/contactForm")
     @ResponseBody
     public ResponseEntity<?> sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel,
-                                             BindingResult bindingResult,
-                                             RedirectAttributes redirectAttributes) {
+                                                BindingResult bindingResult,
+                                                RedirectAttributes redirectAttributes) {
 
         boolean isSuccessful = contactRequestService.sendContactForm(
                 contactRequestBindingModel,

@@ -27,7 +27,7 @@ public class EditUserRolesRestController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/secret")
-    public ResponseEntity<?> makeUserAdmin(@RequestBody UserRoleChangeRequest request) {
+    public ResponseEntity<?> changeUserRole(@RequestBody UserRoleChangeRequest request) {
         userService.changeUserRole(request.getEncrypted(), request.getCommand());
         return ResponseEntity.ok(new ModelAndView("redirect:/admin"));
     }

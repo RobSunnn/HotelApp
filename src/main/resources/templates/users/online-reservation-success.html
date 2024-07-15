@@ -3,28 +3,10 @@
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Success</title>
-
-    <style>
-
-        h1,
-        h3{
-            padding-bottom: 1em;
-        }
-
-        .card {
-            justify-content: center;
-            align-self: center;
-            width: 50%;
-            justify-self: center;
-            margin: 6em auto;
-            padding: 3em;
-            text-align: center;
-        }
-    </style>
 </head>
-<body>
+<body style="background-image: url('/images/success.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
-<div class="card bg-dark text-white">
+<div class="success-card bg-dark text-white">
     <h1>Online Reservation Successful!</h1>
 
     <h3>Thank you for choosing us!</h3>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<th:block th:insert="~{fragments/head :: head}"></th:block>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
     <title>Moderator Dashboard</title>
 </head>
 <body class="hero" style="background-image: url('/images/hotel2.jpg');">
@@ -32,8 +32,10 @@
             <div class="card-body bg-danger text-white">
                 <h5 class="card-title">See comments</h5>
                 <p class="card-text"></p>
-                <p th:if="${allNotApprovedComments == 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>
-                <p th:if="${allNotApprovedComments > 1}"  th:text="'You have ' + ${allNotApprovedComments} + ' new comments!'"></p>
+                <p th:if="${allNotApprovedComments == 1}"
+                   th:text="'You have ' + ${allNotApprovedComments} + ' new comment!'"></p>
+                <p th:if="${allNotApprovedComments > 1}"
+                   th:text="'You have ' + ${allNotApprovedComments} + ' new comments!'"></p>
                 <a th:href="@{/moderator/comments}" class="btn btn-primary">Check comments</a>
             </div>
         </div>
@@ -41,8 +43,10 @@
             <div class="card-body bg-danger text-white">
                 <h5 class="card-title">See Contact Requests</h5>
                 <p class="card-text"></p>
-                <p th:if="${allContactRequests == 1}"  th:text="'You have ' + ${allContactRequests} + ' contact request!'"></p>
-                <p th:if="${allContactRequests > 1}"  th:text="'You have ' + ${allContactRequests} + ' contact requests!'"></p>
+                <p th:if="${allContactRequests == 1}"
+                   th:text="'You have ' + ${allContactRequests} + ' contact request!'"></p>
+                <p th:if="${allContactRequests > 1}"
+                   th:text="'You have ' + ${allContactRequests} + ' contact requests!'"></p>
                 <a th:href="@{/moderator/contactRequests}" class="btn btn-primary">Contact Requests</a>
             </div>
         </div>
@@ -50,8 +54,10 @@
             <div class="card-body bg-danger text-white">
                 <h5 class="card-title">See Online Reservations</h5>
                 <p class="card-text"></p>
-                <p th:if="${allOnlineReservations == 1}"  th:text="'You have ' + ${allOnlineReservations} + ' online reservation!'"></p>
-                <p th:if="${allOnlineReservations > 1}"  th:text="'You have ' + ${allOnlineReservations} + ' online reservations!'"></p>
+                <p th:if="${allOnlineReservations == 1}"
+                   th:text="'You have ' + ${allOnlineReservations} + ' online reservation!'"></p>
+                <p th:if="${allOnlineReservations > 1}"
+                   th:text="'You have ' + ${allOnlineReservations} + ' online reservations!'"></p>
                 <a th:href="@{/moderator/onlineReservations}" class="btn btn-primary">Online Reservations</a>
             </div>
         </div>

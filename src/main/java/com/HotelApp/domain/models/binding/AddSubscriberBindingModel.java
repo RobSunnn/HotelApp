@@ -2,7 +2,6 @@ package com.HotelApp.domain.models.binding;
 
 import com.HotelApp.validation.annotation.ValidEmail;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 public class AddSubscriberBindingModel {
 

@@ -14,12 +14,14 @@
             <a th:href="@{/admin/allUsers}" class="btn btn-primary">See All Users</a>
         </div>
         <h2 class="card-text p-2">Total Profit: <span th:text="${totalProfit} + ' $'" id="total-profit">$XXX</span></h2>
-        <div class="card text-center"  th:unless="${forbiddenRequestsSize == 0}">
+        <div class="card text-center" th:unless="${forbiddenRequestsSize == 0}">
             <div class="card-body bg-danger text-white">
                 <h5 class="card-title">See Forbidden Requests</h5>
                 <p class="card-text"></p>
-                <p th:if="${forbiddenRequestsSize == 1}"  th:text="'You have ' + ${forbiddenRequestsSize} + ' new forbidden request!'"></p>
-                <p th:if="${forbiddenRequestsSize > 1}"  th:text="'You have ' + ${forbiddenRequestsSize} + ' new forbidden requests!'"></p>
+                <p th:if="${forbiddenRequestsSize == 1}"
+                   th:text="'You have ' + ${forbiddenRequestsSize} + ' new forbidden request!'"></p>
+                <p th:if="${forbiddenRequestsSize > 1}"
+                   th:text="'You have ' + ${forbiddenRequestsSize} + ' new forbidden requests!'"></p>
                 <a th:href="@{/hotel/forbiddenRequests}" class="btn btn-warning">Check Forbidden Requests</a>
             </div>
         </div>
@@ -30,7 +32,8 @@
         <div class="card">
             <div class="card-body bg-dark text-white">
                 <h5 class="card-title">Rooms Overview</h5>
-                <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span></p>
+                <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span>
+                </p>
                 <a th:href="@{/hotel/freeRooms}" class="btn btn-primary">Check Free Rooms</a>
             </div>
         </div>
@@ -44,14 +47,16 @@
         <div class="card">
             <div class="card-body bg-dark text-white">
                 <h5 class="card-title">Subscribers Overview</h5>
-                <p class="card-text">Total Subscribers: <span th:text="${totalSubscribers}" id="totalSubscribersCount">XX</span></p>
+                <p class="card-text">Total Subscribers: <span th:text="${totalSubscribers}" id="totalSubscribersCount">XX</span>
+                </p>
                 <a th:href="@{/hotel/allSubscribers}" class="btn btn-primary">See All Subscribers</a>
             </div>
         </div>
         <div class="card">
             <div class="card-body bg-dark text-white">
                 <h5 class="card-title">Happy Guests Overview</h5>
-                <p class="card-text">Total Happy Guests: <span th:text="${happyGuestsCount}" id="happyGuests">XX</span></p>
+                <p class="card-text">Total Happy Guests: <span th:text="${happyGuestsCount}" id="happyGuests">XX</span>
+                </p>
                 <a th:href="@{/hotel/allHappyGuests}" class="btn btn-primary">See All Happy Guests</a>
             </div>
         </div>

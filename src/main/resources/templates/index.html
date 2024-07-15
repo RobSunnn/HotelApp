@@ -44,12 +44,16 @@
                                     <div class="auth-card">
                                         <h2>Welcome</h2>
                                         <h3>to our application,</h3>
-                                        <h1><th:block th:text="${#authentication.principal.fullName}"></th:block></h1>
+                                        <h1>
+                                            <th:block th:text="${#authentication.principal.fullName}"></th:block>
+                                        </h1>
                                         <a sec:authorize="isAuthenticated()"
-                                           class="auth-card-btn btn btn-outline-light btn-lg m-2" href="/users/profile" role="button"
+                                           class="auth-card-btn btn btn-outline-light btn-lg m-2" href="/users/profile"
+                                           role="button"
                                            rel="nofollow">Your Profile</a>
                                         <a sec:authorize="isAuthenticated()"
-                                           class="auth-card-btn btn btn-outline-light btn-lg m-2" href="/contact/onlineReservation" role="button">
+                                           class="auth-card-btn btn btn-outline-light btn-lg m-2"
+                                           href="/contact/onlineReservation" role="button">
                                             Make Online Reservation
                                         </a>
                                     </div>
@@ -70,7 +74,7 @@
         </a>
     </div>
     <h2>Our Rooms</h2>
-    <div id="roomCarousel" class="carousel slide carousel-fade shadow-2-strong"  data-mdb-ride="carousel">
+    <div id="roomCarousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
         <div id="carouselRoomsIndicators" class="carousel slide" data-mdb-ride="carousel">
             <ol class="carousel-indicators">
                 <li th:each="room, iterStat : ${allRooms.getContent()}"
@@ -85,15 +89,15 @@
                      th:classappend="${iterStat.index == 0} ? ' active'">
                     <div class="mask d-flex justify-content-center align-items-center">
                         <div class="custom-card text-center">
-                           <div class="card-body d-flex">
-                               <div class="card-img">
-                                   <img th:src="${room.getPictureUrl()}" alt="">
-                               </div>
-                               <div class="room-text">
-                                   <h2 class="card-title" th:text="${room.getName()}"></h2>
-                                   <p class="card-text text-black" th:text="${room.getDescription()}"></p>
-                               </div>
-                           </div>
+                            <div class="card-body d-flex">
+                                <div class="card-img">
+                                    <img th:src="${room.getPictureUrl()}" alt="">
+                                </div>
+                                <div class="room-text">
+                                    <h2 class="card-title" th:text="${room.getName()}"></h2>
+                                    <p class="card-text text-black" th:text="${room.getDescription()}"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

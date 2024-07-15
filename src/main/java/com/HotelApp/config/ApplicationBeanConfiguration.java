@@ -1,7 +1,5 @@
 package com.HotelApp.config;
 
-import com.HotelApp.util.ApplicationShutdownHook;
-import com.HotelApp.util.encryptionUtil.EncryptionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +12,6 @@ public class ApplicationBeanConfiguration {
         return new ModelMapper();
     }
 
-    @Bean
-    public ApplicationShutdownHook applicationShutdownHook() {
-        return new ApplicationShutdownHook();
-    }
 
 //    @Bean
 //    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {

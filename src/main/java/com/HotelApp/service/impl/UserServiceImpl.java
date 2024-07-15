@@ -89,10 +89,12 @@ public class UserServiceImpl implements UserService {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
                     "confirmPassword", "Password mismatch"));
         }
+
         if (checkIfEmailExist(decryptedEmail)) {
             bindingResult.addError(new FieldError(USER_REGISTER_BINDING_MODEL,
                     EMAIL, ValidationConstants.EMAIL_EXIST));
         }
+
         if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel);

@@ -3,6 +3,7 @@
     border-radius: 10px;
     outline: 1px solid bisque;
 }
+
 .form-inline {
     display: flex;
     justify-content: center;

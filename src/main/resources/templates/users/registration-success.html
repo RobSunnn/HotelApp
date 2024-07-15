@@ -3,33 +3,15 @@
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
     <title>Successful Registration</title>
-
-    <style>
-
-        h1,
-        h3{
-            padding-bottom: 1em;
-        }
-
-        .card {
-            justify-content: center;
-            align-self: center;
-            width: 50%;
-            justify-self: center;
-            margin: 6em auto;
-            padding: 3em;
-            text-align: center;
-        }
-    </style>
 </head>
-<body>
+<body style="background-image: url('/images/success.jpg');">
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
-    <div class="card bg-dark text-white">
-        <h1>Registration Successful!</h1>
-        <h2>Welcome to our Application!</h2>
-        <h3>Thank you for choosing us!</h3>
-        <a href="/users/login" class="btn btn-success">Go To Login Page</a>
-    </div>
+<div class="success-card bg-dark text-white">
+    <h1>Registration Successful!</h1>
+    <h2>Welcome to our Application!</h2>
+    <h3>Thank you for choosing us!</h3>
+    <a href="/users/login" class="btn btn-success">Go To Login Page</a>
+</div>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>

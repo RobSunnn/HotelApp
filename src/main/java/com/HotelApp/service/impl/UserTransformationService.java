@@ -90,7 +90,6 @@ public class UserTransformationService {
                 .setCreated(LocalDateTime.now());
     }
 
-
     public void reAuthenticateUser(String email) {
         // Load the user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);

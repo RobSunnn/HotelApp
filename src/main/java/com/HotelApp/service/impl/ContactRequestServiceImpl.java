@@ -24,8 +24,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
-
 @EnableScheduling
 @Service
 public class ContactRequestServiceImpl implements ContactRequestService {
@@ -84,11 +82,13 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     @Override
     @Scheduled(cron = "@daily")
     public void clearCheckedContactRequests() {
-        contactRequestRepository
-                .deleteAll(contactRequestRepository.findAll()
+        contactRequestRepository.deleteAll(
+                contactRequestRepository
+                        .findAll()
                         .stream()
                         .filter(ContactRequestEntity::getChecked)
-                        .toList());
+                        .toList()
+        );
     }
 
     @Transactional
@@ -110,7 +110,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .setChecked(false)
                 .setHotelInfoEntity(hotelService.getHotelInfo());
 
-        if (additionalInfo.equals("Max 400 symbols")) {
+        if (additionalInfo.equals("Max 400 symbols") || additionalInfo.isBlank()) {
             additionalInfo = "No Additional Info.";
         }
         onlineReservationEntity.setAdditionalInfo(additionalInfo);

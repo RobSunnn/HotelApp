@@ -150,7 +150,7 @@ buttonsArr.forEach(b => b.addEventListener('click', (e) => {
     let urlForPostRequest;
     let message;
 
-    switch(command) {
+    switch (command) {
         case "Make Admin":
             urlForPostRequest = 'makeUserAdmin';
             message = 'User have all the rights!';

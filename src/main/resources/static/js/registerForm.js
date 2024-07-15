@@ -1,4 +1,4 @@
-document.getElementById("register-form").addEventListener('submit', async function(e) {
+document.getElementById("register-form").addEventListener('submit', async function (e) {
     e.preventDefault();
     const csrfTokenElement = document.querySelector('input[name="_csrf"]');
     const firstName = document.getElementById('firstName').value;

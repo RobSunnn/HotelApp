@@ -42,16 +42,18 @@
 <body>
 <th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
 <div class="form-container">
-    <form id="edit-profile-form" action="/users/profile/editUserProfile" >
+    <form id="edit-profile-form" action="/users/profile/editUserProfile">
         <div class="form-group">
             <label> First name
-                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter your first name...">
+                <input type="text" class="form-control" id="firstName" name="firstName"
+                       placeholder="Enter your first name...">
                 <small id="firstNameError" class="invalid-feedback text-white bg-danger rounded"></small>
             </label>
         </div>
         <div class="form-group">
             <label> Last name
-                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter your last name...">
+                <input type="text" class="form-control" id="lastName" name="lastName"
+                       placeholder="Enter your last name...">
                 <small id="lastNameError" class="invalid-feedback text-white bg-danger rounded"></small>
             </label>
         </div>

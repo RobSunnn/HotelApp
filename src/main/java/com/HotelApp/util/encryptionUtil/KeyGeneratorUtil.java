@@ -2,11 +2,7 @@ package com.HotelApp.util.encryptionUtil;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 import java.util.Base64;
 
 public class KeyGeneratorUtil {
@@ -19,11 +15,11 @@ public class KeyGeneratorUtil {
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
         keyPairGen.initialize(1024);
         KeyPair pair = keyPairGen.generateKeyPair();
-        
+
         // Get the private and public keys
         PrivateKey privateKey = pair.getPrivate();
         PublicKey publicKey = pair.getPublic();
-        
+
         // Write the private key to a file
         try (FileOutputStream fos = new FileOutputStream(PRIVATE_KEY_FILE)) {
             fos.write("-----BEGIN PRIVATE KEY-----\n".getBytes());

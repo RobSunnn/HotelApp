@@ -30,7 +30,7 @@
                 <td th:text="${reservation.age}"></td>
                 <td th:text="${reservation.email}"></td>
                 <td style="width: 10%" th:text="${#temporals.format(reservation.timestamp, 'yyyy-MM-dd')}"></td>
-                <td th:text="${#temporals.format(reservation.timestamp.toLocalTime(), 'HH')} + ':' + (${reservation.timestamp.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${reservation.timestamp.toLocalTime().getMinute()}" ></td>
+                <td th:text="${#temporals.format(reservation.timestamp.toLocalTime(), 'HH')} + ':' + (${reservation.timestamp.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${reservation.timestamp.toLocalTime().getMinute()}"></td>
                 <td th:text="${#strings.abbreviate(reservation.additionalInfo, 40)}"></td>
             </tr>
             </tbody>
@@ -39,9 +39,9 @@
         <div id="fullMessage"></div>
     </div>
     <div class="buttons">
-        <a th:href="@{/moderator}" class="btn btn-info">Go back  to your panel</a>
+        <a th:href="@{/moderator}" class="btn btn-info">Go back to your panel</a>
         <form th:action="@{/moderator/onlineReservationChecked}" th:method="POST" style="display:inline;">
-            <input type="hidden" id="selectedContentId"  name="reservationId"/>
+            <input type="hidden" id="selectedContentId" name="reservationId"/>
             <button type="submit" class="btn btn-success">Done</button>
         </form>
     </div>

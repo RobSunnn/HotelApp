@@ -1,4 +1,4 @@
-document.getElementById('profile-form').addEventListener('submit', function(event) {
+document.getElementById('profile-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
     let isValid = validateFile();

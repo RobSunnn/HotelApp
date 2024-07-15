@@ -3,12 +3,9 @@ package com.HotelApp.util.encryptionUtil;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.OAEPParameterSpec;
-import javax.crypto.spec.PSource;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.MGF1ParameterSpec;
 import java.util.Base64;
 
 @Service
@@ -31,7 +28,8 @@ public class EncryptionService {
             return "";
         }
     }
-//    public String decrypt(String encryptedData) throws Exception {
+
+    //    public String decrypt(String encryptedData) throws Exception {
 //        PrivateKey privateKey = keyService.getPrivateKey();
 //        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
 //        OAEPParameterSpec oaepParams = new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA1, PSource.PSpecified.DEFAULT);

@@ -24,5 +24,4 @@ public class CustomUser extends User {
         this.fullName = fullName;
     }
 
-
 }

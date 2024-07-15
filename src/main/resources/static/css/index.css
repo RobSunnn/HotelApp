@@ -8,6 +8,7 @@ h2 {
     opacity: 80%;
     border-radius: 50%;
 }
+
 .auth-card-btn {
     background-color: darkolivegreen !important;
 }
@@ -26,7 +27,7 @@ h2 {
 #roomCarousel .carousel-inner,
 #roomCarousel .carousel-item,
 #roomCarousel .carousel-control-next,
-#roomCarousel .carousel-control-prev{
+#roomCarousel .carousel-control-prev {
     height: 50vh;
 }
 
@@ -48,24 +49,28 @@ h2 {
 .custom-card .card-body {
     padding: 0;
 }
+
 .custom-card {
     display: flex;
     width: 100%;
     height: 60vh;
     background-color: rgba(255, 255, 255, 0.8);
 }
+
 .custom-card .card-img {
     display: block;
     width: 65%;
     max-width: 100%;
     height: 60vh;
 }
+
 .card-img img {
     width: 100%;
     max-width: 100%;
     height: 60vh;
     margin-right: 3em;
 }
+
 .custom-card .room-text {
     background-color: #a0a1a1;
     width: 100%;

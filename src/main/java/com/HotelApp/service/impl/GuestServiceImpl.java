@@ -1,7 +1,6 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.common.constants.BindingConstants;
-import com.HotelApp.common.constants.ValidationConstants;
 import com.HotelApp.domain.entity.GuestEntity;
 import com.HotelApp.domain.entity.HappyGuestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
@@ -14,7 +13,6 @@ import com.HotelApp.service.GuestService;
 import com.HotelApp.service.HappyGuestService;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
-import com.HotelApp.validation.annotation.ValidEmail;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;

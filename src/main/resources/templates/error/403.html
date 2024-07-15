@@ -25,7 +25,8 @@
 <div class="content">
     <img src="/images/forbidden.jpg" alt="">
     <h1>Woah, you can't touch this!</h1>
-    <h3>Unfortunately, you are not allowed to access the page you've requested. It seems you don't have sufficient permissions.</h3>
+    <h3>Unfortunately, you are not allowed to access the page you've requested. It seems you don't have sufficient
+        permissions.</h3>
     <h3> If you have an account, you might have more luck if you log in.</h3>
     <a sec:authorize="isAnonymous()" href="/users/login" class="btn btn-primary">Open the login page</a>
     <a sec:authorize="isAuthenticated()" href="/" class="btn btn-primary">Go Home Page</a>

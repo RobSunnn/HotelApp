@@ -2,10 +2,6 @@ package com.HotelApp.config;
 
 import com.HotelApp.repository.ForbiddenRequestRepository;
 import com.HotelApp.util.LoggingInterceptor;
-import com.HotelApp.util.SessionExpirationListener;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -19,11 +15,6 @@ public class ApplicationWebConfiguration implements WebMvcConfigurer {
 
     public ApplicationWebConfiguration(ForbiddenRequestRepository forbiddenRequestRepository) {
         this.forbiddenRequestRepository = forbiddenRequestRepository;
-    }
-
-    @Bean
-    public ServletContextInitializer servletContextInitializer() {
-        return servletContext -> servletContext.addListener(new SessionExpirationListener());
     }
 
     @Bean

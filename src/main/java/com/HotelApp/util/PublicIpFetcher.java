@@ -10,13 +10,13 @@ import java.io.IOException;
 
 public class PublicIpFetcher {
 
-     public static String getPublicIpAddress() throws IOException {
-         String ipServiceUrl = "https://api.ipify.org";
-         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-             HttpGet request = new HttpGet(ipServiceUrl);
-             try (CloseableHttpResponse response = httpClient.execute(request)) {
-                 return EntityUtils.toString(response.getEntity()).trim();
-             }
-         }
-     }
+    public static String getPublicIpAddress() throws IOException {
+        String ipServiceUrl = "https://api.ipify.org";
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet request = new HttpGet(ipServiceUrl);
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                return EntityUtils.toString(response.getEntity()).trim();
+            }
+        }
+    }
 }

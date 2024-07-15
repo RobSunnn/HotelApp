@@ -7,61 +7,61 @@
 </head>
 <body>
 <header th:fragment="navbar">
-<div id="navbar">
-    <nav class="navbar navbar-expand-lg navbar-dark d-lg-block" >
-    <div class="container-fluid text-center">
-        <div class="logo-text">
-            <a class="navbar-brand" href="/">
-                <i class="fa-solid fa-hotel fa-2xl"></i>
-                <strong>Hotel App</strong>
-            </a>
-        </div>
-        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#toggler"
-                aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
-            <span><i class="fas fa-bars fa-xl"></i></span>
-        </button>
-        <div class="collapse navbar-collapse" id="toggler">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact" rel="nofollow">Contact us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">About us</a>
-                </li>
-                <li class="nav-item">
-                    <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
-                </li>
-                <li sec:authorize="hasRole('MODERATOR')" class="nav-item">
-                    <a class="nav-link" href="/moderator">Moderator</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav list-inline" id="custom-box">
-                <li>
-                    <a sec:authorize="isAnonymous()"
-                       class="sign-in btn btn-outline-light m-2" href="/users/login"
-                       role="button" rel="nofollow">Sign In</a>
-                    <a sec:authorize="isAnonymous()"
-                       class="sign-up btn btn-outline-light m-2" href="/users/register"
-                       role="button">Sign Up</a>
-                </li>
-                <li id="box" sec:authorize="isAuthenticated()">
-                    <div class="form-inline my-2 my-lg-0 px-3">
-                        <div class="logged-user text-white p-2">Welcome, <a style="font-weight: 700"
-                                                                            th:href="@{/users/profile}">
-                            <span><th:block th:text="${#authentication.principal.fullName}"></th:block></span>
-                        </a>!
-                        </div>
-                        <form th:method="post" th:action="@{/users/logout}">
-                            <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
-                                   value="Logout">
-                        </form>
-                    </div>
-                </li>
-            </ul>
-        </div>
+    <div id="navbar">
+        <nav class="navbar navbar-expand-lg navbar-dark d-lg-block">
+            <div class="container-fluid text-center">
+                <div class="logo-text">
+                    <a class="navbar-brand" href="/">
+                        <i class="fa-solid fa-hotel fa-2xl"></i>
+                        <strong>Hotel App</strong>
+                    </a>
+                </div>
+                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#toggler"
+                        aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
+                    <span><i class="fas fa-bars fa-xl"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="toggler">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact" rel="nofollow">Contact us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
+                        </li>
+                        <li sec:authorize="hasRole('MODERATOR')" class="nav-item">
+                            <a class="nav-link" href="/moderator">Moderator</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav list-inline" id="custom-box">
+                        <li>
+                            <a sec:authorize="isAnonymous()"
+                               class="sign-in btn btn-outline-light m-2" href="/users/login"
+                               role="button" rel="nofollow">Sign In</a>
+                            <a sec:authorize="isAnonymous()"
+                               class="sign-up btn btn-outline-light m-2" href="/users/register"
+                               role="button">Sign Up</a>
+                        </li>
+                        <li id="box" sec:authorize="isAuthenticated()">
+                            <div class="form-inline my-2 my-lg-0 px-3">
+                                <div class="logged-user text-white p-2">Welcome, <a style="font-weight: 700"
+                                                                                    th:href="@{/users/profile}">
+                                    <span><th:block th:text="${#authentication.principal.fullName}"></th:block></span>
+                                </a>!
+                                </div>
+                                <form th:method="post" th:action="@{/users/logout}">
+                                    <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
+                                           value="Logout">
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
-</nav>
-</div>
 </header>
 <th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
 </body>

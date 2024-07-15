@@ -53,8 +53,8 @@ public class GuestController {
     @PostMapping("/add")
     @ResponseBody
     public ResponseEntity<?> add(@Valid AddGuestBindingModel addGuestBindingModel,
-                              BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes) {
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
         boolean registerGuestSuccess =
                 guestService.registerGuest(addGuestBindingModel, bindingResult, redirectAttributes);
         Map<String, Object> response = new HashMap<>();

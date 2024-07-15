@@ -23,7 +23,7 @@
             </thead>
             <tbody>
             <tr th:each="forbiddenRequest, iterStat : ${forbiddenRequests}"
-                th:classappend="${iterStat.index == 0} ? 'selected'" >
+                th:classappend="${iterStat.index == 0} ? 'selected'">
                 <td th:text="${forbiddenRequest.ip}"></td>
                 <td th:text="${forbiddenRequest.method}"></td>
                 <td th:text="${#temporals.format(forbiddenRequest.timestamp, 'yyyy-MM-dd')}"></td>
@@ -35,12 +35,12 @@
         </table>
 
     </div>
-<div class="buttons">
-    <a href="/admin" class="btn text-white" style="background-color: blue">Back To Panel</a>
-    <form th:action="@{/hotel/checkForbiddenRequests}" th:method="POST">
-        <button class="btn btn-success">All Checked</button>
-    </form>
-</div>
+    <div class="buttons">
+        <a href="/admin" class="btn text-white" style="background-color: blue">Back To Panel</a>
+        <form th:action="@{/hotel/checkForbiddenRequests}" th:method="POST">
+            <button class="btn btn-success">All Checked</button>
+        </form>
+    </div>
 
 </div>
 <th:block th:replace="~{/fragments/footer :: footer}"></th:block>

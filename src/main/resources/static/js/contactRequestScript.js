@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const messageElement = document.getElementById('successMessage');
         messageElement.querySelector('small').textContent = successMessage;
         messageElement.style.display = 'block';
+        messageElement.scrollIntoView({behavior: 'smooth', block: 'center'});
         sessionStorage.removeItem('successContactRequestMessage');
     }
 });

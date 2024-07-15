@@ -1,6 +1,5 @@
 package com.HotelApp.config;
 
-//import com.HotelApp.util.filter.DecryptionFilter;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,19 +11,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class ApplicationSecurityConfiguration {
-
-
-//    private final DecryptionFilter decryptionFilter;
-//
-//    public ApplicationSecurityConfiguration(DecryptionFilter decryptionFilter) {
-//        this.decryptionFilter = decryptionFilter;
-//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -52,8 +43,6 @@ public class ApplicationSecurityConfiguration {
                                 .clearAuthentication(true)
                                 .invalidateHttpSession(true)
                 );
-//                .addFilterBefore(decryptionFilter, UsernamePasswordAuthenticationFilter.class);
-
 
         return httpSecurity.build();
     }
@@ -62,5 +51,4 @@ public class ApplicationSecurityConfiguration {
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

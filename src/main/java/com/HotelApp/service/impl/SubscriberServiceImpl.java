@@ -33,8 +33,8 @@ public class SubscriberServiceImpl implements SubscriberService {
 
     @Override
     public boolean addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel,
-                                 BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes) {
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);

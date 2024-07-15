@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     let rows = document.querySelectorAll("#table tbody tr");
     let fullMessageElement = document.getElementById("fullMessage");
 
@@ -69,8 +69,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Add click event listener to each row
-    rows.forEach(function(row) {
-        row.addEventListener("click", function() {
+    rows.forEach(function (row) {
+        row.addEventListener("click", function () {
             selectRow(row);
         });
     });

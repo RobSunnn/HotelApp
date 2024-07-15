@@ -12,18 +12,4 @@ public class ApplicationBeanConfiguration {
         return new ModelMapper();
     }
 
-
-//    @Bean
-//    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
-//        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
-//
-//        Properties properties = new Properties();
-//        properties.setProperty(UserNotFoundException.class.getSimpleName(), "404");
-//        properties.setProperty(ForbiddenUserException.class.getSimpleName(), "403");
-//
-//        resolver.setExceptionMappings(properties);
-//        resolver.setDefaultErrorView("error");
-//
-//        return resolver;
-//    }
 }

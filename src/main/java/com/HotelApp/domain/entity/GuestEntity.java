@@ -23,7 +23,7 @@ public class GuestEntity extends BaseEntity {
     @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = false, unique = true, name = "document_id")
+    @Column(nullable = false, name = "document_id")
     private String documentId;
 
     @ManyToOne

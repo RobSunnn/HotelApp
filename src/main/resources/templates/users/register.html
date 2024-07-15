@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Sign UP</title>
 </head>
 <body class="hero" style="background-image: url(/images/register-img.jpg)">
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <main>
     <form id="register-form" th:action="@{/users/register}">
         <div class="register-form container bg-dark rounded">
@@ -47,8 +47,7 @@
         </div>
     </form>
 </main>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 <script src="/js/registerForm.js"></script>
 </body>
 </html>

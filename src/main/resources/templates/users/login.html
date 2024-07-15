@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Sign IN</title>
 </head>
 
 <body class="hero" style="background-image: url('/images/login-img.jpg');">
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <main>
     <div class="login-form">
         <form id="login-form" th:action="@{/users/login}" th:method="POST">
@@ -46,7 +46,6 @@
     </div>
 </main>
 <script src="/js/loginForm.js"></script>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

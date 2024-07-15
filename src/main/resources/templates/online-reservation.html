@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Online Reservation</title>
 
     <style>
@@ -25,7 +25,7 @@
     </style>
 </head>
 <body class="hero" style="background-image: url('/images/hotel.jpg')">
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 
 <div class="reservation-card">
     <div>
@@ -46,8 +46,7 @@
     </div>
 </div>
 
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 <script>
     function emptyText() {
         document.getElementById("additional-info").innerHTML = "";

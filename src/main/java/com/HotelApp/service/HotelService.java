@@ -15,39 +15,40 @@ public interface HotelService {
     @Transactional
     void init();
 
-    @Transactional
+    @Transactional(readOnly = true)
     HotelInfoEntity getHotelInfo();
 
     @Transactional
     void takeMoney(BigDecimal roomPrice);
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<RoomView> seeAllFreeRooms();
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<HappyGuestView> seeAllHappyGuests();
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<SubscriberView> seeAllSubscribers();
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<GuestView> seeAllGuests();
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<CommentView> getAllNotApprovedComments();
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<ContactRequestView> getAllNotCheckedContactRequest();
 
-    @Transactional
+
+    @Transactional(readOnly = true)
     BigDecimal getTotalProfit();
 
-    @Transactional
+    @Transactional(readOnly = true)
     Map<String, Integer> getInfoForHotel();
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<UserView> findAllUsers();
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<OnlineReservationView> getAllNotCheckedOnlineReservations();
 }

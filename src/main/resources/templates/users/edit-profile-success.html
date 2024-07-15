@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Edit Successful</title>
 </head>
 <body style="background-image: url('/images/success.jpg');">
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <div class="success-card bg-dark text-white">
     <h1>Your Information is Updated Successfully!</h1>
     <h3>Thank you for choosing us!</h3>
@@ -15,7 +15,6 @@
         <a href="/" class="btn btn-success">Go Home</a>
     </div>
 </div>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

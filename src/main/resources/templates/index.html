@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <th:block th:replace="~{/fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Welcome</title>
 </head>
 <body>
-<th:block th:replace="~{/fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <main>
     <div id="carousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
         <div id="carouselIndicators" class="carousel slide" data-mdb-ride="carousel">
@@ -113,7 +113,6 @@
         </a>
     </div>
 </main>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:insert="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

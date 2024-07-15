@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>All Users</title>
 </head>
 <body class="hero" style="background-image: url('/images/hotel1.jpg');">
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <div class="container">
     <div class="row">
         <div class="search-field col-md-6 rounded">
@@ -34,8 +34,7 @@
         </div>
     </div>
 </div>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{/fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 <script src="/js/userRolesScript.js"></script>
 </body>
 </html>

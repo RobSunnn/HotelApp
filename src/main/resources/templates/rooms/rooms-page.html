@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
 
     <title>Rooms</title>
     <style>
@@ -38,7 +38,7 @@
     </style>
 </head>
 <body class="hero" style="background-image: url('/images/hotel1.jpg')">
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <main>
     <div class="cards-container text-white">
         <div class="container-fluid" th:each="room : ${allRooms.getContent()}">
@@ -87,7 +87,6 @@
         </nav>
     </div>
 </main>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

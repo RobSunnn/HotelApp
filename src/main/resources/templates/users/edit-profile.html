@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Edit Profile</title>
 </head>
 
@@ -40,7 +40,7 @@
 
 </style>
 <body>
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <div class="form-container">
     <form id="edit-profile-form" action="/users/profile/editUserProfile">
         <div class="form-group">
@@ -76,7 +76,6 @@
     </form>
 </div>
 <script src="/js/editProfileScript.js"></script>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

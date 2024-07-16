@@ -5,14 +5,19 @@ import com.HotelApp.domain.entity.ContactRequestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.OnlineReservationEntity;
 import com.HotelApp.domain.entity.UserEntity;
+import com.HotelApp.domain.events.OnlineReservationEvent;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.repository.ContactRequestRepository;
 import com.HotelApp.repository.OnlineReservationRepository;
 import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
+import com.HotelApp.service.MailService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,14 +42,23 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
     private final EncryptionService encryptionService;
 
-    public ContactRequestServiceImpl(ContactRequestRepository contactRequestRepository,
-                                     OnlineReservationRepository onlineReservationRepository,
-                                     HotelService hotelService,
-                                     EncryptionService encryptionService) {
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    private final MailService mailService;
+
+    public ContactRequestServiceImpl(
+            ContactRequestRepository contactRequestRepository,
+            OnlineReservationRepository onlineReservationRepository,
+            HotelService hotelService,
+            EncryptionService encryptionService,
+            ApplicationEventPublisher applicationEventPublisher,
+            MailService mailService) {
         this.contactRequestRepository = contactRequestRepository;
         this.onlineReservationRepository = onlineReservationRepository;
         this.hotelService = hotelService;
         this.encryptionService = encryptionService;
+        this.applicationEventPublisher = applicationEventPublisher;
+        this.mailService = mailService;
     }
 
     @Override
@@ -116,6 +130,10 @@ public class ContactRequestServiceImpl implements ContactRequestService {
         onlineReservationEntity.setAdditionalInfo(additionalInfo);
 
         onlineReservationRepository.save(onlineReservationEntity);
+
+        applicationEventPublisher.publishEvent(new OnlineReservationEvent(
+                "OnlineReservation", user
+        ));
     }
 
     @Override
@@ -150,5 +168,11 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .stream()
                 .filter(contactRequest -> !contactRequest.getChecked())
                 .forEach(contactRequest -> contactRequestRepository.save(contactRequest.setChecked(true)));
+    }
+
+    @EventListener(OnlineReservationEvent.class)
+    protected void sendConfirmationEmailForOnlineReservation(OnlineReservationEvent event) {
+        log.info("Online confirmation email send for user with email: {}", event.getUser().getEmail());
+        mailService.sendConfirmationEmailForOnlineReservation(event.getUser());
     }
 }

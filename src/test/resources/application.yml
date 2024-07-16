@@ -16,3 +16,10 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
+mail:
+  hotel: "topHotel@mail.bg"
+  host: localhost
+  port: 1025
+  username: ${MAIL_USER:hotel}
+  password: ${MAIL_PASS:testing}

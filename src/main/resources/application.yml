@@ -32,6 +32,13 @@ spring:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true
+mail:
+  hotel: "topHotel@mail.bg"
+  host: localhost
+  port: 1025
+  username: ${MAIL_USER:hotel}
+  password: ${MAIL_PASS:testing}
+
 server:
   servlet:
     session:

@@ -18,8 +18,8 @@ spring:
         enabled: true
 
 mail:
-  hotel: "topHotel@mail.bg"
+  hotel: "top@hotel.bg"
   host: localhost
   port: 1025
-  username: ${MAIL_USER:hotel}
-  password: ${MAIL_PASS:testing}
+  username: hotel
+  password: test

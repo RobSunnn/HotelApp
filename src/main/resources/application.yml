@@ -33,11 +33,11 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
 mail:
-  hotel: "topHotel@mail.bg"
+  hotel: "top@hotel.bg"
   host: localhost
   port: 1025
   username: ${MAIL_USER:hotel}
-  password: ${MAIL_PASS:testing}
+  password: ${MAIL_PASS:hotel}
 
 server:
   servlet:

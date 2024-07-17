@@ -6,5 +6,5 @@ public interface MailService {
 
     void sendBonusVoucherEmail(String email);
 
-    void sendConfirmationEmailForOnlineReservation(UserEntity user);
+    void sendConfirmationEmailForOnlineReservation(String userEmail, String userFullName);
 }

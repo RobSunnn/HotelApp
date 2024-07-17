@@ -50,16 +50,6 @@ option {
     gap: 1em;
 }
 
-#success-card {
-    justify-content: center;
-    align-self: center;
-    width: 50%;
-    justify-self: center;
-    margin: 6em auto;
-    padding: 3em;
-    text-align: center;
-}
-
 #cards-holder {
     display: flex;
     flex-grow: 1;

@@ -1,19 +1,22 @@
 package com.HotelApp.domain.events;
 
-import com.HotelApp.domain.entity.UserEntity;
 import org.springframework.context.ApplicationEvent;
 
 public class OnlineReservationEvent extends ApplicationEvent {
+    private final String userEmail;
+    private final String userFullName;
 
-
-    private final UserEntity user;
-
-    public OnlineReservationEvent(Object source, UserEntity user) {
+    public OnlineReservationEvent(Object source, String userEmail, String userFullName) {
         super(source);
-        this.user = user;
+        this.userEmail = userEmail;
+        this.userFullName = userFullName;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public String getUserFullName() {
+        return userFullName;
     }
 }

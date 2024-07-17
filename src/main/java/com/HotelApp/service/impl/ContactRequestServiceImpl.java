@@ -62,7 +62,11 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     }
 
     @Override
-    public boolean sendContactForm(ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public boolean sendContactForm(
+            ContactRequestBindingModel contactRequestBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("contactRequestBindingModel", contactRequestBindingModel);
@@ -131,9 +135,11 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
         onlineReservationRepository.save(onlineReservationEntity);
 
-        applicationEventPublisher.publishEvent(new OnlineReservationEvent(
-                "OnlineReservation", user
-        ));
+        applicationEventPublisher.publishEvent(
+                new OnlineReservationEvent(
+                        "OnlineReservation", user.getEmail(), user.getFullName()
+                )
+        );
     }
 
     @Override
@@ -172,7 +178,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
     @EventListener(OnlineReservationEvent.class)
     protected void sendConfirmationEmailForOnlineReservation(OnlineReservationEvent event) {
-        log.info("Online confirmation email send for user with email: {}", event.getUser().getEmail());
-        mailService.sendConfirmationEmailForOnlineReservation(event.getUser());
+        log.info("Online confirmation email send for user with email: {}", event.getUserEmail());
+        mailService.sendConfirmationEmailForOnlineReservation(event.getUserEmail(), event.getUserFullName());
     }
 }

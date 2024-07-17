@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <th:block th:replace="~{fragments :: head}"></th:block>
-
     <title>Thank you for subscribing</title>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,6 +51,7 @@
             color: white;
             padding: 1em;
             text-align: center;
+            bottom: 0;
         }
         .footer p {
             margin: 0;
@@ -62,17 +60,16 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="header">
         <h1>Hello and thank you for subscribing!</h1>
     </div>
     <div class="content">
-        <h3>Because you are doing it for a second time,we want to make a gift for you!</h3>
+        <h3>Because you are doing it for a second time, we want to make a gift for you!</h3>
         <h3>And you receive a bonus voucher!</h3>
         <h3>You have a 50% discount for your next vacation in our hotel!</h3>
-        <p><img width=100 height=100 src="cid:voucher" alt="Voucher Image"></p>
-        <p><a href="cid:voucher">Download Voucher</a></p>
+        <p><img width="500" height="400" th:src="${voucherCid}" alt="Voucher Image"></p>
+        <h3>You need to show this voucher at the reception of the hotel.</h3>
     </div>
     <div class="footer">
         <p>&copy; 2024 All rights reserved.</p>

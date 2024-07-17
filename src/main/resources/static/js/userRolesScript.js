@@ -29,53 +29,49 @@ document.addEventListener("DOMContentLoaded", function () {
             row.setAttribute('data-encrypted', user.encryptedEmail);
 
             const userPictureTd = document.createElement('td');
-            userPictureTd.style.width = '10vw';
             const img = document.createElement('img');
             img.className = 'profile-picture';
-            img.src = user.profilePictureBase64 ? 'data:image/jpeg;base64,' + user.profilePictureBase64 : '/images/minion.gif';
+            img.src = user.profilePictureBase64 ? 'data:image/jpeg;base64,' + user.profilePictureBase64 : '/images/profile.jpg';
             img.alt = 'Profile Picture';
             userPictureTd.appendChild(img);
 
             const fullNameTd = document.createElement('td');
-            fullNameTd.style.width = '10vw';
             fullNameTd.textContent = user.fullName;
 
             const emailTd = document.createElement('td');
-            emailTd.style.width = '10vw';
             emailTd.textContent = user.email;
 
             const rolesTd = document.createElement('td');
-            rolesTd.style.width = '10vw';
             rolesTd.textContent = user.roleNames;
             rolesTd.className = 'roles';
 
             const functionsTd = document.createElement('td');
-            functionsTd.style.width = '40vw';
             const buttonsHolderDiv = document.createElement('div');
             buttonsHolderDiv.className = 'buttons-holder';
 
             const form = document.createElement('form');
+            form.className = 'buttons-holder-form';
 
             const makeAdminButton = document.createElement('button');
             makeAdminButton.type = 'submit';
             makeAdminButton.name = 'command';
-            makeAdminButton.className = 'role-button btn btn-success';
+            makeAdminButton.className = 'role-button btn btn-sm btn-success';
             makeAdminButton.id = 'makeAdmin';
-            makeAdminButton.textContent = 'Make Admin';
+            makeAdminButton.textContent = 'Admin';
 
             const makeModeratorButton = document.createElement('button');
             makeModeratorButton.type = 'submit';
             makeModeratorButton.name = 'command';
-            makeModeratorButton.className = 'role-button btn btn-warning';
+            makeModeratorButton.className = 'role-button btn btn-sm btn-warning';
             makeModeratorButton.id = 'makeModerator';
-            makeModeratorButton.textContent = 'Make Moderator';
+            makeModeratorButton.textContent = 'Moderator';
 
             const makeUserButton = document.createElement('button');
             makeUserButton.type = 'submit';
             makeUserButton.name = 'command';
-            makeUserButton.className = 'role-button btn btn-danger';
+            makeUserButton.className = 'role-button btn btn-sm btn-danger';
             makeUserButton.id = 'makeUser';
-            makeUserButton.textContent = 'Make User';
+            makeUserButton.textContent = 'User';
 
             form.appendChild(makeAdminButton);
             form.appendChild(makeModeratorButton);
@@ -86,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             makeAdminButton.addEventListener('click', function (e) {
                 e.preventDefault();
-                handleButtonClick(user.encryptedEmail, 'admin');
                 makeAdminButton.setAttribute("disabled", "");
                 makeModeratorButton.removeAttribute("disabled");
                 makeUserButton.removeAttribute("disabled");
@@ -97,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             makeModeratorButton.addEventListener('click', function (e) {
                 e.preventDefault();
-                handleButtonClick(user.encryptedEmail, 'moderator');
                 makeModeratorButton.setAttribute("disabled", "");
                 makeAdminButton.removeAttribute("disabled");
                 makeUserButton.removeAttribute("disabled");
@@ -108,7 +102,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             makeUserButton.addEventListener('click', function (e) {
                 e.preventDefault();
-                handleButtonClick(user.encryptedEmail, 'user');
                 makeAdminButton.removeAttribute("disabled");
                 makeModeratorButton.removeAttribute("disabled");
                 makeUserButton.setAttribute("disabled", "")
@@ -169,12 +162,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Search input listener
     searchInput.addEventListener('input', filterAndRender);
-
-    // Function to handle button clicks
-    function handleButtonClick(encryptedEmail, role) {
-        console.log('Button clicked for encrypted email:', encryptedEmail, 'Role:', role);
-        // Here you can perform actions with the encrypted email and role, like making API requests
-    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -186,17 +173,18 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
 
             const command = e.target.textContent.trim();
+            console.log(command)
             const encrypted = e.target.closest('tr').dataset.encrypted;
 
             let message;
             switch (command) {
-                case "Make Admin":
+                case "Admin":
                     message = 'User has been granted admin rights!';
                     break;
-                case "Make Moderator":
+                case "Moderator":
                     message = 'User has been granted moderator rights!';
                     break;
-                case "Make User":
+                case "User":
                     message = 'User rights have been revoked!';
                     break;
                 default:
@@ -267,7 +255,6 @@ function reloadRoles(encrypted) {
             return response.text();
         })
         .then(result => {
-            console.log('User roles:', result);
             return result;
         })
         .catch(err => {

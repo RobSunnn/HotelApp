@@ -38,17 +38,15 @@ h4 {
 }
 
 .profile-picture {
-    width: 150px;
-    height: 100px;
+    width: 100px;
+    height: 80px;
     object-fit: fill;
-
 }
 
-.buttons-holder {
+.buttons-holder-form {
     display: flex;
-    gap: 0.5em;
     justify-content: center;
-    flex-wrap: wrap;
+    gap: 0.5em;
 }
 
 .disabled {

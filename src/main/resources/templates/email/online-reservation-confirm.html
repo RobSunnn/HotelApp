@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Successful Online Reservation</title>
     <style>
         body {
@@ -52,6 +51,7 @@
             color: white;
             padding: 1em;
             text-align: center;
+            bottom: 0;
         }
         .footer p {
             margin: 0;
@@ -68,6 +68,7 @@
         <h2>Hello, <span><th:block th:text="${fullName}"></th:block>!</span></h2>
         <h3>Thank you for your reservation!</h3>
         <p>Someone from our team will contact you soon to confirm the details.</p>
+        <p><img width="500" height="400" th:src="${successCid}" alt="Voucher Image"></p>
     </div>
     <div class="footer">
         <p>&copy; 2024 All rights reserved.</p>

@@ -22,6 +22,7 @@ h2 {
 
 #roomCarousel {
     height: 50vh;
+    margin-top: 7em;
 }
 
 #roomCarousel .carousel-inner,

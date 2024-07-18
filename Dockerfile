@@ -28,6 +28,6 @@ RUN chmod +x /wait-for-it.sh
 # Copy the custom entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-
+CMD ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
 # Define the entry point for the application
 ENTRYPOINT ["/entrypoint.sh"]

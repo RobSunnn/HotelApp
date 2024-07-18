@@ -1,0 +1,57 @@
+select {
+    overflow-y: auto;
+}
+
+.management-card {
+    width: 50%;
+    margin: 0 auto;
+    background-color: white;
+    font-size: 1rem;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1em auto;
+    justify-content: center;
+    gap: 3em;
+}
+
+.all-content {
+    margin-top: 5em;
+    align-content: center;
+}
+
+.white-placeholder::placeholder {
+    color: white !important;
+}
+
+.black-placeholder::placeholder {
+    color: black !important;
+}
+
+option {
+    color: black;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.checkbox-item {
+    margin: 0;
+}
+
+#checkboxes-container {
+    margin: 0 auto;
+    font-size: 1.1rem;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+}
+
+#cards-holder {
+    display: flex;
+    flex-grow: 1;
+    margin: 6em auto;
+}

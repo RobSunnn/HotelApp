@@ -10,7 +10,6 @@
 	</parent>
 	<groupId>com.</groupId>
 	<artifactId>HotelApp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>HotelApp</name>
 	<description>Hotel Application</description>
 	<properties>
@@ -120,6 +119,22 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<targetPath>${project.build.directory}/classes</targetPath>
+			</resource>
+			<resource>
+				<directory>src/main/java/com/HotelApp/util/encryptionUtil/keys</directory>
+				<includes>
+					<include>**/*.pem</include>
+				</includes>
+				<targetPath>${project.build.directory}/classes/com/HotelApp/util/encryptionUtil/keys</targetPath>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

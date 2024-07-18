@@ -7,8 +7,8 @@ import java.util.Base64;
 
 public class KeyGeneratorUtil {
 
-    private static final String PRIVATE_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
+    private static final String PRIVATE_KEY_FILE = "com/HotelApp/util/encryptionUtil/keys/private_key.pem";
+    private static final String PUBLIC_KEY_FILE = "com/HotelApp/util/encryptionUtil/keys/public_key.pem";
 
     public static void generateKeyPair() throws NoSuchAlgorithmException, IOException {
         // Generate an RSA key pair

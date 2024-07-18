@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments :: head}"></th:block>
+    <title>Contact Requests</title>
+</head>
+<body class="hero" style="background-image: url('/images/hotel2.jpg');">
+<th:block th:replace="~{fragments :: navbar}"></th:block>
+<div class="container p-3 bg-dark rounded">
+    <h2 class="text-white mt-2">New Contact Requests</h2>
+    <table class="table" id="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Author</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="request, iterStat : ${allNotCheckedContactRequest}"
+            th:data-content-id="${request.id}"
+            th:data-full-text="${request.message}"
+            th:data-content-author="${request.name}"
+            th:data-content-email="${request.email}"
+            th:data-content-phone="${request.phoneNumber}"
+            th:classappend="${iterStat.index == 0} ? 'selected'">
+            <td style="width: 10%" th:text="${#temporals.format(request.created, 'yyyy-MM-dd')}"></td>
+            <td style="width: 10%"
+                th:text="${#temporals.format(request.created.toLocalTime(), 'HH')} + ':' + (${request.created.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${request.created.toLocalTime().getMinute()}"></td>
+            <td th:text="${#strings.abbreviate(request.name, 15)}"></td>
+            <td th:text="${#strings.abbreviate(request.email, 15)}"></td>
+            <td th:text="${request.phoneNumber != '' ? #strings.abbreviate(request.phoneNumber, 15) : 'No phone number available'}"></td>
+            <td th:text="${#strings.abbreviate(request.message, 20)}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <h4 class="text-white">Message will be displayed here</h4>
+    <div id="fullMessage"></div>
+    <div class="buttons">
+        <a th:href="@{/moderator}" class="btn btn-info">Go back to your panel</a>
+        <form th:action="@{/moderator/requestChecked}" th:method="POST">
+            <input type="hidden" id="selectedContentId" name="id"/>
+            <button type="submit" class="btn btn-success">Done</button>
+        </form>
+        <form th:action="@{/moderator/allRequestsChecked}" th:method="POST">
+            <input type="hidden" name="id"/>
+            <button type="submit" class="btn btn-primary">All Done</button>
+        </form>
+    </div>
+</div>
+<th:block th:replace="~{fragments :: footer}"></th:block>
+<script src="/js/tablesHelperScript.js"></script>
+</body>
+</html>

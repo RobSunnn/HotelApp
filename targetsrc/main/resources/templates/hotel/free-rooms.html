@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments :: head}"></th:block>
+    <title>Free Rooms</title>
+</head>
+<body class="hero" style="background-image: url('/images/hotel1.jpg');">
+<th:block th:replace="~{fragments :: navbar}"></th:block>
+<div class="container p-3 bg-dark rounded">
+    <h2 class="text-white mt-2">All Free Rooms</h2>
+    <div class="custom-table p-3">
+        <table class="bg-white">
+            <thead>
+            <tr>
+                <th>Room Category</th>
+                <th>Room Number</th>
+                <th>Room Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="room, iterStat : ${freeRooms}"
+                th:classappend="${iterStat.index == 0} ? 'selected'" th:data-content-id="${room.id}">
+                <td th:text="${room.getCategory().name}"></td>
+                <td th:text="${room.roomNumber}"></td>
+                <td th:text="${room.roomPrice}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="buttons">
+        <a th:href="${session.previousUrl}" class="btn btn-primary">Go back <br> to your panel</a>
+    </div>
+</div>
+<th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments :: head}"></th:block>
+
+    <title>Ooops! - Something went wrong.</title>
+    <style>
+        .content > img {
+            margin: 0 auto;
+            width: 80%;
+            padding: 2em;
+        }
+
+        .content {
+            margin: 15em auto;
+            width: 50%;
+            background-color: #555555;
+            color: white;
+            padding: 2em;
+        }
+    </style>
+</head>
+<body class="hero" style="background-image: url('/images/hotel.jpg')">
+<th:block th:include="~{fragments :: navbar}"></th:block>
+<div class="content">
+    <h2 class="error-message">Oops! Something went wrong.</h2>
+
+    <h1 class="error-heading">We are sorry, and we are working on the problem!</h1>
+
+    <img th:src="@{/images/error-picture.webp}" alt="Error Image" class="error-image">
+    <h2></h2>
+    <p></p>
+    <a href="/" class="btn btn-primary">Go back</a>
+</div>
+<th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+</html>

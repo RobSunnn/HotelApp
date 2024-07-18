@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments :: head}"></th:block>
+    <title>Edit Successful</title>
+</head>
+<body style="background-image: url('/images/success.jpg');">
+<th:block th:replace="~{fragments :: navbar}"></th:block>
+<div class="success-card bg-dark text-white">
+    <h1>Your Information is Updated Successfully!</h1>
+    <h3>Thank you for choosing us!</h3>
+    <div class="buttons">
+        <a href="/users/profile" class="btn btn-success">Go To Your Profile</a>
+        <a href="/contact/onlineReservation" class="btn btn-success">Make Online Reservation</a>
+        <a href="/" class="btn btn-success">Go Home</a>
+    </div>
+</div>
+<th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+</html>

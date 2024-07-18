@@ -17,6 +17,7 @@ services:
       - mysql
     networks:
       - app-network
+    command: ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "/app.jar"]
 
   mysql:
     image: mysql:latest

@@ -19,19 +19,16 @@ WORKDIR /app
 # Copy the JAR file from the build stage to the current working directory
 COPY --from=build /app/target/HotelApp-3.2.5.jar app.jar
 
-# Copy the resource files (including .pem files) to the desired location in the Docker image
-COPY --from=build /app/target/classes/com/HotelApp/util/encryptionUtil/keys /app/keys
-
-# Add wait-for-it script (if needed)
+# Download wait-for-it.sh from GitHub and make it executable
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
-# Copy and set permissions for entrypoint script
+# Expose the port your app runs on
+EXPOSE 8080
+
+# Copy the entrypoint script into the container
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Define the entrypoint script to be executed when the container starts
+# Specify the entrypoint script to be executed when the container starts
 ENTRYPOINT ["/entrypoint.sh"]
-
-# Specify the command to run on container startup
-CMD ["java", "-jar", "app.jar"]

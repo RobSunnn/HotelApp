@@ -32,12 +32,40 @@
 ## Define the entry point for the application
 #ENTRYPOINT ["/entrypoint.sh"]
 
+#FROM openjdk:17-jdk-slim
+#
+#COPY target/HotelApp-3.2.5.jar app.jar
+#
+#RUN mkdir -p /app/com/HotelApp/util/encryptionUtil/keys
+#
+#EXPOSE 8080
+#
+#ENTRYPOINT ["java", "-jar", "/app.jar"]
+
+# First stage: Build the application
+FROM maven:3.8.5-openjdk-17-slim AS builder
+
+# Set the working directory in the builder container
+WORKDIR /build
+
+# Copy the pom.xml and source code
+COPY pom.xml .
+COPY src ./src
+
+# Run the Maven package command
+RUN mvn clean package -DskipTests
+
+# Second stage: Create the final image
 FROM openjdk:17-jdk-slim
 
-COPY target/HotelApp-3.2.5.jar app.jar
-
+# Create necessary directories
 RUN mkdir -p /app/com/HotelApp/util/encryptionUtil/keys
 
+# Copy the JAR file from the builder stage
+COPY --from=builder /build/target/HotelApp-3.2.5.jar app.jar
+
+# Expose the port
 EXPOSE 8080
 
+# Set the entry point
 ENTRYPOINT ["java", "-jar", "/app.jar"]

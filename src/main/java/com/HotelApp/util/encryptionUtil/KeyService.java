@@ -67,11 +67,11 @@ public class KeyService {
     }
 
     private PrivateKey loadPrivateKey() throws Exception {
-        byte[] keyBytes = Files.readAllBytes(Paths.get(KeyService.PRIVATE_KEY_FILE));
+        byte[] keyBytes = Files.readAllBytes(Paths.get(PRIVATE_KEY_FILE));
         String privateKeyPEM = new String(keyBytes)
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
-                .replaceAll("\\s", "");
+                .replaceAll("\\s", ""); // Remove newlines and spaces
         byte[] decodedKey = Base64.getDecoder().decode(privateKeyPEM);
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decodedKey);
         KeyFactory kf = KeyFactory.getInstance("RSA");
@@ -80,16 +80,17 @@ public class KeyService {
 
 
     private PublicKey loadPublicKey() throws Exception {
-        byte[] keyBytes = Files.readAllBytes(Paths.get(KeyService.PUBLIC_KEY_FILE));
+        byte[] keyBytes = Files.readAllBytes(Paths.get(PUBLIC_KEY_FILE));
         String publicKeyPEM = new String(keyBytes)
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")
-                .replaceAll("\\s", "");
+                .replaceAll("\\s", ""); // Remove newlines and spaces
         byte[] decodedKey = Base64.getDecoder().decode(publicKeyPEM);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedKey);
         KeyFactory kf = KeyFactory.getInstance("RSA");
         return kf.generatePublic(spec);
     }
+
 
     public PrivateKey getPrivateKey() {
         return privateKey;

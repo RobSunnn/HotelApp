@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8080/admin';
+const baseUrl = 'https://hotelapp-2163.onrender.com/admin';
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById('searchInput');
     const tableBody = document.querySelector('#table tbody');

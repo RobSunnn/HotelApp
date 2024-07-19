@@ -55,7 +55,7 @@ public class ContactController {
                                        BindingResult bindingResult,
                                        RedirectAttributes redirectAttributes,
                                        HttpServletRequest request) {
-        String redirectUrl = request.getHeader("referer").split("8080")[1];
+        String redirectUrl = request.getHeader("referer");
 
         boolean isSuccessful = subscriberService.addNewSubscriber(
                 addSubscriberBindingModel,

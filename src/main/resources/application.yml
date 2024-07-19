@@ -4,9 +4,9 @@ spring:
     suffix: .html
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://mysql-container:3306/hotel_app?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC"
+    url: "jdbc:mysql://localhost:3306/hotel_app?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC"
     username: ${DB_USER:root}
-    password: ${DB_PASS:root}
+    password: ${DB_PASS:1234}
   servlet:
     multipart:
       max-file-size: 5MB

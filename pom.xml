@@ -129,9 +129,6 @@
 			</resource>
 			<resource>
 				<directory>src/main/java/com/HotelApp/util/encryptionUtil/keys</directory>
-				<includes>
-					<include>**/*.pem</include>
-				</includes>
 				<targetPath>${project.build.directory}/classes/com/HotelApp/util/encryptionUtil/keys</targetPath>
 			</resource>
 		</resources>

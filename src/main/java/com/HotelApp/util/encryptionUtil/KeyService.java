@@ -1,9 +1,13 @@
 package com.HotelApp.util.encryptionUtil;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -15,8 +19,9 @@ import java.util.Base64;
 @Service
 public class KeyService {
 
-    private static final String PRIVATE_KEY_FILE = "com/HotelApp/util/encryptionUtil/keys/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = "com/HotelApp/util/encryptionUtil/keys/public_key.pem";
+    private static final String PRIVATE_KEY_FILE = "com/HotelApp/util/encryptionUtil/private_key.pem";
+    private static final String PUBLIC_KEY_FILE = "com/HotelApp/util/encryptionUtil/public_key.pem";
+    private static final Logger log = LoggerFactory.getLogger(KeyService.class);
 
     private PrivateKey privateKey;
     private PublicKey publicKey;
@@ -24,17 +29,40 @@ public class KeyService {
     @PostConstruct
     public void init() {
         try {
+            // Log the paths for debugging
+            log.info("Private key file path: {}", PRIVATE_KEY_FILE);
+            log.info("Public key file path: {}", PUBLIC_KEY_FILE);
+
+            Path privateKeyPath = Paths.get(PRIVATE_KEY_FILE);
+            Path publicKeyPath = Paths.get(PUBLIC_KEY_FILE);
+
+            // Ensure the directories exist
+            Files.createDirectories(privateKeyPath.getParent());
+            Files.createDirectories(publicKeyPath.getParent());
+
             // Check if key files exist, if not, generate them
-            if (!Files.exists(Paths.get(PRIVATE_KEY_FILE)) || !Files.exists(Paths.get(PUBLIC_KEY_FILE))) {
+            if (!Files.exists(privateKeyPath) || !Files.exists(publicKeyPath)) {
                 KeyGeneratorUtil.generateKeyPair();
+                log.info("Keys are generated.");
             }
+
             // Load the keys
             this.privateKey = loadPrivateKey();
             this.publicKey = loadPublicKey();
-
-
         } catch (Exception e) {
-            System.err.println("Error initializing KeyService: " + e.getMessage());
+            log.info("Error initializing keys: {}", e.getMessage());
+        }
+    }
+
+    @PreDestroy
+    public void destroy() {
+        try {
+            // Check if key files exist, if existed, destroy them
+                Files.deleteIfExists(Path.of(PRIVATE_KEY_FILE));
+                Files.deleteIfExists(Path.of(PUBLIC_KEY_FILE));
+                log.info("Keys are destroyed.");
+        } catch (Exception e) {
+            log.info("Error destroying keys: {}", e.getMessage());
         }
     }
 

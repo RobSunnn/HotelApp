@@ -7,8 +7,8 @@ import java.util.Base64;
 
 public class KeyGeneratorUtil {
 
-    private static final String PRIVATE_KEY_FILE = "com/HotelApp/util/encryptionUtil/keys/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = "com/HotelApp/util/encryptionUtil/keys/public_key.pem";
+    private static final String PRIVATE_KEY_PATH = "com/HotelApp/util/encryptionUtil/";
+    private static final String PUBLIC_KEY_PATH = "com/HotelApp/util/encryptionUtil/";
 
     public static void generateKeyPair() throws NoSuchAlgorithmException, IOException {
         // Generate an RSA key pair
@@ -20,15 +20,19 @@ public class KeyGeneratorUtil {
         PrivateKey privateKey = pair.getPrivate();
         PublicKey publicKey = pair.getPublic();
 
+        String privateKeyFile = PRIVATE_KEY_PATH + "private_key.pem";
+
         // Write the private key to a file
-        try (FileOutputStream fos = new FileOutputStream(PRIVATE_KEY_FILE)) {
+        try (FileOutputStream fos = new FileOutputStream(privateKeyFile)) {
             fos.write("-----BEGIN PRIVATE KEY-----\n".getBytes());
             fos.write(Base64.getEncoder().encode(privateKey.getEncoded()));
             fos.write("\n-----END PRIVATE KEY-----".getBytes());
         }
 
+        String publicKeyFile = PUBLIC_KEY_PATH + "public_key.pem";
+
         // Write the public key to a file
-        try (FileOutputStream fos = new FileOutputStream(PUBLIC_KEY_FILE)) {
+        try (FileOutputStream fos = new FileOutputStream(publicKeyFile)) {
             fos.write("-----BEGIN PUBLIC KEY-----\n".getBytes());
             fos.write(Base64.getEncoder().encode(publicKey.getEncoded()));
             fos.write("\n-----END PUBLIC KEY-----".getBytes());

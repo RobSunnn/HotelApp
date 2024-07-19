@@ -26,7 +26,7 @@ public class AddGuestBindingModel {
     private Integer age;
 
     @NotBlank(message = "We need the document id of the guest.")
-    @Size(max = 200, message = "Document id of the guest is too long.")
+//    @Size(max = 200, message = "Document id of the guest is too long.")
     private String documentId;
 
     @NotNull(message = "Room number is required!")

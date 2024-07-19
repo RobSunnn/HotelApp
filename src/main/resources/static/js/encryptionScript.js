@@ -23,7 +23,7 @@ async function encryptData(value) {
 
 async function fetchPublicKey() {
     try {
-        const response = await fetch('http://localhost:8080/get-public-key');
+        const response = await fetch('https://hotelapp-2163.onrender.com/get-public-key');
         if (!response.ok) {
             throw new Error('Failed to fetch public key');
         }

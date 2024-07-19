@@ -2,11 +2,22 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+
   datasource:
-    driverClassName: org.postgresql.Driver
-    url: "jdbc:postgresql://dpg-cqd2i4eehbks73bo6hp0-a.oregon-postgres.render.com:5432/test_hotel_app_frnv"
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://dpg-cqd2i4eehbks73bo6hp0-a.oregon-postgres.render.com/test_hotel_app_frnv
     username: ${SPRING_DATASOURCE_USERNAME:test_hotel_app_frnv_user}
     password: ${SPRING_DATASOURCE_PASSWORD:PCq7P1DLa0JueekRjFHQ5hP8ZuZIj88m}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    defer-datasource-initialization: true
+
   servlet:
     multipart:
       max-file-size: 5MB
@@ -18,14 +29,7 @@ spring:
   sql:
     init:
       mode: never
-  jpa:
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    defer-datasource-initialization: true
+
 mail:
   hotel: "top@hotel.bg"
   host: localhost

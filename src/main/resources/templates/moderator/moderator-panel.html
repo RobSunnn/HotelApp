@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:insert="~{fragments/head :: head}"></th:block>
+    <th:block th:insert="~{fragments :: head}"></th:block>
     <title>Moderator Dashboard</title>
 </head>
 <body class="hero" style="background-image: url('/images/hotel2.jpg');">
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <main>
     <section id="cards-holder">
         <div class="cards">
@@ -97,7 +97,6 @@
         </div>
     </div>
 </main>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

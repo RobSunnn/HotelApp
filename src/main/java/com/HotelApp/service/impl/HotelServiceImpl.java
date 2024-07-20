@@ -150,13 +150,13 @@ public class HotelServiceImpl implements HotelService {
                 .toList();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public BigDecimal getTotalProfit() {
         return getHotelInfo().getTotalProfit();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Map<String, Integer> getInfoForHotel() {
         Map<String, Integer> counts = new HashMap<>();

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`/users/profile/details?token=${userToken}`)
             .then(response => response.json())
             .then(userDetails => {
-                userPicture.src = userDetails.profilePictureBase64 ? 'data:image/jpeg;base64,' + userDetails.profilePictureBase64 : '/images/minion.gif';
+                userPicture.src = userDetails.profilePictureBase64 ? 'data:image/jpeg;base64,' + userDetails.profilePictureBase64 : '/images/profile.jpg';
                 document.getElementById('fullName').innerText = userDetails.fullName;
                 document.getElementById('age').innerText = userDetails.age + ' years';
                 document.getElementById('email').innerText = userDetails.email;

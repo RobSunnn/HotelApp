@@ -51,7 +51,6 @@ public class GuestServiceImpl implements GuestService {
     public boolean registerGuest(AddGuestBindingModel addGuestBindingModel,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
-        //TODO: check if documentID exits in database
 
         try {
             String decryptedEmail = encryptionService.decrypt(addGuestBindingModel.getEmail());

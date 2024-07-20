@@ -18,7 +18,6 @@ checkboxes.forEach(checkbox => {
 
         if (!checkbox.checked) {
             roomDropdown.innerText = "";
-            //TODO: maybe you can take this to a function because you are using it twice.
             const defaultOption = document.createElement("option");
             defaultOption.textContent = "Here you must select a free room after you select category.";
             defaultOption.disabled = true;
@@ -45,7 +44,6 @@ checkboxes.forEach(checkbox => {
 
                     if (Object.keys(data).length === 0) {
                         // Handle case where data is empty
-
                         const defaultOption = document.createElement("option");
                         defaultOption.textContent = "No free rooms of this category available.";
                         defaultOption.disabled = true;

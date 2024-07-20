@@ -15,7 +15,14 @@
 
 }
 
-@media (max-width: 992px) {
+@media (max-width: 995px) {
+    #table {
+        display: block;
+        padding: 0;
+    }
+  .pagination {
+      flex-wrap: wrap;
+  }
     /*Navbar*/
     .form-inline {
         width: 84%;
@@ -24,16 +31,11 @@
         font-size: 1.2rem;
     }
 
-    #carousel {
-        margin-top: -63px;
-    }
-
     .navbar .navbar-brand {
         margin-left: 0.3em;
     }
 
     .nav-item {
-        width: 30%;
         margin: 0.5em auto;
         opacity: 85%;
     }
@@ -136,10 +138,7 @@
 
     /*EO: Register*/
     /*Tables*/
-    #table {
-        display: block;
-        padding: 0;
-    }
+
 
     #table thead,
     #table thead tr,
@@ -156,6 +155,13 @@
     }
 
     /*EO: Tables*/
+
+    .room-text {
+        display: none;
+    }
+    .custom-card .card-img {
+        width: 100%;
+    }
 }
 
 @media (max-width: 450px) {
@@ -169,14 +175,4 @@
     }
 
     /* EO: Footer */
-
-}
-
-@media (min-width: 992px) {
-    /*Index*/
-    #carousel {
-        margin-top: -63px;
-    }
-
-    /*EO: Index*/
 }

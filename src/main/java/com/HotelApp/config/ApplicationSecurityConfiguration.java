@@ -10,7 +10,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+import static com.HotelApp.config.ApplicationBeanConfiguration.authenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -22,26 +26,33 @@ public class ApplicationSecurityConfiguration {
 
         httpSecurity
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .maximumSessions(1)
+                        .expiredUrl("/users/login?sessionExpired=true"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/logout"))
                 .authorizeHttpRequests(
                         authorizeRequests -> authorizeRequests
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/", "/users/login", "/users/register",
                                         "/users/registrationSuccess", "/users/login-error").permitAll()
-                                .requestMatchers("/allRoomTypes", "/about/**",
+                                .requestMatchers("/allRoomTypes", "/about/**", "/logout",
                                         "/contact/**", "/error", "/session-expired", "/get-public-key").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/moderator/**", "/guests/**",
                                         "/hotel/**").hasRole("MODERATOR")
                                 .requestMatchers("/contact/onlineReservation").authenticated()
                                 .anyRequest().authenticated()
-                ).formLogin(AbstractHttpConfigurer::disable)
+                )
+                .formLogin(AbstractHttpConfigurer::disable)
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(authenticationEntryPoint()))
                 .logout(
-                        logout -> logout.logoutUrl("/users/logout")
+                        logout -> logout.logoutUrl("/logout")
                                 .logoutSuccessUrl("/")
                                 .deleteCookies("JSESSIONID")
                                 .clearAuthentication(true)
                                 .invalidateHttpSession(true)
+                                .permitAll()
                 );
 
         return httpSecurity.build();

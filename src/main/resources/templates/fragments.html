@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
-    <title>Footer</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+<header th:fragment="navbar">
+    <div id="navbar">
+        <nav class="navbar navbar-expand-lg navbar-dark d-lg-block">
+            <div class="container-fluid text-center">
+                <div class="logo-text">
+                    <a class="navbar-brand" href="/">
+                        <i class="fa-solid fa-hotel fa-2xl"></i>
+                        <strong>Hotel App</strong>
+                    </a>
+                </div>
+                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#toggler"
+                        aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
+                    <span><i class="fas fa-bars fa-xl"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="toggler">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact" rel="nofollow">Contact us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a sec:authorize="hasRole('ADMIN')" class="nav-link" href="/admin">Admin</a>
+                        </li>
+                        <li sec:authorize="hasRole('MODERATOR')" class="nav-item">
+                            <a class="nav-link" href="/moderator">Moderator</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav list-inline" id="custom-box">
+                        <li>
+                            <a sec:authorize="isAnonymous()"
+                               class="sign-in btn btn-outline-light m-2" href="/users/login"
+                               role="button" rel="nofollow">Sign In</a>
+                            <a sec:authorize="isAnonymous()"
+                               class="sign-up btn btn-outline-light m-2" href="/users/register"
+                               role="button">Sign Up</a>
+                        </li>
+                        <li id="box" sec:authorize="isAuthenticated()">
+                            <div class="form-inline my-2 my-lg-0 px-3">
+                                <div class="logged-user text-white p-2">Welcome, <a style="font-weight: 700"
+                                                                                    th:href="@{/users/profile}">
+                                    <span><th:block th:text="${#authentication.principal.fullName}"></th:block></span>
+                                </a>!
+                                </div>
+                                <form th:method="post" th:action="@{/logout}">
+                                    <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
+                                           value="Logout">
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
 <footer th:fragment="footer" class="bg-body-tertiary bg-dark text-center">
     <div class="container p-4">
         <section class="mb-4">
@@ -103,9 +166,17 @@
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
         © 2024<a class="text-reset fw-bold" href="#"></a>
     </div>
-    <script src="/js/encryptionScript.js"></script>
-    <script src="/js/displayErrorsScript.js"></script>
-    <script src="/js/subscribeScript.js"></script>
+    <div th:fragment="scripts">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.all.min.js"></script>
+        <script src="/js/navbar.js"></script>
+        <script src="/js/encryptionScript.js"></script>
+        <script src="/js/displayErrorsScript.js"></script>
+        <script src="/js/subscribeScript.js"></script>
+    </div>
 </footer>
 </body>
 </html>

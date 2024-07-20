@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <th:block th:replace="~{fragments :: head}"></th:block>
     <title>About us</title>
 </head>
 <body class="hero" style="background-image: url('/images/hotel2.jpg');">
-<th:block th:replace="~{fragments/nav-bar :: navbar}"></th:block>
+<th:block th:replace="~{fragments :: navbar}"></th:block>
 <section id="about" class="py-5">
     <h1 class="mb-4 text-white">About Our Hotel</h1>
     <div class="container mt-0">
@@ -118,8 +118,7 @@
         </section>
     </div>
 </div>
-<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
-<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 <script src="/js/aboutPage.js"></script>
 <script src="/js/displayErrorsScript.js"></script>
 </body>

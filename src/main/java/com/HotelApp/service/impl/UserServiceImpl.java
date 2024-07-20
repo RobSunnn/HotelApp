@@ -65,15 +65,15 @@ public class UserServiceImpl implements UserService {
                                 RedirectAttributes redirectAttributes) {
         String decryptedEmail = userTransformationService.decrypt(
                 userRegisterBindingModel.getEmail()
-        );
+        ).toLowerCase().trim();
 
         String decryptedPass = userTransformationService.decrypt(
                 userRegisterBindingModel.getPassword()
-        );
+        ).trim();
 
         String decryptedConfirmPass = userTransformationService.decrypt(
                 userRegisterBindingModel.getConfirmPassword()
-        );
+        ).trim();
 
         if (Objects.requireNonNull(decryptedPass).isEmpty()) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",
@@ -158,16 +158,9 @@ public class UserServiceImpl implements UserService {
         }
 
         switch (command) {
-            case "Make Admin" -> {
-                List<RoleEntity> allRoles = roleService.getAllRoles();
-                user.setRoles(allRoles);
-            }
-            case "Make Moderator" -> {
-                user.setRoles(roleService.getModeratorRole());
-            }
-            case "Make User" -> {
-                user.setRoles(List.of(roleService.getUserRole()));
-            }
+            case "Admin" -> user.setRoles(roleService.getAllRoles());
+            case "Moderator" -> user.setRoles(roleService.getModeratorRole());
+            case "User" -> user.setRoles(List.of(roleService.getUserRole()));
         }
         userRepository.save(user);
         userTransformationService.evictUserViewsCache();

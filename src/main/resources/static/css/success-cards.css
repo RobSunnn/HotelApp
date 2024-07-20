@@ -1,14 +1,53 @@
-h1,
-h3 {
-    padding-bottom: 1em;
+.success-card {
+    max-width: 600px;
+    justify-self: center;
+    justify-content: center;
+    margin: 10em auto;
+    padding: 3em;
+    border-radius: 8px;
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.success-card {
-    justify-content: center;
-    align-self: center;
-    width: 50%;
-    justify-self: center;
-    margin: 6em auto;
-    padding: 3em;
-    text-align: center;
+.success-card h1,
+.success-card h2,
+.success-card h3 {
+    margin: 10px 0;
+}
+
+.success-card h1 {
+    font-size: 2em;
+}
+
+.success-card h2 {
+    font-size: 1.5em;
+}
+
+.success-card h3 {
+    font-size: 1.2em;
+    color: #adb5bd;
+}
+
+@media (max-width: 600px) {
+    .success-card {
+        padding: 15px;
+    }
+
+    .success-card h1 {
+        font-size: 1.5em;
+    }
+
+    .success-card h2 {
+        font-size: 1.2em;
+    }
+
+    .success-card h3 {
+        font-size: 1em;
+    }
+
+    .btn-success {
+        width: 100%;
+    }
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank you for subscribing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin: 2em auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .content {
+            padding: 2em;
+            text-align: center;
+        }
+        .content h2 {
+            color: #333333;
+            font-size: 1.8em;
+            margin: 0.5em 0;
+        }
+        .content h3 {
+            color: #555555;
+            font-size: 1.4em;
+            margin: 0.5em 0;
+        }
+        .content p {
+            color: #777777;
+            font-size: 1.2em;
+            margin: 1em 0;
+        }
+        .footer {
+            background-color: #333333;
+            color: white;
+            padding: 1em;
+            text-align: center;
+            bottom: 0;
+        }
+        .footer p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Hello and thank you for subscribing!</h1>
+    </div>
+    <div class="content">
+        <h3>Because you are doing it for a second time, we want to make a gift for you!</h3>
+        <h3>And you receive a bonus voucher!</h3>
+        <h3>You have a 50% discount for your next vacation in our hotel!</h3>
+        <p><img width="500" height="400" th:src="${voucherCid}" alt="Voucher Image"></p>
+        <h3>You need to show this voucher at the reception of the hotel.</h3>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 All rights reserved.</p>
+        <p>Best Regards from our team!</p>
+    </div>
+</div>
+</body>
+</html>

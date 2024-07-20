@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.util.Properties;
 
@@ -17,6 +20,13 @@ public class ApplicationBeanConfiguration {
     @Bean
     public static ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public static AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            response.sendRedirect("/users/login?error=unauthenticated");
+        };
     }
 
     @Bean

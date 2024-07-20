@@ -65,15 +65,15 @@ public class UserServiceImpl implements UserService {
                                 RedirectAttributes redirectAttributes) {
         String decryptedEmail = userTransformationService.decrypt(
                 userRegisterBindingModel.getEmail()
-        );
+        ).toLowerCase().trim();
 
         String decryptedPass = userTransformationService.decrypt(
                 userRegisterBindingModel.getPassword()
-        );
+        ).trim();
 
         String decryptedConfirmPass = userTransformationService.decrypt(
                 userRegisterBindingModel.getConfirmPassword()
-        );
+        ).trim();
 
         if (Objects.requireNonNull(decryptedPass).isEmpty()) {
             bindingResult.addError(new FieldError("userRegisterBindingModel",

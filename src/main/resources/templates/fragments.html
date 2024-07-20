@@ -56,7 +56,7 @@
                                     <span><th:block th:text="${#authentication.principal.fullName}"></th:block></span>
                                 </a>!
                                 </div>
-                                <form th:method="post" th:action="@{/users/logout}">
+                                <form th:method="post" th:action="@{/logout}">
                                     <input type="submit" class="btn btn-outline-secondary btn-sm p-1 text-white"
                                            value="Logout">
                                 </form>

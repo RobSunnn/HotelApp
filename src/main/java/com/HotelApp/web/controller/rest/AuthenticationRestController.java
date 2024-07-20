@@ -22,8 +22,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class AuthenticationRestController {
-    private static final String LOGIN_ERROR_FLAG = "LOGIN_ERROR_FLAG";
-
     private final UserService userService;
     private final UserTransformationService userTransformationService;
 

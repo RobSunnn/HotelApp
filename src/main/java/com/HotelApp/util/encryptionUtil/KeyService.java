@@ -1,9 +1,13 @@
 package com.HotelApp.util.encryptionUtil;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -17,6 +21,7 @@ public class KeyService {
 
     private static final String PRIVATE_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
     private static final String PUBLIC_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
+    private static final Logger log = LoggerFactory.getLogger(KeyService.class);
 
     private PrivateKey privateKey;
     private PublicKey publicKey;
@@ -27,14 +32,25 @@ public class KeyService {
             // Check if key files exist, if not, generate them
             if (!Files.exists(Paths.get(PRIVATE_KEY_FILE)) || !Files.exists(Paths.get(PUBLIC_KEY_FILE))) {
                 KeyGeneratorUtil.generateKeyPair();
+                log.info("Keys are generated.");
             }
             // Load the keys
             this.privateKey = loadPrivateKey();
             this.publicKey = loadPublicKey();
-
-
         } catch (Exception e) {
             System.err.println("Error initializing KeyService: " + e.getMessage());
+        }
+    }
+
+    @PreDestroy
+    public void destroy() {
+        try {
+            // Check if key files exist, if existed, destroy them
+            Files.deleteIfExists(Path.of(PRIVATE_KEY_FILE));
+            Files.deleteIfExists(Path.of(PUBLIC_KEY_FILE));
+            log.info("Keys are destroyed.");
+        } catch (Exception e) {
+            log.info("Error destroying keys: {}", e.getMessage());
         }
     }
 

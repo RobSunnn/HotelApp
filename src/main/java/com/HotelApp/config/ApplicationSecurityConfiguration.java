@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.authenticationEntryPoint;
 
@@ -33,15 +36,18 @@ public class ApplicationSecurityConfiguration {
                 .authorizeHttpRequests(
                         authorizeRequests -> authorizeRequests
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .requestMatchers("/", "/users/login", "/users/register",
-                                        "/users/registrationSuccess", "/users/login-error").permitAll()
-                                .requestMatchers("/allRoomTypes", "/about/**", "/logout",
-                                        "/contact/**", "/error", "/session-expired", "/get-public-key").permitAll()
+                                .requestMatchers(
+                                        "/", "/users/login", "/users/register",
+                                        "/users/registrationSuccess", "/users/login-error",
+                                        "/allRoomTypes", "/about/**", "/logout",
+                                        "/contact/**", "/error", "/session-expired", "/get-public-key"
+                                ).permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/moderator/**", "/guests/**",
-                                        "/hotel/**").hasRole("MODERATOR")
-                                .requestMatchers("/contact/onlineReservation").authenticated()
+                                .requestMatchers("/moderator/**", "/guests/**","/hotel/**").hasRole("MODERATOR")
                                 .anyRequest().authenticated()
+                )
+                .requestCache(requestCacheConfigurer -> requestCacheConfigurer
+                        .requestCache(requestCache())
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
@@ -62,4 +68,15 @@ public class ApplicationSecurityConfiguration {
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public RequestCache requestCache() {
+        return new HttpSessionRequestCache();
+    }
+
+    @Bean
+    public SavedRequestAwareAuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler() {
+        return new SavedRequestAwareAuthenticationSuccessHandler();
+    }
+
 }

@@ -2,7 +2,6 @@ package com.HotelApp.service.impl;
 
 import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.common.constants.ValidationConstants;
-import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;

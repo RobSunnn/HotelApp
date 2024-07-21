@@ -33,11 +33,17 @@
     transform: scale(1.35);
 }
 
-#main {
+#profile-main {
     margin-top: 6em !important;
 }
 
 #profile-form {
     width: 100%;
     text-align: center;
+}
+
+#roles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }

@@ -35,12 +35,10 @@ public class HotelController {
     public void addAttributes(Model model, HttpSession session, HttpServletRequest request) {
         Map<String, Integer> infoForHotel = hotelService.getInfoForHotel();
         BigDecimal totalProfit = hotelService.getTotalProfit();
-        List<UserView> users = hotelService.findAllUsers();
         int forbiddenRequestsSize = forbiddenRequestsService.getAllNotChecked().size();
 
         model.addAttribute("totalProfit", totalProfit);
         model.addAllAttributes(infoForHotel);
-        model.addAttribute("allUsers", users);
         model.addAttribute("forbiddenRequestsSize", forbiddenRequestsSize);
 
         String previousUrl = request.getHeader("referer");

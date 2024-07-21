@@ -47,24 +47,22 @@
 
 #comments-form {
     color: white;
-    border-radius: 20%;
-    opacity: 85%;
-    background-color: #2e2d2c;
-    margin-right: 5em;
-    width: 100ch;
-    max-width: 40ch;
-    min-height: 20vh;
+    max-width: 20ch;
 }
 
 .comment-title {
     display: flex;
     justify-content: space-evenly;
-    margin-bottom: 1em;
+    margin-bottom: 3em;
     gap: 1em;
 }
 
 .comment-title-content {
     flex-direction: column;
+}
+
+.author {
+    word-break: break-word;
 }
 
 .message-text,
@@ -105,8 +103,9 @@
     word-break: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap; /* This ensures that whitespace is preserved but allows wrapping */
-    max-height: 3em; /* Limit height to 3 lines (adjust as needed) */
+    max-height: 3em;
     overflow: hidden;
+    padding: 0.7em;
 }
 
 .message-text.expanded p {
@@ -123,14 +122,13 @@
 }
 
 .message {
-    padding: 1.5em;
     color: white;
     text-align: center;
-    align-content: center;
-    width: 100ch;
-    max-width: 40ch;
-    min-height: 20vh;
-    background-color: chocolate;
+    align-content: flex-start;
+    max-width: 28ch;
+    min-width: 26ch;
+    min-height: 27vh;
+    /*background-color: #d8d8d8;*/
     margin: 0 auto;
     overflow: hidden;
     opacity: 80%;

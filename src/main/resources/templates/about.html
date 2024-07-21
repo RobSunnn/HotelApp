@@ -38,22 +38,22 @@
         <div class="allComments">
             <div class="comments" th:each="comment, iterStat : ${comments.getContent()}" th:fragment="commentList">
                 <div class="message" th:classappend="${iterStat.index >= 5} ? 'hidden'">
-                    <div class="comment-title">
+                    <div class="comment-title bg-dark">
                         <div class="comment-title-content d-flex">
                             <h6>Date:</h6>
-                            <h5 class="date" th:text="${comment.created.toLocalDate()}">Author</h5>
+                            <h6 class="date" th:text="${comment.created.toLocalDate()}">Author</h6>
                         </div>
                         <div class="comment-title-content">
                             <h6>Author:</h6>
-                            <h5 class="author" th:text="${comment.author}">Author</h5>
+                            <h6 class="author" th:text="${comment.author}">Author</h6>
                         </div>
                     </div>
-                    <div class="message-text">
+                    <div class="message-text bg-dark">
                         <p th:attr="data-full-text=${comment.commentContent}"
                            th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
                            th:classappend="${comment.commentContent.length() > 50} ? 'truncated' : ''"></p>
                     </div>
-                    <button class="showWholeComment btn btn-info" th:if="${comment.commentContent.length() > 50}">Show
+                    <button class="showWholeComment btn btn-info btn-sm" th:if="${comment.commentContent.length() > 50}">Show
                         More
                     </button>
                 </div>

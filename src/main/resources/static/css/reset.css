@@ -1,38 +1,21 @@
-/* CSS Variables */
-:root {
-    --primary: #ddd;
-    --dark: #333;
-    --light: #fff;
-    --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
-    --lightGray: rgba(241, 241, 241, 0.8);
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&family=Tektur:wght@400..900&family=Tilt+Prism&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 html {
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-    color: var(--dark);
+    font-size: 1.1rem !important;
+    line-height: 1.2 !important;
 }
 
 body {
-    margin: 0;
-    background-color: #555555;
+    font-family: "Shantell Sans", cursive !important;
+    margin: 0 auto;
 }
 
 img {
     max-width: 100%;
-}
-
-.wrapper {
-    display: grid;
-    grid-gap: 20px;
-}
-
-.room {
-    background: var(--primary);
-    box-shadow: var(--shadow);
-    display: grid;
-    grid-gap: 30px;
-    grid-template-columns: repeat(2, 1fr);
-    padding: 3rem;
-    grid-row: auto;
 }

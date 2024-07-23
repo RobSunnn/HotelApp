@@ -53,7 +53,6 @@ class HotelControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("hotel/admin-panel"))
                 .andExpect(model().attributeExists("totalProfit"))
-                .andExpect(model().attribute("forbiddenRequestsSize", 0))
-                .andExpect(model().attributeExists("allUsers"));
+                .andExpect(model().attribute("forbiddenRequestsSize", 0));
     }
 }

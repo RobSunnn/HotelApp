@@ -60,10 +60,7 @@
     }
 
     #comments-form {
-        width: 100ch;
-        max-width: 40ch;
-        min-height: 20vh;
-        margin-right: 0;
+        width: 100%;
     }
 
     /* EO: About Page */
@@ -78,6 +75,8 @@
 
     .content-text {
         flex-wrap: wrap;
+        width: 100%;
+        margin-top: 5em;
     }
 
     .content {

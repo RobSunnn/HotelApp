@@ -43,11 +43,19 @@
     display: flex;
     justify-content: center;
     gap: 2em;
+    background-color: #555555;
+    opacity: 80%;
+    width: 80%;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 5%;
 }
 
 #comments-form {
     color: white;
-    max-width: 20ch;
+    width: 80%;
+    max-width: 34ch;
+    margin: 2em auto;
 }
 
 .comment-title {
@@ -124,15 +132,11 @@
 .message {
     color: white;
     text-align: center;
-    align-content: flex-start;
+    align-content: center;
     max-width: 28ch;
     min-width: 26ch;
-    min-height: 27vh;
-    /*background-color: #d8d8d8;*/
     margin: 0 auto;
     overflow: hidden;
-    opacity: 80%;
-    border-radius: 50px;
 }
 
 .allComments, #controls {

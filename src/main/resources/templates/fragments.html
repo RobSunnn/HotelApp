@@ -103,7 +103,8 @@
                     </div>
                     <div class="col-md-5 col-12">
                         <div data-mdb-input-init class="form-outline mb-4 border">
-                            <input type="text" id="subscriberEmail" class="form-control text-white"/>
+                            <input type="email" id="subscriberEmail" required minlength="5" maxlength="100"
+                                   pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" class="form-control text-white"/>
                             <label class="form-label text-white" for="subscriberEmail">Email address</label>
                             <div id="subscriberEmailError" class="invalid-feedback text-white bg-danger rounded"></div>
                         </div>
@@ -156,7 +157,7 @@
         </section>
         <section id="text-footer" class="text-footer p-1 mb-4">
             <p class="text-white">
-                Welcome to Our Hotel, your home away from home. <br> Nestled in the heart of [City],
+                Welcome to Our Hotel, your home away from home. <br> Nestled in the heart of our city,
                 we offer a blend of comfort and luxury tailored to your needs. Whether you're here for business or
                 leisure, our modern amenities, exceptional service, and prime location ensure a memorable stay.
                 Discover the perfect retreat with us, where every guest is treated like family.

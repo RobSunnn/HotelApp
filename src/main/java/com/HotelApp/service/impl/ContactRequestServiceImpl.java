@@ -13,6 +13,7 @@ import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.service.MailService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
+import jakarta.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,6 +25,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
@@ -67,16 +69,19 @@ public class ContactRequestServiceImpl implements ContactRequestService {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
-
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("contactRequestBindingModel", contactRequestBindingModel);
-            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "contactRequestBindingModel", bindingResult);
-
-            return false;
-        }
         try {
             String decryptedEmail = encryptionService.decrypt(contactRequestBindingModel.getEmail());
             String decryptedPhone = encryptionService.decrypt(contactRequestBindingModel.getPhoneNumber());
+            if (decryptedPhone.length() > 50) {
+                bindingResult.addError(new FieldError("contactRequestBindingModel",
+                        "contactPhoneNumber", "Your phone number is too long."));
+            }
+            if (bindingResult.hasErrors()) {
+                redirectAttributes.addFlashAttribute("contactRequestBindingModel", contactRequestBindingModel);
+                redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "contactRequestBindingModel", bindingResult);
+
+                return false;
+            }
             HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
             ContactRequestEntity contactRequest = new ContactRequestEntity()
                     .setName(contactRequestBindingModel.getName().trim())
@@ -116,7 +121,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .getHotelInfo()
                 .getUsers()
                 .stream()
-                .filter(userView -> userView.getEmail().equals(userEmail))
+                .filter(userEntity -> userEntity.getEmail().equals(userEmail))
                 .findFirst()
                 .orElseThrow(() -> new UsernameNotFoundException("User with email: " + userEmail + "not found!"));
 

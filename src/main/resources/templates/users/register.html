@@ -13,32 +13,33 @@
             <h2 class="text-white">Register</h2>
             <div class="input-field form-group">
                 <label for="firstName" class="text-white">First Name</label>
-                <input type="text" class="form-control" id="firstName" placeholder="Enter your first name...">
+                <input type="text" required minlength="5" maxlength="60" class="form-control" id="firstName" placeholder="Enter your first name...">
                 <small id="firstNameError" class="invalid-feedback text-white bg-danger rounded"></small>
             </div>
             <div class="input-field form-group">
                 <label for="lastName" class="text-white">Last Name</label>
-                <input type="text" class="form-control" id="lastName" placeholder="Enter your last name...">
+                <input type="text" required minlength="5" maxlength="60" class="form-control" id="lastName" placeholder="Enter your last name...">
                 <small id="lastNameError" class="invalid-feedback text-white bg-danger rounded"></small>
             </div>
             <div class="input-field form-group">
                 <label for="email" class="text-white">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email...">
+                <input type="email" required minlength="5" maxlength="100" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+                       class="form-control" id="email" placeholder="Enter your email...">
                 <small id="emailError" class="invalid-feedback text-white bg-danger rounded"></small>
             </div>
             <div class="input-field form-group">
                 <label for="age" class="text-white">Age</label>
-                <input type="number" class="form-control" id="age" placeholder="Enter your age...">
+                <input type="number" required min="18" max="100" class="form-control" id="age" placeholder="Enter your age...">
                 <small id="ageError" class="invalid-feedback text-white bg-danger rounded"></small>
             </div>
             <div class="input-field form-group">
                 <label for="password" class="text-white">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter password...">
+                <input type="password" required minlength="5" maxlength="60" class="form-control" id="password" placeholder="Enter password...">
                 <small id="passwordError" class="invalid-feedback text-white bg-danger rounded"></small>
             </div>
             <div class="input-field form-group">
                 <label for="confirmPassword" class="text-white">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password...">
+                <input type="password" required minlength="5" maxlength="60" class="form-control" id="confirmPassword" placeholder="Confirm your password...">
                 <small id="confirmPasswordError" class="invalid-feedback text-white bg-danger rounded"></small>
             </div>
             <div class="buttons">

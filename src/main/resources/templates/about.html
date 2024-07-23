@@ -11,26 +11,25 @@
     <div class="container mt-0">
         <div class="text">
             <div class="card-info">
-                <p><b>Nestled in the heart of [City Name], [Hotel Name] is your oasis of luxury and comfort. Whether
-                    you're here for business, pleasure, or a bit of both, our hotel offers a seamless blend of modern
-                    sophistication
-                    and timeless elegance. From our elegantly appointed rooms to our top-notch amenities, every detail
-                    has
-                    been thoughtfully designed to ensure your stay is nothing short of extraordinary.</b></p>
+                <p><b>Nestled in the heart of our city, our hotel is your oasis of luxury and comfort.
+                    Whether you're here for business, pleasure, or a bit of both,
+                    our hotel offers a seamless blend of modern sophistication and timeless elegance.
+                    From our elegantly appointed rooms to our top-notch amenities, every detail
+                    has been thoughtfully designed to ensure your stay is nothing short of extraordinary.</b></p>
             </div>
             <div class="card-info">
-                <p>At [Hotel Name], we pride ourselves on our exceptional service and warm hospitality. Our dedicated
-                    staff is always at your service, ready to cater to your every need and ensure your stay is as
-                    comfortable as
-                    possible. Start your day with a sumptuous breakfast at our gourmet restaurant, relax in our tranquil
+                <p>At our hotel, we pride ourselves on our exceptional service and warm hospitality.
+                    Our dedicated staff is always at your service, ready to cater to your every need and
+                    ensure your stay is as comfortable as possible.
+                    Start your day with a sumptuous breakfast at our gourmet restaurant, relax in our tranquil
                     spa, or take a dip in our sparkling pool. For those looking to explore, our prime location puts you
-                    just
-                    steps away from [City’s Major Attractions].</p>
+                    just steps away from our city's major attractions.</p>
             </div>
         </div>
-        <p class="text-white bg-dark rounded p-1"><em>Experience the perfect blend of style, comfort, and convenience at
-            [Hotel Name].<br> Book your stay today and discover why we are the preferred choice for discerning
-            travelers.</em></p>
+        <p class="text-white bg-dark rounded p-1">
+            <em>Experience the perfect blend of style, comfort, and convenience at our hotel.<br>
+                Book your stay today and discover why we are the preferred choice for discerning travelers.</em>
+        </p>
     </div>
 </section>
 <div class="comments-and-form">
@@ -38,7 +37,7 @@
         <div class="allComments">
             <div class="comments" th:each="comment, iterStat : ${comments.getContent()}" th:fragment="commentList">
                 <div class="message" th:classappend="${iterStat.index >= 5} ? 'hidden'">
-                    <div class="comment-title bg-dark">
+                    <div class="comment-title">
                         <div class="comment-title-content d-flex">
                             <h6>Date:</h6>
                             <h6 class="date" th:text="${comment.created.toLocalDate()}">Author</h6>
@@ -48,12 +47,13 @@
                             <h6 class="author" th:text="${comment.author}">Author</h6>
                         </div>
                     </div>
-                    <div class="message-text bg-dark">
+                    <div class="message-text">
                         <p th:attr="data-full-text=${comment.commentContent}"
                            th:text="'&quot;' + ${comment.commentContent} + '&quot;'"
                            th:classappend="${comment.commentContent.length() > 50} ? 'truncated' : ''"></p>
                     </div>
-                    <button class="showWholeComment btn btn-info btn-sm" th:if="${comment.commentContent.length() > 50}">Show
+                    <button class="showWholeComment btn btn-info btn-sm"
+                            th:if="${comment.commentContent.length() > 50}">Show
                         More
                     </button>
                 </div>
@@ -85,7 +85,7 @@
     </div>
     <div class="form-container">
         <section id="comments-form">
-            <div class="container text-center">
+            <div class="text-center">
                 <form th:action="@{/about/addComment}" th:method="POST" th:object="${addCommentBindingModel}">
                     <h2 class="mb-4">Leave a comment</h2>
                     <div class="form-content">
@@ -93,7 +93,7 @@
                             <label for="author">Your Name or Nickname</label>
                             <input type="text" class="form-control" id="author" th:field="*{author}"
                                    th:errorclass="is-invalid"
-                                   min="3" max="30"
+                                   required minlength="2" maxlength="30"
                                    name="author" placeholder="Enter your name...">
                             <small id="authorError" th:errors="*{author}"
                                    class="invalid-feedback text-white  bg-danger rounded"></small>
@@ -101,7 +101,7 @@
                         <div class="form-text-content">
                             <label for="commentContent">Your comment</label>
                             <textarea class="form-control" id="commentContent" rows="4" th:field="*{commentContent}"
-                                      th:errorclass="is-invalid"
+                                      th:errorclass="is-invalid" required minlength="2" maxlength="250"
                                       name="commentContent" placeholder="Maximum 250 symbols."></textarea>
                             <small id="commentError" th:errors="*{commentContent}"
                                    class="invalid-feedback text-white  bg-danger rounded"></small>

@@ -54,15 +54,16 @@ public class GuestServiceImpl implements GuestService {
 
         try {
             String decryptedEmail = encryptionService.decrypt(addGuestBindingModel.getEmail());
-
             String decryptedDocument = encryptionService.decrypt(addGuestBindingModel.getDocumentId());
+
             if (decryptedDocument.isEmpty()) {
                 bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
                         "documentId", "Document ID should not be empty!"));
             }
-            addGuestBindingModel.setEmail(decryptedEmail);
-            addGuestBindingModel.setDocumentId(decryptedDocument);
-
+            if (!isNumeric(addGuestBindingModel.getRoomNumber())) {
+                bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
+                        "roomNumber", "You need to select room number."));
+            }
             if (bindingResult.hasErrors()) {
                 redirectAttributes
                         .addFlashAttribute(GUEST_REGISTER_BINDING_MODEL, addGuestBindingModel);
@@ -72,6 +73,9 @@ public class GuestServiceImpl implements GuestService {
 
                 return false;
             }
+
+            addGuestBindingModel.setEmail(decryptedEmail);
+            addGuestBindingModel.setDocumentId(decryptedDocument);
 
             RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
             HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
@@ -143,6 +147,18 @@ public class GuestServiceImpl implements GuestService {
                 .setCheckInTime(LocalDateTime.now())
                 .setCheckOutTime(LocalDateTime.now().plusDays(addGuestBindingModel.getDaysToStay()))
                 .setHotelInfoEntity(hotelInfo);
+    }
+
+    private static boolean isNumeric(Integer number) {
+        if (number == null) {
+            return false;
+        }
+        try {
+            int i = Integer.parseInt(String.valueOf(number));
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
 }

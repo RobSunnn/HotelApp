@@ -10,6 +10,11 @@
 @import url(responsive.css);
 @import url(success-cards.css);
 
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
 .hero {
     height: 100vh;
     width: 100%;
@@ -17,6 +22,20 @@
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-top: 2em;
+    text-align: center;
+    align-items: center;
+}
+
+.buttons a {
+    align-self: center;
 }
 
 .errors {
@@ -29,7 +48,7 @@
     position: unset;
 }
 
-.container small {
+ small {
     text-align: center;
     font-size: 0.9rem;
     width: 90%;

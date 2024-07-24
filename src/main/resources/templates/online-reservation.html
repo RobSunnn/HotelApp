@@ -6,12 +6,14 @@
 
     <style>
         .reservation-card {
+
             max-width: 600px;
             margin: 8em auto;
             padding: 20px;
             border-radius: 8px;
             background-color: #f8f9fa;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            opacity: 90%;
         }
 
         .reservation-header h2 {
@@ -26,12 +28,13 @@
             gap: 15px;
         }
 
-        label {
+        .reservation-body label {
+            margin: 0 auto;
             font-size: 1em;
             color: #333;
         }
 
-        textarea {
+        .reservation-body textarea {
             width: 100%;
             padding: 10px;
             font-size: 1em;
@@ -40,50 +43,20 @@
             resize: vertical;
         }
 
-        textarea:focus {
-            border-color: #007bff;
-            outline: none;
-        }
+
 
         .error-message {
             text-align: center;
         }
 
-        /*.buttons {*/
-        /*    text-align: center;*/
-        /*}*/
-
-        /*.btn {*/
-        /*    padding: 10px 20px;*/
-        /*    font-size: 1em;*/
-        /*    color: #fff;*/
-        /*    background-color: #007bff;*/
-        /*    border: none;*/
-        /*    border-radius: 4px;*/
-        /*    cursor: pointer;*/
-        /*}*/
-
-        /*.btn-light {*/
-        /*    background-color: #f8f9fa;*/
-        /*    color: #007bff;*/
-        /*    border: 1px solid #007bff;*/
-        /*}*/
-
-        /*.btn-light:hover {*/
-        /*    background-color: #e2e6ea;*/
-        /*}*/
-
         @media (max-width: 600px) {
             .reservation-card {
                 padding: 15px;
+                max-width: 300px;
             }
 
             .reservation-header h2 {
                 font-size: 1.25em;
-            }
-
-            .btn {
-                width: 100%;
             }
         }
 

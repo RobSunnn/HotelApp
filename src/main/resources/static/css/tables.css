@@ -24,18 +24,6 @@ h4 {
     opacity: 90%;
 }
 
-.buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1em;
-    margin-top: 2em;
-    text-align: center;
-}
-
-.buttons a {
-    align-self: center;
-}
 
 .profile-picture {
     width: 100px;
@@ -98,7 +86,7 @@ h4 {
 
 #table tbody {
     font-weight: 700;
-    cursor: pointer;
+    cursor: auto;
 }
 
 #table {

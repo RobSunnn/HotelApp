@@ -112,7 +112,8 @@
     /* EO: Footer */
     /*Add Guest*/
     option {
-        font-size: 0.9rem !important;
+        font-size: 1rem !important;
+        white-space: normal;
     }
 
     #checkboxes-container {
@@ -124,9 +125,41 @@
 
 @media (max-width: 770px) {
     /*Profile*/
-    #main {
-        width: 80%;
+    #profile-main,
+    .profile h3{
+        font-size: 1.1rem;
+        justify-content: center;
+
+    }
+
+    .profile #roles{
+        width: 50%;
+        font-size: 0.8rem;
         margin: 0 auto;
+    }
+
+    #roles span:nth-child(even),
+    #roles span:nth-child(odd){
+        width: 72% !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .profile .buttons {
+        flex-direction: column;
+
+    }
+
+    .file-container {
+        flex-wrap: wrap;
+
+    }
+
+    .file-input-container {
+        width: 100%;
+        max-width: 100%;
+        margin: 1em auto 1em 2.5em;
+        font-size: 0.8rem;
     }
 
     /*EO: Profile*/

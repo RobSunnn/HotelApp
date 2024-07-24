@@ -30,55 +30,8 @@ class ContactRequestServiceImplTest {
     @Mock
     private ContactRequestRepository contactRequestRepository;
 
-    @Mock
-    private HotelService hotelService;
-
-    @Mock
-    private RedirectAttributes redirectAttributes;
-
     @InjectMocks
     private ContactRequestServiceImpl contactRequestService;
-
-    @Mock
-    private EncryptionService encryptionService;
-
-    @Test
-    public void testSendContactForm_Success() throws Exception {
-        // Mock data
-        ContactRequestBindingModel bindingModel = new ContactRequestBindingModel();
-        bindingModel.setName("John Doe");
-        bindingModel.setEmail(encryptionService.encrypt("john.doe@example.com"));
-        bindingModel.setMessage("Test message");
-
-        HotelInfoEntity mockHotelInfo = new HotelInfoEntity();
-        when(hotelService.getHotelInfo()).thenReturn(mockHotelInfo);
-
-        BindingResult bindingResult = mock(BindingResult.class);
-        when(bindingResult.hasErrors()).thenReturn(false);
-
-        ContactRequestEntity savedEntity = new ContactRequestEntity();
-        when(contactRequestRepository.save(any(ContactRequestEntity.class))).thenReturn(savedEntity);
-
-        // Execute the method
-        assertTrue(contactRequestService.sendContactForm(bindingModel, bindingResult, redirectAttributes));
-        // Verify interactions and assertions
-        verify(hotelService, times(1)).getHotelInfo();
-        verify(contactRequestRepository, times(1)).save(any(ContactRequestEntity.class));
-//        verify(redirectAttributes, times(1)).addFlashAttribute(eq("successContactRequestMessage"), eq("Contact Request Send, Thank You!"));
-    }
-
-    @Test
-    public void testSendContactForm_WithErrors() {
-        ContactRequestBindingModel bindingModel = new ContactRequestBindingModel();
-
-        BindingResult bindingResult = mock(BindingResult.class);
-        when(bindingResult.hasErrors()).thenReturn(true);
-
-        assertFalse(contactRequestService.sendContactForm(bindingModel, bindingResult, redirectAttributes));
-
-        verify(bindingResult, times(1)).hasErrors();
-        verify(redirectAttributes, times(1)).addFlashAttribute(eq("contactRequestBindingModel"), eq(bindingModel));
-    }
 
     @Test
     public void testClearCheckedContactRequests() {

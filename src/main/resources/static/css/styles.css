@@ -38,6 +38,10 @@ textarea:focus {
     align-self: center;
 }
 
+.card {
+    text-align: center;
+}
+
 .errors {
     width: 50%;
     margin: 0 auto;
@@ -46,13 +50,13 @@ textarea:focus {
 
 .is-invalid ~ .invalid-feedback {
     position: unset;
+    margin: 1em auto;
 }
 
- small {
+small {
     text-align: center;
     font-size: 0.9rem;
     width: 90%;
-    margin: 0 auto;
 }
 
 .login-form {

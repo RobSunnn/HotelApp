@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class ApplicationCacheConfiguration {
 
-
     private static final Logger log = LoggerFactory.getLogger(ApplicationCacheConfiguration.class);
 
     @Bean
@@ -32,7 +31,7 @@ public class ApplicationCacheConfiguration {
     private Caffeine<Object, Object> caffeineCacheBuilder() {
         log.info("Caffeine Build");
         return Caffeine.newBuilder()
-                .expireAfterWrite(10, TimeUnit.MINUTES)
-                .maximumSize(100);
+                .expireAfterWrite(5, TimeUnit.MINUTES)
+                .maximumSize(200);
     }
 }

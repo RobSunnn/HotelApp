@@ -7,6 +7,13 @@ document.getElementById("add-guest-form").addEventListener("submit", async funct
     const documentId = document.getElementById('documentId').value;
     const daysToStay = document.getElementById('daysToStay').value;
     const roomNumber = document.getElementById('roomNumber').value;
+    const roomNumberError = document.getElementById('roomNumberError');
+    if (!roomNumber || isNaN(Number(roomNumber))) {
+        // Display error message
+        roomNumberError.textContent = 'Please select a valid room number.';
+        roomDropdown.classList.add('is-invalid');
+        return; // Prevent form submission
+    }
 
     let encryptedEmail = await encryptData(email);
     let encryptedDocumentId = await encryptData(documentId);

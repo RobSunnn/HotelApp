@@ -36,7 +36,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
-import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
+import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 
 
 @Service
@@ -47,10 +47,12 @@ public class UserServiceImpl implements UserService {
     private final HotelServiceImpl hotelService;
     private final UserTransformationService userTransformationService;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           RoleService roleService,
-                           HotelServiceImpl hotelService,
-                           UserTransformationService userTransformationService) {
+    public UserServiceImpl(
+            UserRepository userRepository,
+            RoleService roleService,
+            HotelServiceImpl hotelService,
+            UserTransformationService userTransformationService
+    ) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.hotelService = hotelService;
@@ -59,9 +61,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean registerUser(UserRegisterBindingModel userRegisterBindingModel,
-                                BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes) {
+    public boolean registerUser(
+            UserRegisterBindingModel userRegisterBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
         String decryptedEmail = userTransformationService.decrypt(
                 userRegisterBindingModel.getEmail()
         ).toLowerCase().trim();
@@ -227,18 +231,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel,
-                                   String userEmail,
-                                   BindingResult bindingResult,
-                                   RedirectAttributes redirectAttributes) {
+    public boolean editProfileInfo(
+            EditUserProfileBindingModel editUserProfileBindingModel,
+            String userEmail,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
         String decryptedEmail = userTransformationService.decrypt(
                 editUserProfileBindingModel.getEmail()
         );
 
         if (decryptedEmail.isEmpty()) {
             bindingResult.addError(new FieldError(
-                    "userRegisterBindingModel",
-                    "email", "Please enter email.")
+                    "userRegisterBindingModel", "email", "Please enter email.")
             );
             return false;
         }
@@ -270,12 +275,7 @@ public class UserServiceImpl implements UserService {
         user.setAge(editUserProfileBindingModel.getAge());
 
         userRepository.save(user);
-
         userTransformationService.reAuthenticateUser(decryptedEmail);
-        redirectAttributes.addFlashAttribute(
-                "successMessage",
-                "Profile info updated successfully."
-        );
         userTransformationService.evictUserViewsCache();
 
         return true;

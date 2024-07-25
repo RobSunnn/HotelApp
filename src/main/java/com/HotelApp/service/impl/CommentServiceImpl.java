@@ -23,7 +23,6 @@ import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MOD
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-
     private final HotelService hotelService;
 
     public CommentServiceImpl(CommentRepository commentRepository, HotelService hotelService) {
@@ -33,9 +32,11 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public void addCommentToDatabase(AddCommentBindingModel addCommentBindingModel,
-                                     BindingResult bindingResult,
-                                     RedirectAttributes redirectAttributes) {
+    public void addCommentToDatabase(
+            AddCommentBindingModel addCommentBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(COMMENT_BINDING_MODEL, addCommentBindingModel);
@@ -50,7 +51,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void approve(Long id) {
-        CommentEntity comment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        CommentEntity comment = commentRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
         comment.setApproved(true);
 
         commentRepository.save(comment);

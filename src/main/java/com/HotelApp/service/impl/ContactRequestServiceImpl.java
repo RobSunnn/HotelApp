@@ -13,12 +13,10 @@ import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.service.MailService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
-import jakarta.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,16 +34,12 @@ import java.util.Objects;
 public class ContactRequestServiceImpl implements ContactRequestService {
 
     private static final Logger log = LoggerFactory.getLogger(ContactRequestServiceImpl.class);
+
     private final ContactRequestRepository contactRequestRepository;
-
     private final OnlineReservationRepository onlineReservationRepository;
-
     private final HotelService hotelService;
-
     private final EncryptionService encryptionService;
-
     private final ApplicationEventPublisher applicationEventPublisher;
-
     private final MailService mailService;
 
     public ContactRequestServiceImpl(

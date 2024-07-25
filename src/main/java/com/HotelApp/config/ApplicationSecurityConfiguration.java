@@ -8,16 +8,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.authenticationEntryPoint;
+import static com.HotelApp.config.ApplicationBeanConfiguration.requestCache;
 
 @Configuration
 @EnableWebSecurity
@@ -43,7 +37,7 @@ public class ApplicationSecurityConfiguration {
                                         "/contact/**", "/error", "/session-expired", "/get-public-key"
                                 ).permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/moderator/**", "/guests/**","/hotel/**").hasRole("MODERATOR")
+                                .requestMatchers("/moderator/**", "/guests/**", "/hotel/**").hasRole("MODERATOR")
                                 .anyRequest().authenticated()
                 )
                 .requestCache(requestCacheConfigurer -> requestCacheConfigurer
@@ -63,20 +57,4 @@ public class ApplicationSecurityConfiguration {
 
         return httpSecurity.build();
     }
-
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public RequestCache requestCache() {
-        return new HttpSessionRequestCache();
-    }
-
-    @Bean
-    public SavedRequestAwareAuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler() {
-        return new SavedRequestAwareAuthenticationSuccessHandler();
-    }
-
 }

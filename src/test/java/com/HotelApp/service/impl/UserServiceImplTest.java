@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Optional;
 
-import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
+import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

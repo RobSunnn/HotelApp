@@ -18,16 +18,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to render users based on search term and pagination
     function renderUsers(users, page = 1) {
-        tableBody.innerHTML = ''; // Clear existing table rows
+        // Clear existing rows in the table body
+        tableBody.innerHTML = '';
 
+        // Calculate the range of users to display for the current page
         const start = (page - 1) * pageSize;
         const end = start + pageSize;
         const paginatedUsers = users.slice(start, end);
 
+        // Function to create and return a table cell with content
+        function createTableCell(content, className = '') {
+            const td = document.createElement('td');
+            td.textContent = content;
+            if (className) {
+                td.className = className;
+            }
+            return td;
+        }
+
+        // Function to create a button with specific attributes
+        function createButton(id, text, className, disabled = false) {
+            const button = document.createElement('button');
+            button.type = 'submit';
+            button.name = 'command';
+            button.id = id;
+            button.className = className;
+            button.textContent = text;
+            if (disabled) {
+                button.setAttribute('disabled', '');
+            }
+            return button;
+        }
+
+        // Create table rows for each user
         paginatedUsers.forEach(user => {
             const row = document.createElement('tr');
             row.setAttribute('data-encrypted', user.encryptedEmail);
 
+            // User Picture
             const userPictureTd = document.createElement('td');
             const img = document.createElement('img');
             img.className = 'profile-picture';
@@ -35,16 +63,13 @@ document.addEventListener("DOMContentLoaded", function () {
             img.alt = 'Profile Picture';
             userPictureTd.appendChild(img);
 
-            const fullNameTd = document.createElement('td');
-            fullNameTd.textContent = user.fullName;
+            // User Details
+            row.appendChild(userPictureTd);
+            row.appendChild(createTableCell(user.fullName));
+            row.appendChild(createTableCell(user.email));
+            row.appendChild(createTableCell(user.roleNames, 'roles'));
 
-            const emailTd = document.createElement('td');
-            emailTd.textContent = user.email;
-
-            const rolesTd = document.createElement('td');
-            rolesTd.textContent = user.roleNames;
-            rolesTd.className = 'roles';
-
+            // Role Buttons
             const functionsTd = document.createElement('td');
             const buttonsHolderDiv = document.createElement('div');
             buttonsHolderDiv.className = 'buttons-holder';
@@ -52,80 +77,56 @@ document.addEventListener("DOMContentLoaded", function () {
             const form = document.createElement('form');
             form.className = 'buttons-holder-form';
 
-            const makeAdminButton = document.createElement('button');
-            makeAdminButton.type = 'submit';
-            makeAdminButton.name = 'command';
-            makeAdminButton.className = 'role-button btn btn-sm btn-success';
-            makeAdminButton.id = 'makeAdmin';
-            makeAdminButton.textContent = 'Admin';
+            const makeAdminButton = createButton('makeAdmin', 'Admin', 'role-button btn btn-sm btn-success', user.roleNames.includes("ADMIN"));
+            const makeModeratorButton = createButton('makeModerator', 'Moderator', 'role-button btn btn-sm btn-warning', user.roleNames.includes("MODERATOR") && !user.roleNames.includes("ADMIN"));
+            const makeUserButton = createButton('makeUser', 'User', 'role-button btn btn-sm btn-danger', user.roleNames.includes("USER") && !user.roleNames.includes("MODERATOR") && !user.roleNames.includes("ADMIN"));
 
-            const makeModeratorButton = document.createElement('button');
-            makeModeratorButton.type = 'submit';
-            makeModeratorButton.name = 'command';
-            makeModeratorButton.className = 'role-button btn btn-sm btn-warning';
-            makeModeratorButton.id = 'makeModerator';
-            makeModeratorButton.textContent = 'Moderator';
-
-            const makeUserButton = document.createElement('button');
-            makeUserButton.type = 'submit';
-            makeUserButton.name = 'command';
-            makeUserButton.className = 'role-button btn btn-sm btn-danger';
-            makeUserButton.id = 'makeUser';
-            makeUserButton.textContent = 'User';
-
+            // Add buttons to form
             form.appendChild(makeAdminButton);
             form.appendChild(makeModeratorButton);
             form.appendChild(makeUserButton);
 
-            if (user.roleNames.includes("ADMIN")) {
-                makeAdminButton.setAttribute("disabled", "")
-            }
-            makeAdminButton.addEventListener('click', function (e) {
-                e.preventDefault();
-                makeAdminButton.setAttribute("disabled", "");
-                makeModeratorButton.removeAttribute("disabled");
-                makeUserButton.removeAttribute("disabled");
-            });
-
-            if (user.roleNames.includes("MODERATOR") && !user.roleNames.includes("ADMIN")) {
-                makeModeratorButton.setAttribute("disabled", "")
-            }
-            makeModeratorButton.addEventListener('click', function (e) {
-                e.preventDefault();
-                makeModeratorButton.setAttribute("disabled", "");
-                makeAdminButton.removeAttribute("disabled");
-                makeUserButton.removeAttribute("disabled");
-            });
-
-            if (user.roleNames.includes("USER") && !user.roleNames.includes("MODERATOR") && !user.roleNames.includes("ADMIN")) {
-                makeUserButton.setAttribute("disabled", "")
-            }
-            makeUserButton.addEventListener('click', function (e) {
-                e.preventDefault();
-                makeAdminButton.removeAttribute("disabled");
-                makeModeratorButton.removeAttribute("disabled");
-                makeUserButton.setAttribute("disabled", "")
-            });
-
+            // Add form to button holder
             buttonsHolderDiv.appendChild(form);
             functionsTd.appendChild(buttonsHolderDiv);
 
+            // Add result div
             const resultDiv = document.createElement('div');
             resultDiv.id = 'result';
             resultDiv.className = 'result mt-3';
             functionsTd.appendChild(resultDiv);
 
-            row.appendChild(userPictureTd);
-            row.appendChild(fullNameTd);
-            row.appendChild(emailTd);
-            row.appendChild(rolesTd);
+            // Add function td to row
             row.appendChild(functionsTd);
 
+            // Append row to table body
             tableBody.appendChild(row);
+
+            // Set up button event handlers
+            makeAdminButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                updateButtonStates('ADMIN');
+            });
+            makeModeratorButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                updateButtonStates('MODERATOR');
+            });
+            makeUserButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                updateButtonStates('USER');
+            });
+
+            function updateButtonStates(role) {
+                makeAdminButton.disabled = role === 'ADMIN';
+                makeModeratorButton.disabled = role === 'MODERATOR';
+                makeUserButton.disabled = role === 'USER';
+            }
         });
 
+        // Render pagination controls
         renderPagination(users.length, page);
     }
+
 
     // Function to render pagination
     function renderPagination(totalItems, currentPage) {

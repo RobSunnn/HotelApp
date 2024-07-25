@@ -1,13 +1,11 @@
 package com.HotelApp.domain.models.view;
 
 import com.HotelApp.domain.entity.RoleEntity;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserView {
 
     private String firstName;

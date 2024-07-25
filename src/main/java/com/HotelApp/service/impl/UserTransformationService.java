@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
+import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 
 @Service
 public class UserTransformationService {

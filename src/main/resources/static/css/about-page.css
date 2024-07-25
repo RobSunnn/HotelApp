@@ -111,7 +111,7 @@
     word-break: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap; /* This ensures that whitespace is preserved but allows wrapping */
-    max-height: 3em;
+    max-height: 4em;
     overflow: hidden;
     padding: 0.7em;
 }

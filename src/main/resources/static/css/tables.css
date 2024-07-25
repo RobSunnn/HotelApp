@@ -11,12 +11,12 @@ h4 {
     flex-direction: column;
     cursor: auto;
     overflow-y: auto;
-    border: 5px solid chocolate; /* Adds a line between rows */
+    border: 5px solid chocolate;
 }
 
 .custom-table th, .custom-table td {
     padding: 8px;
-    border: 2px solid chocolate; /* Adds a line between rows */
+    border: 2px solid chocolate;
 }
 
 .container {
@@ -43,7 +43,7 @@ h4 {
 
 .search-field {
     margin: 0 auto;
-    background-color: #555555;
+    background-color: black;
     padding: 1em;
 }
 
@@ -80,8 +80,8 @@ h4 {
 
 
 #table tr.selected > td {
-    background-color: white; /* Light grey background */
-    color: black !important; /* Override font color */
+    background-color: white;
+    color: black !important;
 }
 
 #table tbody {
@@ -91,14 +91,14 @@ h4 {
 
 #table {
     cursor: context-menu;
-    max-height: 40vh; /* Adjust the max-height as needed */
+    max-height: 40vh;
     overflow-y: auto;
     border-collapse: collapse;
 }
 
 #table th, #table td, #table tr {
     color: white;
-    border: 2px solid #ddd; /* Adds a line between rows */
+    border: 2px solid #ddd;
 }
 
 #fullMessage {
@@ -107,12 +107,12 @@ h4 {
     flex-wrap: wrap;
     padding: 30px;
     background-color: #f9f9f9;
-    max-width: 100%; /* Adjust based on your layout */
-    max-height: 100%; /* Adjust based on your layout */
-    overflow-y: auto; /* Adds a scrollbar if content is too long */
-    word-wrap: break-word; /* Breaks long words */
-    word-break: break-all; /* Breaks long words */
-    white-space: pre-wrap; /* Preserves whitespace */
+    max-width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-wrap;
     text-align: center;
 }
 

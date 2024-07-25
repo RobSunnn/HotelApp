@@ -60,7 +60,7 @@
             </div>
         </div>
         <div th:unless="${comments.getTotalElements() < 4}" id="controls" class="page-counter text-white">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12 text-center bg-dark">
                 <p>
                     Page <span th:text="${comments.getNumber() + 1}"></span>
                     of <span th:text="${comments.getTotalPages()}"></span>
@@ -71,12 +71,12 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${comments.number == 0} ? 'disabled' : ''">
-                        <a class="page-link rounded bg-dark text-white"
+                        <a class="page-link rounded text-white"
                            th:href="@{${'/about'}(page=${comments.number - 1})}">Previous</a>
                     </li>
                     <li class="page-item"
                         th:classappend="${comments.number == comments.totalPages - 1} ? 'disabled' : ''">
-                        <a class="page-link pr-4 pl-4 rounded bg-dark text-white"
+                        <a class="page-link pr-4 pl-4 rounded text-white"
                            th:href="@{${'/about'}(page=${comments.number + 1})}">Next</a>
                     </li>
                 </ul>

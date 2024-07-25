@@ -51,9 +51,11 @@ public class SubscriberServiceImpl implements SubscriberService {
 
 
     @Override
-    public boolean addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel,
-                                    BindingResult bindingResult,
-                                    RedirectAttributes redirectAttributes) {
+    public boolean addNewSubscriber(
+            AddSubscriberBindingModel addSubscriberBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);
@@ -95,7 +97,10 @@ public class SubscriberServiceImpl implements SubscriberService {
         log.info("Bonus voucher send for: {}", event.getEmail());
     }
 
-    private static SubscriberEntity mapAsSubscriber(AddSubscriberBindingModel addSubscriberBindingModel, HotelInfoEntity hotelInfo) {
+    private static SubscriberEntity mapAsSubscriber(
+            AddSubscriberBindingModel addSubscriberBindingModel,
+            HotelInfoEntity hotelInfo
+    ) {
         return new SubscriberEntity()
                 .setEmail(addSubscriberBindingModel.getSubscriberEmail())
                 .setTimeOfSubscription(LocalDateTime.now())

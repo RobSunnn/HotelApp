@@ -38,7 +38,9 @@ public class GuestServiceImpl implements GuestService {
 
     public GuestServiceImpl(GuestRepository guestRepository,
                             RoomRepository roomRepository,
-                            HappyGuestService happyGuestService, HotelService hotelService, EncryptionService encryptionService) {
+                            HappyGuestService happyGuestService,
+                            HotelService hotelService,
+                            EncryptionService encryptionService) {
         this.guestRepository = guestRepository;
         this.roomRepository = roomRepository;
         this.happyGuestService = happyGuestService;

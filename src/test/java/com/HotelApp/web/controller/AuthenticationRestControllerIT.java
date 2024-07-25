@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.HotelApp.config.ApplicationSecurityConfiguration.passwordEncoder;
+import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;

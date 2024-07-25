@@ -21,7 +21,6 @@ import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
-
     private final UserTransformationService userTransformationService;
 
     public HotelServiceImpl(HotelRepository hotelRepository, UserTransformationService userTransformationService) {

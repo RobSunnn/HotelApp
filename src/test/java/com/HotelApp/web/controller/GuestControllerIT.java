@@ -6,12 +6,10 @@ import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
-import com.HotelApp.domain.models.service.CustomUser;
-import com.HotelApp.repository.CategoriesRepository;
 import com.HotelApp.repository.GuestRepository;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.repository.RoomRepository;
-import com.HotelApp.service.GuestService;
+import com.HotelApp.service.impl.CustomUser;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,14 +25,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -136,7 +128,7 @@ class GuestControllerIT {
                 .setAge(23)
                 .setRoomNumber(3);
 
-        MvcResult result =   mockMvc.perform(post("/guests/add")
+        MvcResult result = mockMvc.perform(post("/guests/add")
                         .flashAttr("addGuestBindingModel", addGuestBindingModel)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
@@ -147,7 +139,7 @@ class GuestControllerIT {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(jsonResponse);
 
-        // Extract and assert on errors array
+        // Extract and assert on an error array
         JsonNode errorsNode = jsonNode.get("errors");
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
@@ -164,10 +156,10 @@ class GuestControllerIT {
         assertEquals("You should enter the days that guest want to stay.",
                 errorsList.get(1).get("defaultMessage").asText());
 
-        assertEquals("The guest need to leave their email, so put it in a correct way.",
+        assertEquals("Please enter real email...",
                 errorsList.get(2).get("defaultMessage").asText());
 
-        assertEquals("Document ID should not be empty!",
+        assertEquals("We need the document id of the guest.",
                 errorsList.get(3).get("defaultMessage").asText());
     }
 

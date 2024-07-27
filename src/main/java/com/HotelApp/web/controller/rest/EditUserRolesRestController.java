@@ -1,6 +1,6 @@
 package com.HotelApp.web.controller.rest;
 
-import com.HotelApp.domain.models.service.UserRoleChangeRequest;
+import com.HotelApp.domain.models.binding.UserRoleChangeRequest;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.service.UserService;
 import org.springframework.http.ResponseEntity;

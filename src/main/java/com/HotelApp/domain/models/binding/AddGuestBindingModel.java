@@ -3,37 +3,39 @@ package com.HotelApp.domain.models.binding;
 import com.HotelApp.validation.annotation.ValidEmail;
 import jakarta.validation.constraints.*;
 
+import static com.HotelApp.common.constants.ValidationConstants.*;
+
 public class AddGuestBindingModel {
 
-    @NotBlank(message = "You need to add the first name of the guest.")
-    @Size(min = 2, message = "First name of the guest must be at least 2 characters.")
-    @Size(max = 30, message = "First name of the guest is too long.")
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String firstName;
 
-    @NotBlank(message = "You need to add the last name of the guest.")
-    @Size(min = 2, message = "Last name of the guest must be at least 2 characters.")
-    @Size(max = 30, message = "Last name of the guest is too long.")
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String lastName;
-
-    @ValidEmail(message = "The guest need to leave their email, so put it in a correct way.")
+    //todo: check for email size
+    @ValidEmail(message = INVALID_EMAIL)
 //    @Size(max = 120, message = "Email of the guest is too long.")
     private String email;
 
-    @Positive(message = "Age cannot be negative!")
-    @NotNull(message = "Please enter the age of the guest.")
-    @Min(value = 18, message = "Guest must be over 18 years old.")
-    @Max(value = 100, message = "You exceed the maximum value for age.")
+    @Positive(message = NEGATIVE_AGE)
+    @NotNull(message = INVALID_AGE)
+    @Min(value = 18, message = MINIMUM_AGE)
+    @Max(value = 100, message = INVALID_AGE_OVER_100)
     private Integer age;
 
-    @NotBlank(message = "We need the document id of the guest.")
-    @Size(max = 200, message = "Document id of the guest is too long.")
+    @NotBlank(message = DOCUMENT_ID_EMPTY)
+    @Size(max = 200, message = DOCUMENT_ID_TOO_LONG)
     private String documentId;
 
-    @NotNull(message = "Room number is required!")
+    @NotNull(message = ROOM_NUMBER_REQUIRED)
     private Integer roomNumber;
 
-    @NotNull(message = "You should enter the days that guest want to stay.")
-    @Positive(message = "No negative days!")
+    @NotNull(message = EMPTY_DAYS)
+    @Positive(message = NEGATIVE_DAYS)
     private Integer daysToStay;
 
     public AddGuestBindingModel() {

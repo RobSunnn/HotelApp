@@ -1,6 +1,6 @@
 let prevScrollPos = window.scrollY;
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     let clickInside = document.getElementById('navbar').contains(event.target);
     let navbarToggle = document.querySelector('.navbar-toggler');
     let navbarCollapse = document.querySelector('.navbar-collapse');
@@ -15,7 +15,7 @@ window.addEventListener('scroll', function () {
     if (prevScrollPos > currentScrollPos) {
         document.getElementById("navbar").style.top = "0";
     } else {
-        document.getElementById("navbar").style.top = "-120px";
+        document.getElementById("navbar").style.top = "-200px";
     }
     prevScrollPos = currentScrollPos;
 });

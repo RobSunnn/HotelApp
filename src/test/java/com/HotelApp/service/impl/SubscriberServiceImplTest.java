@@ -11,13 +11,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -51,7 +51,7 @@ class SubscriberServiceImplTest {
 
         verify(redirectAttributes).addFlashAttribute("addSubscriberBindingModel", model);
         verify(redirectAttributes).addFlashAttribute("org.springframework.validation.BindingResult.addSubscriberBindingModel", bindingResult);
-        verify(redirectAttributes).addFlashAttribute("failMessage", "Please enter valid email.");
+        verify(redirectAttributes).addFlashAttribute("failMessage", "Please enter real email...");
         verify(subscriberRepository, never()).findByEmail(anyString());
     }
 
@@ -60,8 +60,8 @@ class SubscriberServiceImplTest {
         AddSubscriberBindingModel model = new AddSubscriberBindingModel();
         model.setSubscriberEmail("test@example.com");
         SubscriberEntity subscriber = new SubscriberEntity()
-        .setEmail("test@example.com")
-        .setCounterOfSubscriptions(1);
+                .setEmail("test@example.com")
+                .setCounterOfSubscriptions(1);
 
         HotelInfoEntity hotelInfo = new HotelInfoEntity();
 

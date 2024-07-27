@@ -1,7 +1,6 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.models.service.CustomUser;
-import org.junit.jupiter.api.AfterEach;
+import com.HotelApp.service.impl.CustomUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

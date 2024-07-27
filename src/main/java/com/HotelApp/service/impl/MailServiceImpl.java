@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import static com.HotelApp.common.constants.SuccessConstants.ONLINE_RESERVATION_SUCCESS;
+import static com.HotelApp.common.constants.ValidationConstants.SMTP_MESSAGE_RESERVATION;
+import static com.HotelApp.common.constants.ValidationConstants.SMTP_MESSAGE_VOUCHER;
+
 @Service
 public class MailServiceImpl implements MailService {
 
@@ -54,7 +58,7 @@ public class MailServiceImpl implements MailService {
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
 
         } catch (MessagingException | MailSendException ignored) {
-            log.warn("Please connect the smtp server to proceed sending a bonus voucher to client.");
+            log.warn(SMTP_MESSAGE_VOUCHER);
         }
     }
 
@@ -70,7 +74,7 @@ public class MailServiceImpl implements MailService {
             mimeMessageHelper.setTo(userEmail);
             mimeMessageHelper.setFrom(hotelEmail);
             mimeMessageHelper.setReplyTo(hotelEmail);
-            mimeMessageHelper.setSubject("Thank you for your reservation!");
+            mimeMessageHelper.setSubject(ONLINE_RESERVATION_SUCCESS);
             mimeMessageHelper.setText(generateOnlineReservationConfirmBody(userFullName), true);
 
             mimeMessageHelper.addInline("success", imageResource, "image/jpg");
@@ -78,7 +82,7 @@ public class MailServiceImpl implements MailService {
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
 
         } catch (MessagingException | MailSendException ignored) {
-            log.warn("Please connect the smtp server to proceed sending confirmation email.");
+            log.warn(SMTP_MESSAGE_RESERVATION);
         }
     }
 

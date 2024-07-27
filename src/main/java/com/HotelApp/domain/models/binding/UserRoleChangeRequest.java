@@ -1,4 +1,4 @@
-package com.HotelApp.domain.models.service;
+package com.HotelApp.domain.models.binding;
 
 public class UserRoleChangeRequest {
     private String command;

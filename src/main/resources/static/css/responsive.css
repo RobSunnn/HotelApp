@@ -20,9 +20,11 @@
         display: block;
         padding: 0;
     }
-  .pagination {
-      flex-wrap: wrap;
-  }
+
+    .pagination {
+        flex-wrap: wrap;
+    }
+
     /*Navbar*/
     .form-inline {
         width: 84%;
@@ -126,20 +128,20 @@
 @media (max-width: 770px) {
     /*Profile*/
     #profile-main,
-    .profile h3{
+    .profile h3 {
         font-size: 1.1rem;
         justify-content: center;
 
     }
 
-    .profile #roles{
+    .profile #roles {
         width: 50%;
         font-size: 0.8rem;
         margin: 0 auto;
     }
 
     #roles span:nth-child(even),
-    #roles span:nth-child(odd){
+    #roles span:nth-child(odd) {
         width: 72% !important;
         display: flex !important;
         justify-content: center !important;
@@ -170,8 +172,6 @@
 
     /*EO: Register*/
     /*Tables*/
-
-
     #table thead,
     #table thead tr,
     #table tbody,
@@ -187,10 +187,10 @@
     }
 
     /*EO: Tables*/
-
     .room-text {
         display: none;
     }
+
     .custom-card .card-img {
         width: 100%;
     }

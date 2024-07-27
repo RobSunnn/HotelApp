@@ -4,26 +4,42 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
+
+import static com.HotelApp.common.constants.ValidationConstants.*;
 
 @Entity
 @Table(name = "guests")
 public class GuestEntity extends BaseEntity {
 
     @Column(nullable = false)
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String firstName;
 
     @Column(nullable = false)
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String lastName;
 
     @Column
+    @Email(message = INVALID_EMAIL)
     private String email;
 
     @Column(nullable = false)
+    @Positive(message = NEGATIVE_AGE)
+    @NotNull(message = INVALID_AGE)
+    @Min(value = 18, message = MINIMUM_AGE)
+    @Max(value = 100, message = INVALID_AGE_OVER_100)
     private Integer age;
 
     @Column(nullable = false, name = "document_id")
+    @NotBlank(message = DOCUMENT_ID_EMPTY)
+    @Size(max = 200, message = DOCUMENT_ID_TOO_LONG)
     private String documentId;
 
     @ManyToOne

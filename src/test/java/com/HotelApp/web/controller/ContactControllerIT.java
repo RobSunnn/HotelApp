@@ -5,7 +5,6 @@ import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.repository.ContactRequestRepository;
 import com.HotelApp.repository.SubscriberRepository;
 import com.HotelApp.service.ContactRequestService;
-import com.HotelApp.service.SubscriberService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,7 +30,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -98,7 +98,7 @@ class ContactControllerIT {
         // Create the contact request model with invalid data
         ContactRequestBindingModel contactRequestBindingModel = new ContactRequestBindingModel();
 
-        MvcResult result =  mockMvc.perform(post("/contact/contactForm")
+        MvcResult result = mockMvc.perform(post("/contact/contactForm")
                         .flashAttr("contactRequestBindingModel", contactRequestBindingModel)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
@@ -109,7 +109,7 @@ class ContactControllerIT {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(jsonResponse);
 
-        // Extract and assert on errors array
+        // Extract and assert on an error array
         JsonNode errorsNode = jsonNode.get("errors");
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
@@ -120,17 +120,17 @@ class ContactControllerIT {
 
         assertEquals(4, errorsList.size());
 
-        assertEquals("Your message should not be blank.",
-                errorsList.get(3).get("defaultMessage").asText());
+        assertEquals("Email should be provided.",
+                errorsList.get(0).get("defaultMessage").asText());
 
-        assertEquals("Enter your email.",
+        assertEquals("Leave a message here...",
                 errorsList.get(1).get("defaultMessage").asText());
 
-        assertEquals("Enter your name.",
+        assertEquals("Please enter real email...",
                 errorsList.get(2).get("defaultMessage").asText());
 
-        assertEquals("Enter a valid email...",
-                errorsList.get(0).get("defaultMessage").asText());
+        assertEquals("Please, provide a name.",
+                errorsList.get(3).get("defaultMessage").asText());
 
         assertEquals(0, contactRequestRepository.count());
     }

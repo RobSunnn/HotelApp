@@ -4,17 +4,28 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+
+import static com.HotelApp.common.constants.ValidationConstants.*;
 
 @Entity
 @Table(name = "contact_requests")
 public class ContactRequestEntity extends BaseEntity {
 
     @Column(nullable = false)
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String name;
 
     @Column(nullable = false)
+    @NotBlank(message = EMAIL_NOT_BLANK)
+    @Email(message = INVALID_EMAIL)
+    @Size(max = 100, message = EMAIL_TOO_LONG)
     private String email;
 
     @Column

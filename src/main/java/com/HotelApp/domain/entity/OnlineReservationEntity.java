@@ -1,5 +1,6 @@
 package com.HotelApp.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -11,17 +12,23 @@ import java.time.LocalDateTime;
 @Table(name = "online_reservations")
 public class OnlineReservationEntity extends BaseEntity {
 
+    @Column(nullable = false)
     private String fullName;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private Integer age;
 
+    @Column(nullable = false)
     @Size(max = 400)
     private String additionalInfo;
 
+    @Column(nullable = false)
     private LocalDateTime timestamp;
 
+    @Column(nullable = false)
     private boolean isChecked;
 
     @ManyToOne

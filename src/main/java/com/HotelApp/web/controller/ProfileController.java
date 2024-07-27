@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.HotelApp.common.constants.SuccessConstants.*;
+
 @Controller
 @RequestMapping("/users/profile")
 public class ProfileController {
@@ -34,7 +36,7 @@ public class ProfileController {
     @ModelAttribute
     public void addAttributes(HttpSession session) {
         String token = UUID.randomUUID().toString();
-        session.setAttribute("userToken", token);
+        session.setAttribute(USER_TOKEN, token);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -97,11 +99,11 @@ public class ProfileController {
         );
         Map<String, Object> response = new HashMap<>();
         if (editSuccessful) {
-            response.put("success", true);
-            response.put("redirectUrl", "/users/profile/editSuccess");
+            response.put(SUCCESS, true);
+            response.put(REDIRECT_URL, "/users/profile/editSuccess");
             return ResponseEntity.ok().body(response);
         } else {
-            response.put("success", false);
+            response.put(SUCCESS, false);
             response.put("errors", bindingResult.getAllErrors());
             return ResponseEntity.badRequest().body(response);
         }
@@ -123,11 +125,11 @@ public class ProfileController {
         );
         Map<String, Object> response = new HashMap<>();
         if (changePasswordSuccessful) {
-            response.put("success", true);
-            response.put("redirectUrl", "/users/profile");
+            response.put(SUCCESS, true);
+            response.put(REDIRECT_URL, "/users/profile");
             return ResponseEntity.ok().body(response);
         } else {
-            response.put("success", false);
+            response.put(SUCCESS, false);
             response.put("errors", bindingResult.getAllErrors());
             return ResponseEntity.badRequest().body(response);
         }

@@ -18,6 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.HotelApp.common.constants.SuccessConstants.*;
+import static com.HotelApp.common.constants.ValidationConstants.TEXT_TOO_LONG;
+
 @Controller
 @RequestMapping("/contact")
 public class ContactController {
@@ -51,10 +54,12 @@ public class ContactController {
 
     @PostMapping("/subscribe")
     @ResponseBody
-    public ResponseEntity<?> subscribe(@Valid AddSubscriberBindingModel addSubscriberBindingModel,
-                                       BindingResult bindingResult,
-                                       RedirectAttributes redirectAttributes,
-                                       HttpServletRequest request) {
+    public ResponseEntity<?> subscribe(
+            @Valid AddSubscriberBindingModel addSubscriberBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request
+    ) {
         String redirectUrl = request.getHeader("referer").split("8080")[1];
 
         boolean isSuccessful = subscriberService.addNewSubscriber(
@@ -65,13 +70,13 @@ public class ContactController {
 
         Map<String, Object> responseBody = new HashMap<>();
         if (isSuccessful) {
-            responseBody.put("success", true);
-            responseBody.put("redirectUrl", redirectUrl);
-            responseBody.put("message", "Thank you for subscribing!");
+            responseBody.put(SUCCESS, true);
+            responseBody.put(REDIRECT_URL, redirectUrl);
+            responseBody.put("message", SUBSCRIBE_SUCCESS);
 
             return ResponseEntity.ok().body(responseBody);
         } else {
-            responseBody.put("success", false);
+            responseBody.put(SUCCESS, false);
             responseBody.put("errors", bindingResult.getAllErrors());
             return ResponseEntity.badRequest().body(responseBody);
         }
@@ -91,11 +96,11 @@ public class ContactController {
         );
         Map<String, Object> responseBody = new HashMap<>();
         if (isSuccessful) {
-            responseBody.put("success", true);
-            responseBody.put("redirectUrl", "/contact");
+            responseBody.put(SUCCESS, true);
+            responseBody.put(REDIRECT_URL, "/contact");
             return ResponseEntity.ok().body(responseBody);
         } else {
-            responseBody.put("success", false);
+            responseBody.put(SUCCESS, false);
             responseBody.put("errors", bindingResult.getAllErrors());
             return ResponseEntity.badRequest().body(responseBody);
         }
@@ -108,7 +113,7 @@ public class ContactController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         if (additionalInfo.length() > TEXT_MAXIMUM_LENGTH) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Text is too long.");
+            redirectAttributes.addFlashAttribute("errorMessage", TEXT_TOO_LONG);
             return "redirect:/contact/onlineReservation";
         }
 

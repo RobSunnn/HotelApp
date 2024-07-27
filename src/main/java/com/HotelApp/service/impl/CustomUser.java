@@ -1,4 +1,4 @@
-package com.HotelApp.domain.models.service;
+package com.HotelApp.service.impl;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

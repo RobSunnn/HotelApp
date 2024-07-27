@@ -1,27 +1,19 @@
 package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.ContactRequestEntity;
-import com.HotelApp.domain.entity.HotelInfoEntity;
-import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.repository.ContactRequestRepository;
-import com.HotelApp.service.HotelService;
-import com.HotelApp.util.encryptionUtil.EncryptionService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,7 +48,7 @@ class ContactRequestServiceImplTest {
 
         when(contactRequestRepository.findAll()).thenReturn(List.of(mockRequest));
 
-         contactRequestService.checkedContactRequest(1L);
+        contactRequestService.checkedContactRequest(1L);
 
         verify(contactRequestRepository, times(1)).save(any(ContactRequestEntity.class));
         assertTrue(mockRequest.getChecked()); // Assert that isChecked was set to true

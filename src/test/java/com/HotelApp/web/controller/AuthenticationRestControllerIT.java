@@ -1,8 +1,8 @@
 package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
-import com.HotelApp.domain.models.service.CustomUser;
 import com.HotelApp.service.impl.AppUserDetailsService;
+import com.HotelApp.service.impl.CustomUser;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -116,7 +116,7 @@ class AuthenticationRestControllerIT {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(jsonResponse);
 
-        // Extract and assert on errors array
+        // Extract and assert on an error array
         JsonNode errorsNode = jsonNode.get("errors");
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
@@ -128,19 +128,19 @@ class AuthenticationRestControllerIT {
         assertEquals(5, errorsList.size());
 
         // Example assertions on specific error messages
-        assertEquals("You need to tell us what is your name.",
+        assertEquals("Please, provide a name.",
                 errorsList.get(0).get("defaultMessage").asText());
 
-        assertEquals("You need to tell us what is your name.",
+        assertEquals("Please, provide a name.",
                 errorsList.get(1).get("defaultMessage").asText());
 
         assertEquals("We need your age to verify that you are over 18 years old.",
                 errorsList.get(2).get("defaultMessage").asText());
 
-        assertEquals("Password is empty.",
+        assertEquals("You need password for your registration...",
                 errorsList.get(3).get("defaultMessage").asText());
 
-        assertEquals("Confirm your password, please.",
+        assertEquals("Please confirm your password.",
                 errorsList.get(4).get("defaultMessage").asText());
     }
 }

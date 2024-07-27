@@ -5,11 +5,11 @@ import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
-import com.HotelApp.domain.models.service.CustomUser;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.UserService;
 import com.HotelApp.service.impl.AppUserDetailsService;
+import com.HotelApp.service.impl.CustomUser;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,9 +48,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProfileControllerIT {
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserService userService;
 
     @MockBean
     private UserRepository userRepository;
@@ -141,7 +138,7 @@ class ProfileControllerIT {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(response);
 
-        // Extract and assert on errors array
+        // Extract and assert on an error array
         JsonNode errorsNode = jsonNode.get("errors");
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
@@ -206,7 +203,7 @@ class ProfileControllerIT {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(response);
 
-        // Extract and assert on errors array
+        // Extract and assert on an error array
         JsonNode errorsNode = jsonNode.get("errors");
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());

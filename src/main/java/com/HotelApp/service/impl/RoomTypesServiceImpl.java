@@ -16,8 +16,10 @@ public class RoomTypesServiceImpl implements RoomTypesService {
 
     private final CategoriesRepository categoriesRepository;
 
-    public RoomTypesServiceImpl(RoomTypeRepository roomTypeRepository,
-                                CategoriesRepository categoriesRepository) {
+    public RoomTypesServiceImpl(
+            RoomTypeRepository roomTypeRepository,
+            CategoriesRepository categoriesRepository
+    ) {
         this.roomTypeRepository = roomTypeRepository;
         this.categoriesRepository = categoriesRepository;
     }

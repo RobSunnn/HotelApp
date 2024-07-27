@@ -44,7 +44,6 @@
         }
 
 
-
         .error-message {
             text-align: center;
         }
@@ -65,7 +64,6 @@
 </head>
 <body class="hero" style="background-image: url('/images/hotel.jpg')">
 <th:block th:replace="~{fragments :: navbar}"></th:block>
-
 <div class="reservation-card">
     <div class="reservation-header">
         <h2>You need to press the button, and someone from our team will contact you.</h2>
@@ -73,7 +71,8 @@
     <div class="reservation-body">
         <label for="additional-info">If you want to leave additional information you can write here:</label>
         <form th:action="@{/contact/onlineReservation}" th:method="POST">
-            <textarea id="additional-info" name="additionalInfo" placeholder="Max 400 symbols" maxlength="400" rows="4"></textarea>
+            <textarea id="additional-info" name="additionalInfo" placeholder="Max 400 symbols" maxlength="400"
+                      rows="4"></textarea>
             <div class="error-message">
                 <h4 th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></h4>
             </div>

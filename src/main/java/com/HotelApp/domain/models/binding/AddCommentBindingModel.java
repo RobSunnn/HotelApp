@@ -3,16 +3,18 @@ package com.HotelApp.domain.models.binding;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import static com.HotelApp.common.constants.ValidationConstants.*;
+
 public class AddCommentBindingModel {
 
-    @NotBlank(message = "Please say your name or nickname.")
-    @Size(min = 2, message = "Your name must be at least 2 characters.")
-    @Size(max = 30, message = "Your name is too long.")
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String author;
 
-    @NotBlank(message = "Leave a message here...")
-    @Size(min = 2, message = "You need to say at least Hi...")
-    @Size(max = 250, message = "Your comment is too long.")
+    @NotBlank(message = MESSAGE_BLANK)
+    @Size(min = 2, message = MESSAGE_TOO_SHORT)
+    @Size(max = 250, message = MESSAGE_TOO_LONG)
     private String commentContent;
 
     public AddCommentBindingModel() {

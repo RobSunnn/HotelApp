@@ -7,14 +7,14 @@ import static com.HotelApp.common.constants.ValidationConstants.*;
 
 public class EditUserProfileBindingModel {
 
-    @NotBlank(message = FIRST_AND_LAST_NAME_NOT_BLANK)
-    @Size(min = 2, message = FIRST_AND_LAST_NAME_LENGTH)
-    @Size(max = 60, message = FIRST_AND_LAST_NAME_LENGTH_TOO_LONG)
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 60, message = NAME_LENGTH_TOO_LONG)
     private String firstName;
 
-    @NotBlank(message = FIRST_AND_LAST_NAME_NOT_BLANK)
-    @Size(min = 2, message = FIRST_AND_LAST_NAME_LENGTH)
-    @Size(max = 60, message = FIRST_AND_LAST_NAME_LENGTH_TOO_LONG)
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 60, message = NAME_LENGTH_TOO_LONG)
     private String lastName;
 
     @NotBlank(message = EMAIL_NOT_BLANK)

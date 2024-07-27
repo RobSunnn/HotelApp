@@ -3,10 +3,13 @@ package com.HotelApp.domain.models.binding;
 import com.HotelApp.validation.annotation.ValidEmail;
 import jakarta.validation.constraints.NotBlank;
 
-public class AddSubscriberBindingModel {
+import static com.HotelApp.common.constants.ValidationConstants.EMAIL_NOT_BLANK;
+import static com.HotelApp.common.constants.ValidationConstants.INVALID_EMAIL;
 
-    @NotBlank(message = "Field should not be empty.")
-    @ValidEmail(message = "Enter valid email.")
+public class AddSubscriberBindingModel {
+    //todo: check email size
+    @NotBlank(message = EMAIL_NOT_BLANK)
+    @ValidEmail(message = INVALID_EMAIL)
 //    @Size(max = 100, message = "Your email is too long.")
     private String subscriberEmail;
 

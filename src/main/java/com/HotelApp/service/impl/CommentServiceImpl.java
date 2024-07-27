@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 
 import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH;
 import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
+import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -46,7 +47,7 @@ public class CommentServiceImpl implements CommentService {
 
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
         commentRepository.save(mapAsComment(addCommentBindingModel, hotelInfo));
-        redirectAttributes.addFlashAttribute("successCommentMessage", "Thank you for your comment!");
+        redirectAttributes.addFlashAttribute("successCommentMessage", COMMENT_SUCCESS);
     }
 
     @Override

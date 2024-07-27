@@ -19,7 +19,7 @@
 }
 
 .profile {
-    flex:1 0 30%;
+    flex: 1 0 30%;
     max-width: 100%;
     padding: 0.8em;
     align-content: center;
@@ -27,7 +27,7 @@
 }
 
 .profile h3,
-.profile #roles{
+.profile #roles {
     margin-bottom: 1.5em;
 }
 
@@ -36,6 +36,7 @@
     justify-content: center;
     margin: 1em auto;
 }
+
 .file-input-container input {
     width: 100%;
 }
@@ -65,6 +66,7 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
 /* EO: Profile */
 /* Edit Profile And Change Password */
 .edit-profile-container {
@@ -83,4 +85,5 @@
 .edit-profile-container .form-group input {
     text-align: center;
 }
+
 /* EO: Edit Profile And Change Password*/

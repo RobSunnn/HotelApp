@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.HotelApp.common.constants.SuccessConstants.EVICTING_USERS;
+import static com.HotelApp.common.constants.SuccessConstants.TRANSFORMING_USERS;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 
 @Service
@@ -41,7 +43,7 @@ public class UserTransformationService {
 
     @Cacheable(value = "userViewsCache", key = "'allUserViews'")
     public List<UserView> transformUsers(List<UserEntity> users) {
-        log.info("Transforming users to user views");
+        log.info(TRANSFORMING_USERS);
 
         return users.stream()
                 .map(this::mapAsUserView)
@@ -50,7 +52,7 @@ public class UserTransformationService {
 
     @CacheEvict(value = "userViewsCache", key = "'allUserViews'")
     public void evictUserViewsCache() {
-        log.info("Evicting user views cache");
+        log.info(EVICTING_USERS);
     }
 
     protected UserView mapAsUserView(UserEntity user) {

@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.HotelApp.common.constants.BindingConstants.BAD_CREDENTIALS;
+import static com.HotelApp.common.constants.SuccessConstants.*;
+
 
 @RestController
 @RequestMapping("/users")
@@ -51,11 +54,11 @@ public class AuthenticationRestController {
 
         Map<String, Object> responseBody = new HashMap<>();
         if (!isSuccess) {
-            responseBody.put("message", "Invalid username or password");
+            responseBody.put("message", BAD_CREDENTIALS);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
-        responseBody.put("success", true);
-        responseBody.put("message", "Login success");
+        responseBody.put(SUCCESS, true);
+        responseBody.put("message", LOGIN_SUCCESS);
         List<? extends GrantedAuthority> isAdmin = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -96,11 +99,11 @@ public class AuthenticationRestController {
 
         Map<String, Object> responseBody = new HashMap<>();
         if (registrationSuccessful) {
-            responseBody.put("success", true);
-            responseBody.put("redirectUrl", "/users/registrationSuccess");
+            responseBody.put(SUCCESS, true);
+            responseBody.put(REDIRECT_URL, "/users/registrationSuccess");
             return ResponseEntity.ok().body(responseBody);
         } else {
-            responseBody.put("success", false);
+            responseBody.put(SUCCESS, false);
             responseBody.put("errors", bindingResult.getAllErrors());
             return ResponseEntity.badRequest().body(responseBody);
         }

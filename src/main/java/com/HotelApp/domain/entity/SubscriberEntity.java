@@ -4,18 +4,28 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+
+import static com.HotelApp.common.constants.ValidationConstants.*;
 
 @Entity
 @Table(name = "subscribers")
 public class SubscriberEntity extends BaseEntity {
 
     @Column(nullable = false, unique = true)
+    @NotBlank(message = EMAIL_NOT_BLANK)
+    @Email(message = INVALID_EMAIL)
+    @Size(max = 100, message = EMAIL_TOO_LONG)
     private String email;
 
+    @Column(nullable = false)
     private LocalDateTime timeOfSubscription;
 
+    @Column(nullable = false)
     private Integer counterOfSubscriptions;
 
     @ManyToOne

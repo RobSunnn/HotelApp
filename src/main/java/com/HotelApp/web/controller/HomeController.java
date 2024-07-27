@@ -1,6 +1,5 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.view.RoomTypeView;
 import com.HotelApp.service.RoomTypesService;
 import org.springframework.data.domain.Page;
@@ -37,11 +36,6 @@ public class HomeController {
 
         model.addAttribute("allRooms", roomTypes);
         model.addAttribute("lastPageRooms", lastPage);
-
-        if (!model.containsAttribute("addSubscriberBindingModel")) {
-            model.addAttribute("addSubscriberBindingModel", new AddSubscriberBindingModel());
-        }
-
         model.addAttribute("imageUrls", new String[]{"/images/hotel.jpg", "/images/hotel1.jpg", "/images/hotel2.jpg"});
     }
 
@@ -49,6 +43,4 @@ public class HomeController {
     public String index() {
         return "index";
     }
-
-
 }

@@ -36,6 +36,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
+import static com.HotelApp.common.constants.SuccessConstants.CHANGE_PASSWORD_SUCCESS;
+import static com.HotelApp.common.constants.SuccessConstants.PICTURE_UPLOAD_SUCCESS;
+import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 
 
@@ -79,18 +82,18 @@ public class UserServiceImpl implements UserService {
         ).trim();
 
         if (Objects.requireNonNull(decryptedPass).isEmpty()) {
-            bindingResult.addError(new FieldError("userRegisterBindingModel",
-                    "password", "Password is empty."));
+            bindingResult.addError(new FieldError(USER_REGISTER_BINDING_MODEL,
+                    "password", EMPTY_PASSWORD));
         }
 
         if (Objects.requireNonNull(decryptedConfirmPass).isEmpty()) {
-            bindingResult.addError(new FieldError("userRegisterBindingModel",
-                    "confirmPassword", "Confirm your password, please."));
+            bindingResult.addError(new FieldError(USER_REGISTER_BINDING_MODEL,
+                    "confirmPassword", CONFIRM_PASSWORD));
         }
 
         if (!decryptedPass.equals(decryptedConfirmPass)) {
-            bindingResult.addError(new FieldError("userRegisterBindingModel",
-                    "confirmPassword", "Password mismatch"));
+            bindingResult.addError(new FieldError(USER_REGISTER_BINDING_MODEL,
+                    "confirmPassword", PASSWORD_MISMATCH));
         }
 
         if (checkIfEmailExist(decryptedEmail)) {
@@ -219,7 +222,7 @@ public class UserServiceImpl implements UserService {
             user.setUserImage(blob);
 
             redirectAttributes.addFlashAttribute("successMessage",
-                    "Profile picture uploaded successfully.");
+                    PICTURE_UPLOAD_SUCCESS);
 
             userRepository.save(user);
 
@@ -243,7 +246,7 @@ public class UserServiceImpl implements UserService {
 
         if (decryptedEmail.isEmpty()) {
             bindingResult.addError(new FieldError(
-                    "userRegisterBindingModel", "email", "Please enter email.")
+                    USER_REGISTER_BINDING_MODEL, "email", EMAIL_NOT_BLANK)
             );
             return false;
         }
@@ -253,17 +256,17 @@ public class UserServiceImpl implements UserService {
 
         if (checkIfEmailExist(decryptedEmail) && emailChanged) {
             bindingResult.addError(new FieldError(
-                    "userRegisterBindingModel",
-                    "email", ValidationConstants.EMAIL_EXIST)
+                    USER_REGISTER_BINDING_MODEL,
+                    EMAIL, ValidationConstants.EMAIL_EXIST)
             );
         }
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(
-                    "editUserProfileBindingModel", editUserProfileBindingModel
+                    EDIT_USER_PROFILE_BINDING_MODEL, editUserProfileBindingModel
             );
             redirectAttributes.addFlashAttribute(
-                    BindingConstants.BINDING_RESULT_PATH + "editUserProfileBindingModel",
+                    BindingConstants.BINDING_RESULT_PATH + EDIT_USER_PROFILE_BINDING_MODEL,
                     bindingResult
             );
             return false;
@@ -299,15 +302,15 @@ public class UserServiceImpl implements UserService {
 
         if (!passwordEncoder().matches(decryptedOldPassword, user.getPassword())) {
             bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
-                    "oldPassword", ValidationConstants.OLD_PASS_MISMATCH));
+                    "oldPassword", ValidationConstants.OLD_PASSWORD_MISMATCH));
         }
         if (decryptedNewPassword.isEmpty()) {
             bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
-                    "newPassword", ValidationConstants.EMPTY_PASSWORD));
+                    "newPassword", EMPTY_PASSWORD));
         }
         if (!decryptedNewPassword.equals(decryptedConfirmNewPassword) || decryptedConfirmNewPassword.isEmpty()) {
             bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
-                    "confirmNewPassword", ValidationConstants.CONFIRM_PASSWORD));
+                    "confirmNewPassword", CONFIRM_PASSWORD));
         }
 
         if (bindingResult.hasErrors()) {
@@ -328,7 +331,7 @@ public class UserServiceImpl implements UserService {
         userTransformationService.reAuthenticateUser(userEmail);
         redirectAttributes.addFlashAttribute(
                 "successMessage",
-                "Password changed successfully."
+                CHANGE_PASSWORD_SUCCESS
         );
 
         return true;

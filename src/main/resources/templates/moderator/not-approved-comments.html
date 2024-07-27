@@ -25,9 +25,7 @@
             th:classappend="${iterStat.index == 0} ? 'selected'"
             th:data-content-id="${comment.id}">
             <td style="width: 20%" th:text="${#temporals.format(comment.created, 'yyyy-MM-dd')}"></td>
-            <td
-                th:text="${#temporals.format(comment.created.toLocalTime(), 'HH')} + ':' + (${comment.created.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${comment.created.toLocalTime().getMinute()}">
-            </td>
+            <td th:text="${#temporals.format(comment.created.toLocalTime(), 'HH')} + ':' + (${comment.created.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${comment.created.toLocalTime().getMinute()}"></td>
             <td th:text="${#strings.abbreviate(comment.author, 30)}"></td>
             <td th:text="${#strings.abbreviate(comment.commentContent, 50)}"></td>
         </tr>

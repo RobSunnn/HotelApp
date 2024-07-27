@@ -4,22 +4,24 @@ import com.HotelApp.validation.annotation.ValidEmail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class ContactRequestBindingModel {
-    @NotBlank(message = "Enter your name.")
-    @Size(min = 2, message = "Your name must be at least 2 characters.")
-    @Size(max = 30, message = "Your name is too long...")
-    private String name;
+import static com.HotelApp.common.constants.ValidationConstants.*;
 
-    @NotBlank(message = "Enter your email.")
-    @ValidEmail(message = "Enter a valid email...")
+public class ContactRequestBindingModel {
+    @NotBlank(message = NAME_BLANK)
+    @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
+    @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
+    private String name;
+    //todo: check email size
+    @NotBlank(message = EMAIL_NOT_BLANK)
+    @ValidEmail(message = INVALID_EMAIL)
 //    @Size(max = 100, message = "Your email is too long!")
     private String email;
 
     private String phoneNumber;
 
-    @NotBlank(message = "Your message should not be blank.")
-    @Size(min = 2, message = "At least say hi.")
-    @Size(max = 400, message = "Your message is too long.")
+    @NotBlank(message = MESSAGE_BLANK)
+    @Size(min = 2, message = MESSAGE_TOO_SHORT)
+    @Size(max = 400, message = MESSAGE_TOO_LONG)
     private String message;
 
 

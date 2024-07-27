@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.HotelApp.common.constants.BindingConstants.GUEST_REGISTER_BINDING_MODEL;
+import static com.HotelApp.common.constants.ValidationConstants.DOCUMENT_ID_EMPTY;
+import static com.HotelApp.common.constants.ValidationConstants.ROOM_NUMBER_REQUIRED;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
 @Service
@@ -36,11 +38,13 @@ public class GuestServiceImpl implements GuestService {
     private final HotelService hotelService;
     private final EncryptionService encryptionService;
 
-    public GuestServiceImpl(GuestRepository guestRepository,
-                            RoomRepository roomRepository,
-                            HappyGuestService happyGuestService,
-                            HotelService hotelService,
-                            EncryptionService encryptionService) {
+    public GuestServiceImpl(
+            GuestRepository guestRepository,
+            RoomRepository roomRepository,
+            HappyGuestService happyGuestService,
+            HotelService hotelService,
+            EncryptionService encryptionService
+    ) {
         this.guestRepository = guestRepository;
         this.roomRepository = roomRepository;
         this.happyGuestService = happyGuestService;
@@ -50,9 +54,11 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     @Transactional
-    public boolean registerGuest(AddGuestBindingModel addGuestBindingModel,
-                                 BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes) {
+    public boolean registerGuest(
+            AddGuestBindingModel addGuestBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
 
         try {
             String decryptedEmail = encryptionService.decrypt(addGuestBindingModel.getEmail());
@@ -60,11 +66,11 @@ public class GuestServiceImpl implements GuestService {
 
             if (decryptedDocument.isEmpty()) {
                 bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
-                        "documentId", "Document ID should not be empty!"));
+                        "documentId", DOCUMENT_ID_EMPTY));
             }
             if (!isNumeric(addGuestBindingModel.getRoomNumber())) {
                 bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
-                        "roomNumber", "You need to select room number."));
+                        "roomNumber", ROOM_NUMBER_REQUIRED));
             }
             if (bindingResult.hasErrors()) {
                 redirectAttributes

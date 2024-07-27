@@ -18,6 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.HotelApp.common.constants.BindingConstants.GUEST_REGISTER_BINDING_MODEL;
+import static com.HotelApp.common.constants.SuccessConstants.REDIRECT_URL;
+import static com.HotelApp.common.constants.SuccessConstants.SUCCESS;
+
 @Controller
 @RequestMapping("/guests")
 public class GuestController {
@@ -33,8 +37,8 @@ public class GuestController {
     @GetMapping("/add")
     public String add(Model model) {
 
-        if (!model.containsAttribute("addGuestBindingModel")) {
-            model.addAttribute("addGuestBindingModel", new AddGuestBindingModel());
+        if (!model.containsAttribute(GUEST_REGISTER_BINDING_MODEL)) {
+            model.addAttribute(GUEST_REGISTER_BINDING_MODEL, new AddGuestBindingModel());
         }
 
         CategoriesEnum[] categories = CategoriesEnum.values();
@@ -59,11 +63,11 @@ public class GuestController {
                 guestService.registerGuest(addGuestBindingModel, bindingResult, redirectAttributes);
         Map<String, Object> response = new HashMap<>();
         if (registerGuestSuccess) {
-            response.put("success", true);
-            response.put("redirectUrl", "/guests/addGuestSuccess");
+            response.put(SUCCESS, true);
+            response.put(REDIRECT_URL, "/guests/addGuestSuccess");
             return ResponseEntity.ok().body(response);
         } else {
-            response.put("success", false);
+            response.put(SUCCESS, false);
             response.put("errors", bindingResult.getAllErrors());
             return ResponseEntity.badRequest().body(response);
         }

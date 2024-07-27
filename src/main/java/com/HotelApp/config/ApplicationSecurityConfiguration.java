@@ -22,10 +22,12 @@ public class ApplicationSecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                        .maximumSessions(1)
-                        .expiredUrl("/users/login?sessionExpired=true"))
+                .sessionManagement(
+                        session -> session
+                                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                                .maximumSessions(1)
+                                .expiredUrl("/users/login?sessionExpired=true")
+                )
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/logout"))
                 .authorizeHttpRequests(
                         authorizeRequests -> authorizeRequests
@@ -34,18 +36,21 @@ public class ApplicationSecurityConfiguration {
                                         "/", "/users/login", "/users/register",
                                         "/users/registrationSuccess", "/users/login-error",
                                         "/allRoomTypes", "/about/**", "/logout",
-                                        "/contact/**", "/error", "/session-expired", "/get-public-key"
+                                        "/contact/**", "/error", "/get-public-key"
                                 ).permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/moderator/**", "/guests/**", "/hotel/**").hasRole("MODERATOR")
                                 .anyRequest().authenticated()
                 )
-                .requestCache(requestCacheConfigurer -> requestCacheConfigurer
-                        .requestCache(requestCache())
+                .requestCache(
+                        requestCacheConfigurer -> requestCacheConfigurer
+                                .requestCache(requestCache())
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(authenticationEntryPoint()))
+                .exceptionHandling(
+                        exceptionHandling -> exceptionHandling
+                                .authenticationEntryPoint(authenticationEntryPoint())
+                )
                 .logout(
                         logout -> logout.logoutUrl("/logout")
                                 .logoutSuccessUrl("/")

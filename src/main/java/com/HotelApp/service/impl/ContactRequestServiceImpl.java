@@ -29,6 +29,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
+import static com.HotelApp.common.constants.ValidationConstants.PHONE_NUMBER_TOO_LONG;
+
 @EnableScheduling
 @Service
 public class ContactRequestServiceImpl implements ContactRequestService {
@@ -67,12 +70,12 @@ public class ContactRequestServiceImpl implements ContactRequestService {
             String decryptedEmail = encryptionService.decrypt(contactRequestBindingModel.getEmail());
             String decryptedPhone = encryptionService.decrypt(contactRequestBindingModel.getPhoneNumber());
             if (decryptedPhone.length() > 50) {
-                bindingResult.addError(new FieldError("contactRequestBindingModel",
-                        "contactPhoneNumber", "Your phone number is too long."));
+                bindingResult.addError(new FieldError(CONTACT_REQUEST_BINDING_MODEL,
+                        "contactPhoneNumber", PHONE_NUMBER_TOO_LONG));
             }
             if (bindingResult.hasErrors()) {
-                redirectAttributes.addFlashAttribute("contactRequestBindingModel", contactRequestBindingModel);
-                redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + "contactRequestBindingModel", bindingResult);
+                redirectAttributes.addFlashAttribute(CONTACT_REQUEST_BINDING_MODEL, contactRequestBindingModel);
+                redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + CONTACT_REQUEST_BINDING_MODEL, bindingResult);
 
                 return false;
             }

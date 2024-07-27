@@ -1,8 +1,7 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.models.service.CustomUser;
-import com.HotelApp.domain.models.view.ForbiddenRequestView;
 import com.HotelApp.service.ForbiddenRequestsService;
+import com.HotelApp.service.impl.CustomUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -31,9 +27,6 @@ class HotelControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Mock
-    private ForbiddenRequestsService forbiddenRequestsService;
 
     @BeforeEach
     void setUp() {

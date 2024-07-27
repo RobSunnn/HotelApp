@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import static com.HotelApp.common.constants.SuccessConstants.PREVIOUS_URL;
+
 @Controller
 public class HotelController {
 
@@ -42,7 +44,7 @@ public class HotelController {
         model.addAttribute("forbiddenRequestsSize", forbiddenRequestsSize);
 
         String previousUrl = request.getHeader("referer");
-        session.setAttribute("previousUrl", previousUrl);
+        session.setAttribute(PREVIOUS_URL, previousUrl);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -21,6 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.SuccessConstants.BONUS_VOUCHER_SEND;
+import static com.HotelApp.common.constants.ValidationConstants.INVALID_EMAIL;
+
 @Service
 public class SubscriberServiceImpl implements SubscriberService {
 
@@ -60,7 +63,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);
             redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.SUBSCRIBER_BINDING_MODEL, bindingResult);
-            redirectAttributes.addFlashAttribute("failMessage", "Please enter valid email.");
+            redirectAttributes.addFlashAttribute("failMessage", INVALID_EMAIL);
 
             return false;
         }
@@ -68,6 +71,7 @@ public class SubscriberServiceImpl implements SubscriberService {
         try {
             String decryptedEmail = encryptionService.decrypt(addSubscriberBindingModel.getSubscriberEmail());
             addSubscriberBindingModel.setSubscriberEmail(decryptedEmail);
+
             Optional<SubscriberEntity> checkSubscriber = subscriberRepository.findByEmail(decryptedEmail);
             HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
 
@@ -94,7 +98,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     @EventListener(SendBonusVoucherEvent.class)
     private void sendBonusVoucher(SendBonusVoucherEvent event) {
         mailService.sendBonusVoucherEmail(event.getEmail());
-        log.info("Bonus voucher send for: {}", event.getEmail());
+        log.info(BONUS_VOUCHER_SEND, event.getEmail());
     }
 
     private static SubscriberEntity mapAsSubscriber(

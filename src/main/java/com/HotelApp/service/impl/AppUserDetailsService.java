@@ -2,7 +2,6 @@ package com.HotelApp.service.impl;
 
 import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
-import com.HotelApp.domain.models.service.CustomUser;
 import com.HotelApp.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

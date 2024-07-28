@@ -7,8 +7,10 @@ import com.HotelApp.repository.CategoriesRepository;
 import com.HotelApp.repository.RoomTypeRepository;
 import com.HotelApp.service.RoomTypesService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 public class RoomTypesServiceImpl implements RoomTypesService {
@@ -71,6 +73,17 @@ public class RoomTypesServiceImpl implements RoomTypesService {
                 "Welcome to the epitome of luxury and refinement, where opulence meets sophistication in our distinguished presidential suite. From the moment you step inside, you''ll be enveloped in an atmosphere of grandeur and elegance, promising an unparalleled experience fit for royalty.",
                 4, "https://i.pinimg.com/564x/e6/2b/6c/e62b6c0597695706d32a37d61dc9d668.jpg",
                 categoriesRepository.findByName(CategoriesEnum.PRESIDENT)));
+    }
+
+    @Override
+    public void getRooms(Pageable pageable, Model model) {
+        Page<RoomTypeView> roomTypes = getRoomTypes(pageable);
+        int totalPages = roomTypes.getTotalPages();
+
+        Page<RoomTypeView> lastPage = getRoomTypes(PageRequest.of(totalPages - 1, pageable.getPageSize(), pageable.getSort()));
+
+        model.addAttribute("allRooms", roomTypes);
+        model.addAttribute("lastPageRooms", lastPage);
     }
 
 }

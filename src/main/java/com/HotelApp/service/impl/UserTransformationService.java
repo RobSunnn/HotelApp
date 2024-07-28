@@ -5,25 +5,35 @@ import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.HotelApp.common.constants.SuccessConstants.EVICTING_USERS;
-import static com.HotelApp.common.constants.SuccessConstants.TRANSFORMING_USERS;
+import static com.HotelApp.common.constants.BindingConstants.BAD_CREDENTIALS;
+import static com.HotelApp.common.constants.SuccessConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 
 @Service
@@ -32,12 +42,15 @@ public class UserTransformationService {
 
     private final AppUserDetailsService userDetailsService;
     private final HttpServletRequest request;
+    private final HttpServletResponse response;
     private final EncryptionService encryptionService;
+    private final RequestCache requestCache = new HttpSessionRequestCache();
 
     public UserTransformationService(AppUserDetailsService userDetailsService,
-                                     HttpServletRequest request, EncryptionService encryptionService) {
+                                     HttpServletRequest request, HttpServletResponse response, EncryptionService encryptionService) {
         this.userDetailsService = userDetailsService;
         this.request = request;
+        this.response = response;
         this.encryptionService = encryptionService;
     }
 
@@ -115,8 +128,7 @@ public class UserTransformationService {
 
             // Load the user details
             UserDetails userDetails = userDetailsService.loadUserByUsername(decryptedEmail);
-            if (userDetails == null ||
-                    !passwordEncoder().matches(decryptedPassword, userDetails.getPassword())) {
+            if (userDetails == null || !passwordEncoder().matches(decryptedPassword, userDetails.getPassword())) {
                 return false;
             }
             // Create an authentication token
@@ -135,6 +147,40 @@ public class UserTransformationService {
         } catch (UsernameNotFoundException e) {
             return false;
         }
+    }
+
+    public ResponseEntity<Map<String, Object>> loginResponse(boolean isSuccess) {
+        Map<String, Object> responseBody = new HashMap<>();
+        if (!isSuccess) {
+            responseBody.put("message", BAD_CREDENTIALS);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
+
+        responseBody.put(SUCCESS, true);
+        responseBody.put("message", LOGIN_SUCCESS);
+
+        String redirectUrl;
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        if (savedRequest != null) {
+            redirectUrl = savedRequest.getRedirectUrl();
+        } else {
+            redirectUrl = checkIfIsAdmin() ? "/" : "/admin";
+        }
+        responseBody.put("redirectUrl", redirectUrl);
+
+        return ResponseEntity.ok(responseBody);
+    }
+
+    private boolean checkIfIsAdmin() {
+        List<? extends GrantedAuthority> isAdmin = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .filter(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))
+                .toList();
+
+        return isAdmin.isEmpty();
     }
 
     protected String decrypt(String encrypted) {

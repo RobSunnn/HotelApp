@@ -6,14 +6,18 @@ import com.HotelApp.domain.models.view.*;
 import com.HotelApp.repository.HotelRepository;
 import com.HotelApp.service.HotelService;
 import jakarta.annotation.PostConstruct;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.HotelApp.common.constants.SuccessConstants.REDIRECT_URL;
+import static com.HotelApp.common.constants.SuccessConstants.SUCCESS;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
 
@@ -164,5 +168,19 @@ public class HotelServiceImpl implements HotelService {
         counts.put("totalSubscribers", seeAllSubscribers().size());
         counts.put("happyGuestsCount", seeAllHappyGuests().size());
         return counts;
+    }
+
+    protected static ResponseEntity<?> genericSuccessResponse(String redirectUrl) {
+        Map<String, Object> response = new HashMap<>();
+        response.put(SUCCESS, true);
+        response.put(REDIRECT_URL, redirectUrl);
+        return ResponseEntity.ok().body(response);
+    }
+
+    protected static ResponseEntity<?> genericFailResponse(BindingResult bindingResult) {
+        Map<String, Object> response = new HashMap<>();
+        response.put(SUCCESS, false);
+        response.put("errors", bindingResult.getAllErrors());
+        return ResponseEntity.badRequest().body(response);
     }
 }

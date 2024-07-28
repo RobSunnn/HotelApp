@@ -86,7 +86,7 @@ class SubscriberServiceImplTest {
         when(encryptionService.decrypt(model.getSubscriberEmail())).thenReturn("new@example.com");
         when(hotelService.getHotelInfo()).thenReturn(hotelInfo);
 
-        boolean isSuccess = subscriberService.addNewSubscriber(model, bindingResult, redirectAttributes);
+        boolean isSuccess = subscriberService.addNewSubscriber(model, bindingResult, redirectAttributes).hasBody();
 
         verify(subscriberRepository).save(any(SubscriberEntity.class));
         assertTrue(isSuccess);

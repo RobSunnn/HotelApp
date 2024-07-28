@@ -1,9 +1,6 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.models.view.RoomTypeView;
 import com.HotelApp.service.RoomTypesService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -27,15 +24,7 @@ public class HomeController {
                                       sort = "id"
                               )
                               Pageable pageable) {
-
-        Page<RoomTypeView> roomTypes = roomTypesService.getRoomTypes(pageable);
-        int totalPages = roomTypes.getTotalPages();
-
-        Page<RoomTypeView> lastPage = roomTypesService
-                .getRoomTypes(PageRequest.of(totalPages - 1, pageable.getPageSize(), pageable.getSort()));
-
-        model.addAttribute("allRooms", roomTypes);
-        model.addAttribute("lastPageRooms", lastPage);
+        roomTypesService.getRooms(pageable, model);
         model.addAttribute("imageUrls", new String[]{"/images/hotel.jpg", "/images/hotel1.jpg", "/images/hotel2.jpg"});
     }
 

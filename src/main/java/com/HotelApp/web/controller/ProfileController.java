@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-import static com.HotelApp.common.constants.SuccessConstants.*;
+import static com.HotelApp.common.constants.SuccessConstants.USER_TOKEN;
 
 @Controller
 @RequestMapping("/users/profile")
@@ -49,9 +45,7 @@ public class ProfileController {
     @GetMapping("/details")
     @ResponseBody
     public UserView getUserDetails() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        return userService.findUserDetails(userEmail);
+        return userService.findUserDetails();
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -75,12 +69,8 @@ public class ProfileController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/addProfileImage")
-    public String addProfilePicture(@RequestParam("profile-picture") MultipartFile image,
-                                    RedirectAttributes redirectAttributes) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        userService.addUserImage(image, userEmail, redirectAttributes);
-        return "redirect:/users/profile";
+    public String addProfilePicture(@RequestParam("profile-picture") MultipartFile image, RedirectAttributes redirectAttributes) {
+        return userService.addUserImage(image, redirectAttributes);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -89,50 +79,18 @@ public class ProfileController {
     public ResponseEntity<?> editProfile(@Valid EditUserProfileBindingModel editUserProfileBindingModel,
                                          BindingResult bindingResult,
                                          RedirectAttributes redirectAttributes) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        boolean editSuccessful = userService.editProfileInfo(
-                editUserProfileBindingModel,
-                userEmail,
-                bindingResult,
-                redirectAttributes
-        );
-        Map<String, Object> response = new HashMap<>();
-        if (editSuccessful) {
-            response.put(SUCCESS, true);
-            response.put(REDIRECT_URL, "/users/profile/editSuccess");
-            return ResponseEntity.ok().body(response);
-        } else {
-            response.put(SUCCESS, false);
-            response.put("errors", bindingResult.getAllErrors());
-            return ResponseEntity.badRequest().body(response);
-        }
+        return userService.editProfileInfo(editUserProfileBindingModel, bindingResult, redirectAttributes);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/changePassword")
     @ResponseBody
-    public ResponseEntity<?> changePasswordOfUser(@Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
-                                                  BindingResult bindingResult,
-                                                  RedirectAttributes redirectAttributes) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        boolean changePasswordSuccessful = userService.changeUserPassword(
-                userEmail,
-                changeUserPasswordBindingModel,
-                bindingResult,
-                redirectAttributes
-        );
-        Map<String, Object> response = new HashMap<>();
-        if (changePasswordSuccessful) {
-            response.put(SUCCESS, true);
-            response.put(REDIRECT_URL, "/users/profile");
-            return ResponseEntity.ok().body(response);
-        } else {
-            response.put(SUCCESS, false);
-            response.put("errors", bindingResult.getAllErrors());
-            return ResponseEntity.badRequest().body(response);
-        }
+    public ResponseEntity<?> changePasswordOfUser(
+            @Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        return userService.changeUserPassword(changeUserPasswordBindingModel, bindingResult, redirectAttributes);
     }
 }
 

@@ -1,12 +1,15 @@
 package com.HotelApp.service;
 
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Map;
+
 public interface ContactRequestService {
 
-    boolean sendContactForm(ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
+    ResponseEntity<?> sendContactForm(ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
 
     void checkedContactRequest(Long id);
 
@@ -14,7 +17,8 @@ public interface ContactRequestService {
 
     void clearCheckedContactRequests();
 
-    void makeOnlineReservation(String userEmail, String additionalInfo);
+    String makeOnlineReservation(String additionalInfo, RedirectAttributes redirectAttributes);
 
     void checkedOnlineReservation(Long reservationId);
+
 }

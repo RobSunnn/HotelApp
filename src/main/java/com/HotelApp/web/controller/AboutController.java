@@ -36,13 +36,11 @@ public class AboutController {
     }
 
     @GetMapping
-    public String about(Model model,
-                        @PageableDefault(
-                                size = 3,
-                                sort = "id"
-                        )
-                        Pageable pageable) {
-
+    public String about(
+            Model model,
+            @PageableDefault(size = 3, sort = "id")
+            Pageable pageable
+    ) {
         Page<CommentView> allApprovedComments = commentService.getApprovedComments(pageable);
         model.addAttribute("comments", allApprovedComments);
         return "about";
@@ -56,5 +54,4 @@ public class AboutController {
         commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
         return "redirect:/about";
     }
-
 }

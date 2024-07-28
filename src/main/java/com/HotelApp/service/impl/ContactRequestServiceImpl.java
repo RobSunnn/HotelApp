@@ -17,8 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,15 +30,23 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
+import static com.HotelApp.common.constants.SuccessConstants.*;
+import static com.HotelApp.common.constants.SuccessConstants.SUCCESS;
 import static com.HotelApp.common.constants.ValidationConstants.PHONE_NUMBER_TOO_LONG;
+import static com.HotelApp.common.constants.ValidationConstants.TEXT_TOO_LONG;
+import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
+import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
 
 @EnableScheduling
 @Service
 public class ContactRequestServiceImpl implements ContactRequestService {
-
+    private static final int TEXT_MAXIMUM_LENGTH = 400;
+    private static final String SUCCESS_REDIRECT_URL = "/contact";
     private static final Logger log = LoggerFactory.getLogger(ContactRequestServiceImpl.class);
 
     private final ContactRequestRepository contactRequestRepository;
@@ -61,7 +72,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     }
 
     @Override
-    public boolean sendContactForm(
+    public ResponseEntity<?> sendContactForm(
             ContactRequestBindingModel contactRequestBindingModel,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
@@ -77,7 +88,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 redirectAttributes.addFlashAttribute(CONTACT_REQUEST_BINDING_MODEL, contactRequestBindingModel);
                 redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + CONTACT_REQUEST_BINDING_MODEL, bindingResult);
 
-                return false;
+                return genericFailResponse(bindingResult);
             }
             HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
             ContactRequestEntity contactRequest = new ContactRequestEntity()
@@ -91,11 +102,11 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
             contactRequestRepository.save(contactRequest);
 
-            return true;
+            return genericSuccessResponse(SUCCESS_REDIRECT_URL);
 
         } catch (Exception e) {
             log.warn("Failed to decrypt.");
-            return false;
+            return genericFailResponse(bindingResult);
         }
     }
 
@@ -113,7 +124,14 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
     @Transactional
     @Override
-    public void makeOnlineReservation(String userEmail, String additionalInfo) {
+    public String makeOnlineReservation(String additionalInfo, RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+        if (additionalInfo.length() > TEXT_MAXIMUM_LENGTH) {
+            redirectAttributes.addFlashAttribute("errorMessage", TEXT_TOO_LONG);
+            return "redirect:/contact/onlineReservation";
+        }
+
         UserEntity user = hotelService
                 .getHotelInfo()
                 .getUsers()
@@ -142,6 +160,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                         "OnlineReservation", user.getEmail(), user.getFullName()
                 )
         );
+        return "redirect:/contact/onlineReservationSuccess";
     }
 
     @Override

@@ -10,62 +10,69 @@ import com.HotelApp.service.HotelService;
 import com.HotelApp.service.MailService;
 import com.HotelApp.service.SubscriberService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-import static com.HotelApp.common.constants.SuccessConstants.BONUS_VOUCHER_SEND;
+import static com.HotelApp.common.constants.SuccessConstants.*;
 import static com.HotelApp.common.constants.ValidationConstants.INVALID_EMAIL;
+import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
+import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
 
 @Service
 public class SubscriberServiceImpl implements SubscriberService {
 
     private static final Logger log = LoggerFactory.getLogger(SubscriberServiceImpl.class);
+
     private final SubscriberRepository subscriberRepository;
-
     private final HotelService hotelService;
-
     private final EncryptionService encryptionService;
-
     private final ApplicationEventPublisher applicationEventPublisher;
-
     private final MailService mailService;
+    private final HttpServletRequest request;
 
     public SubscriberServiceImpl(
             SubscriberRepository subscriberRepository,
             HotelService hotelService,
             EncryptionService encryptionService,
             ApplicationEventPublisher applicationEventPublisher,
-            MailService mailService
+            MailService mailService,
+            HttpServletRequest request
     ) {
         this.subscriberRepository = subscriberRepository;
         this.hotelService = hotelService;
         this.encryptionService = encryptionService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.mailService = mailService;
+        this.request = request;
     }
 
 
     @Override
-    public boolean addNewSubscriber(
+    public ResponseEntity<?> addNewSubscriber(
             AddSubscriberBindingModel addSubscriberBindingModel,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
+        final String REDIRECT_URL = request.getHeader("referer");
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);
             redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.SUBSCRIBER_BINDING_MODEL, bindingResult);
             redirectAttributes.addFlashAttribute("failMessage", INVALID_EMAIL);
 
-            return false;
+            return genericFailResponse(bindingResult);
         }
 
         try {
@@ -85,13 +92,13 @@ public class SubscriberServiceImpl implements SubscriberService {
                             "SubscriberService", subscriber.getEmail())
                     );
                 }
-                return true;
+                return genericSuccessResponse(REDIRECT_URL);
             }
 
             subscriberRepository.save(mapAsSubscriber(addSubscriberBindingModel, hotelInfo));
-            return true;
+            return genericSuccessResponse(REDIRECT_URL);
         } catch (Exception e) {
-            return false;
+            return genericFailResponse(bindingResult);
         }
     }
 

@@ -4,27 +4,17 @@ import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.service.ContactRequestService;
 import com.HotelApp.service.SubscriberService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.HotelApp.common.constants.SuccessConstants.*;
-import static com.HotelApp.common.constants.ValidationConstants.TEXT_TOO_LONG;
-
 @Controller
 @RequestMapping("/contact")
 public class ContactController {
-    private static final int TEXT_MAXIMUM_LENGTH = 400;
 
     private final SubscriberService subscriberService;
     private final ContactRequestService contactRequestService;
@@ -57,68 +47,27 @@ public class ContactController {
     public ResponseEntity<?> subscribe(
             @Valid AddSubscriberBindingModel addSubscriberBindingModel,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
-            HttpServletRequest request
+            RedirectAttributes redirectAttributes
     ) {
-        String redirectUrl = request.getHeader("referer").split("8080")[1];
-
-        boolean isSuccessful = subscriberService.addNewSubscriber(
-                addSubscriberBindingModel,
-                bindingResult,
-                redirectAttributes
-        );
-
-        Map<String, Object> responseBody = new HashMap<>();
-        if (isSuccessful) {
-            responseBody.put(SUCCESS, true);
-            responseBody.put(REDIRECT_URL, redirectUrl);
-            responseBody.put("message", SUBSCRIBE_SUCCESS);
-
-            return ResponseEntity.ok().body(responseBody);
-        } else {
-            responseBody.put(SUCCESS, false);
-            responseBody.put("errors", bindingResult.getAllErrors());
-            return ResponseEntity.badRequest().body(responseBody);
-        }
-
+        return subscriberService.addNewSubscriber(addSubscriberBindingModel, bindingResult, redirectAttributes);
     }
 
     @PostMapping("/contactForm")
     @ResponseBody
-    public ResponseEntity<?> sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel,
-                                                BindingResult bindingResult,
-                                                RedirectAttributes redirectAttributes) {
-
-        boolean isSuccessful = contactRequestService.sendContactForm(
-                contactRequestBindingModel,
-                bindingResult,
-                redirectAttributes
-        );
-        Map<String, Object> responseBody = new HashMap<>();
-        if (isSuccessful) {
-            responseBody.put(SUCCESS, true);
-            responseBody.put(REDIRECT_URL, "/contact");
-            return ResponseEntity.ok().body(responseBody);
-        } else {
-            responseBody.put(SUCCESS, false);
-            responseBody.put("errors", bindingResult.getAllErrors());
-            return ResponseEntity.badRequest().body(responseBody);
-        }
+    public ResponseEntity<?> sendContactRequest(
+            @Valid ContactRequestBindingModel contactRequestBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        return contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult, redirectAttributes);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/onlineReservation")
-    public String onlineReservation(@RequestParam("additionalInfo") String additionalInfo,
-                                    RedirectAttributes redirectAttributes) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        if (additionalInfo.length() > TEXT_MAXIMUM_LENGTH) {
-            redirectAttributes.addFlashAttribute("errorMessage", TEXT_TOO_LONG);
-            return "redirect:/contact/onlineReservation";
-        }
-
-        contactRequestService.makeOnlineReservation(userEmail, additionalInfo);
-        return "redirect:/contact/onlineReservationSuccess";
+    public String onlineReservation(
+            @RequestParam("additionalInfo") String additionalInfo,
+            RedirectAttributes redirectAttributes
+    ) {
+        return contactRequestService.makeOnlineReservation(additionalInfo, redirectAttributes);
     }
-
 }

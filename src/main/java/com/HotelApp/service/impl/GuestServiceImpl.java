@@ -13,6 +13,7 @@ import com.HotelApp.service.GuestService;
 import com.HotelApp.service.HappyGuestService;
 import com.HotelApp.service.HotelService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -28,9 +29,12 @@ import static com.HotelApp.common.constants.BindingConstants.GUEST_REGISTER_BIND
 import static com.HotelApp.common.constants.ValidationConstants.DOCUMENT_ID_EMPTY;
 import static com.HotelApp.common.constants.ValidationConstants.ROOM_NUMBER_REQUIRED;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
+import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
+import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
 
 @Service
 public class GuestServiceImpl implements GuestService {
+    private static final String ADD_GUEST_SUCCESS_REDIRECT_URL = "/guests/addGuestSuccess";
 
     private final GuestRepository guestRepository;
     private final RoomRepository roomRepository;
@@ -54,7 +58,7 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     @Transactional
-    public boolean registerGuest(
+    public ResponseEntity<?> registerGuest(
             AddGuestBindingModel addGuestBindingModel,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
@@ -79,7 +83,7 @@ public class GuestServiceImpl implements GuestService {
                         .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH
                                 + GUEST_REGISTER_BINDING_MODEL, bindingResult);
 
-                return false;
+                return genericFailResponse(bindingResult);
             }
 
             addGuestBindingModel.setEmail(decryptedEmail);
@@ -91,11 +95,11 @@ public class GuestServiceImpl implements GuestService {
             hotelService.takeMoney(room.getPrice().multiply(BigDecimal.valueOf(addGuestBindingModel.getDaysToStay())));
             room.setReserved(true);
             roomRepository.save(room);
-            GuestEntity guest = guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
+            guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
 
-            return guest.getDocumentId() != null;
+            return genericSuccessResponse(ADD_GUEST_SUCCESS_REDIRECT_URL);
         } catch (Exception e) {
-            return false;
+            return genericFailResponse(bindingResult);
         }
     }
 

@@ -14,6 +14,9 @@ import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import net.coobird.thumbnailator.Thumbnails;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,10 +43,16 @@ import static com.HotelApp.common.constants.SuccessConstants.CHANGE_PASSWORD_SUC
 import static com.HotelApp.common.constants.SuccessConstants.PICTURE_UPLOAD_SUCCESS;
 import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
+import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
+import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
 
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final String REGISTER_SUCCESS_REDIRECT_URL = "/users/registrationSuccess";
+    private static final String EDIT_PROFILE_SUCCESS_REDIRECT_URL = "/users/profile/editSuccess";
+    private static final String CHANGE_PASSWORD_SUCCESS_REDIRECT_URL = "/users/profile";
 
     private final UserRepository userRepository;
     private final RoleService roleService;
@@ -64,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean registerUser(
+    public ResponseEntity<?> registerUser(
             UserRegisterBindingModel userRegisterBindingModel,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
@@ -107,7 +116,7 @@ public class UserServiceImpl implements UserService {
             redirectAttributes
                     .addFlashAttribute(BINDING_RESULT_PATH +
                             USER_REGISTER_BINDING_MODEL, bindingResult);
-            return false;
+            return genericFailResponse(bindingResult);
         }
 
         userRegisterBindingModel.setEmail(decryptedEmail);
@@ -127,7 +136,7 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(user);
-        return user.getEmail() != null;
+        return genericSuccessResponse(REGISTER_SUCCESS_REDIRECT_URL);
     }
 
 
@@ -173,23 +182,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserView findUserDetails(String userEmail) {
+    public UserView findUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
         return userTransformationService.mapAsUserView(findUser(userEmail));
     }
 
     @Override
-    public void addUserImage(MultipartFile image,
-                             String userEmail,
-                             RedirectAttributes redirectAttributes) {
+    public String addUserImage(MultipartFile image, RedirectAttributes redirectAttributes) {
         if (image.getSize() > (5 * 1024 * 1024)) {
             throw new MaxUploadSizeExceededException(5 * 1024 * 1024);
         }
         if (image.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Please select a file.");
-            return;
+            return "redirect:/users/profile";
         }
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
         String filename = Objects.requireNonNull(image.getOriginalFilename());
         String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
 
@@ -231,15 +241,17 @@ public class UserServiceImpl implements UserService {
                     "Something went wrong. Please choose different file.");
         }
         userTransformationService.evictUserViewsCache();
+        return "redirect:/users/profile";
     }
 
     @Override
-    public boolean editProfileInfo(
+    public ResponseEntity<?> editProfileInfo(
             EditUserProfileBindingModel editUserProfileBindingModel,
-            String userEmail,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
         String decryptedEmail = userTransformationService.decrypt(
                 editUserProfileBindingModel.getEmail()
         );
@@ -248,7 +260,6 @@ public class UserServiceImpl implements UserService {
             bindingResult.addError(new FieldError(
                     USER_REGISTER_BINDING_MODEL, "email", EMAIL_NOT_BLANK)
             );
-            return false;
         }
 
         UserEntity user = findUser(userEmail);
@@ -269,7 +280,7 @@ public class UserServiceImpl implements UserService {
                     BindingConstants.BINDING_RESULT_PATH + EDIT_USER_PROFILE_BINDING_MODEL,
                     bindingResult
             );
-            return false;
+            return genericFailResponse(bindingResult);
         }
 
         user.setFirstName(editUserProfileBindingModel.getFirstName().trim());
@@ -281,15 +292,19 @@ public class UserServiceImpl implements UserService {
         userTransformationService.reAuthenticateUser(decryptedEmail);
         userTransformationService.evictUserViewsCache();
 
-        return true;
+        return genericSuccessResponse(EDIT_PROFILE_SUCCESS_REDIRECT_URL);
     }
 
     @Override
-    public boolean changeUserPassword(String userEmail,
-                                      ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
-                                      BindingResult bindingResult,
-                                      RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> changeUserPassword(
+            ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
         UserEntity user = findUser(userEmail);
+
         String decryptedOldPassword = userTransformationService.decrypt(
                 changeUserPasswordBindingModel.getOldPassword()
         );
@@ -322,7 +337,7 @@ public class UserServiceImpl implements UserService {
                     BindingConstants.BINDING_RESULT_PATH + CHANGE_PASSWORD_BINDING_MODEL,
                     bindingResult
             );
-            return false;
+            return genericFailResponse(bindingResult);
         }
 
         user.setPassword(passwordEncoder().encode(decryptedNewPassword));
@@ -334,7 +349,7 @@ public class UserServiceImpl implements UserService {
                 CHANGE_PASSWORD_SUCCESS
         );
 
-        return true;
+        return genericSuccessResponse(CHANGE_PASSWORD_SUCCESS_REDIRECT_URL);
     }
 
     private boolean isAllowedExtension(String extension) {

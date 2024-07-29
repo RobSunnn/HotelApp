@@ -4,29 +4,49 @@
     <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Page Not Found</title>
     <style>
-        .content > img {
-            margin: 0 auto;
-            width: 80%;
-            padding: 2em;
+
+        .error {
+            height: 100vh;
+            width: 100%;
+            background-position: center center;
         }
 
+        .wrapper {
+            display: flex;
+        }
+        .content > img {
+            margin: 0 auto;
+            width: 100%;
+            border-radius: 30%;
+        }
         .content {
             margin: 15em auto;
             width: 50%;
-            background-color: #555555;
+            box-sizing: border-box;
             color: white;
             padding: 2em;
         }
+
+        @media (max-width: 770px) {
+            .content {
+                width: 100%;
+            }
+        }
     </style>
 </head>
-<body class="hero" style="background-image: url('/images/hotel.jpg')">
+<body class="error" style="background-image: url('/images/broken-image.jpg')">
 <th:block th:replace="~{fragments :: navbar}"></th:block>
-<div class="content">
-    <img src="/images/not-found.png" alt="">
-    <p>Sorry, the page you are looking for might have been removed, had its name changed, or is temporarily
-        unavailable.</p>
-    <h1 class="error-heading">We are sorry, and we are working on the problem!</h1>
-    <a href="/" class="btn btn-primary">Go back</a>
+<div class="wrapper">
+    <div class="content">
+        <h1 >Congrats, you broke it.</h1>
+        <h2> Status code 404.</h2>
+        <img src="/images/not-found.jpg" alt="">
+        <h4>Sorry, the page you are looking for might have been removed, had its name changed, or is temporarily
+            unavailable.</h4>
+        <br>
+        <h2 class="error-heading">We are sorry, and we are working on the problem!</h2>
+        <a href="/" class="btn btn-primary">Go back</a>
+    </div>
 </div>
 <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>

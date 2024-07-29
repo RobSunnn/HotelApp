@@ -60,18 +60,10 @@ public class SubscriberServiceImpl implements SubscriberService {
 
 
     @Override
-    public ResponseEntity<?> addNewSubscriber(
-            AddSubscriberBindingModel addSubscriberBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
+    public ResponseEntity<?> addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel, BindingResult bindingResult) {
         final String REDIRECT_URL = request.getHeader("referer");
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(BindingConstants.SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel);
-            redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + BindingConstants.SUBSCRIBER_BINDING_MODEL, bindingResult);
-            redirectAttributes.addFlashAttribute("failMessage", INVALID_EMAIL);
-
             return genericFailResponse(bindingResult);
         }
 

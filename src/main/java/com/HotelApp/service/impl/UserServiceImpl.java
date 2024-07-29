@@ -73,11 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public ResponseEntity<?> registerUser(
-            UserRegisterBindingModel userRegisterBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
+    public ResponseEntity<?> registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult) {
         String decryptedEmail = userTransformationService.decrypt(
                 userRegisterBindingModel.getEmail()
         ).toLowerCase().trim();
@@ -111,11 +107,6 @@ public class UserServiceImpl implements UserService {
         }
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes
-                    .addFlashAttribute(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel);
-            redirectAttributes
-                    .addFlashAttribute(BINDING_RESULT_PATH +
-                            USER_REGISTER_BINDING_MODEL, bindingResult);
             return genericFailResponse(bindingResult);
         }
 
@@ -245,11 +236,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> editProfileInfo(
-            EditUserProfileBindingModel editUserProfileBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
+    public ResponseEntity<?> editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, BindingResult bindingResult) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         String decryptedEmail = userTransformationService.decrypt(
@@ -273,13 +260,6 @@ public class UserServiceImpl implements UserService {
         }
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    EDIT_USER_PROFILE_BINDING_MODEL, editUserProfileBindingModel
-            );
-            redirectAttributes.addFlashAttribute(
-                    BindingConstants.BINDING_RESULT_PATH + EDIT_USER_PROFILE_BINDING_MODEL,
-                    bindingResult
-            );
             return genericFailResponse(bindingResult);
         }
 
@@ -296,11 +276,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> changeUserPassword(
-            ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
+    public ResponseEntity<?> changeUserPassword(ChangeUserPasswordBindingModel changeUserPasswordBindingModel, BindingResult bindingResult) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         UserEntity user = findUser(userEmail);
@@ -329,14 +305,6 @@ public class UserServiceImpl implements UserService {
         }
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(
-                    CHANGE_PASSWORD_BINDING_MODEL,
-                    changeUserPasswordBindingModel
-            );
-            redirectAttributes.addFlashAttribute(
-                    BindingConstants.BINDING_RESULT_PATH + CHANGE_PASSWORD_BINDING_MODEL,
-                    bindingResult
-            );
             return genericFailResponse(bindingResult);
         }
 
@@ -344,11 +312,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         userTransformationService.reAuthenticateUser(userEmail);
-        redirectAttributes.addFlashAttribute(
-                "successMessage",
-                CHANGE_PASSWORD_SUCCESS
-        );
-
         return genericSuccessResponse(CHANGE_PASSWORD_SUCCESS_REDIRECT_URL);
     }
 

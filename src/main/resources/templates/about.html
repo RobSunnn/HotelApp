@@ -7,9 +7,9 @@
 <body class="hero" style="background-image: url('/images/hotel2.jpg');">
 <th:block th:replace="~{fragments :: navbar}"></th:block>
 <section id="about" class="py-5">
-    <h1 class="mb-4 text-white">About Our Hotel</h1>
+    <h1 class="heading cool-background mb-4 text-white rounded">About Our Hotel</h1>
     <div class="container mt-0">
-        <div class="text">
+        <div class="text cool-background">
             <div class="card-info">
                 <p><b>Nestled in the heart of our city, our hotel is your oasis of luxury and comfort.
                     Whether you're here for business, pleasure, or a bit of both,
@@ -26,13 +26,13 @@
                     just steps away from our city's major attractions.</p>
             </div>
         </div>
-        <p class="text-white bg-dark rounded p-1">
+        <p class="heading cool-background text-white bg-dark rounded p-1 mt-3">
             <em>Experience the perfect blend of style, comfort, and convenience at our hotel.<br>
                 Book your stay today and discover why we are the preferred choice for discerning travelers.</em>
         </p>
     </div>
 </section>
-<div class="comments-and-form">
+<div class="comments-and-form cool-background">
     <div class="comments-container">
         <div class="allComments">
             <div class="comments" th:each="comment, iterStat : ${comments.getContent()}" th:fragment="commentList">

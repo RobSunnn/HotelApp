@@ -7,7 +7,7 @@
 </head>
 <body>
 <th:block th:replace="~{fragments :: navbar}"></th:block>
-<main>
+<div>
     <div id="carousel" class="carousel slide carousel-fade shadow-2-strong" data-mdb-ride="carousel">
         <div id="carouselIndicators" class="carousel slide" data-mdb-ride="carousel">
             <ol class="carousel-indicators">
@@ -93,7 +93,7 @@
                                 <div class="card-img">
                                     <img th:src="${room.getPictureUrl()}" alt="">
                                 </div>
-                                <div class="room-text">
+                                <div class="room-text cool-background">
                                     <h2 class="card-title mb-5" th:text="${room.getName()}"></h2>
                                     <h5 class="card-text text-black" th:text="${room.getDescription()}"></h5>
                                 </div>
@@ -103,7 +103,7 @@
                 </div>
             </div>
         </div>
-        <h2 class="mt-3">We have place for everyone</h2>
+        <h2 class="mt-3 cool-background text-white heading">We have place for everyone</h2>
         <a class="carousel-control-prev" href="#carouselRoomsIndicators" role="button" data-mdb-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -113,7 +113,7 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-</main>
+</div>
 <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

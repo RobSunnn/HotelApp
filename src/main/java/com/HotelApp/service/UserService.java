@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 public interface UserService {
 
-    ResponseEntity<?> registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
+    ResponseEntity<?> registerUser(UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult);
 
     boolean checkIfEmailExist(String email);
 
@@ -24,8 +24,8 @@ public interface UserService {
 
     String addUserImage(MultipartFile image, RedirectAttributes redirectAttributes);
 
-    ResponseEntity<?> editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
+    ResponseEntity<?> editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, BindingResult bindingResult);
 
-    ResponseEntity<?> changeUserPassword(ChangeUserPasswordBindingModel changeUserPasswordBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes);
+    ResponseEntity<?> changeUserPassword(ChangeUserPasswordBindingModel changeUserPasswordBindingModel, BindingResult bindingResult);
 
 }

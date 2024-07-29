@@ -1,6 +1,5 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.entity.ContactRequestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.OnlineReservationEntity;
@@ -30,13 +29,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
-import static com.HotelApp.common.constants.SuccessConstants.*;
-import static com.HotelApp.common.constants.SuccessConstants.SUCCESS;
 import static com.HotelApp.common.constants.ValidationConstants.PHONE_NUMBER_TOO_LONG;
 import static com.HotelApp.common.constants.ValidationConstants.TEXT_TOO_LONG;
 import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
@@ -72,11 +67,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     }
 
     @Override
-    public ResponseEntity<?> sendContactForm(
-            ContactRequestBindingModel contactRequestBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
+    public ResponseEntity<?> sendContactForm(ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult) {
         try {
             String decryptedEmail = encryptionService.decrypt(contactRequestBindingModel.getEmail());
             String decryptedPhone = encryptionService.decrypt(contactRequestBindingModel.getPhoneNumber());
@@ -85,9 +76,6 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                         "contactPhoneNumber", PHONE_NUMBER_TOO_LONG));
             }
             if (bindingResult.hasErrors()) {
-                redirectAttributes.addFlashAttribute(CONTACT_REQUEST_BINDING_MODEL, contactRequestBindingModel);
-                redirectAttributes.addFlashAttribute(BindingConstants.BINDING_RESULT_PATH + CONTACT_REQUEST_BINDING_MODEL, bindingResult);
-
                 return genericFailResponse(bindingResult);
             }
             HotelInfoEntity hotelInfo = hotelService.getHotelInfo();

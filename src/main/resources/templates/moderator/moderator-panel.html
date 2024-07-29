@@ -10,15 +10,15 @@
     <section id="cards-holder">
         <div class="cards">
             <div class="card">
-                <div class="card-body bg-dark text-white">
-                    <h3 class="card-title">Add Guest to Hotel</h3>
+                <div class="card-body text-white">
+                    <h3 class="card-title cool-background">Add Guest</h3>
                     <p class="card-text">Here you can add guest to the hotel</p>
                     <a th:href="@{/guests/add}" class="btn btn-primary">Add guest</a>
                 </div>
             </div>
             <div class="card">
-                <div class="card-body bg-dark text-white">
-                    <h3 class="card-title">CHECK OUT</h3>
+                <div class="card-body text-white">
+                    <h3 class="card-title cool-background">CHECK OUT</h3>
                     <p class="card-text">Here you need to check out the Guest</p>
                     <a th:href="@{/guests/leave}" class="btn btn-primary">Guest want to leave</a>
                 </div>
@@ -62,41 +62,41 @@
             </div>
         </div>
     </div>
-    <h1 class="text-white text-center">Hotel Overview</h1>
-    <div class="cards">
-        <div class="card">
-            <div class="card-body bg-dark text-white">
-                <h5 class="card-title">Rooms Overview</h5>
-                <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span>
-                </p>
-                <a th:href="@{/hotel/freeRooms}" class="btn btn-primary">Check Free Rooms</a>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body bg-dark text-white">
-                <h5 class="card-title">Guests Overview</h5>
-                <p class="card-text">Total Guests: <span th:text="${allGuestsCount}" id="totalGuestsCount">XX</span></p>
-                <a th:href="@{/hotel/allGuests}" class="btn btn-primary">See All Guests</a>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body bg-dark text-white">
-                <h5 class="card-title">Subscribers Overview</h5>
-                <p class="card-text">Total Subscribers: <span th:text="${totalSubscribers}" id="totalSubscribersCount">XX</span>
-                </p>
-                <a th:href="@{/hotel/allSubscribers}" class="btn btn-primary">See All Subscribers</a>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body bg-dark text-white">
-                <h5 class="card-title">Happy Guests Overview</h5>
-                <p class="card-text">Total Happy Guests: <span th:text="${happyGuestsCount}" id="happyGuests">XX</span>
-                </p>
-                <a th:href="@{/hotel/allHappyGuests}" class="btn btn-primary">See All Happy Guests</a>
-            </div>
+</main>
+<h1 class="text-white text-center cool-background">Hotel Overview</h1>
+<div class="cards">
+    <div class="card">
+        <div class="card-body text-white">
+            <h5 class="card-title">Rooms Overview</h5>
+            <p class="card-text">Total Free Rooms: <span th:text="${freeRoomsCount}" id="free-rooms-count">XX</span>
+            </p>
+            <a th:href="@{/hotel/freeRooms}" class="btn btn-primary">Check Free Rooms</a>
         </div>
     </div>
-</main>
+    <div class="card">
+        <div class="card-body text-white">
+            <h5 class="card-title">Guests Overview</h5>
+            <p class="card-text">Total Guests: <span th:text="${allGuestsCount}" id="totalGuestsCount">XX</span></p>
+            <a th:href="@{/hotel/allGuests}" class="btn btn-primary">See All Guests</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body text-white">
+            <h5 class="card-title">Subscribers Overview</h5>
+            <p class="card-text">Total Subscribers: <span th:text="${totalSubscribers}" id="totalSubscribersCount">XX</span>
+            </p>
+            <a th:href="@{/hotel/allSubscribers}" class="btn btn-primary">See All Subscribers</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body text-white">
+            <h5 class="card-title">Happy Guests Overview</h5>
+            <p class="card-text">Total Happy Guests: <span th:text="${happyGuestsCount}" id="happyGuests">XX</span>
+            </p>
+            <a th:href="@{/hotel/allHappyGuests}" class="btn btn-primary">See All Happy Guests</a>
+        </div>
+    </div>
+</div>
 <th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

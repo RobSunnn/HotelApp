@@ -26,6 +26,10 @@
     }
 
     /*Navbar*/
+    /*.navbar {*/
+    /*    max-height: 10vh;*/
+    /*}*/
+
     .form-inline {
         width: 84%;
         margin: 0 auto;
@@ -34,7 +38,12 @@
     }
 
     .navbar .navbar-brand {
-        margin-left: 0.3em;
+        margin-left: 1.3em;
+        padding: 0;
+    }
+    .navbar-brand img {
+        max-height:50px !important;
+        transform: scale(2) !important;
     }
 
     .nav-item {

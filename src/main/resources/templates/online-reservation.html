@@ -6,14 +6,13 @@
 
     <style>
         .reservation-card {
-
             max-width: 600px;
-            margin: 8em auto;
+            margin: 10em auto;
             padding: 20px;
             border-radius: 8px;
-            background-color: #f8f9fa;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            opacity: 90%;
+            color: white !important;
+            font-size: 1.1em;
         }
 
         .reservation-header h2 {
@@ -31,16 +30,16 @@
         .reservation-body label {
             margin: 0 auto;
             font-size: 1em;
-            color: #333;
         }
 
         .reservation-body textarea {
             width: 100%;
             padding: 10px;
-            font-size: 1em;
+            font-size: 1.3em;
             border: 1px solid #ccc;
             border-radius: 4px;
             resize: vertical;
+            text-align: center;
         }
 
 
@@ -64,7 +63,7 @@
 </head>
 <body class="hero" style="background-image: url('/images/hotel.jpg')">
 <th:block th:replace="~{fragments :: navbar}"></th:block>
-<div class="reservation-card">
+<div class="reservation-card cool-background">
     <div class="reservation-header">
         <h2>You need to press the button, and someone from our team will contact you.</h2>
     </div>
@@ -77,7 +76,7 @@
                 <h4 th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></h4>
             </div>
             <div class="buttons">
-                <button type="submit" class="btn btn-outline-primary btn-light">Make Reservation</button>
+                <button type="submit" class="btn  btn-light btn-lg">Make Reservation</button>
             </div>
         </form>
     </div>

@@ -76,21 +76,16 @@ public class ProfileController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/editUserProfile")
     @ResponseBody
-    public ResponseEntity<?> editProfile(@Valid EditUserProfileBindingModel editUserProfileBindingModel,
-                                         BindingResult bindingResult,
-                                         RedirectAttributes redirectAttributes) {
-        return userService.editProfileInfo(editUserProfileBindingModel, bindingResult, redirectAttributes);
+    public ResponseEntity<?> editProfile(@Valid EditUserProfileBindingModel editUserProfileBindingModel, BindingResult bindingResult) {
+        return userService.editProfileInfo(editUserProfileBindingModel, bindingResult);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/changePassword")
     @ResponseBody
     public ResponseEntity<?> changePasswordOfUser(
-            @Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
-        return userService.changeUserPassword(changeUserPasswordBindingModel, bindingResult, redirectAttributes);
+            @Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel, BindingResult bindingResult) {
+        return userService.changeUserPassword(changeUserPasswordBindingModel, bindingResult);
     }
 }
 

@@ -4,33 +4,50 @@
     <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Forbidden Page</title>
     <style>
+
+        .error {
+            height: 100vh;
+            width: 100%;
+            background-position: center center;
+        }
+        .wrapper {
+            display: flex;
+        }
         .content > img {
             margin: 0 auto;
-            width: 80%;
-            padding: 2em;
+            width: 100%;
+            border-radius: 30%;
         }
-
         .content {
             margin: 15em auto;
             width: 50%;
-            background-color: #555555;
+            box-sizing: border-box;
             color: white;
             padding: 2em;
         }
+
+        @media (max-width: 770px) {
+            .content {
+                width: 100%;
+            }
+        }
     </style>
 </head>
-<body class="hero" style="background-image: url('/images/hotel.jpg')">
+<body class="error" style="background-image: url('/images/broken-image.jpg')">
 <th:block th:replace="~{fragments :: navbar}"></th:block>
-
-<div class="content">
-    <img src="/images/forbidden.jpg" alt="">
-    <h1>Woah, you can't touch this!</h1>
-    <h3>Unfortunately, you are not allowed to access the page you've requested. It seems you don't have sufficient
-        permissions.</h3>
-    <h3 sec:authorize="isAnonymous()"> If you have an account, you might have more luck if you log in.</h3>
-    <a sec:authorize="isAnonymous()" href="/users/login" class="btn btn-primary">Open the login page</a>
-    <a sec:authorize="isAuthenticated()" href="/" class="btn btn-primary">Go Home Page</a>
+<div class="wrapper">
+    <div class="content">
+        <h1>Congrats, you broke it.</h1>
+        <img src="/images/forbidden.png" alt="">
+        <br>
+        <h3>Unfortunately, you are not allowed to access the page you've requested. It seems you don't have sufficient
+            permissions.</h3>
+        <h3 sec:authorize="isAnonymous()"> If you have an account, you might have more luck if you log in.</h3>
+        <a sec:authorize="isAnonymous()" href="/users/login" class="btn btn-primary">Open the login page</a>
+        <a sec:authorize="isAuthenticated()" href="/" class="btn btn-primary">Go Home Page</a>
+    </div>
 </div>
+
 <th:block th:replace="~{fragments :: footer}"></th:block>
 <th:block th:replace="~{fragments :: scripts}"></th:block>
 </body>

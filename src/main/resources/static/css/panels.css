@@ -14,11 +14,11 @@ select {
     flex-wrap: wrap;
     margin: 1em auto;
     justify-content: center;
-    gap: 3em;
+    gap: 1.5em;
 }
 
 .all-content {
-    margin-top: 5em;
+    margin-top: 10em;
     align-content: center;
 }
 
@@ -48,6 +48,10 @@ option {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1em;
+}
+
+#add-guest-form {
+    color: white !important;
 }
 
 #cards-holder {

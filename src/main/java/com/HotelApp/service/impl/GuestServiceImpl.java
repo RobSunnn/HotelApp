@@ -1,6 +1,5 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.entity.GuestEntity;
 import com.HotelApp.domain.entity.HappyGuestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -58,11 +56,7 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> registerGuest(
-            AddGuestBindingModel addGuestBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
+    public ResponseEntity<?> registerGuest(AddGuestBindingModel addGuestBindingModel, BindingResult bindingResult) {
 
         try {
             String decryptedEmail = encryptionService.decrypt(addGuestBindingModel.getEmail());
@@ -77,12 +71,6 @@ public class GuestServiceImpl implements GuestService {
                         "roomNumber", ROOM_NUMBER_REQUIRED));
             }
             if (bindingResult.hasErrors()) {
-                redirectAttributes
-                        .addFlashAttribute(GUEST_REGISTER_BINDING_MODEL, addGuestBindingModel);
-                redirectAttributes
-                        .addFlashAttribute(BindingConstants.BINDING_RESULT_PATH
-                                + GUEST_REGISTER_BINDING_MODEL, bindingResult);
-
                 return genericFailResponse(bindingResult);
             }
 

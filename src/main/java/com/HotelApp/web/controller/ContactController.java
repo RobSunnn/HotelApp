@@ -44,22 +44,14 @@ public class ContactController {
 
     @PostMapping("/subscribe")
     @ResponseBody
-    public ResponseEntity<?> subscribe(
-            @Valid AddSubscriberBindingModel addSubscriberBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
-        return subscriberService.addNewSubscriber(addSubscriberBindingModel, bindingResult, redirectAttributes);
+    public ResponseEntity<?> subscribe(@Valid AddSubscriberBindingModel addSubscriberBindingModel, BindingResult bindingResult) {
+        return subscriberService.addNewSubscriber(addSubscriberBindingModel, bindingResult);
     }
 
     @PostMapping("/contactForm")
     @ResponseBody
-    public ResponseEntity<?> sendContactRequest(
-            @Valid ContactRequestBindingModel contactRequestBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
-        return contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult, redirectAttributes);
+    public ResponseEntity<?> sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult) {
+        return contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult);
     }
 
     @PreAuthorize("isAuthenticated()")

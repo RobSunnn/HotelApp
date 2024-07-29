@@ -1,12 +1,18 @@
 let prevScrollPos = window.scrollY;
 
-document.addEventListener('click', function (event) {
-    let clickInside = document.getElementById('navbar').contains(event.target);
+function collapseNavbar() {
     let navbarToggle = document.querySelector('.navbar-toggler');
     let navbarCollapse = document.querySelector('.navbar-collapse');
 
-    if (!clickInside && navbarCollapse.classList.contains('show')) {
+    if (navbarCollapse.classList.contains('show')) {
         navbarToggle.click(); // Programmatically click the toggler to collapse the navbar
+    }
+}
+
+document.addEventListener('click', function (event) {
+    let clickInside = document.getElementById('navbar').contains(event.target);
+    if (!clickInside) {
+        collapseNavbar();
     }
 });
 
@@ -15,7 +21,8 @@ window.addEventListener('scroll', function () {
     if (prevScrollPos > currentScrollPos) {
         document.getElementById("navbar").style.top = "0";
     } else {
-        document.getElementById("navbar").style.top = "-200px";
+        collapseNavbar();
+        document.getElementById("navbar").style.top = "-400px";
     }
     prevScrollPos = currentScrollPos;
 });

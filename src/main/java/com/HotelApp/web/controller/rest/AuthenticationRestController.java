@@ -9,7 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @RestController
@@ -48,12 +47,8 @@ public class AuthenticationRestController {
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/register", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> register(
-            @Valid UserRegisterBindingModel userRegisterBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
-        return userService.registerUser(userRegisterBindingModel, bindingResult, redirectAttributes);
+    public ResponseEntity<?> register(@Valid UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult) {
+        return userService.registerUser(userRegisterBindingModel, bindingResult);
     }
 
     @PreAuthorize("isAnonymous()")

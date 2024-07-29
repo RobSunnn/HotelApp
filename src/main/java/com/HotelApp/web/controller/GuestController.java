@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -23,11 +22,9 @@ import static com.HotelApp.common.constants.BindingConstants.GUEST_REGISTER_BIND
 public class GuestController {
 
     private final GuestService guestService;
-
     public GuestController(GuestService guestService) {
         this.guestService = guestService;
     }
-
 
     @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping("/add")
@@ -51,10 +48,8 @@ public class GuestController {
     @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping("/add")
     @ResponseBody
-    public ResponseEntity<?> add(@Valid AddGuestBindingModel addGuestBindingModel,
-                                 BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes) {
-        return guestService.registerGuest(addGuestBindingModel, bindingResult, redirectAttributes);
+    public ResponseEntity<?> add(@Valid AddGuestBindingModel addGuestBindingModel, BindingResult bindingResult) {
+        return guestService.registerGuest(addGuestBindingModel, bindingResult);
     }
 
     @PreAuthorize("hasRole('MODERATOR')")

@@ -207,7 +207,6 @@ class GuestControllerIT {
         mockMvc.perform(get("/guests/leave"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/moderator"));
-
     }
 
     private HotelInfoEntity mockHotelInfoEntity() {

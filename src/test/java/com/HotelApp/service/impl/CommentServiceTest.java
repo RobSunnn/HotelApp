@@ -49,11 +49,9 @@ class CommentServiceTest {
 
     @BeforeEach
     public void setUp() {
-
         addCommentBindingModel = new AddCommentBindingModel()
                 .setAuthor("Test Author")
                 .setCommentContent("Testing comment content.");
-        // Set up your AddCommentBindingModel as needed
         commentEntity = new CommentEntity();
     }
 

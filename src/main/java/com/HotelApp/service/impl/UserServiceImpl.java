@@ -1,6 +1,5 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.common.constants.ValidationConstants;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
@@ -39,7 +38,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
-import static com.HotelApp.common.constants.SuccessConstants.CHANGE_PASSWORD_SUCCESS;
 import static com.HotelApp.common.constants.SuccessConstants.PICTURE_UPLOAD_SUCCESS;
 import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
@@ -189,14 +187,17 @@ public class UserServiceImpl implements UserService {
                     "Please select a file.");
             return "redirect:/users/profile";
         }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
+
         String filename = Objects.requireNonNull(image.getOriginalFilename());
         String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
 
         if (!isAllowedExtension(extension)) {
             throw new FileNotAllowedException("File type not supported.");
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+
         UserEntity user = findUser(userEmail);
 
         try {

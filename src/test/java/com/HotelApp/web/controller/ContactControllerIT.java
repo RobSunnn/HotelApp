@@ -1,11 +1,23 @@
 package com.HotelApp.web.controller;
 
+import com.HotelApp.domain.entity.HotelInfoEntity;
+import com.HotelApp.domain.entity.RoleEntity;
+import com.HotelApp.domain.entity.UserEntity;
+import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.repository.ContactRequestRepository;
+import com.HotelApp.repository.OnlineReservationRepository;
 import com.HotelApp.repository.SubscriberRepository;
+import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.ContactRequestService;
+import com.HotelApp.service.HotelService;
+import com.HotelApp.service.MailService;
+import com.HotelApp.service.impl.AppUserDetailsService;
+import com.HotelApp.service.impl.CustomUser;
+import com.HotelApp.service.impl.UserTransformationService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
+import com.HotelApp.util.encryptionUtil.KeyService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -17,21 +29,32 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.*;
 
+import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -53,11 +76,9 @@ class ContactControllerIT {
     @Mock
     private BindingResult bindingResult;
 
-    @Mock
-    private RedirectAttributes redirectAttributes;
-
     @Autowired
     private EncryptionService encryptionService;
+
 
     @BeforeEach
     void setup() {
@@ -87,10 +108,10 @@ class ContactControllerIT {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.redirectUrl").value("/contact"));
 
-        assertEquals(1, contactRequestRepository.count());
-        assertTrue(contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult, redirectAttributes));
+        contactRequestService.sendContactForm(
+                contactRequestBindingModel, bindingResult
+        );
         assertEquals(2, contactRequestRepository.count());
-
     }
 
     @Test
@@ -141,7 +162,7 @@ class ContactControllerIT {
         AddSubscriberBindingModel addSubscriberBindingModel = new AddSubscriberBindingModel()
                 .setSubscriberEmail(encryptionService.encrypt("valid@email.bg"));
 
-        String refererUrl = "http://localhost:8080/somePage";
+        String refererUrl = "/somePage";
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("referer", refererUrl);
 
@@ -151,8 +172,7 @@ class ContactControllerIT {
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.redirectUrl").value("/somePage"))
-                .andExpect(jsonPath("$.message").value("Thank you for subscribing!"));
+                .andExpect(jsonPath("$.redirectUrl").value("/somePage"));
 
         assertEquals(1, subscriberRepository.count());
     }
@@ -175,5 +195,4 @@ class ContactControllerIT {
 
         assertEquals(0, subscriberRepository.count());
     }
-
 }

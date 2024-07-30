@@ -128,6 +128,7 @@ class ProfileControllerIT {
 
     @Test
     void editProfile_ShouldReturnBadRequest() throws Exception {
+        when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(mockUserEntity()));
         MvcResult result = mockMvc.perform(post("/users/profile/editUserProfile")
                         .with(csrf()))
                 .andExpect(status().isBadRequest())

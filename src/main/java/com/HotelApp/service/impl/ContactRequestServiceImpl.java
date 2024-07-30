@@ -128,6 +128,10 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .findFirst()
                 .orElseThrow(() -> new UsernameNotFoundException("User with email: " + userEmail + "not found!"));
 
+        if (additionalInfo.equals("Max 400 symbols") || additionalInfo.isBlank()) {
+            additionalInfo = "No Additional Info.";
+        }
+
         OnlineReservationEntity onlineReservationEntity = new OnlineReservationEntity()
                 .setFullName(user.getFullName())
                 .setEmail(user.getEmail())
@@ -135,10 +139,6 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .setTimestamp(LocalDateTime.now())
                 .setChecked(false)
                 .setHotelInfoEntity(hotelService.getHotelInfo());
-
-        if (additionalInfo.equals("Max 400 symbols") || additionalInfo.isBlank()) {
-            additionalInfo = "No Additional Info.";
-        }
         onlineReservationEntity.setAdditionalInfo(additionalInfo);
 
         onlineReservationRepository.save(onlineReservationEntity);

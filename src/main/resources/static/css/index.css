@@ -21,7 +21,6 @@ h2 {
 
 #roomCarousel {
     height: 50vh;
-    margin-top: 7em;
 }
 
 #roomCarousel .carousel-inner,
@@ -36,6 +35,7 @@ h2 {
     align-self: center;
     height: 70vh;
     color: black;
+    width: 5% !important;
 }
 
 .carousel-item {
@@ -70,15 +70,20 @@ h2 {
     height: 60vh;
     margin-right: 3em;
 }
+
 .card-title {
     color: white !important;
 }
-.custom-card .room-text {
 
+.custom-card .room-text {
     width: 100%;
     height: 60vh;
     align-content: center;
     padding: 2em;
 }
 
+.card-text {
+    width: 75%;
+    margin: 0 auto;
+}
 

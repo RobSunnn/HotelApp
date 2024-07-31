@@ -14,6 +14,8 @@ html {
 body {
     font-family: "Shantell Sans", cursive !important;
     margin: 0 auto;
+    background: linear-gradient(to bottom,rgba(65, 70, 87, 1), rgba(105, 135, 224, 1), rgba(94, 82, 57, 0.2));
+
 }
 
 img {

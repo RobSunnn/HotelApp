@@ -1,5 +1,5 @@
 .navbar {
-    background: linear-gradient(to right, rgba(65, 70, 87, 0.9), rgba(105, 135, 224, 0.9));
+    background: linear-gradient(to right, rgba(43, 41, 41, 0.9), rgba(65, 70, 87, 0.9), rgba(105, 135, 224, 0.9));
     border-radius: 15px;
     outline: 1px solid wheat;
     display: flex !important;

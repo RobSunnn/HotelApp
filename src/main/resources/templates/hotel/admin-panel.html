@@ -7,6 +7,7 @@
 <body class="hero" style="background-image: url('/images/hotel2.jpg')">
 <th:block th:replace="~{fragments :: navbar}"></th:block>
 <div class="all-content">
+<h1 class="heading cool-background p-2" th:if="${freeRoomsCount == 0}" > Congratulations! Your Hotel is FULL!</h1>
     <div class="management-card">
         <div class="card-body cool-background text-white text-center mt-5">
             <h2 class="card-title">User Management</h2>
@@ -26,7 +27,7 @@
             </div>
         </div>
     </div>
-    <h1 class="text-white text-center mt-5 cool-background">Hotel Overview</h1>
+    <h1 class="text-white text-center mt-5 p-2 cool-background heading">Hotel Overview</h1>
 
     <div class="cards">
         <div class="card">

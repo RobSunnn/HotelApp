@@ -11,7 +11,7 @@
 @import url(success-cards.css);
 
 main {
-    margin: 10em;
+    margin: 10em auto;
 }
 
 i {
@@ -32,6 +32,9 @@ small {
 .heading {
     width: 70%;
     margin: 0 auto;
+    color: white !important;
+    display: flex;
+    justify-content: center;
 }
 
 .cool-background {
@@ -46,13 +49,15 @@ small {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
 .container {
     margin-top: 10em;
 }
+
 .buttons {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+
     gap: 1em;
     margin-top: 2em;
     text-align: center;

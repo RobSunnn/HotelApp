@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const rolesContainer = document.getElementById('roles');
                 userDetails.roles.forEach(role => {
                     const roleElement = document.createElement('span');
-                    roleElement.className = 'bg-info p-1 m-1 px-4 rounded text-white';
+                    roleElement.className = 'bg-info p-1 m-1 rounded text-white';
                     roleElement.innerText = role.name;
                     rolesContainer.appendChild(roleElement);
                 });

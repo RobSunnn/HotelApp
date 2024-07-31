@@ -29,7 +29,6 @@
     /*.navbar {*/
     /*    max-height: 10vh;*/
     /*}*/
-
     .form-inline {
         width: 84%;
         margin: 0 auto;
@@ -41,8 +40,9 @@
         margin-left: 1.3em;
         padding: 0;
     }
+
     .navbar-brand img {
-        max-height:50px !important;
+        max-height: 50px !important;
         transform: scale(2) !important;
     }
 
@@ -53,10 +53,12 @@
 
     /*EO: Navbar*/
     /*Index*/
-    #carousel .carousel-control-next,
-    #carousel > .carousel-control-prev {
-        height: 30vh;
-        margin-top: 18em;
+    .room-text {
+        display: none;
+    }
+
+    .custom-card .card-img {
+        width: 100%;
     }
 
     /*EO: Index*/
@@ -156,16 +158,6 @@
         justify-content: center !important;
     }
 
-    .profile .buttons {
-        flex-direction: column;
-
-    }
-
-    .file-container {
-        flex-wrap: wrap;
-
-    }
-
     .file-input-container {
         width: 100%;
         max-width: 100%;
@@ -196,24 +188,46 @@
     }
 
     /*EO: Tables*/
-    .room-text {
-        display: none;
+
+}
+
+@media (max-width: 450px) {
+     .buttons {
+        flex-wrap: wrap;
     }
 
-    .custom-card .card-img {
+    .file-container {
+        flex-wrap: wrap;
+    }
+
+    .profile #roles {
+        width: 100%;
+    }
+
+    #fullName,
+    #email {
+        word-break: break-word;
+    }
+
+    #subscribe-btn,
+    .profile .buttons button,
+    .profile .buttons a {
+        font-size: 0.5em;
+        word-break: break-word;
+    }
+
+    .subscribe-form {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    video {
         width: 100%;
     }
 }
 
-@media (max-width: 450px) {
-    /*Footer*/
-    video {
-        width: 100px;
+@media (max-width: 285px) {
+    #roles {
+        flex-wrap: wrap;
     }
-
-    video:hover {
-        width: 150px;
-    }
-
-    /* EO: Footer */
 }

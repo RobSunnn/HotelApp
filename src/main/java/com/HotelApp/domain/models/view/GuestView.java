@@ -5,21 +5,13 @@ import java.time.LocalDateTime;
 public class GuestView {
 
     private Long id;
-
     private String firstName;
-
     private String lastName;
-
     private String email;
-
     private Integer age;
-
     private String documentId;
-
     private LocalDateTime checkInTime;
-
     private LocalDateTime checkOutTime;
-
     private Integer roomNumber;
 
     public GuestView() {

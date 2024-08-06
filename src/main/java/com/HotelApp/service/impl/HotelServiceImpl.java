@@ -4,11 +4,15 @@ import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.models.view.*;
 import com.HotelApp.repository.HotelRepository;
+import com.HotelApp.service.ForbiddenRequestsService;
 import com.HotelApp.service.HotelService;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
@@ -16,8 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.HotelApp.common.constants.SuccessConstants.REDIRECT_URL;
-import static com.HotelApp.common.constants.SuccessConstants.SUCCESS;
+import static com.HotelApp.common.constants.SuccessConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
 
@@ -26,10 +29,12 @@ public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
     private final UserTransformationService userTransformationService;
+    private final ForbiddenRequestsService forbiddenRequestsService;
 
-    public HotelServiceImpl(HotelRepository hotelRepository, UserTransformationService userTransformationService) {
+    public HotelServiceImpl(HotelRepository hotelRepository, UserTransformationService userTransformationService, ForbiddenRequestsService forbiddenRequestsService) {
         this.hotelRepository = hotelRepository;
         this.userTransformationService = userTransformationService;
+        this.forbiddenRequestsService = forbiddenRequestsService;
     }
 
     @Override
@@ -158,6 +163,36 @@ public class HotelServiceImpl implements HotelService {
     public BigDecimal getTotalProfit() {
         return getHotelInfo().getTotalProfit();
     }
+
+    @Transactional
+    @Override
+    public void addAdminAttributes(Model model, HttpSession session, HttpServletRequest request) {
+        Map<String, Integer> infoForHotel = getInfoForHotel();
+        BigDecimal totalProfit = getTotalProfit();
+        int forbiddenRequestsSize = forbiddenRequestsService.getAllNotChecked().size();
+
+        model.addAttribute("totalProfit", totalProfit);
+        model.addAllAttributes(infoForHotel);
+        model.addAttribute("forbiddenRequestsSize", forbiddenRequestsSize);
+
+        String previousUrl = request.getHeader("referer");
+        session.setAttribute(PREVIOUS_URL, previousUrl);
+    }
+
+    @Transactional
+    @Override
+    public void addModeratorAttributes(Model model) {
+        Map<String, Integer> infoForHotel = getInfoForHotel();
+        int allNotApprovedComments = getAllNotApprovedComments().size();
+        int allContactRequests = getAllNotCheckedContactRequest().size();
+        int allOnlineReservations = getAllNotCheckedOnlineReservations().size();
+
+        model.addAllAttributes(infoForHotel);
+        model.addAttribute("allNotApprovedComments", allNotApprovedComments);
+        model.addAttribute("allContactRequests", allContactRequests);
+        model.addAttribute("allOnlineReservations", allOnlineReservations);
+    }
+
 
     @Transactional(readOnly = true)
     @Override

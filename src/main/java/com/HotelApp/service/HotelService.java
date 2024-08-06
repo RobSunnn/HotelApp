@@ -2,7 +2,10 @@ package com.HotelApp.service;
 
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.models.view.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -51,4 +54,9 @@ public interface HotelService {
 
     @Transactional(readOnly = true)
     List<OnlineReservationView> getAllNotCheckedOnlineReservations();
+
+    @Transactional
+    void addAdminAttributes(Model model, HttpSession session, HttpServletRequest request);
+
+    void addModeratorAttributes(Model model);
 }

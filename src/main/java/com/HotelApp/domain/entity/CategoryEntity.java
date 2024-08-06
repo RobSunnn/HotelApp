@@ -11,7 +11,8 @@ public class CategoryEntity extends BaseEntity {
     @Column(nullable = false)
     private CategoriesEnum name;
 
-    public CategoryEntity() {}
+    public CategoryEntity() {
+    }
 
     public CategoryEntity(CategoriesEnum name) {
         this.name = name;

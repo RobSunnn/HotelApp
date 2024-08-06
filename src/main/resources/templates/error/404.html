@@ -3,41 +3,11 @@
 <head>
     <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Page Not Found</title>
-    <style>
-
-        .error {
-            height: 100vh;
-            width: 100%;
-            background-position: center center;
-        }
-
-        .wrapper {
-            display: flex;
-        }
-        .content > img {
-            margin: 0 auto;
-            width: 100%;
-            border-radius: 30%;
-        }
-        .content {
-            margin: 15em auto;
-            width: 50%;
-            box-sizing: border-box;
-            color: white;
-            padding: 2em;
-        }
-
-        @media (max-width: 770px) {
-            .content {
-                width: 100%;
-            }
-        }
-    </style>
 </head>
 <body class="error" style="background-image: url('/images/broken-image.jpg')">
 <th:block th:replace="~{fragments :: navbar}"></th:block>
 <div class="wrapper">
-    <div class="content">
+    <div class="error-content">
         <h1 >Congrats, you broke it.</h1>
         <h2> Status code 404.</h2>
         <img src="/images/not-found.jpg" alt="">

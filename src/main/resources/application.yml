@@ -21,9 +21,6 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-  sql:
-    init:
-      mode: never
   jpa:
     hibernate:
       ddl-auto: update
@@ -44,11 +41,4 @@ server:
     session:
       timeout: 30m
 
-
-
-  #Cloudinary Properties
-#cloudinary:
-  #api-key: 
-  #api-secret: 
-  #cloud-name:
 

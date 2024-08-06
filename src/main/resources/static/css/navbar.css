@@ -5,6 +5,19 @@
     display: flex !important;
 }
 
+.navbar-brand {
+    align-items: center;
+    padding: 14px;
+    margin: 25px 0 5px 10px;
+}
+
+.navbar-brand img {
+    max-height: 50px !important;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+    transform: scale(2.5);
+}
+
 .form-inline {
     display: flex;
     justify-content: center;

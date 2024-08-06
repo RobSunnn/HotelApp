@@ -27,24 +27,14 @@ public class HotelController {
 
     private final ForbiddenRequestsService forbiddenRequestsService;
 
-    public HotelController(HotelService hotelService,
-                           ForbiddenRequestsService forbiddenRequestsService) {
+    public HotelController(HotelService hotelService, ForbiddenRequestsService forbiddenRequestsService) {
         this.hotelService = hotelService;
         this.forbiddenRequestsService = forbiddenRequestsService;
     }
 
     @ModelAttribute
     public void addAttributes(Model model, HttpSession session, HttpServletRequest request) {
-        Map<String, Integer> infoForHotel = hotelService.getInfoForHotel();
-        BigDecimal totalProfit = hotelService.getTotalProfit();
-        int forbiddenRequestsSize = forbiddenRequestsService.getAllNotChecked().size();
-
-        model.addAttribute("totalProfit", totalProfit);
-        model.addAllAttributes(infoForHotel);
-        model.addAttribute("forbiddenRequestsSize", forbiddenRequestsSize);
-
-        String previousUrl = request.getHeader("referer");
-        session.setAttribute(PREVIOUS_URL, previousUrl);
+        hotelService.addAdminAttributes(model, session, request);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

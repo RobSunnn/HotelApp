@@ -9,28 +9,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        .navbar-brand {
-            align-items: center;
-            padding: 10px;
-            margin-top: 20px;
-            margin-left: 10px;
-        }
-
-        .navbar-brand img {
-            max-height:50px;
-            height: auto;
-            transition: transform 0.3s ease-in-out;
-            transform: scale(2.5);
-        }
-
-        .footer-end .page-link:hover {
-            background-color: lightsteelblue !important;
-            border-radius: 50%;
-            color: black !important;
-        }
-
-    </style>
 </head>
 <body>
 <header th:fragment="navbar">
@@ -71,7 +49,8 @@
                         <div class="form-inline my-2 my-lg-0 px-3">
                             <div class="logged-user text-white p-2">Welcome, <a style="font-weight: 700"
                                                                                 th:href="@{/users/profile}">
-                                <span class="text-white"><th:block th:text="${#authentication.principal.fullName}"></th:block></span>
+                                <span class="text-white"><th:block
+                                        th:text="${#authentication.principal.fullName}"></th:block></span>
                             </a>!
                             </div>
                             <form th:method="post" th:action="@{/logout}">

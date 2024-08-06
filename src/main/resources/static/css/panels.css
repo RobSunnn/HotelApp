@@ -2,6 +2,12 @@ select {
     overflow-y: auto;
 }
 
+option {
+    color: black;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
 .management-card {
     width: 50%;
     margin: 0 auto;
@@ -17,6 +23,11 @@ select {
     gap: 1.5em;
 }
 
+.cards .card-text {
+    width: 100%;
+    margin: 0 auto;
+}
+
 .all-content {
     margin-top: 10em;
     align-content: center;
@@ -28,12 +39,6 @@ select {
 
 .black-placeholder::placeholder {
     color: black !important;
-}
-
-option {
-    color: black;
-    font-size: 1.2rem;
-    text-align: center;
 }
 
 .checkbox-item {

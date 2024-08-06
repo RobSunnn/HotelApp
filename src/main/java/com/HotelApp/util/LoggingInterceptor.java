@@ -23,6 +23,7 @@ import java.util.Collections;
 
 public class LoggingInterceptor implements HandlerInterceptor {
     private static final Logger log = LoggerFactory.getLogger(LoggingInterceptor.class);
+    private static final String FORBIDDEN_REQUEST_LOG_INFO = "Request resulted in 403 Forbidden: URL = my-host.com{}, Method = {}, IP = {}, Username = {}";
 
     private final ForbiddenRequestRepository forbiddenRequestRepository;
 
@@ -34,20 +35,19 @@ public class LoggingInterceptor implements HandlerInterceptor {
     public void afterCompletion(@NonNull HttpServletRequest request,
                                 @NonNull HttpServletResponse response,
                                 @NonNull Object handler,
-                                Exception ex) throws SocketException {
+                                Exception ex) throws IOException {
         int statusCode = response.getStatus();
 
         if (statusCode == HttpServletResponse.SC_FORBIDDEN) {
             String username = getUsername();
 
             String originalUrl = (String) request.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
-            log.warn("Request resulted in 403 Forbidden: URL = my-host.com{}, Method = {}, IP = {}, Username = {}",
-                    originalUrl, request.getMethod(), getClientIpAddress(request), username);
+            log.warn(FORBIDDEN_REQUEST_LOG_INFO, originalUrl, request.getMethod(), getPublicIpAddress(), username);
 
             ForbiddenRequestEntity forbiddenRequest = new ForbiddenRequestEntity()
                     .setUrl(originalUrl)
                     .setMethod(request.getMethod())
-                    .setIp(getClientIpAddress(request))
+                    .setIp(getPublicIpAddress())
                     .setUsername(username)
                     .setTimestamp(LocalDateTime.now())
                     .setChecked(false);
@@ -68,45 +68,6 @@ public class LoggingInterceptor implements HandlerInterceptor {
         return "Anonymous";
     }
 
-    private String getClientIpAddress(@NotNull HttpServletRequest request) throws SocketException {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip)) {
-            return ip.split(",")[0].trim();
-        }
-
-        ip = request.getHeader("X-Real-IP");
-        if (ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip)) {
-            return ip;
-        }
-
-        ip = request.getRemoteAddr();
-        if (ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) {
-            try {
-                ip = getPublicIpAddress();
-            } catch (IOException e) {
-                log.error("Unable to get public IP address", e);
-                ip = getRealIpAddress(); // Fallback to local network IP
-            }
-        }
-
-        return ip;
-    }
-
-    private String getRealIpAddress() throws SocketException {
-        for (NetworkInterface networkInterface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
-            for (InetAddress inetAddress : Collections.list(networkInterface.getInetAddresses())) {
-                if (!inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
-                    return inetAddress.getHostAddress();
-                }
-            }
-        }
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (IOException e) {
-            log.error("Unable to get localhost IP address", e);
-            return "Unknown";
-        }
-    }
 
     private String getPublicIpAddress() throws IOException {
         return PublicIpFetcher.getPublicIpAddress();

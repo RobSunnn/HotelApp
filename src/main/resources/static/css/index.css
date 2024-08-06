@@ -19,17 +19,6 @@ h2 {
     height: 100vh;
 }
 
-#roomCarousel {
-    height: 50vh;
-}
-
-#roomCarousel .carousel-inner,
-#roomCarousel .carousel-item,
-#roomCarousel .carousel-control-next,
-#roomCarousel .carousel-control-prev {
-    height: 50vh;
-}
-
 .carousel-control-next,
 .carousel-control-prev {
     align-self: center;
@@ -87,3 +76,13 @@ h2 {
     margin: 0 auto;
 }
 
+#roomCarousel {
+    height: 50vh;
+}
+
+#roomCarousel .carousel-inner,
+#roomCarousel .carousel-item,
+#roomCarousel .carousel-control-next,
+#roomCarousel .carousel-control-prev {
+    height: 50vh;
+}

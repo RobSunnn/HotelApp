@@ -39,6 +39,7 @@ import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 @Service
 public class UserTransformationService {
     private static final Logger log = LoggerFactory.getLogger(UserTransformationService.class);
+    private static final String SECURITY_CONTEXT = "SPRING_SECURITY_CONTEXT";
 
     private final AppUserDetailsService userDetailsService;
     private final HttpServletRequest request;
@@ -118,7 +119,7 @@ public class UserTransformationService {
         // Set the new authentication token in the security context
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         // Update session with the new authentication
-        request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+        request.getSession().setAttribute(SECURITY_CONTEXT, SecurityContextHolder.getContext());
     }
 
     public boolean authenticateUser(String email, String password) {
@@ -141,7 +142,7 @@ public class UserTransformationService {
             // Set the new authentication token in the security context
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             // Update session with the new authentication
-            request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+            request.getSession().setAttribute(SECURITY_CONTEXT, SecurityContextHolder.getContext());
 
             return true;
         } catch (UsernameNotFoundException e) {
@@ -166,7 +167,7 @@ public class UserTransformationService {
         } else {
             redirectUrl = checkIfIsAdmin() ? "/" : "/admin";
         }
-        responseBody.put("redirectUrl", redirectUrl);
+        responseBody.put(REDIRECT_URL, redirectUrl);
 
         return ResponseEntity.ok(responseBody);
     }

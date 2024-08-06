@@ -12,7 +12,7 @@ function displayErrors(errors) {
         }
     }
 
-    // Iterate over the errors array
+    // Iterate over the error array
     errors.forEach(error => {
         const errorElement = document.getElementById(`${error.field}Error`);
         const inputElement = document.getElementById(error.field);

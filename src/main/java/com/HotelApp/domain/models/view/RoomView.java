@@ -7,13 +7,9 @@ import java.math.BigDecimal;
 public class RoomView {
 
     private Long id;
-
     private int roomNumber;
-
     private BigDecimal roomPrice;
-
     private CategoryEntity category;
-
     private boolean isReserved;
 
     public RoomView() {

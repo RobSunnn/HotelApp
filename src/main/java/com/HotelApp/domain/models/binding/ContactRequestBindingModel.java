@@ -11,10 +11,8 @@ public class ContactRequestBindingModel {
     @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
     @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String name;
-    //todo: check email size
-    @NotBlank(message = EMAIL_NOT_BLANK)
+
     @ValidEmail(message = INVALID_EMAIL)
-//    @Size(max = 100, message = "Your email is too long!")
     private String email;
 
     private String phoneNumber;

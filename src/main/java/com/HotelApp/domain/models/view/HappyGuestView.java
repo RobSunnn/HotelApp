@@ -5,23 +5,14 @@ import java.time.LocalDateTime;
 public class HappyGuestView {
 
     private Long id;
-
     private String firstName;
-
     private String lastName;
-
     private String email;
-
     private Integer age;
-
     private String documentId;
-
     private Integer lastRoomUsed;
-
     private Integer timesThatGuestHaveBeenToHotel;
-
     private LocalDateTime lastCheckIn;
-
     private LocalDateTime lastCheckOut;
 
     public HappyGuestView() {

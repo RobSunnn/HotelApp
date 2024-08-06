@@ -27,9 +27,10 @@
             th:data-content-email="${request.email}"
             th:data-content-phone="${request.phoneNumber}"
             th:classappend="${iterStat.index == 0} ? 'selected'">
-            <td style="width: 10%" th:text="${#temporals.format(request.created, 'yyyy-MM-dd')}"></td>
-            <td style="width: 10%"
-                th:text="${#temporals.format(request.created.toLocalTime(), 'HH')} + ':' + (${request.created.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${request.created.toLocalTime().getMinute()}"></td>
+            <td th:text="${#temporals.format(request.created, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(request.created.toLocalTime(), 'HH')} + ':' +
+            (${request.created.toLocalTime().getMinute() < 10 ? '0' : ''}) + ${request.created.toLocalTime().getMinute()}">
+            </td>
             <td th:text="${#strings.abbreviate(request.name, 15)}"></td>
             <td th:text="${#strings.abbreviate(request.email, 15)}"></td>
             <td th:text="${request.phoneNumber != '' ? #strings.abbreviate(request.phoneNumber, 15) : 'No phone number available'}"></td>

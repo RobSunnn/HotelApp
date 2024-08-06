@@ -5,13 +5,9 @@ import com.HotelApp.domain.entity.CategoryEntity;
 public class RoomTypeView {
 
     private String name;
-
     private String description;
-
     private Integer capacity;
-
     private CategoryEntity category;
-
     private String pictureUrl;
 
     public RoomTypeView() {

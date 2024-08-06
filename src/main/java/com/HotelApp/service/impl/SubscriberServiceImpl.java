@@ -33,7 +33,6 @@ import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
 
 @Service
 public class SubscriberServiceImpl implements SubscriberService {
-
     private static final Logger log = LoggerFactory.getLogger(SubscriberServiceImpl.class);
 
     private final SubscriberRepository subscriberRepository;

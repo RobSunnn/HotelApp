@@ -96,8 +96,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 500px; /* Adjust as needed */
-    display: inline-block; /* Ensures ellipsis are applied */
+    max-width: 500px;
+    display: inline-block;
     vertical-align: top;
 }
 

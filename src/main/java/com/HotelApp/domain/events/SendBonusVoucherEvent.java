@@ -15,6 +15,4 @@ public class SendBonusVoucherEvent extends ApplicationEvent {
     public String getEmail() {
         return email;
     }
-
-
 }

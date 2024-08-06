@@ -47,10 +47,14 @@ import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     private static final String REGISTER_SUCCESS_REDIRECT_URL = "/users/registrationSuccess";
     private static final String EDIT_PROFILE_SUCCESS_REDIRECT_URL = "/users/profile/editSuccess";
     private static final String CHANGE_PASSWORD_SUCCESS_REDIRECT_URL = "/users/profile";
+    private static final String FORBIDDEN_USER = "You can't see this user :)";
+    private static final String USER_NOT_FOUND = "User not found for email: ";
+    private static final long IMAGE_MAX_SIZE = 5 * 1024 * 1024;
+    private static final long IMAGE_EMPTY = 5 * 1024 * 1024;
+    private static final String EXTENSION_NOT_ALLOWED = "File type not supported.";
 
     private final UserRepository userRepository;
     private final RoleService roleService;
@@ -140,7 +144,7 @@ public class UserServiceImpl implements UserService {
         String decryptedEmail = userTransformationService.decrypt(email);
         UserEntity user = findUser(decryptedEmail);
         if (user.getId() == 1) {
-            throw new ForbiddenUserException("You can't see this user :)");
+            throw new ForbiddenUserException(FORBIDDEN_USER);
         }
         return userTransformationService.mapAsUserView(user);
     }
@@ -155,10 +159,10 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             user = userOptional.get();
             if (user.getId() == 1) {
-                throw new ForbiddenUserException("Don't try this.");
+                throw new ForbiddenUserException(FORBIDDEN_USER);
             }
         } else {
-            throw new UsernameNotFoundException("User not found for email: " + decryptedEmail);
+            throw new UsernameNotFoundException(USER_NOT_FOUND + decryptedEmail);
         }
 
         switch (command) {
@@ -179,12 +183,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String addUserImage(MultipartFile image, RedirectAttributes redirectAttributes) {
-        if (image.getSize() > (5 * 1024 * 1024)) {
-            throw new MaxUploadSizeExceededException(5 * 1024 * 1024);
+        if (image.getSize() > (IMAGE_MAX_SIZE)) {
+            throw new MaxUploadSizeExceededException(IMAGE_MAX_SIZE);
         }
         if (image.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage",
-                    "Please select a file.");
+                    IMAGE_EMPTY);
             return "redirect:/users/profile";
         }
 
@@ -192,14 +196,12 @@ public class UserServiceImpl implements UserService {
         String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
 
         if (!isAllowedExtension(extension)) {
-            throw new FileNotAllowedException("File type not supported.");
+            throw new FileNotAllowedException(EXTENSION_NOT_ALLOWED);
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
-
         UserEntity user = findUser(userEmail);
-
         try {
             // Read the image
             BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
@@ -223,14 +225,16 @@ public class UserServiceImpl implements UserService {
             Blob blob = new SerialBlob(compressedImageBytes);
             user.setUserImage(blob);
 
-            redirectAttributes.addFlashAttribute("successMessage",
-                    PICTURE_UPLOAD_SUCCESS);
+            redirectAttributes.addFlashAttribute(
+                    "successMessage", PICTURE_UPLOAD_SUCCESS
+            );
 
             userRepository.save(user);
 
         } catch (SQLException | IOException e) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "Something went wrong. Please choose different file.");
+            redirectAttributes.addFlashAttribute(
+                    "errorMessage", FILE_NOT_ALLOWED
+            );
         }
         userTransformationService.evictUserViewsCache();
         return "redirect:/users/profile";
@@ -246,7 +250,7 @@ public class UserServiceImpl implements UserService {
 
         if (decryptedEmail.isEmpty()) {
             bindingResult.addError(new FieldError(
-                    USER_REGISTER_BINDING_MODEL, "email", EMAIL_NOT_BLANK)
+                    USER_REGISTER_BINDING_MODEL, EMAIL, EMAIL_NOT_BLANK)
             );
         }
 
@@ -254,9 +258,8 @@ public class UserServiceImpl implements UserService {
         boolean emailChanged = !user.getEmail().equals(decryptedEmail);
 
         if (checkIfEmailExist(decryptedEmail) && emailChanged) {
-            bindingResult.addError(new FieldError(
-                    USER_REGISTER_BINDING_MODEL,
-                    EMAIL, ValidationConstants.EMAIL_EXIST)
+            bindingResult.addError(
+                    new FieldError(USER_REGISTER_BINDING_MODEL, EMAIL, ValidationConstants.EMAIL_EXIST)
             );
         }
 
@@ -293,16 +296,19 @@ public class UserServiceImpl implements UserService {
         );
 
         if (!passwordEncoder().matches(decryptedOldPassword, user.getPassword())) {
-            bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
-                    "oldPassword", ValidationConstants.OLD_PASSWORD_MISMATCH));
+            bindingResult.addError(
+                    new FieldError(CHANGE_PASSWORD_BINDING_MODEL, "oldPassword", ValidationConstants.OLD_PASSWORD_MISMATCH)
+            );
         }
         if (decryptedNewPassword.isEmpty()) {
-            bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
-                    "newPassword", EMPTY_PASSWORD));
+            bindingResult.addError(
+                    new FieldError(CHANGE_PASSWORD_BINDING_MODEL, "newPassword", EMPTY_PASSWORD)
+            );
         }
         if (!decryptedNewPassword.equals(decryptedConfirmNewPassword) || decryptedConfirmNewPassword.isEmpty()) {
-            bindingResult.addError(new FieldError(CHANGE_PASSWORD_BINDING_MODEL,
-                    "confirmNewPassword", CONFIRM_PASSWORD));
+            bindingResult.addError(
+                    new FieldError(CHANGE_PASSWORD_BINDING_MODEL, "confirmNewPassword", CONFIRM_PASSWORD)
+            );
         }
 
         if (bindingResult.hasErrors()) {
@@ -326,6 +332,6 @@ public class UserServiceImpl implements UserService {
 
     private UserEntity findUser(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found"));
+                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + email));
     }
 }

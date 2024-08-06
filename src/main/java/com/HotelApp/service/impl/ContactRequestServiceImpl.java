@@ -99,6 +99,28 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     }
 
     @Override
+    public void checkedContactRequest(Long id) {
+        contactRequestRepository.save(
+                contactRequestRepository
+                        .findAll()
+                        .stream()
+                        .filter(contactRequest -> Objects.equals(contactRequest.getId(), id))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("No such contact request."))
+                        .setChecked(true)
+        );
+    }
+
+    @Override
+    public void allRequestsChecked() {
+        contactRequestRepository
+                .findAll()
+                .stream()
+                .filter(contactRequest -> !contactRequest.getChecked())
+                .forEach(contactRequest -> contactRequestRepository.save(contactRequest.setChecked(true)));
+    }
+
+    @Override
     @Scheduled(cron = "@daily")
     public void clearCheckedContactRequests() {
         contactRequestRepository.deleteAll(
@@ -138,8 +160,8 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .setAge(user.getAge())
                 .setTimestamp(LocalDateTime.now())
                 .setChecked(false)
+                .setAdditionalInfo(additionalInfo)
                 .setHotelInfoEntity(hotelService.getHotelInfo());
-        onlineReservationEntity.setAdditionalInfo(additionalInfo);
 
         onlineReservationRepository.save(onlineReservationEntity);
 
@@ -165,24 +187,24 @@ public class ContactRequestServiceImpl implements ContactRequestService {
     }
 
     @Override
-    public void checkedContactRequest(Long id) {
-        contactRequestRepository.save(
-                contactRequestRepository
-                        .findAll()
-                        .stream()
-                        .filter(contactRequest -> Objects.equals(contactRequest.getId(), id))
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("No such contact request."))
-                        .setChecked(true));
+    public void allReservationsChecked() {
+        onlineReservationRepository
+                .findAll()
+                .stream()
+                .filter(reservation -> !reservation.isChecked())
+                .forEach(reservation -> onlineReservationRepository.save(reservation.setChecked(true)));
     }
 
     @Override
-    public void allRequestsChecked() {
-        contactRequestRepository
-                .findAll()
-                .stream()
-                .filter(contactRequest -> !contactRequest.getChecked())
-                .forEach(contactRequest -> contactRequestRepository.save(contactRequest.setChecked(true)));
+    @Scheduled(cron = "@monthly")
+    public void clearCheckedReservations() {
+        onlineReservationRepository.deleteAll(
+                onlineReservationRepository
+                        .findAll()
+                        .stream()
+                        .filter(OnlineReservationEntity::isChecked)
+                        .toList()
+        );
     }
 
     @EventListener(OnlineReservationEvent.class)

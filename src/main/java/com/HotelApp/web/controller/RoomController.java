@@ -17,12 +17,10 @@ public class RoomController {
     }
 
     @GetMapping("/allRoomTypes")
-    public String rooms(Model model,
-                        @PageableDefault(
-                                size = 2,
-                                sort = "id"
-                        )
-                        Pageable pageable) {
+    public String rooms(
+            Model model,
+            @PageableDefault(size = 2, sort = "id")
+            Pageable pageable) {
         roomTypesService.getRooms(pageable, model);
         return "rooms/rooms-page";
     }

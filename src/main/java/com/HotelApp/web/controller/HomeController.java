@@ -18,12 +18,11 @@ public class HomeController {
     }
 
     @ModelAttribute
-    public void addAttributes(Model model,
-                              @PageableDefault(
-                                      size = 5,
-                                      sort = "id"
-                              )
-                              Pageable pageable) {
+    public void addAttributes(
+            Model model,
+            @PageableDefault(size = 5, sort = "id")
+            Pageable pageable
+    ) {
         roomTypesService.getRooms(pageable, model);
         model.addAttribute("imageUrls", new String[]{"/images/hotel.jpg", "/images/hotel1.jpg", "/images/hotel2.jpg"});
     }

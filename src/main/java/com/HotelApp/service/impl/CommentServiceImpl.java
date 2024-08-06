@@ -78,9 +78,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Cacheable(value = "commentsCache")
     public Page<CommentView> getApprovedComments(Pageable pageable) {
-        System.out.println("PAGEABLE");
         return commentRepository.findByApprovedTrue(pageable)
                 .map(CommentServiceImpl::mapAsCommentView);
     }

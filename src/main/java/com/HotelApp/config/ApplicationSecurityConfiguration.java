@@ -42,11 +42,11 @@ public class ApplicationSecurityConfiguration {
                                 .requestMatchers("/moderator/**", "/guests/**", "/hotel/**").hasRole("MODERATOR")
                                 .anyRequest().authenticated()
                 )
+                .formLogin(AbstractHttpConfigurer::disable)
                 .requestCache(
                         requestCacheConfigurer -> requestCacheConfigurer
                                 .requestCache(requestCache())
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
                 .exceptionHandling(
                         exceptionHandling -> exceptionHandling
                                 .authenticationEntryPoint(authenticationEntryPoint())

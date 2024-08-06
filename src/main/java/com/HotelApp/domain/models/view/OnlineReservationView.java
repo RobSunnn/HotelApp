@@ -5,17 +5,11 @@ import java.time.LocalDateTime;
 public class OnlineReservationView {
 
     private Long id;
-
     private String fullName;
-
     private String email;
-
     private Integer age;
-
     private String additionalInfo;
-
     private LocalDateTime timestamp;
-
     private boolean isChecked;
 
     public OnlineReservationView() {

@@ -20,11 +20,7 @@ public class SuccessConstants {
 
     public static final String PICTURE_UPLOAD_SUCCESS = "Profile picture uploaded successfully.";
 
-    public static final String CHANGE_PASSWORD_SUCCESS = "Password changed successfully.";
-
     public static final String TRANSFORMING_USERS = "Transforming users to user views";
 
     public static final String EVICTING_USERS = "Evicting user views cache";
-
-    public static final String SUBSCRIBE_SUCCESS = "Thank you for subscribing!";
 }

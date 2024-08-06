@@ -8,12 +8,7 @@ async function encryptData(value) {
         const publicKeyObj = forge.pki.publicKeyFromAsn1(forge.asn1.fromDer(publicKeyBytes));
         // Encrypt value using RSAES-PKCS1-v1_5
         const encryptedBytes = publicKeyObj.encrypt(value, 'RSAES-PKCS1-V1_5');
-        // const encryptedBytes = publicKeyObj.encrypt(value, 'RSA-OAEP', {
-        //     md: forge.md.sha256.create(),
-        //     mgf1: {
-        //         md: forge.md.sha1.create()  // Default MGF1 digest is SHA-1, ensure this matches the Java setup
-        //     }
-        // });
+        
         // Return encrypted bytes as Base64-encoded string
         return forge.util.encode64(encryptedBytes);
     } catch (error) {

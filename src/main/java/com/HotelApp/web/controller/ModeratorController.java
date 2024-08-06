@@ -24,30 +24,16 @@ public class ModeratorController {
 
     private final ContactRequestService contactRequestService;
 
-    public ModeratorController(HotelService hotelService,
-                               CommentService commentService, ContactRequestService contactRequestService) {
+    public ModeratorController(HotelService hotelService, CommentService commentService, ContactRequestService contactRequestService) {
         this.hotelService = hotelService;
         this.commentService = commentService;
         this.contactRequestService = contactRequestService;
     }
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        Map<String, Integer> infoForHotel = hotelService.getInfoForHotel();
-        model.addAllAttributes(infoForHotel);
-    }
-
     @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping
     public String moderatorPanel(Model model) {
-        int allNotApprovedComments = hotelService.getAllNotApprovedComments().size();
-        int allContactRequests = hotelService.getAllNotCheckedContactRequest().size();
-        int allOnlineReservations = hotelService.getAllNotCheckedOnlineReservations().size();
-
-        model.addAttribute("allNotApprovedComments", allNotApprovedComments);
-        model.addAttribute("allContactRequests", allContactRequests);
-        model.addAttribute("allOnlineReservations", allOnlineReservations);
-
+        hotelService.addModeratorAttributes(model);
         return "moderator/moderator-panel";
     }
 
@@ -98,7 +84,7 @@ public class ModeratorController {
     @PostMapping("/approveAll")
     public String approveAllComments() {
         commentService.approveAll();
-        return "redirect:/moderator/comments";
+        return "redirect:/moderator";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -119,7 +105,7 @@ public class ModeratorController {
     @PostMapping("/allRequestsChecked")
     public String allContactRequestsChecked() {
         contactRequestService.allRequestsChecked();
-        return "redirect:/moderator/contactRequests";
+        return "redirect:/moderator";
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
@@ -127,5 +113,12 @@ public class ModeratorController {
     public String onlineReservationChecked(@RequestParam("reservationId") Long reservationId) {
         contactRequestService.checkedOnlineReservation(reservationId);
         return "redirect:/moderator/onlineReservations";
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("/allReservationsChecked")
+    public String allReservationsChecked() {
+        contactRequestService.allReservationsChecked();
+        return "redirect:/moderator";
     }
 }

@@ -21,8 +21,9 @@ import static com.HotelApp.common.constants.ValidationConstants.SMTP_MESSAGE_VOU
 
 @Service
 public class MailServiceImpl implements MailService {
-
     private static final Logger log = LoggerFactory.getLogger(MailServiceImpl.class);
+    private static final String THANK_YOU_FOR_SUBSCRIBING = "Thank you for subscribing!";
+
     private final TemplateEngine templateEngine;
     private final JavaMailSender javaMailSender;
     private final String hotelEmail;
@@ -49,7 +50,7 @@ public class MailServiceImpl implements MailService {
             mimeMessageHelper.setTo(email);
             mimeMessageHelper.setFrom(hotelEmail);
             mimeMessageHelper.setReplyTo(hotelEmail);
-            mimeMessageHelper.setSubject("Thank you for subscribing!");
+            mimeMessageHelper.setSubject(THANK_YOU_FOR_SUBSCRIBING);
             mimeMessageHelper.setText(generateBonusVoucherBody(), true);
 
             mimeMessageHelper.addInline("voucher", imageResource, "image/jpeg");

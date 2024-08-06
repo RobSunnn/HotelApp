@@ -27,7 +27,6 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomView> getAvailableRoomsByType(String roomType) {
-
         CategoryEntity category = categoriesRepository.findByName(CategoriesEnum.valueOf(roomType));
 
         return roomRepository.findRoomByCategoryName(category.getName())

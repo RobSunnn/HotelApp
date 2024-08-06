@@ -22,3 +22,8 @@ video:hover {
     width: 500px;
 }
 
+.footer-end .page-link:hover {
+    background-color: lightsteelblue !important;
+    border-radius: 50%;
+    color: black !important;
+}

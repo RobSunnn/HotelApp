@@ -19,9 +19,7 @@ public class ApplicationCacheConfiguration {
 
     @Bean
     public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager(
-                "userViewsCache", "commentsCache"
-        );
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("userViewsCache");
         log.info("Cache Manager Build");
 
         cacheManager.setCaffeine(caffeineCacheBuilder());

@@ -57,4 +57,6 @@ public class ValidationConstants {
     public static final String SMTP_MESSAGE_VOUCHER = "Please connect the smtp server to proceed sending a bonus voucher to client.";
 
     public static final String SMTP_MESSAGE_RESERVATION = "Please connect the smtp server to proceed sending confirmation email.";
+
+    public static final String FILE_NOT_ALLOWED = "Something went wrong. Please choose different file.";
 }

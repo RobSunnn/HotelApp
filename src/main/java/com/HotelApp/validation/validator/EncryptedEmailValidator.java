@@ -17,6 +17,10 @@ public class EncryptedEmailValidator implements ConstraintValidator<ValidEmail, 
     public boolean isValid(String encryptedEmail, ConstraintValidatorContext context) {
         try {
             String decryptedEmail = encryptionService.decrypt(encryptedEmail);
+            if (decryptedEmail.length() > 200 || decryptedEmail.isBlank()) {
+                return false;
+            }
+
             String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
             return decryptedEmail.matches(emailPattern);
         } catch (Exception e) {

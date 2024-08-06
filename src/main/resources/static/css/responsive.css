@@ -12,23 +12,29 @@
     }
 
     /* EO: About Page */
-
 }
 
 @media (max-width: 995px) {
+    /*Tables*/
+    .table td {
+        word-break: unset !important;
+    }
+
     #table {
         display: block;
         padding: 0;
+    }
+
+    .cards-container {
+        flex-wrap: wrap;
     }
 
     .pagination {
         flex-wrap: wrap;
     }
 
+    /*EO: Tables*/
     /*Navbar*/
-    /*.navbar {*/
-    /*    max-height: 10vh;*/
-    /*}*/
     .form-inline {
         width: 84%;
         margin: 0 auto;
@@ -166,6 +172,17 @@
     }
 
     /*EO: Profile*/
+    /*Online Reservation*/
+    .reservation-card {
+        padding: 15px;
+        max-width: 300px;
+    }
+
+    .reservation-header h2 {
+        font-size: 1.25em;
+    }
+
+    /*EO: Online Reservation*/
     /*Register*/
     .register-form {
         width: 80%;
@@ -188,11 +205,17 @@
     }
 
     /*EO: Tables*/
+    /*Error pages*/
+    .error-content {
+        width: 100%;
+    }
+
+    /*EO: Error pages*/
 
 }
 
 @media (max-width: 450px) {
-     .buttons {
+    .buttons {
         flex-wrap: wrap;
     }
 

@@ -23,9 +23,7 @@ checkboxes.forEach(checkbox => {
             defaultOption.disabled = true;
             defaultOption.selected = true; // Select the default option by default
             roomDropdown.appendChild(defaultOption);
-
         } else {
-
             const value = checkbox.value;
             const index = checkbox.getAttribute('data-index');
 

@@ -1,0 +1,21 @@
+.error {
+    height: 100vh;
+    width: 100%;
+    background-position: center center;
+}
+.wrapper {
+    display: flex;
+}
+.error-content > img {
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 30%;
+}
+.error-content {
+    margin: 15em auto;
+    width: 50%;
+    box-sizing: border-box;
+    color: white;
+    padding: 2em;
+    text-align: center;
+}

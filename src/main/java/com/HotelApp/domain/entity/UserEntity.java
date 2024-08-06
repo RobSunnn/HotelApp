@@ -26,8 +26,7 @@ public class UserEntity extends BaseEntity {
     private String lastName;
 
     @Column(nullable = false, unique = true)
-    @Email(message = INVALID_EMAIL)
-    @Size(max = 100, message = EMAIL_TOO_LONG)
+    @Size(max = 200, message = EMAIL_TOO_LONG)
     private String email;
 
     @Column(nullable = false)

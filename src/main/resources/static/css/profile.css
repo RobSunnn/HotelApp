@@ -45,6 +45,10 @@
     transform: scale(1.15);
 }
 
+.long-text {
+    word-break: break-word;
+}
+
 #profile-main {
     display: flex;
     flex-wrap: wrap;
@@ -65,7 +69,6 @@
     display: flex;
     justify-content: center;
 }
-
 /* EO: Profile */
 /* Edit Profile And Change Password */
 .edit-profile-container {
@@ -84,5 +87,47 @@
 .edit-profile-container .form-group input {
     text-align: center;
 }
-
 /* EO: Edit Profile And Change Password*/
+/* Online Reservation */
+.reservation-card {
+    max-width: 600px;
+    margin: 10em auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: white !important;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.reservation-header h2 {
+    margin: 0 0 15px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.reservation-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.reservation-body label {
+    margin: 0 auto;
+    font-size: 1em;
+}
+
+.reservation-body textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.3em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    text-align: center;
+}
+
+.error-message {
+    text-align: center;
+}
+/* EO: Online Reservation*/

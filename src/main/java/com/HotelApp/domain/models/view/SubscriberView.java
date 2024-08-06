@@ -6,9 +6,7 @@ public class SubscriberView {
 
     private Long id;
     private String email;
-
     private LocalDateTime timeOfSubscription;
-
     private Integer counterOfSubscriptions;
 
     public SubscriberView() {

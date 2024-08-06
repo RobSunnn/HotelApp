@@ -27,7 +27,7 @@ public class GuestEntity extends BaseEntity {
     private String lastName;
 
     @Column
-    @Email(message = INVALID_EMAIL)
+    @Size(max = 200, message = EMAIL_TOO_LONG)
     private String email;
 
     @Column(nullable = false)

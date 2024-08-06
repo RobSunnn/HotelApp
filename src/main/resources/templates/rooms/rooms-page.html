@@ -3,38 +3,6 @@
 <head>
     <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Rooms</title>
-    <style>
-        .cards-container {
-            display: flex;
-            margin-top: 5em;
-        }
-
-        .page-item {
-            margin-bottom: 5em;
-        }
-
-        .room-card {
-            background-color: #555555;
-            max-width: 100%;
-            min-height: 55vh;
-            text-align: center;
-        }
-
-        .card-img {
-            padding: 1em;
-            width: 100%;
-            display: block;
-            min-height: 40vh;
-            max-height: 40vh;
-        }
-
-        @media (max-width: 990px) {
-            .cards-container {
-                flex-wrap: wrap;
-            }
-        }
-
-    </style>
 </head>
 <body class="hero" style="background-image: url('/images/hotel1.jpg')">
 <th:block th:replace="~{fragments :: navbar}"></th:block>
@@ -55,9 +23,6 @@
                             <div class="p-3"><span th:text="${room.getDescription()}"></span></div>
                         </li>
                     </ul>
-                    <div class="card-body">
-                        <a class="bg-white btn-outline-primary" href="/static">Details</a>
-                    </div>
                 </div>
             </div>
         </div>

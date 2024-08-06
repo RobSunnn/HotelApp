@@ -2,6 +2,7 @@ package com.HotelApp.service;
 
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,4 +20,7 @@ public interface ContactRequestService {
 
     void checkedOnlineReservation(Long reservationId);
 
+    void allReservationsChecked();
+
+    void clearCheckedReservations();
 }

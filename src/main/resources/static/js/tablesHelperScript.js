@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Update the hidden input fields with the selected idOfElement
         document.getElementById("selectedContentId").value = idOfElement;
 
-        // This is for the comments table
+        // This is for the comment table
         let notApprovedCommentInput = document.getElementById("notApprovedCommentId");
 
         if (notApprovedCommentInput) {

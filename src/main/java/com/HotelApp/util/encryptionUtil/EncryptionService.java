@@ -29,15 +29,6 @@ public class EncryptionService {
         }
     }
 
-    //    public String decrypt(String encryptedData) throws Exception {
-//        PrivateKey privateKey = keyService.getPrivateKey();
-//        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
-//        OAEPParameterSpec oaepParams = new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA1, PSource.PSpecified.DEFAULT);
-//        cipher.init(Cipher.DECRYPT_MODE, privateKey, oaepParams);
-//        byte[] decodedData = Base64.getDecoder().decode(encryptedData);
-//        byte[] decryptedData = cipher.doFinal(decodedData);
-//        return new String(decryptedData, StandardCharsets.UTF_8);
-//    }
     public String encrypt(String data) throws Exception {
         PublicKey publicKey = keyService.getPublicKey();
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");

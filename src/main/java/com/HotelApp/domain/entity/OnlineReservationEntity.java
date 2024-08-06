@@ -34,8 +34,6 @@ public class OnlineReservationEntity extends BaseEntity {
     @ManyToOne
     private HotelInfoEntity hotelInfoEntity;
 
-    //TODO: phone number after you put it in the user entity
-
     public OnlineReservationEntity() {
     }
 

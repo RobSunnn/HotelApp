@@ -3,63 +3,6 @@
 <head>
     <th:block th:replace="~{fragments :: head}"></th:block>
     <title>Online Reservation</title>
-
-    <style>
-        .reservation-card {
-            max-width: 600px;
-            margin: 10em auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            color: white !important;
-            font-size: 1.1em;
-        }
-
-        .reservation-header h2 {
-            margin: 0 0 15px;
-            font-size: 1.5em;
-            text-align: center;
-        }
-
-        .reservation-body {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .reservation-body label {
-            margin: 0 auto;
-            font-size: 1em;
-        }
-
-        .reservation-body textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 1.3em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: vertical;
-            text-align: center;
-        }
-
-
-        .error-message {
-            text-align: center;
-        }
-
-        @media (max-width: 600px) {
-            .reservation-card {
-                padding: 15px;
-                max-width: 300px;
-            }
-
-            .reservation-header h2 {
-                font-size: 1.25em;
-            }
-        }
-
-
-    </style>
 </head>
 <body class="hero" style="background-image: url('/images/hotel.jpg')">
 <th:block th:replace="~{fragments :: navbar}"></th:block>

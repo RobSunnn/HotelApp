@@ -19,7 +19,6 @@ public class UserRegisterBindingModel {
     @Size(max = 60, message = NAME_LENGTH_TOO_LONG)
     private String lastName;
 
-    @NotBlank(message = EMAIL_NOT_BLANK)
     @ValidEmail(message = INVALID_EMAIL)
     private String email;
 

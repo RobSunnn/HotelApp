@@ -9,15 +9,10 @@ import java.util.stream.Collectors;
 public class UserView {
 
     private String firstName;
-
     private String lastName;
-
     private String fullName;
-
     private String email;
-
     private String encryptedEmail;
-
     private Integer age;
 
     private byte[] userImage;

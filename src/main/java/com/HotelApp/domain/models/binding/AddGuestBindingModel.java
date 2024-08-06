@@ -16,9 +16,8 @@ public class AddGuestBindingModel {
     @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
     @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String lastName;
-    //todo: check for email size
+
     @ValidEmail(message = INVALID_EMAIL)
-//    @Size(max = 120, message = "Email of the guest is too long.")
     private String email;
 
     @Positive(message = NEGATIVE_AGE)

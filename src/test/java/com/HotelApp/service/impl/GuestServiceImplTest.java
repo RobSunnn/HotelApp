@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.AppConstants.*;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +30,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GuestServiceImplTest {
+
+
     @Mock
     private GuestRepository guestRepository;
 
@@ -57,7 +61,7 @@ class GuestServiceImplTest {
         when(roomRepository.findByRoomNumber(roomNumber)).thenReturn(room);
         when(guestRepository.findByRoom(room)).thenReturn(guest);
         when(hotelService.getHotelInfo()).thenReturn(hotelInfo);
-        when(happyGuestService.findByDocumentId("AbCde")).thenReturn(Optional.of(happyGuest));
+        when(happyGuestService.findByDocumentId(MOCK_GUEST_DOCUMENT)).thenReturn(Optional.of(happyGuest));
 
         guestService.checkout(roomNumber);
 
@@ -71,16 +75,14 @@ class GuestServiceImplTest {
     void testCheckout_newHappyGuest() {
         int roomNumber = 1;
         RoomEntity room = new RoomEntity();
-        GuestEntity guest = new GuestEntity();
-        guest.setDocumentId("123");
-        guest.setRoom(room);
+        GuestEntity guest = mockGuest();
         guest.setCheckInTime(LocalDateTime.now().minusDays(2));
         HotelInfoEntity hotelInfo = new HotelInfoEntity();
 
         when(roomRepository.findByRoomNumber(roomNumber)).thenReturn(room);
         when(guestRepository.findByRoom(room)).thenReturn(guest);
         when(hotelService.getHotelInfo()).thenReturn(hotelInfo);
-        when(happyGuestService.findByDocumentId("123")).thenReturn(Optional.empty());
+        when(happyGuestService.findByDocumentId(MOCK_GUEST_DOCUMENT)).thenReturn(Optional.empty());
 
         guestService.checkout(roomNumber);
 
@@ -104,9 +106,9 @@ class GuestServiceImplTest {
 
     private HotelInfoEntity mockHotelInfoEntity() {
         HotelInfoEntity hotelInfo = new HotelInfoEntity();
-        hotelInfo.setName("Great Hotel");
-        hotelInfo.setAddress("Somewhere");
-        hotelInfo.setPhoneNumber("0987-654-321");
+        hotelInfo.setName(HOTEL_NAME);
+        hotelInfo.setAddress(HOTEL_ADDRESS);
+        hotelInfo.setPhoneNumber(HOTEL_PHONE);
         hotelInfo.setTotalProfit(BigDecimal.ZERO);
         return hotelInfo;
     }
@@ -120,12 +122,12 @@ class GuestServiceImplTest {
 
     private GuestEntity mockGuest() {
         return new GuestEntity()
-                .setFirstName("Guest")
-                .setLastName("Entity")
-                .setEmail("Guest@entity.bg")
+                .setFirstName(MOCK_FIRST_NAME)
+                .setLastName(MOCK_LAST_NAME)
+                .setEmail(TEST_EMAIL)
                 .setAge(33)
                 .setCheckInTime(LocalDateTime.now().minusDays(2))
-                .setDocumentId("AbCde")
+                .setDocumentId(MOCK_GUEST_DOCUMENT)
                 .setCheckOutTime(LocalDateTime.now())
                 .setRoom(mockRoom());
     }

@@ -1,6 +1,5 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoleEntity;
 import com.HotelApp.domain.entity.UserEntity;
 import com.HotelApp.domain.entity.enums.RoleEnum;
@@ -26,13 +25,17 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.FailConstants.ERROR_MESSAGE;
+import static com.HotelApp.common.constants.SuccessConstants.PICTURE_UPLOAD_SUCCESS;
+import static com.HotelApp.common.constants.SuccessConstants.SUCCESS_MESSAGE;
+import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -57,15 +60,12 @@ class UserServiceImplTest {
     @Mock
     private RoleService roleService;
 
-    private static final String USER_EMAIL = "user@test.bg";
-
-
     @BeforeEach
     void setUp() {
         CustomUser customUser = new CustomUser(
-                "user@test.bg", "password",
+                TEST_EMAIL, TEST_PASSWORD,
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                "User Full Name"
+                USER_FULL_NAME
         );
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 customUser, null, customUser.getAuthorities());
@@ -75,10 +75,7 @@ class UserServiceImplTest {
     @Test
     public void testAddUserImage_MaxUploadSizeExceededException() {
         when(image.getSize()).thenReturn(6 * 1024 * 1024L); // 6MB
-
-        assertThrows(MaxUploadSizeExceededException.class, () -> {
-            userService.addUserImage(image, redirectAttributes);
-        });
+        assertThrows(MaxUploadSizeExceededException.class, () -> userService.addUserImage(image, redirectAttributes));
     }
 
     @Test
@@ -88,7 +85,7 @@ class UserServiceImplTest {
 
         userService.addUserImage(image, redirectAttributes);
 
-        verify(redirectAttributes).addFlashAttribute("errorMessage", "Please select a file.");
+        verify(redirectAttributes).addFlashAttribute(ERROR_MESSAGE, EMPTY_FILE);
     }
 
     @Test
@@ -97,20 +94,18 @@ class UserServiceImplTest {
         when(image.isEmpty()).thenReturn(false);
         when(image.getOriginalFilename()).thenReturn("file.exe");
 
-        assertThrows(FileNotAllowedException.class, () -> {
-            userService.addUserImage(image, redirectAttributes);
-        });
+        assertThrows(FileNotAllowedException.class, () -> userService.addUserImage(image, redirectAttributes));
     }
 
     @Test
     public void testAddUserImage_Success() throws Exception {
         when(image.getSize()).thenReturn(1024L);
         when(image.isEmpty()).thenReturn(false);
-        when(image.getOriginalFilename()).thenReturn("file.jpg");
+        when(image.getOriginalFilename()).thenReturn(FILE_JPG);
         when(image.getInputStream()).thenReturn(new ByteArrayInputStream(new byte[0]));
 
         when(userRepository.save(any(UserEntity.class))).thenReturn(mockUserEntity());
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
 
         BufferedImage bufferedImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -121,14 +116,14 @@ class UserServiceImplTest {
         userService.addUserImage(image, redirectAttributes);
 
         verify(userRepository).save(any(UserEntity.class));
-        verify(redirectAttributes).addFlashAttribute("successMessage", "Profile picture uploaded successfully.");
+        verify(redirectAttributes).addFlashAttribute(SUCCESS_MESSAGE, PICTURE_UPLOAD_SUCCESS);
         verify(userTransformationService).evictUserViewsCache();
     }
 
     @Test
     void testChangeUserRoleToAdmin() {
-        String encryptedInfo = "encryptedInfo";
-        String decryptedEmail = "test@example.com";
+        String encryptedInfo = ADMIN;
+        String decryptedEmail = TEST_EMAIL;
         UserEntity user = new UserEntity();
         user.setId(2L);
         user.setEmail(decryptedEmail);
@@ -137,7 +132,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(decryptedEmail)).thenReturn(Optional.of(user));
         when(roleService.getAllRoles()).thenReturn(List.of(new RoleEntity(RoleEnum.ADMIN), new RoleEntity(RoleEnum.USER)));
 
-        userService.changeUserRole(encryptedInfo, "Admin");
+        userService.changeUserRole(encryptedInfo, ADMIN);
 
         verify(userRepository).save(user);
         verify(userTransformationService).evictUserViewsCache();
@@ -147,8 +142,8 @@ class UserServiceImplTest {
 
     @Test
     void testChangeUserRoleToModerator() {
-        String encryptedInfo = "encryptedInfo";
-        String decryptedEmail = "test@example.com";
+        String encryptedInfo = MODERATOR;
+        String decryptedEmail = TEST_EMAIL;
         UserEntity user = new UserEntity();
         user.setId(2L);
         user.setEmail(decryptedEmail);
@@ -157,7 +152,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(decryptedEmail)).thenReturn(Optional.of(user));
         when(roleService.getModeratorRole()).thenReturn(List.of(new RoleEntity(RoleEnum.MODERATOR)));
 
-        userService.changeUserRole(encryptedInfo, "Moderator");
+        userService.changeUserRole(encryptedInfo, MODERATOR);
 
         verify(userRepository).save(user);
         verify(userTransformationService).evictUserViewsCache();
@@ -167,8 +162,8 @@ class UserServiceImplTest {
 
     @Test
     void testChangeUserRoleToUser() {
-        String encryptedInfo = "encryptedInfo";
-        String decryptedEmail = "test@example.com";
+        String encryptedInfo = USER;
+        String decryptedEmail = TEST_EMAIL;
         UserEntity user = new UserEntity();
         user.setId(2L);
         user.setEmail(decryptedEmail);
@@ -177,7 +172,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(decryptedEmail)).thenReturn(Optional.of(user));
         when(roleService.getUserRole()).thenReturn(new RoleEntity(RoleEnum.USER));
 
-        userService.changeUserRole(encryptedInfo, "User");
+        userService.changeUserRole(encryptedInfo, USER);
 
         verify(userRepository).save(user);
         verify(userTransformationService).evictUserViewsCache();
@@ -187,8 +182,8 @@ class UserServiceImplTest {
 
     @Test
     void testChangeUserRoleThrowsForbiddenUserException() {
-        String encryptedInfo = "encryptedInfo";
-        String decryptedEmail = "admin@example.com";
+        String encryptedInfo = ADMIN;
+        String decryptedEmail = TEST_EMAIL;
         UserEntity user = new UserEntity();
         user.setId(1L); // Admin user
 
@@ -196,9 +191,9 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(decryptedEmail)).thenReturn(Optional.of(user));
 
         ForbiddenUserException exception = assertThrows(ForbiddenUserException.class, () ->
-                userService.changeUserRole(encryptedInfo, "Admin"));
+                userService.changeUserRole(encryptedInfo, ADMIN));
 
-        assertEquals("Don't try this.", exception.getMessage());
+        assertEquals(FORBIDDEN_USER, exception.getMessage());
         verify(userRepository, never()).save(any(UserEntity.class));
         verify(userTransformationService, never()).evictUserViewsCache();
     }
@@ -207,23 +202,23 @@ class UserServiceImplTest {
     public void testAddUserImage_ExceptionHandling() throws Exception {
         when(image.getSize()).thenReturn(1024L);
         when(image.isEmpty()).thenReturn(false);
-        when(image.getOriginalFilename()).thenReturn("file.jpg");
-        when(image.getInputStream()).thenThrow(new IOException("Test Exception"));
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
+        when(image.getOriginalFilename()).thenReturn(FILE_JPG);
+        when(image.getInputStream()).thenThrow(new IOException(TEST_EXCEPTION));
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
 
         userService.addUserImage(image, redirectAttributes);
 
-        verify(redirectAttributes).addFlashAttribute("errorMessage", "Something went wrong. Please choose different file.");
+        verify(redirectAttributes).addFlashAttribute(ERROR_MESSAGE, FILE_NOT_ALLOWED);
     }
 
     private UserEntity mockUserEntity() {
         return new UserEntity()
-                .setFirstName("User")
-                .setLastName("Userov")
+                .setFirstName(MOCK_FIRST_NAME)
+                .setLastName(MOCK_LAST_NAME)
                 .setCreated(LocalDateTime.now())
-                .setPassword(passwordEncoder().encode("testing"))
+                .setPassword(passwordEncoder().encode(TEST_PASSWORD))
                 .setAge(33)
-                .setEmail("user@user.bg")
+                .setEmail(TEST_EMAIL)
                 .setRoles(Collections.singletonList(new RoleEntity(RoleEnum.USER)));
     }
 }

@@ -50,11 +50,7 @@ public class UserServiceImpl implements UserService {
     private static final String REGISTER_SUCCESS_REDIRECT_URL = "/users/registrationSuccess";
     private static final String EDIT_PROFILE_SUCCESS_REDIRECT_URL = "/users/profile/editSuccess";
     private static final String CHANGE_PASSWORD_SUCCESS_REDIRECT_URL = "/users/profile";
-    private static final String FORBIDDEN_USER = "You can't see this user :)";
-    private static final String USER_NOT_FOUND = "User not found for email: ";
-    private static final long IMAGE_MAX_SIZE = 5 * 1024 * 1024;
-    private static final long IMAGE_EMPTY = 5 * 1024 * 1024;
-    private static final String EXTENSION_NOT_ALLOWED = "File type not supported.";
+
 
     private final UserRepository userRepository;
     private final RoleService roleService;
@@ -187,8 +183,7 @@ public class UserServiceImpl implements UserService {
             throw new MaxUploadSizeExceededException(IMAGE_MAX_SIZE);
         }
         if (image.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    IMAGE_EMPTY);
+            redirectAttributes.addFlashAttribute("errorMessage", EMPTY_FILE);
             return "redirect:/users/profile";
         }
 

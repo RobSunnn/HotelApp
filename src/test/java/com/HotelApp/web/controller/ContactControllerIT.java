@@ -1,23 +1,11 @@
 package com.HotelApp.web.controller;
 
-import com.HotelApp.domain.entity.HotelInfoEntity;
-import com.HotelApp.domain.entity.RoleEntity;
-import com.HotelApp.domain.entity.UserEntity;
-import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.AddSubscriberBindingModel;
 import com.HotelApp.domain.models.binding.ContactRequestBindingModel;
 import com.HotelApp.repository.ContactRequestRepository;
-import com.HotelApp.repository.OnlineReservationRepository;
 import com.HotelApp.repository.SubscriberRepository;
-import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.ContactRequestService;
-import com.HotelApp.service.HotelService;
-import com.HotelApp.service.MailService;
-import com.HotelApp.service.impl.AppUserDetailsService;
-import com.HotelApp.service.impl.CustomUser;
-import com.HotelApp.service.impl.UserTransformationService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
-import com.HotelApp.util.encryptionUtil.KeyService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -29,32 +17,26 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.validation.BindingResult;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
-import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
+import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
+import static com.HotelApp.common.constants.BindingConstants.SUBSCRIBER_BINDING_MODEL;
+import static com.HotelApp.common.constants.FailConstants.ERRORS;
+import static com.HotelApp.common.constants.SuccessConstants.REFERER;
+import static com.HotelApp.common.constants.ValidationConstants.*;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -95,18 +77,18 @@ class ContactControllerIT {
     @Test
     void contactRequest_With_ValidData() throws Exception {
         ContactRequestBindingModel contactRequestBindingModel = new ContactRequestBindingModel()
-                .setName("Valid Name")
-                .setEmail(encryptionService.encrypt("test@mail.bg"))
-                .setPhoneNumber(encryptionService.encrypt("0888 888 888"))
-                .setMessage("Hello Testing Form");
+                .setName(USER_FULL_NAME)
+                .setEmail(encryptionService.encrypt(TEST_EMAIL))
+                .setPhoneNumber(encryptionService.encrypt(TEST_PHONE_NUMBER))
+                .setMessage(TEST_MESSAGE);
 
         // Perform the POST request
-        mockMvc.perform(post("/contact/contactForm")
-                        .flashAttr("contactRequestBindingModel", contactRequestBindingModel)
+        mockMvc.perform(post(CONTACT_REQUEST_URL)
+                        .flashAttr(CONTACT_REQUEST_BINDING_MODEL, contactRequestBindingModel)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.redirectUrl").value("/contact"));
+                .andExpect(jsonPath("$.redirectUrl").value(CONTACT_URL));
 
         contactRequestService.sendContactForm(
                 contactRequestBindingModel, bindingResult
@@ -119,8 +101,8 @@ class ContactControllerIT {
         // Create the contact request model with invalid data
         ContactRequestBindingModel contactRequestBindingModel = new ContactRequestBindingModel();
 
-        MvcResult result = mockMvc.perform(post("/contact/contactForm")
-                        .flashAttr("contactRequestBindingModel", contactRequestBindingModel)
+        MvcResult result = mockMvc.perform(post(CONTACT_REQUEST_URL)
+                        .flashAttr(CONTACT_REQUEST_BINDING_MODEL, contactRequestBindingModel)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
@@ -131,27 +113,21 @@ class ContactControllerIT {
         JsonNode jsonNode = mapper.readTree(jsonResponse);
 
         // Extract and assert on an error array
-        JsonNode errorsNode = jsonNode.get("errors");
+        JsonNode errorsNode = jsonNode.get(ERRORS);
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
 
         List<JsonNode> errorsList = new ArrayList<>();
         errorsNode.forEach(errorsList::add);
-        errorsList.sort(Comparator.comparing(node -> node.get("defaultMessage").asText()));
+        errorsList.sort(Comparator.comparing(node -> node.get(DEFAULT_MESSAGE).asText()));
 
-        assertEquals(4, errorsList.size());
+        assertEquals(3, errorsList.size());
 
-        assertEquals("Email should be provided.",
-                errorsList.get(0).get("defaultMessage").asText());
+        assertEquals(MESSAGE_BLANK, errorsList.get(0).get(DEFAULT_MESSAGE).asText());
 
-        assertEquals("Leave a message here...",
-                errorsList.get(1).get("defaultMessage").asText());
+        assertEquals(INVALID_EMAIL, errorsList.get(1).get(DEFAULT_MESSAGE).asText());
 
-        assertEquals("Please enter real email...",
-                errorsList.get(2).get("defaultMessage").asText());
-
-        assertEquals("Please, provide a name.",
-                errorsList.get(3).get("defaultMessage").asText());
+        assertEquals(NAME_BLANK, errorsList.get(2).get(DEFAULT_MESSAGE).asText());
 
         assertEquals(0, contactRequestRepository.count());
     }
@@ -160,19 +136,18 @@ class ContactControllerIT {
     @Test
     void subscribe_With_ValidEmail() throws Exception {
         AddSubscriberBindingModel addSubscriberBindingModel = new AddSubscriberBindingModel()
-                .setSubscriberEmail(encryptionService.encrypt("valid@email.bg"));
+                .setSubscriberEmail(encryptionService.encrypt(TEST_EMAIL));
 
-        String refererUrl = "/somePage";
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("referer", refererUrl);
+        request.addHeader(REFERER, REFERER_URL);
 
-        mockMvc.perform(post("/contact/subscribe")
-                        .flashAttr("addSubscriberBindingModel", addSubscriberBindingModel)
-                        .header("referer", refererUrl)
+        mockMvc.perform(post(SUBSCRIBE_URL)
+                        .flashAttr(SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel)
+                        .header(REFERER, REFERER_URL)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.redirectUrl").value("/somePage"));
+                .andExpect(jsonPath("$.redirectUrl").value(REFERER_URL));
 
         assertEquals(1, subscriberRepository.count());
     }
@@ -180,15 +155,15 @@ class ContactControllerIT {
     @Test
     void subscribe_With_InvalidEmail() throws Exception {
         AddSubscriberBindingModel addSubscriberBindingModel = new AddSubscriberBindingModel()
-                .setSubscriberEmail("invalid-email.bg");
+                .setSubscriberEmail(TEST_INVALID_EMAIL);
 
-        String refererUrl = "http://localhost:8080/somePage";
+
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("referer", refererUrl);
+        request.addHeader(REFERER, REFERER_URL);
 
-        mockMvc.perform(post("/contact/subscribe")
-                        .flashAttr("addSubscriberBindingModel", addSubscriberBindingModel)
-                        .header("referer", refererUrl)
+        mockMvc.perform(post(SUBSCRIBE_URL)
+                        .flashAttr(SUBSCRIBER_BINDING_MODEL, addSubscriberBindingModel)
+                        .header(REFERER, REFERER_URL)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false));

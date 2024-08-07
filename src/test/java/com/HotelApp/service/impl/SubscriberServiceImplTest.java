@@ -17,17 +17,20 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.HotelApp.common.constants.SuccessConstants.*;
+import static com.HotelApp.service.constants.TestConstants.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SubscriberServiceImplTest {
+
 
     @Mock
     private SubscriberRepository subscriberRepository;
@@ -52,19 +55,19 @@ class SubscriberServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        when(request.getHeader("referer")).thenReturn("https://example.com");
+        when(request.getHeader(REFERER)).thenReturn(TEST_URL);
     }
 
     @Test
     void testAddNewSubscriber() throws Exception {
         AddSubscriberBindingModel addSubscriberBindingModel = new AddSubscriberBindingModel();
-        addSubscriberBindingModel.setSubscriberEmail("encryptedEmail");
+        addSubscriberBindingModel.setSubscriberEmail(ENCRYPTED_EMAIL_FIELD);
 
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
 
-        when(encryptionService.decrypt("encryptedEmail")).thenReturn("decryptedEmail");
-        when(subscriberRepository.findByEmail("decryptedEmail")).thenReturn(Optional.empty());
+        when(encryptionService.decrypt(ENCRYPTED_EMAIL_FIELD)).thenReturn(DECRYPTED_EMAIL_FIELD);
+        when(subscriberRepository.findByEmail(DECRYPTED_EMAIL_FIELD)).thenReturn(Optional.empty());
 
         HotelInfoEntity hotelInfo = new HotelInfoEntity();
         when(hotelService.getHotelInfo()).thenReturn(hotelInfo);
@@ -74,8 +77,8 @@ class SubscriberServiceImplTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(responseBody);
-        assertEquals(true, responseBody.get("success"));
-        assertEquals("https://example.com", responseBody.get("redirectUrl"));
+        assertEquals(true, responseBody.get(SUCCESS));
+        assertEquals(TEST_URL, responseBody.get(REDIRECT_URL));
         verify(subscriberRepository, times(1)).findByEmail(anyString());
     }
 
@@ -88,7 +91,7 @@ class SubscriberServiceImplTest {
         Map<String, Object> responseBody = (Map<String, Object>) response.getBody();
 
         assertNotNull(responseBody);
-        assertEquals(false, responseBody.get("success"));
+        assertEquals(false, responseBody.get(SUCCESS));
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(subscriberRepository, never()).findByEmail(anyString());
     }
@@ -96,16 +99,16 @@ class SubscriberServiceImplTest {
     @Test
     void testAddNewSubscriber_existingSubscriber() throws Exception {
         AddSubscriberBindingModel model = new AddSubscriberBindingModel();
-        model.setSubscriberEmail("test@example.com");
+        model.setSubscriberEmail(TEST_EMAIL);
         SubscriberEntity subscriber = new SubscriberEntity()
-                .setEmail("test@example.com")
+                .setEmail(TEST_EMAIL)
                 .setCounterOfSubscriptions(1);
 
         HotelInfoEntity hotelInfo = new HotelInfoEntity();
 
         when(bindingResult.hasErrors()).thenReturn(false);
-        when(encryptionService.decrypt(model.getSubscriberEmail())).thenReturn("test@example.com");
-        when(subscriberRepository.findByEmail("test@example.com")).thenReturn(Optional.of(subscriber));
+        when(encryptionService.decrypt(model.getSubscriberEmail())).thenReturn(TEST_EMAIL);
+        when(subscriberRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(subscriber));
         when(hotelService.getHotelInfo()).thenReturn(hotelInfo);
 
         ResponseEntity<?> response = subscriberService.addNewSubscriber(model, bindingResult);
@@ -113,8 +116,8 @@ class SubscriberServiceImplTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(responseBody);
-        assertEquals(true, responseBody.get("success"));
-        assertEquals("https://example.com", responseBody.get("redirectUrl"));
+        assertEquals(true, responseBody.get(SUCCESS));
+        assertEquals(TEST_URL, responseBody.get(REDIRECT_URL));
         verify(subscriberRepository, times(1)).findByEmail(anyString());
         assertEquals(2, subscriber.getCounterOfSubscriptions());
         verify(subscriberRepository).save(subscriber);

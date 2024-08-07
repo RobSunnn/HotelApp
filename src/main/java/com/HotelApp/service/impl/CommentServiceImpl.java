@@ -7,7 +7,6 @@ import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.repository.CommentRepository;
 import com.HotelApp.service.CommentService;
 import com.HotelApp.service.HotelService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 
 import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH;
 import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
-import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS;
+import static com.HotelApp.common.constants.SuccessConstants.*;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -47,14 +46,14 @@ public class CommentServiceImpl implements CommentService {
 
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
         commentRepository.save(mapAsComment(addCommentBindingModel, hotelInfo));
-        redirectAttributes.addFlashAttribute("successCommentMessage", COMMENT_SUCCESS);
+        redirectAttributes.addFlashAttribute(COMMENT_SUCCESS, COMMENT_SUCCESS_MESSAGE);
     }
 
     @Override
     public void approve(Long id) {
         CommentEntity comment = commentRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Comment not found"));
+                .orElseThrow(() -> new RuntimeException(COMMENT_NOT_FOUND));
         comment.setApproved(true);
 
         commentRepository.save(comment);
@@ -73,7 +72,7 @@ public class CommentServiceImpl implements CommentService {
     public void doNotApprove(Long id) {
         CommentEntity comment = commentRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Comment not found"));
+                .orElseThrow(() -> new RuntimeException(COMMENT_NOT_FOUND));
         commentRepository.delete(comment);
     }
 

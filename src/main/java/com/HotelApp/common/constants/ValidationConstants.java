@@ -2,6 +2,8 @@ package com.HotelApp.common.constants;
 
 public class ValidationConstants {
 
+    public static final String HOTEL_INFO_NOT_FOUND = "Hotel Info not found";
+
     public static final String NAME_BLANK = "Please, provide a name.";
 
     public static final String NAME_LENGTH_TOO_SHORT = "The name should contain at least 2 characters.";
@@ -59,4 +61,14 @@ public class ValidationConstants {
     public static final String SMTP_MESSAGE_RESERVATION = "Please connect the smtp server to proceed sending confirmation email.";
 
     public static final String FILE_NOT_ALLOWED = "Something went wrong. Please choose different file.";
+
+    public static final String FORBIDDEN_USER = "You can't see this user :)";
+
+    public static final String USER_NOT_FOUND = "User not found for email: ";
+
+    public static final long IMAGE_MAX_SIZE = 5 * 1024 * 1024;
+
+    public static final String EXTENSION_NOT_ALLOWED = "File type not supported.";
+
+    public static final String EMPTY_FILE = "Please select a file.";
 }

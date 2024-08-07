@@ -61,7 +61,7 @@ public class SubscriberServiceImpl implements SubscriberService {
 
     @Override
     public ResponseEntity<?> addNewSubscriber(AddSubscriberBindingModel addSubscriberBindingModel, BindingResult bindingResult) {
-        final String REDIRECT_URL = request.getHeader("referer");
+        final String REDIRECT_URL = request.getHeader(REFERER);
 
         if (bindingResult.hasErrors()) {
             return genericFailResponse(bindingResult);

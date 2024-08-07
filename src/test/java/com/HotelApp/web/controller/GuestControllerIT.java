@@ -5,6 +5,7 @@ import com.HotelApp.domain.entity.GuestEntity;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.RoomEntity;
 import com.HotelApp.domain.entity.enums.CategoriesEnum;
+import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.AddGuestBindingModel;
 import com.HotelApp.repository.GuestRepository;
 import com.HotelApp.repository.HotelRepository;
@@ -35,6 +36,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.HotelApp.common.constants.AppConstants.*;
+import static com.HotelApp.common.constants.BindingConstants.GUEST_REGISTER_BINDING_MODEL;
+import static com.HotelApp.common.constants.FailConstants.ERRORS;
+import static com.HotelApp.common.constants.ValidationConstants.*;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -66,9 +72,9 @@ class GuestControllerIT {
     @BeforeEach
     void setUp() {
         CustomUser customUser = new CustomUser(
-                "moderator@test.bg", "password",
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_MODERATOR")),
-                "Moderator Full Name"
+                TEST_EMAIL, TEST_PASSWORD,
+                Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + RoleEnum.MODERATOR)),
+                USER_FULL_NAME
         );
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 customUser, null, customUser.getAuthorities());
@@ -88,34 +94,34 @@ class GuestControllerIT {
 
     @Test
     void testAddGuestPageAttributes() throws Exception {
-        mockMvc.perform(get("/guests/add"))
+        mockMvc.perform(get(GUEST_ADD_URL))
                 .andExpect(status().isOk())
-                .andExpect(view().name("moderator/add-guest"))
-                .andExpect(model().attributeExists("addGuestBindingModel"))
-                .andExpect(model().attributeExists("categories"))
-                .andExpect(model().attribute("addGuestBindingModel", instanceOf(AddGuestBindingModel.class)));
+                .andExpect(view().name(ADD_GUEST_VIEW))
+                .andExpect(model().attributeExists(GUEST_REGISTER_BINDING_MODEL))
+                .andExpect(model().attributeExists(CATEGORIES_COLLECTION))
+                .andExpect(model().attribute(GUEST_REGISTER_BINDING_MODEL, instanceOf(AddGuestBindingModel.class)));
     }
 
 
     @Test
     void testAddGuestFormSuccess() throws Exception {
         AddGuestBindingModel addGuestBindingModel = new AddGuestBindingModel()
-                .setFirstName("Testing")
-                .setLastName("ADD GUEST")
-                .setEmail(encryptionService.encrypt("test@mail.bg"))
+                .setFirstName(MOCK_FIRST_NAME)
+                .setLastName(MOCK_LAST_NAME)
+                .setEmail(encryptionService.encrypt(TEST_EMAIL))
                 .setAge(33)
-                .setDocumentId(encryptionService.encrypt("ABC321"))
+                .setDocumentId(encryptionService.encrypt(MOCK_GUEST_DOCUMENT))
                 .setDaysToStay(3)
                 .setRoomNumber(1);
 
         roomRepository.save(mockRoom());
 
-        mockMvc.perform(post("/guests/add")
-                        .flashAttr("addGuestBindingModel", addGuestBindingModel)
+        mockMvc.perform(post(GUEST_ADD_URL)
+                        .flashAttr(GUEST_REGISTER_BINDING_MODEL, addGuestBindingModel)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.redirectUrl").value("/guests/addGuestSuccess"));
+                .andExpect(jsonPath("$.redirectUrl").value(GUEST_ADD_SUCCESS_URL));
 
         assertEquals(1, guestRepository.count());
     }
@@ -123,13 +129,13 @@ class GuestControllerIT {
     @Test
     void testAddGuestFormValidationFail() throws Exception {
         AddGuestBindingModel addGuestBindingModel = new AddGuestBindingModel()
-                .setFirstName("Test")
-                .setLastName("Testing")
+                .setFirstName(MOCK_FIRST_NAME)
+                .setLastName(MOCK_LAST_NAME)
                 .setAge(23)
                 .setRoomNumber(3);
 
-        MvcResult result = mockMvc.perform(post("/guests/add")
-                        .flashAttr("addGuestBindingModel", addGuestBindingModel)
+        MvcResult result = mockMvc.perform(post(GUEST_ADD_URL)
+                        .flashAttr(GUEST_REGISTER_BINDING_MODEL, addGuestBindingModel)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
@@ -140,27 +146,23 @@ class GuestControllerIT {
         JsonNode jsonNode = mapper.readTree(jsonResponse);
 
         // Extract and assert on an error array
-        JsonNode errorsNode = jsonNode.get("errors");
+        JsonNode errorsNode = jsonNode.get(ERRORS);
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
 
         List<JsonNode> errorsList = new ArrayList<>();
         errorsNode.forEach(errorsList::add);
-        errorsList.sort(Comparator.comparing(node -> node.get("code").asText()));
+        errorsList.sort(Comparator.comparing(node -> node.get(CODE).asText()));
 
         assertEquals(4, errorsList.size());
 
-        assertEquals("We need the document id of the guest.",
-                errorsList.get(0).get("defaultMessage").asText());
+        assertEquals(DOCUMENT_ID_EMPTY, errorsList.get(0).get(DEFAULT_MESSAGE).asText());
 
-        assertEquals("You should enter the days that guest want to stay.",
-                errorsList.get(1).get("defaultMessage").asText());
+        assertEquals(EMPTY_DAYS, errorsList.get(1).get(DEFAULT_MESSAGE).asText());
 
-        assertEquals("Please enter real email...",
-                errorsList.get(2).get("defaultMessage").asText());
+        assertEquals(INVALID_EMAIL, errorsList.get(2).get(DEFAULT_MESSAGE).asText());
 
-        assertEquals("We need the document id of the guest.",
-                errorsList.get(3).get("defaultMessage").asText());
+        assertEquals(DOCUMENT_ID_EMPTY, errorsList.get(3).get(DEFAULT_MESSAGE).asText());
     }
 
     @Test
@@ -177,44 +179,44 @@ class GuestControllerIT {
         roomRepository.save(room);
 
         GuestEntity guest = new GuestEntity()
-                .setFirstName("Testing")
-                .setLastName("GUEST LEAVE")
+                .setFirstName(MOCK_FIRST_NAME)
+                .setLastName(MOCK_LAST_NAME)
                 .setAge(33)
-                .setDocumentId("ABC321")
+                .setDocumentId(MOCK_GUEST_DOCUMENT)
                 .setRoom(room)
                 .setCheckInTime(LocalDateTime.now().minusDays(3))
                 .setCheckOutTime(LocalDateTime.now());
 
         guestRepository.save(guest);
 
-        mockMvc.perform(get("/guests/leave"))
+        mockMvc.perform(get(GUEST_LEAVE_URL))
                 .andExpect(status().isOk())
-                .andExpect(view().name("moderator/guest-leave"))
-                .andExpect(model().attributeExists("guests"))
-                .andExpect(model().attribute("guests", hasSize(1)))
-                .andExpect(model().attribute("guests", hasItem(
+                .andExpect(view().name(GUEST_LEAVE_VIEW))
+                .andExpect(model().attributeExists(GUESTS_COLLECTION))
+                .andExpect(model().attribute(GUESTS_COLLECTION, hasSize(1)))
+                .andExpect(model().attribute(GUESTS_COLLECTION, hasItem(
                         allOf(
-                                hasProperty("firstName", is("Testing")),
-                                hasProperty("lastName", is("GUEST LEAVE")),
-                                hasProperty("age", is(33)),
-                                hasProperty("documentId", is("ABC321"))
+                                hasProperty(FIRST_NAME_FIELD, is(MOCK_FIRST_NAME)),
+                                hasProperty(LAST_NAME_FIELD, is(MOCK_LAST_NAME)),
+                                hasProperty(AGE_FIELD, is(33)),
+                                hasProperty(DOCUMENT_FIELD, is(MOCK_GUEST_DOCUMENT))
                         )
                 )));
     }
 
     @Test
     void testGuestLeaveWithoutAttributes() throws Exception {
-        mockMvc.perform(get("/guests/leave"))
+        mockMvc.perform(get(GUEST_LEAVE_URL))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/moderator"));
+                .andExpect(redirectedUrl(MODERATOR_URL));
     }
 
     private HotelInfoEntity mockHotelInfoEntity() {
         HotelInfoEntity hotelInfo = new HotelInfoEntity();
         hotelInfo.setId(1L);
-        hotelInfo.setName("Great Hotel");
-        hotelInfo.setAddress("Somewhere");
-        hotelInfo.setPhoneNumber("0987-654-321");
+        hotelInfo.setName(HOTEL_NAME);
+        hotelInfo.setAddress(HOTEL_ADDRESS);
+        hotelInfo.setPhoneNumber(HOTEL_PHONE);
         hotelInfo.setTotalProfit(BigDecimal.ZERO);
 
         return hotelInfo;

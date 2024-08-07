@@ -22,12 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH;
+import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
+import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS_MESSAGE;
+import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS;
+import static com.HotelApp.service.constants.TestConstants.TEST_AUTHOR;
+import static com.HotelApp.service.constants.TestConstants.TEST_COMMENT_CONTENT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
-
     @Mock
     private CommentRepository commentRepository;
 
@@ -50,8 +55,8 @@ class CommentServiceTest {
     @BeforeEach
     public void setUp() {
         addCommentBindingModel = new AddCommentBindingModel()
-                .setAuthor("Test Author")
-                .setCommentContent("Testing comment content.");
+                .setAuthor(TEST_AUTHOR)
+                .setCommentContent(TEST_COMMENT_CONTENT);
         commentEntity = new CommentEntity();
     }
 
@@ -61,8 +66,8 @@ class CommentServiceTest {
 
         commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
 
-        verify(redirectAttributes).addFlashAttribute("addCommentBindingModel", addCommentBindingModel);
-        verify(redirectAttributes).addFlashAttribute("org.springframework.validation.BindingResult.addCommentBindingModel", bindingResult);
+        verify(redirectAttributes).addFlashAttribute(COMMENT_BINDING_MODEL, addCommentBindingModel);
+        verify(redirectAttributes).addFlashAttribute(BINDING_RESULT_PATH + COMMENT_BINDING_MODEL, bindingResult);
         verifyNoInteractions(commentRepository);
     }
 
@@ -71,7 +76,7 @@ class CommentServiceTest {
         commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
 
         verify(commentRepository, times(1)).save(any(CommentEntity.class));
-        verify(redirectAttributes).addFlashAttribute("successCommentMessage", "Thank you for your comment!");
+        verify(redirectAttributes).addFlashAttribute(COMMENT_SUCCESS, COMMENT_SUCCESS_MESSAGE);
     }
 
     @Test

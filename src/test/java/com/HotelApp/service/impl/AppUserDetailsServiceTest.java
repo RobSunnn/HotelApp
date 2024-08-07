@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.service.constants.TestConstants.TEST_EMAIL;
+import static com.HotelApp.service.constants.TestConstants.TEST_PASSWORD;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -33,8 +35,8 @@ class AppUserDetailsServiceTest {
     public void setUp() {
         // Set up a sample UserEntity
         userEntity = new UserEntity();
-        userEntity.setEmail("test@example.com");
-        userEntity.setPassword("password");
+        userEntity.setEmail(TEST_EMAIL);
+        userEntity.setPassword(TEST_PASSWORD);
 
         RoleEntity role = new RoleEntity();
         role.setName(RoleEnum.USER);
@@ -43,23 +45,24 @@ class AppUserDetailsServiceTest {
 
     @Test
     public void testLoadUserByUsername_UserFound() {
-        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(userEntity));
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(userEntity));
 
-        UserDetails userDetails = appUserDetailsService.loadUserByUsername("test@example.com");
+        UserDetails userDetails = appUserDetailsService.loadUserByUsername(TEST_EMAIL);
 
         assertNotNull(userDetails);
         assertEquals(userEntity.getEmail(), userDetails.getUsername());
         assertEquals(userEntity.getPassword(), userDetails.getPassword());
-        assertTrue(userDetails.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_USER")));
+        assertTrue(
+                userDetails.getAuthorities()
+                        .stream()
+                        .anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"))
+        );
     }
 
     @Test
     public void testLoadUserByUsername_UserNotFound() {
-        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.empty());
 
-        assertThrows(UsernameNotFoundException.class, () -> {
-            appUserDetailsService.loadUserByUsername("test@example.com");
-        });
+        assertThrows(UsernameNotFoundException.class, () -> appUserDetailsService.loadUserByUsername(TEST_EMAIL));
     }
 }

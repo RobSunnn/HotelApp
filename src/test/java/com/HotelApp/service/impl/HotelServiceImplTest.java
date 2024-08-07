@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.ValidationConstants.HOTEL_INFO_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -27,11 +28,11 @@ class HotelServiceImplTest {
 
     @Test
     void testGetCount() {
-        when(hotelRepository.count()).thenReturn(5L);
+        when(hotelRepository.count()).thenReturn(1L);
 
         Long count = hotelService.getCount();
 
-        assertEquals(5L, count);
+        assertEquals(1L, count);
         verify(hotelRepository).count();
     }
 
@@ -72,7 +73,7 @@ class HotelServiceImplTest {
             hotelService.getHotelInfo();
         });
 
-        assertEquals("Hotel Info not found", exception.getMessage());
+        assertEquals(HOTEL_INFO_NOT_FOUND, exception.getMessage());
         verify(hotelRepository).findById(1L);
     }
 

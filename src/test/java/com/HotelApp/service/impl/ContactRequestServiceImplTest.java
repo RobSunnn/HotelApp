@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ContactRequestServiceImplTest {
-
     @Mock
     private ContactRequestRepository contactRequestRepository;
 
@@ -76,19 +76,19 @@ class ContactRequestServiceImplTest {
 
     private ContactRequestEntity mockContactRequestEntityWithCheckedTrue() {
         return new ContactRequestEntity()
-                .setName("name")
+                .setName(TEST_NAME)
                 .setChecked(true)
-                .setMessage("test")
-                .setEmail("test@test.bg")
+                .setMessage(TEST_MESSAGE)
+                .setEmail(TEST_EMAIL)
                 .setCreated(LocalDateTime.now());
     }
 
     private ContactRequestEntity mockContactRequestEntityWithCheckedFalse() {
         return new ContactRequestEntity()
-                .setName("name")
+                .setName(TEST_NAME)
                 .setChecked(false)
-                .setMessage("test")
-                .setEmail("test@test.bg")
+                .setMessage(TEST_MESSAGE)
+                .setEmail(TEST_EMAIL)
                 .setCreated(LocalDateTime.now());
     }
 }

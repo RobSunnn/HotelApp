@@ -1,5 +1,6 @@
 package com.HotelApp.web.controller;
 
+import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
 import com.HotelApp.service.impl.AppUserDetailsService;
 import com.HotelApp.service.impl.CustomUser;
@@ -24,7 +25,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.HotelApp.common.constants.BindingConstants.BAD_CREDENTIALS;
+import static com.HotelApp.common.constants.BindingConstants.USER_REGISTER_BINDING_MODEL;
+import static com.HotelApp.common.constants.FailConstants.ERRORS;
+import static com.HotelApp.common.constants.SuccessConstants.LOGIN_SUCCESS;
+import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -50,30 +57,32 @@ class AuthenticationRestControllerIT {
     @Test
     @WithAnonymousUser
     public void testLoginInvalidCredentials() throws Exception {
-        mockMvc.perform(post("/users/login")
-                        .param("encryptedEmail", encryptionService.encrypt("test@example.com"))
-                        .param("encryptedPass", encryptionService.encrypt("password"))
+        mockMvc.perform(post(USER_LOGIN_URL)
+                        .param(ENCRYPTED_EMAIL_FIELD, encryptionService.encrypt(TEST_EMAIL))
+                        .param(ENCRYPTED_PASSWORD_FIELD, encryptionService.encrypt(TEST_PASSWORD))
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Invalid username or password"));
+                .andExpect(jsonPath("$.message").value(BAD_CREDENTIALS));
     }
 
     @Test
     @WithAnonymousUser
     public void testLogin_Success() throws Exception {
-        when(userDetailsService.loadUserByUsername("test@example.com")).thenReturn(new CustomUser(
-                "test@example.com",
-                passwordEncoder().encode("password"),
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                "Test User"
-        ));
-        mockMvc.perform(post("/users/login")
-                        .param("encryptedEmail", encryptionService.encrypt("test@example.com"))
-                        .param("encryptedPass", encryptionService.encrypt("password"))
+        when(userDetailsService.loadUserByUsername(TEST_EMAIL)).thenReturn(
+                new CustomUser(
+                        TEST_EMAIL,
+                        passwordEncoder().encode(TEST_PASSWORD),
+                        Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + RoleEnum.USER)),
+                        USER_FULL_NAME
+                )
+        );
+        mockMvc.perform(post(USER_LOGIN_URL)
+                        .param(ENCRYPTED_EMAIL_FIELD, encryptionService.encrypt(TEST_EMAIL))
+                        .param(ENCRYPTED_PASSWORD_FIELD, encryptionService.encrypt(TEST_PASSWORD))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Login success"));
+                .andExpect(jsonPath("$.message").value(LOGIN_SUCCESS));
     }
 
     @Test
@@ -81,32 +90,32 @@ class AuthenticationRestControllerIT {
     public void registerUser_Success() throws Exception {
 
         UserRegisterBindingModel userRegisterBindingModel = new UserRegisterBindingModel()
-                .setFirstName("Test")
-                .setLastName("User")
-                .setEmail(encryptionService.encrypt("testov@email.bg"))
+                .setFirstName(MOCK_FIRST_NAME)
+                .setLastName(MOCK_LAST_NAME)
+                .setEmail(encryptionService.encrypt(TEST_EMAIL))
                 .setAge(33)
-                .setPassword(encryptionService.encrypt("testing"))
-                .setConfirmPassword(encryptionService.encrypt("testing"));
+                .setPassword(encryptionService.encrypt(TEST_PASSWORD))
+                .setConfirmPassword(encryptionService.encrypt(TEST_PASSWORD));
 
 
-        mockMvc.perform(post("/users/register")
-                        .flashAttr("userRegisterBindingModel", userRegisterBindingModel)
+        mockMvc.perform(post(USER_REGISTER_URL)
+                        .flashAttr(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
-                .andExpect(jsonPath("$.redirectUrl", is("/users/registrationSuccess")));
+                .andExpect(jsonPath("$.redirectUrl", is(USER_REGISTER_SUCCESS_URL)));
     }
 
     @Test
     @WithAnonymousUser
     public void registerUser_Fail() throws Exception {
         UserRegisterBindingModel userRegisterBindingModel = new UserRegisterBindingModel()
-                .setEmail(encryptionService.encrypt("test@email.bg"))
+                .setEmail(encryptionService.encrypt(TEST_EMAIL))
                 .setPassword(encryptionService.encrypt(""))
                 .setConfirmPassword(encryptionService.encrypt(""));
 
-        MvcResult result = mockMvc.perform(post("/users/register")
-                        .flashAttr("userRegisterBindingModel", userRegisterBindingModel)
+        MvcResult result = mockMvc.perform(post(USER_REGISTER_URL)
+                        .flashAttr(USER_REGISTER_BINDING_MODEL, userRegisterBindingModel)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success", is(false)))
@@ -117,7 +126,7 @@ class AuthenticationRestControllerIT {
         JsonNode jsonNode = mapper.readTree(jsonResponse);
 
         // Extract and assert on an error array
-        JsonNode errorsNode = jsonNode.get("errors");
+        JsonNode errorsNode = jsonNode.get(ERRORS);
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
 
@@ -125,22 +134,12 @@ class AuthenticationRestControllerIT {
         errorsNode.forEach(errorsList::add);
         errorsList.sort(Comparator.comparing(node -> node.get("code").asText()));
 
-        assertEquals(5, errorsList.size());
-
-        // Example assertions on specific error messages
-        assertEquals("Please, provide a name.",
-                errorsList.get(0).get("defaultMessage").asText());
-
-        assertEquals("Please, provide a name.",
-                errorsList.get(1).get("defaultMessage").asText());
-
-        assertEquals("We need your age to verify that you are over 18 years old.",
-                errorsList.get(2).get("defaultMessage").asText());
-
-        assertEquals("You need password for your registration...",
-                errorsList.get(3).get("defaultMessage").asText());
-
-        assertEquals("Please confirm your password.",
-                errorsList.get(4).get("defaultMessage").asText());
+        assertEquals(6, errorsList.size());
+        assertEquals(NAME_BLANK, errorsList.get(0).get(DEFAULT_MESSAGE).asText());
+        assertEquals(NAME_BLANK, errorsList.get(1).get(DEFAULT_MESSAGE).asText());
+        assertEquals(INVALID_AGE, errorsList.get(2).get(DEFAULT_MESSAGE).asText());
+        assertEquals(EMPTY_PASSWORD, errorsList.get(3).get(DEFAULT_MESSAGE).asText());
+        assertEquals(CONFIRM_PASSWORD, errorsList.get(4).get(DEFAULT_MESSAGE).asText());
+        assertEquals(EMAIL_EXIST, errorsList.get(5).get(DEFAULT_MESSAGE).asText());
     }
 }

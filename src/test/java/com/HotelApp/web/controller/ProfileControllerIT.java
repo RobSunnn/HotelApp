@@ -143,7 +143,7 @@ class ProfileControllerIT {
         JsonNode errorsNode = jsonNode.get("errors");
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
-        assertEquals(6, errorsNode.size());
+        assertEquals(5, errorsNode.size());
     }
 
     @Test

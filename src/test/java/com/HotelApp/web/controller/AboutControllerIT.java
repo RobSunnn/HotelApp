@@ -20,6 +20,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.HotelApp.common.constants.AppConstants.COMMENTS;
+import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
+import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS;
+import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS_MESSAGE;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,8 +58,8 @@ class AboutControllerIT {
     @Test
     void testAboutPageAttributes() throws Exception {
         CommentEntity comment = new CommentEntity()
-                .setAuthor("Test Author")
-                .setCommentContent("Test Comment Content")
+                .setAuthor(TEST_AUTHOR)
+                .setCommentContent(TEST_COMMENT_CONTENT)
                 .setCreated(LocalDateTime.now())
                 .setApproved(true);
 
@@ -62,27 +67,27 @@ class AboutControllerIT {
         comments.add(comment);
         commentRepository.saveAll(comments);
 
-        mockMvc.perform(get("/about"))
+        mockMvc.perform(get(ABOUT_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name("about"))
-                .andExpect(model().attributeExists("comments"))
-                .andExpect(model().attributeExists("addCommentBindingModel"))
-                .andExpect(model().attribute("comments", instanceOf(Page.class)))
-                .andExpect(model().attribute("comments", hasProperty("content", hasSize(1))));
+                .andExpect(model().attributeExists(COMMENTS))
+                .andExpect(model().attributeExists(COMMENT_BINDING_MODEL))
+                .andExpect(model().attribute(COMMENTS, instanceOf(Page.class)))
+                .andExpect(model().attribute(COMMENTS, hasProperty("content", hasSize(1))));
     }
 
     @Test
     void testAddValidComment() throws Exception {
         AddCommentBindingModel addCommentBindingModel = new AddCommentBindingModel()
-                .setAuthor("Test Author")
-                .setCommentContent("Today we finish with tests.");
+                .setAuthor(TEST_AUTHOR)
+                .setCommentContent(TEST_COMMENT_CONTENT);
 
-        mockMvc.perform(post("/about/addComment")
-                        .flashAttr("addCommentBindingModel", addCommentBindingModel)
+        mockMvc.perform(post(ADD_COMMENT_URL)
+                        .flashAttr(COMMENT_BINDING_MODEL, addCommentBindingModel)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/about"))
-                .andExpect(flash().attribute("successCommentMessage", "Thank you for your comment!"));
+                .andExpect(redirectedUrl(ABOUT_URL))
+                .andExpect(flash().attribute(COMMENT_SUCCESS, COMMENT_SUCCESS_MESSAGE));
 
         assertEquals(1, commentRepository.count());
     }
@@ -91,18 +96,18 @@ class AboutControllerIT {
     void testAddInvalidComment() throws Exception {
         AddCommentBindingModel addCommentBindingModel = new AddCommentBindingModel();
 
-        mockMvc.perform(post("/about/addComment")
-                        .flashAttr("addCommentBindingModel", addCommentBindingModel)
+        mockMvc.perform(post(ADD_COMMENT_URL)
+                        .flashAttr(COMMENT_BINDING_MODEL, addCommentBindingModel)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/about"))
+                .andExpect(redirectedUrl(ABOUT_URL))
                 .andExpect(flash().attributeCount(2))
                 .andExpect(result -> {
                     BindingResult resultFromFlash = (BindingResult) result.getFlashMap().get(BindingResult.MODEL_KEY_PREFIX + "addCommentBindingModel");
 
                     assertEquals(2, resultFromFlash.getErrorCount());
-                    assertTrue(resultFromFlash.hasFieldErrors("author"));
-                    assertTrue(resultFromFlash.hasFieldErrors("commentContent"));
+                    assertTrue(resultFromFlash.hasFieldErrors(AUTHOR));
+                    assertTrue(resultFromFlash.hasFieldErrors(COMMENT_CONTENT));
 
                 });
 

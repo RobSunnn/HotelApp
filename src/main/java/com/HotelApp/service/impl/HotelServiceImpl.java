@@ -20,7 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.HotelApp.common.constants.AppConstants.*;
+
+import static com.HotelApp.common.constants.FailConstants.ERRORS;
+import static com.HotelApp.common.constants.InfoConstants.*;
 import static com.HotelApp.common.constants.SuccessConstants.*;
+import static com.HotelApp.common.constants.ValidationConstants.HOTEL_INFO_NOT_FOUND;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
 
@@ -31,7 +36,11 @@ public class HotelServiceImpl implements HotelService {
     private final UserTransformationService userTransformationService;
     private final ForbiddenRequestsService forbiddenRequestsService;
 
-    public HotelServiceImpl(HotelRepository hotelRepository, UserTransformationService userTransformationService, ForbiddenRequestsService forbiddenRequestsService) {
+    public HotelServiceImpl(
+            HotelRepository hotelRepository,
+            UserTransformationService userTransformationService,
+            ForbiddenRequestsService forbiddenRequestsService
+    ) {
         this.hotelRepository = hotelRepository;
         this.userTransformationService = userTransformationService;
         this.forbiddenRequestsService = forbiddenRequestsService;
@@ -48,9 +57,9 @@ public class HotelServiceImpl implements HotelService {
     public void init() {
         if (hotelRepository.count() == 0) {
             HotelInfoEntity hotelInfo = new HotelInfoEntity();
-            hotelInfo.setName("Great Hotel");
-            hotelInfo.setAddress("Somewhere");
-            hotelInfo.setPhoneNumber("0987-654-321");
+            hotelInfo.setName(HOTEL_NAME);
+            hotelInfo.setAddress(HOTEL_ADDRESS);
+            hotelInfo.setPhoneNumber(HOTEL_PHONE);
             hotelInfo.setTotalProfit(BigDecimal.ZERO);
 
             hotelRepository.save(hotelInfo);
@@ -60,7 +69,7 @@ public class HotelServiceImpl implements HotelService {
     @Transactional(readOnly = true)
     @Override
     public HotelInfoEntity getHotelInfo() {
-        return hotelRepository.findById(1L).orElseThrow(() -> new RuntimeException("Hotel Info not found"));
+        return hotelRepository.findById(1L).orElseThrow(() -> new RuntimeException(HOTEL_INFO_NOT_FOUND));
     }
 
     @Transactional
@@ -171,11 +180,11 @@ public class HotelServiceImpl implements HotelService {
         BigDecimal totalProfit = getTotalProfit();
         int forbiddenRequestsSize = forbiddenRequestsService.getAllNotChecked().size();
 
-        model.addAttribute("totalProfit", totalProfit);
+        model.addAttribute(HOTEL_PROFIT, totalProfit);
         model.addAllAttributes(infoForHotel);
-        model.addAttribute("forbiddenRequestsSize", forbiddenRequestsSize);
+        model.addAttribute(FORBIDDEN_REQUESTS_SIZE, forbiddenRequestsSize);
 
-        String previousUrl = request.getHeader("referer");
+        String previousUrl = request.getHeader(REFERER);
         session.setAttribute(PREVIOUS_URL, previousUrl);
     }
 
@@ -188,9 +197,9 @@ public class HotelServiceImpl implements HotelService {
         int allOnlineReservations = getAllNotCheckedOnlineReservations().size();
 
         model.addAllAttributes(infoForHotel);
-        model.addAttribute("allNotApprovedComments", allNotApprovedComments);
-        model.addAttribute("allContactRequests", allContactRequests);
-        model.addAttribute("allOnlineReservations", allOnlineReservations);
+        model.addAttribute(NOT_APPROVED_COMMENTS_SIZE, allNotApprovedComments);
+        model.addAttribute(CONTACT_REQUESTS_SIZE, allContactRequests);
+        model.addAttribute(ONLINE_RESERVATIONS_SIZE, allOnlineReservations);
     }
 
 
@@ -198,10 +207,10 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public Map<String, Integer> getInfoForHotel() {
         Map<String, Integer> counts = new HashMap<>();
-        counts.put("freeRoomsCount", seeAllFreeRooms().size());
-        counts.put("allGuestsCount", seeAllGuests().size());
-        counts.put("totalSubscribers", seeAllSubscribers().size());
-        counts.put("happyGuestsCount", seeAllHappyGuests().size());
+        counts.put(FREE_ROOMS_COUNT, seeAllFreeRooms().size());
+        counts.put(GUESTS_COUNT, seeAllGuests().size());
+        counts.put(ALL_SUBSCRIBERS_COUNT, seeAllSubscribers().size());
+        counts.put(ALL_HAPPY_GUESTS_COUNT, seeAllHappyGuests().size());
         return counts;
     }
 
@@ -215,7 +224,7 @@ public class HotelServiceImpl implements HotelService {
     protected static ResponseEntity<?> genericFailResponse(BindingResult bindingResult) {
         Map<String, Object> response = new HashMap<>();
         response.put(SUCCESS, false);
-        response.put("errors", bindingResult.getAllErrors());
+        response.put(ERRORS, bindingResult.getAllErrors());
         return ResponseEntity.badRequest().body(response);
     }
 }

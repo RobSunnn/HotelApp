@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static com.HotelApp.common.constants.AppConstants.COMMENTS;
 import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
 
 @Controller
@@ -42,7 +43,7 @@ public class AboutController {
             Pageable pageable
     ) {
         Page<CommentView> allApprovedComments = commentService.getApprovedComments(pageable);
-        model.addAttribute("comments", allApprovedComments);
+        model.addAttribute(COMMENTS, allApprovedComments);
         return "about";
     }
 

@@ -38,7 +38,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.HotelApp.common.constants.BindingConstants.*;
+import static com.HotelApp.common.constants.FailConstants.ERROR_MESSAGE;
 import static com.HotelApp.common.constants.SuccessConstants.PICTURE_UPLOAD_SUCCESS;
+import static com.HotelApp.common.constants.SuccessConstants.SUCCESS_MESSAGE;
 import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
@@ -183,7 +185,7 @@ public class UserServiceImpl implements UserService {
             throw new MaxUploadSizeExceededException(IMAGE_MAX_SIZE);
         }
         if (image.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", EMPTY_FILE);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, EMPTY_FILE);
             return "redirect:/users/profile";
         }
 
@@ -221,14 +223,14 @@ public class UserServiceImpl implements UserService {
             user.setUserImage(blob);
 
             redirectAttributes.addFlashAttribute(
-                    "successMessage", PICTURE_UPLOAD_SUCCESS
+                    SUCCESS_MESSAGE, PICTURE_UPLOAD_SUCCESS
             );
 
             userRepository.save(user);
 
         } catch (SQLException | IOException e) {
             redirectAttributes.addFlashAttribute(
-                    "errorMessage", FILE_NOT_ALLOWED
+                    ERROR_MESSAGE, FILE_NOT_ALLOWED
             );
         }
         userTransformationService.evictUserViewsCache();
@@ -236,7 +238,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> editProfileInfo(EditUserProfileBindingModel editUserProfileBindingModel, BindingResult bindingResult) {
+    public ResponseEntity<?> editProfileInfo(
+            EditUserProfileBindingModel editUserProfileBindingModel,
+            BindingResult bindingResult
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         String decryptedEmail = userTransformationService.decrypt(
@@ -254,7 +259,9 @@ public class UserServiceImpl implements UserService {
 
         if (checkIfEmailExist(decryptedEmail) && emailChanged) {
             bindingResult.addError(
-                    new FieldError(USER_REGISTER_BINDING_MODEL, EMAIL, ValidationConstants.EMAIL_EXIST)
+                    new FieldError(
+                            USER_REGISTER_BINDING_MODEL, EMAIL, ValidationConstants.EMAIL_EXIST
+                    )
             );
         }
 
@@ -292,12 +299,17 @@ public class UserServiceImpl implements UserService {
 
         if (!passwordEncoder().matches(decryptedOldPassword, user.getPassword())) {
             bindingResult.addError(
-                    new FieldError(CHANGE_PASSWORD_BINDING_MODEL, "oldPassword", ValidationConstants.OLD_PASSWORD_MISMATCH)
+                    new FieldError(
+                            CHANGE_PASSWORD_BINDING_MODEL, "oldPassword",
+                            ValidationConstants.OLD_PASSWORD_MISMATCH
+                    )
             );
         }
         if (decryptedNewPassword.isEmpty()) {
             bindingResult.addError(
-                    new FieldError(CHANGE_PASSWORD_BINDING_MODEL, "newPassword", EMPTY_PASSWORD)
+                    new FieldError(
+                            CHANGE_PASSWORD_BINDING_MODEL,
+                            "newPassword", EMPTY_PASSWORD)
             );
         }
         if (!decryptedNewPassword.equals(decryptedConfirmNewPassword) || decryptedConfirmNewPassword.isEmpty()) {

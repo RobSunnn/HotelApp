@@ -132,7 +132,7 @@ class AuthenticationRestControllerIT {
 
         List<JsonNode> errorsList = new ArrayList<>();
         errorsNode.forEach(errorsList::add);
-        errorsList.sort(Comparator.comparing(node -> node.get("code").asText()));
+        errorsList.sort(Comparator.comparing(node -> node.get(CODE).asText()));
 
         assertEquals(6, errorsList.size());
         assertEquals(NAME_BLANK, errorsList.get(0).get(DEFAULT_MESSAGE).asText());

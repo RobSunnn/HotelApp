@@ -18,4 +18,8 @@ public class InfoConstants {
 
     public static final String ALL_HAPPY_GUESTS_COUNT = "happyGuestsCount";
 
+    public static final String USERS_CACHE = "userViewsCache";
+
+    public static final String AUTHENTICATION_ENTRY_POINT = "/users/login?error=unauthenticated";
+
 }

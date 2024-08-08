@@ -26,13 +26,14 @@ public class GuestEntity extends BaseEntity {
     @Size(max = 30, message = NAME_LENGTH_TOO_LONG)
     private String lastName;
 
-    @Column
+    @Column(nullable = false)
     @Size(max = 200, message = EMAIL_TOO_LONG)
+    @NotBlank(message = EMAIL_NOT_BLANK)
     private String email;
 
     @Column(nullable = false)
+    @NotNull(message = AGE_IS_REQUIRED)
     @Positive(message = NEGATIVE_AGE)
-    @NotNull(message = INVALID_AGE)
     @Min(value = 18, message = MINIMUM_AGE)
     @Max(value = 100, message = INVALID_AGE_OVER_100)
     private Integer age;

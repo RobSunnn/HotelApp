@@ -14,14 +14,11 @@ import org.springframework.ui.Model;
 
 @Service
 public class RoomTypesServiceImpl implements RoomTypesService {
-    private final RoomTypeRepository roomTypeRepository;
 
+    private final RoomTypeRepository roomTypeRepository;
     private final CategoriesRepository categoriesRepository;
 
-    public RoomTypesServiceImpl(
-            RoomTypeRepository roomTypeRepository,
-            CategoriesRepository categoriesRepository
-    ) {
+    public RoomTypesServiceImpl(RoomTypeRepository roomTypeRepository, CategoriesRepository categoriesRepository) {
         this.roomTypeRepository = roomTypeRepository;
         this.categoriesRepository = categoriesRepository;
     }

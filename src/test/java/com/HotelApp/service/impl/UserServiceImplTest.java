@@ -64,7 +64,7 @@ class UserServiceImplTest {
     void setUp() {
         CustomUser customUser = new CustomUser(
                 TEST_EMAIL, TEST_PASSWORD,
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + RoleEnum.USER)),
                 USER_FULL_NAME
         );
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

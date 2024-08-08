@@ -57,38 +57,33 @@ public class GuestServiceImpl implements GuestService {
     @Override
     @Transactional
     public ResponseEntity<?> registerGuest(AddGuestBindingModel addGuestBindingModel, BindingResult bindingResult) {
+        String decryptedEmail = encryptionService.decrypt(addGuestBindingModel.getEmail());
+        String decryptedDocument = encryptionService.decrypt(addGuestBindingModel.getDocumentId());
 
-        try {
-            String decryptedEmail = encryptionService.decrypt(addGuestBindingModel.getEmail());
-            String decryptedDocument = encryptionService.decrypt(addGuestBindingModel.getDocumentId());
-
-            if (decryptedDocument.isEmpty()) {
-                bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
-                        "documentId", DOCUMENT_ID_EMPTY));
-            }
-            if (!isNumeric(addGuestBindingModel.getRoomNumber())) {
-                bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
-                        "roomNumber", ROOM_NUMBER_REQUIRED));
-            }
-            if (bindingResult.hasErrors()) {
-                return genericFailResponse(bindingResult);
-            }
-
-            addGuestBindingModel.setEmail(decryptedEmail);
-            addGuestBindingModel.setDocumentId(decryptedDocument);
-
-            RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
-            HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
-
-            hotelService.takeMoney(room.getPrice().multiply(BigDecimal.valueOf(addGuestBindingModel.getDaysToStay())));
-            room.setReserved(true);
-            roomRepository.save(room);
-            guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
-
-            return genericSuccessResponse(ADD_GUEST_SUCCESS_REDIRECT_URL);
-        } catch (Exception e) {
+        if (decryptedDocument.isEmpty()) {
+            bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
+                    "documentId", DOCUMENT_ID_EMPTY));
+        }
+        if (!isNumeric(addGuestBindingModel.getRoomNumber())) {
+            bindingResult.addError(new FieldError(GUEST_REGISTER_BINDING_MODEL,
+                    "roomNumber", ROOM_NUMBER_REQUIRED));
+        }
+        if (bindingResult.hasErrors()) {
             return genericFailResponse(bindingResult);
         }
+
+        addGuestBindingModel.setEmail(decryptedEmail);
+        addGuestBindingModel.setDocumentId(decryptedDocument);
+
+        RoomEntity room = roomRepository.findByRoomNumber(addGuestBindingModel.getRoomNumber());
+        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+
+        hotelService.takeMoney(room.getPrice().multiply(BigDecimal.valueOf(addGuestBindingModel.getDaysToStay())));
+        room.setReserved(true);
+        roomRepository.save(room);
+        guestRepository.save(mapAsGuest(addGuestBindingModel, hotelInfo));
+
+        return genericSuccessResponse(ADD_GUEST_SUCCESS_REDIRECT_URL);
     }
 
     @Override

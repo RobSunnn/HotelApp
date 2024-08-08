@@ -7,7 +7,6 @@ import com.HotelApp.domain.models.binding.ChangeUserPasswordBindingModel;
 import com.HotelApp.domain.models.binding.EditUserProfileBindingModel;
 import com.HotelApp.domain.models.view.UserView;
 import com.HotelApp.repository.UserRepository;
-import com.HotelApp.service.UserService;
 import com.HotelApp.service.impl.AppUserDetailsService;
 import com.HotelApp.service.impl.CustomUser;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
@@ -34,7 +33,12 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.AppConstants.SPRING_SECURITY_CONTEXT;
+import static com.HotelApp.common.constants.BindingConstants.CHANGE_PASSWORD_BINDING_MODEL;
+import static com.HotelApp.common.constants.BindingConstants.EDIT_USER_PROFILE_BINDING_MODEL;
+import static com.HotelApp.common.constants.FailConstants.ERRORS;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -61,16 +65,16 @@ class ProfileControllerIT {
     @BeforeEach
     void setUp() {
         CustomUser customUser = new CustomUser(
-                "user@example.com", "password",
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                "John Doe"
+                TEST_EMAIL, TEST_PASSWORD,
+                Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + RoleEnum.USER)),
+                USER_FULL_NAME
         );
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 customUser, null, customUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        when(detailsService.loadUserByUsername("updated@mail.bg")).thenReturn(customUser);
-        when(detailsService.loadUserByUsername("user@example.com")).thenReturn(customUser);
+        when(detailsService.loadUserByUsername(TEST_UPDATED_EMAIL)).thenReturn(customUser);
+        when(detailsService.loadUserByUsername(TEST_EMAIL)).thenReturn(customUser);
     }
 
     @AfterEach
@@ -80,56 +84,55 @@ class ProfileControllerIT {
 
     @Test
     void profile_ShouldReturnProfileView() throws Exception {
-        mockMvc.perform(get("/users/profile")
+        mockMvc.perform(get(USER_PROFILE_URL)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("users/profile"));
+                .andExpect(view().name(USER_PROFILE_VIEW));
     }
 
     @Test
     void getUserDetails_ShouldReturnUserDetails() throws Exception {
         UserView userView = new UserView();
-        userView.setEmail("user@example.com");
-        userView.setFirstName("John");
-        userView.setLastName("Doe");
-        userView.setFullName("John Doe");
+        userView.setEmail(TEST_EMAIL);
+        userView.setFirstName(MOCK_FIRST_NAME);
+        userView.setLastName(MOCK_LAST_NAME);
+        userView.setFullName(USER_FULL_NAME);
         userView.setAge(30);
         userView.setRoles(Collections.singletonList(new RoleEntity(RoleEnum.USER)));
-        when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(mockUserEntity()));
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
 
-        mockMvc.perform(get("/users/profile/details")
+        mockMvc.perform(get(USER_DETAILS_URL)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.email").value("user@user.bg"))
-                .andExpect(jsonPath("$.firstName").value("User"))
-                .andExpect(jsonPath("$.lastName").value("Userov"))
-                .andExpect(jsonPath("$.fullName").value("User Userov"))
-                .andExpect(jsonPath("$.age").value(33))
-                .andExpect(jsonPath("$.roles[0].name").value("USER"));
+                .andExpect(content().contentType(APP_JSON))
+                .andExpect(jsonPath("$.email").value(TEST_EMAIL))
+                .andExpect(jsonPath("$.firstName").value(MOCK_FIRST_NAME))
+                .andExpect(jsonPath("$.lastName").value(MOCK_LAST_NAME))
+                .andExpect(jsonPath("$.fullName").value(USER_FULL_NAME))
+                .andExpect(jsonPath("$.age").value(33));
     }
 
     @Test
     void checkUserDetailsInSession_ShouldContainExpectedValues() throws Exception {
-        when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(mockUserEntity()));
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
 
-        MvcResult result = mockMvc.perform(get("/users/profile/details")
+        MvcResult result = mockMvc.perform(get(USER_DETAILS_URL)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andReturn();
 
         String principal = Objects.requireNonNull(result.getRequest().getSession())
-                .getAttribute("SPRING_SECURITY_CONTEXT")
+                .getAttribute(SPRING_SECURITY_CONTEXT)
                 .toString();
 
-        assertTrue(principal.contains("user@example.com"));
-        assertTrue(principal.contains("ROLE_USER"));
+        assertTrue(principal.contains(TEST_EMAIL));
+        assertTrue(principal.contains(ROLE_PREFIX + RoleEnum.USER));
     }
 
     @Test
     void editProfile_ShouldReturnBadRequest() throws Exception {
-        when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(mockUserEntity()));
-        MvcResult result = mockMvc.perform(post("/users/profile/editUserProfile")
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
+        MvcResult result = mockMvc.perform(post(EDIT_USER_PROFILE_URL)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -140,7 +143,7 @@ class ProfileControllerIT {
         JsonNode jsonNode = mapper.readTree(response);
 
         // Extract and assert on an error array
-        JsonNode errorsNode = jsonNode.get("errors");
+        JsonNode errorsNode = jsonNode.get(ERRORS);
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
         assertEquals(5, errorsNode.size());
@@ -149,38 +152,38 @@ class ProfileControllerIT {
     @Test
     public void editProfile_ShouldReturnSuccessResponse_WhenEditIsSuccessful() throws Exception {
         EditUserProfileBindingModel model = new EditUserProfileBindingModel()
-                .setFirstName("Test")
-                .setLastName("UpdatedLastName")
-                .setEmail(encryptionService.encrypt("updated@mail.bg"))
+                .setFirstName(MOCK_FIRST_NAME)
+                .setLastName(MOCK_UPDATED_LAST_NAME)
+                .setEmail(encryptionService.encrypt(TEST_UPDATED_EMAIL))
                 .setAge(30);
 
-        when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(mockUserEntity()));
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
 
-        mockMvc.perform(post("/users/profile/editUserProfile")
-                        .flashAttr("editUserProfileBindingModel", model)
+        mockMvc.perform(post(EDIT_USER_PROFILE_URL)
+                        .flashAttr(EDIT_USER_PROFILE_BINDING_MODEL, model)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.redirectUrl").value("/users/profile/editSuccess"));
+                .andExpect(jsonPath("$.redirectUrl").value(EDIT_USER_PROFILE_SUCCESS_URL));
     }
 
     @Test
     public void changePassword__ShouldReturnSuccessResponse_WhenChangePasswordIsSuccessful() throws Exception {
         ChangeUserPasswordBindingModel model = new ChangeUserPasswordBindingModel()
-                .setOldPassword(encryptionService.encrypt("testing"))
-                .setNewPassword(encryptionService.encrypt("newTest"))
-                .setConfirmNewPassword(encryptionService.encrypt("newTest"));
+                .setOldPassword(encryptionService.encrypt(TEST_PASSWORD))
+                .setNewPassword(encryptionService.encrypt(TEST_NEW_PASSWORD))
+                .setConfirmNewPassword(encryptionService.encrypt(TEST_NEW_PASSWORD));
 
-        when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(mockUserEntity()));
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
 
-        mockMvc.perform(post("/users/profile/changePassword")
-                        .flashAttr("changeUserPasswordBindingModel", model)
+        mockMvc.perform(post(CHANGE_USER_PASSWORD_URL)
+                        .flashAttr(CHANGE_PASSWORD_BINDING_MODEL, model)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.redirectUrl").value("/users/profile"));
+                .andExpect(jsonPath("$.redirectUrl").value(USER_PROFILE_URL));
     }
 
     @Test
@@ -190,10 +193,10 @@ class ProfileControllerIT {
                 .setNewPassword(encryptionService.encrypt(""))
                 .setConfirmNewPassword(encryptionService.encrypt(""));
 
-        when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(mockUserEntity()));
+        when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(mockUserEntity()));
 
-        MvcResult result = mockMvc.perform(post("/users/profile/changePassword")
-                        .flashAttr("changeUserPasswordBindingModel", model)
+        MvcResult result = mockMvc.perform(post(CHANGE_USER_PASSWORD_URL)
+                        .flashAttr(CHANGE_PASSWORD_BINDING_MODEL, model)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
@@ -205,7 +208,7 @@ class ProfileControllerIT {
         JsonNode jsonNode = mapper.readTree(response);
 
         // Extract and assert on an error array
-        JsonNode errorsNode = jsonNode.get("errors");
+        JsonNode errorsNode = jsonNode.get(ERRORS);
         assertNotNull(errorsNode);
         assertTrue(errorsNode.isArray());
         assertEquals(3, errorsNode.size());
@@ -213,12 +216,12 @@ class ProfileControllerIT {
 
     private UserEntity mockUserEntity() {
         return new UserEntity()
-                .setFirstName("User")
-                .setLastName("Userov")
+                .setFirstName(MOCK_FIRST_NAME)
+                .setLastName(MOCK_LAST_NAME)
                 .setCreated(LocalDateTime.now())
-                .setPassword(passwordEncoder().encode("testing"))
+                .setPassword(passwordEncoder().encode(TEST_PASSWORD))
                 .setAge(33)
-                .setEmail("user@user.bg")
+                .setEmail(TEST_EMAIL)
                 .setRoles(Collections.singletonList(new RoleEntity(RoleEnum.USER)));
     }
 }

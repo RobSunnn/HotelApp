@@ -16,8 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.HotelApp.service.constants.TestConstants.TEST_EMAIL;
-import static com.HotelApp.service.constants.TestConstants.TEST_PASSWORD;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -55,7 +54,7 @@ class AppUserDetailsServiceTest {
         assertTrue(
                 userDetails.getAuthorities()
                         .stream()
-                        .anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"))
+                        .anyMatch(authority -> authority.getAuthority().equals(ROLE_PREFIX + RoleEnum.USER))
         );
     }
 

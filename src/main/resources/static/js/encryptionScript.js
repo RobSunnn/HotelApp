@@ -41,6 +41,7 @@ async function sendData(action, data, csrfTokenElement) {
         });
 
         const responseData = await response.json();
+
         if (responseData.success) {
             if (responseData.redirectUrl) {
                 if (action.includes("changePassword")) {

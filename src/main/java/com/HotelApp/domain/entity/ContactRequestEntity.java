@@ -24,14 +24,14 @@ public class ContactRequestEntity extends BaseEntity {
 
     @Column(nullable = false)
     @NotBlank(message = EMAIL_NOT_BLANK)
-    @Email(message = INVALID_EMAIL)
-    @Size(max = 100, message = EMAIL_TOO_LONG)
+    @Size(max = 200, message = EMAIL_TOO_LONG)
     private String email;
 
     @Column
     private String phoneNumber;
 
     @Column(nullable = false, columnDefinition = "TEXT")
+    @NotBlank(message = MESSAGE_BLANK)
     private String message;
 
     @Column(nullable = false)

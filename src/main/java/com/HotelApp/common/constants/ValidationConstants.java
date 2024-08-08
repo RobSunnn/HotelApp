@@ -18,6 +18,8 @@ public class ValidationConstants {
 
     public static final String INVALID_AGE = "We need your age to verify that you are over 18 years old.";
 
+    public static final String AGE_IS_REQUIRED = "Age is required.";
+
     public static final String INVALID_AGE_OVER_100 = "Maximum value for age exceeded, needs to be under 100.";
 
     public static final String NEGATIVE_AGE = "Age cannot be negative.";

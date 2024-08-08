@@ -10,6 +10,8 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 
+import static com.HotelApp.common.constants.InfoConstants.AUTHENTICATION_ENTRY_POINT;
+
 @Configuration
 public class ApplicationBeanConfiguration {
 
@@ -21,7 +23,7 @@ public class ApplicationBeanConfiguration {
     @Bean
     public static AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
-            response.sendRedirect("/users/login?error=unauthenticated");
+            response.sendRedirect(AUTHENTICATION_ENTRY_POINT);
         };
     }
 

@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.HotelApp.common.constants.BindingConstants.BAD_CREDENTIALS;
+import static com.HotelApp.common.constants.InfoConstants.USERS_CACHE;
 import static com.HotelApp.common.constants.SuccessConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 
@@ -55,7 +56,7 @@ public class UserTransformationService {
         this.encryptionService = encryptionService;
     }
 
-    @Cacheable(value = "userViewsCache", key = "'allUserViews'")
+    @Cacheable(value = USERS_CACHE, key = "'allUserViews'")
     public List<UserView> transformUsers(List<UserEntity> users) {
         log.info(TRANSFORMING_USERS);
 
@@ -64,7 +65,7 @@ public class UserTransformationService {
                 .collect(Collectors.toList());
     }
 
-    @CacheEvict(value = "userViewsCache", key = "'allUserViews'")
+    @CacheEvict(value = USERS_CACHE, key = "'allUserViews'")
     public void evictUserViewsCache() {
         log.info(EVICTING_USERS);
     }
@@ -153,12 +154,12 @@ public class UserTransformationService {
     public ResponseEntity<Map<String, Object>> loginResponse(boolean isSuccess) {
         Map<String, Object> responseBody = new HashMap<>();
         if (!isSuccess) {
-            responseBody.put("message", BAD_CREDENTIALS);
+            responseBody.put(MESSAGE, BAD_CREDENTIALS);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
 
         responseBody.put(SUCCESS, true);
-        responseBody.put("message", LOGIN_SUCCESS);
+        responseBody.put(MESSAGE, LOGIN_SUCCESS);
 
         String redirectUrl;
         SavedRequest savedRequest = requestCache.getRequest(request, response);

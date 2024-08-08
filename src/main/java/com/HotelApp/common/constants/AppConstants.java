@@ -12,4 +12,6 @@ public class AppConstants {
 
     public static final String COMMENTS = "comments";
 
+    public static final String SPRING_SECURITY_CONTEXT = "SPRING_SECURITY_CONTEXT";
+
 }

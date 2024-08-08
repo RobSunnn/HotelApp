@@ -13,7 +13,6 @@ public class UserRegisterBindingModel {
     @Size(max = 60, message = NAME_LENGTH_TOO_LONG)
     private String firstName;
 
-
     @NotBlank(message = NAME_BLANK)
     @Size(min = 2, message = NAME_LENGTH_TOO_SHORT)
     @Size(max = 60, message = NAME_LENGTH_TOO_LONG)

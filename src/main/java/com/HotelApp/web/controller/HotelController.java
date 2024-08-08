@@ -14,11 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-
-import static com.HotelApp.common.constants.SuccessConstants.PREVIOUS_URL;
 
 @Controller
 public class HotelController {

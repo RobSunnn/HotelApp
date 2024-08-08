@@ -17,7 +17,6 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
-
     private final CategoriesRepository categoriesRepository;
 
     public RoomServiceImpl(RoomRepository roomRepository, CategoriesRepository categoriesRepository) {

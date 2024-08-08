@@ -32,6 +32,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
+import static com.HotelApp.common.constants.FailConstants.ERROR_MESSAGE;
+import static com.HotelApp.common.constants.FailConstants.NO_SUCH_REQUEST;
+import static com.HotelApp.common.constants.SuccessConstants.ONLINE_RESERVATION_CONFIRMATION_MAIL_SEND;
 import static com.HotelApp.common.constants.ValidationConstants.PHONE_NUMBER_TOO_LONG;
 import static com.HotelApp.common.constants.ValidationConstants.TEXT_TOO_LONG;
 import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
@@ -41,6 +44,8 @@ import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
 @Service
 public class ContactRequestServiceImpl implements ContactRequestService {
     private static final int TEXT_MAXIMUM_LENGTH = 400;
+    private static final String NO_ADDITIONAL_INFO = "No Additional Info.";
+    private static final String MAXIMUM_400_SYMBOLS = "Max 400 symbols";
     private static final String SUCCESS_REDIRECT_URL = "/contact";
     private static final Logger log = LoggerFactory.getLogger(ContactRequestServiceImpl.class);
 
@@ -57,7 +62,8 @@ public class ContactRequestServiceImpl implements ContactRequestService {
             HotelService hotelService,
             EncryptionService encryptionService,
             ApplicationEventPublisher applicationEventPublisher,
-            MailService mailService) {
+            MailService mailService
+    ) {
         this.contactRequestRepository = contactRequestRepository;
         this.onlineReservationRepository = onlineReservationRepository;
         this.hotelService = hotelService;
@@ -68,34 +74,29 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
     @Override
     public ResponseEntity<?> sendContactForm(ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult) {
-        try {
-            String decryptedEmail = encryptionService.decrypt(contactRequestBindingModel.getEmail());
-            String decryptedPhone = encryptionService.decrypt(contactRequestBindingModel.getPhoneNumber());
-            if (decryptedPhone.length() > 50) {
-                bindingResult.addError(new FieldError(CONTACT_REQUEST_BINDING_MODEL,
-                        "contactPhoneNumber", PHONE_NUMBER_TOO_LONG));
-            }
-            if (bindingResult.hasErrors()) {
-                return genericFailResponse(bindingResult);
-            }
-            HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
-            ContactRequestEntity contactRequest = new ContactRequestEntity()
-                    .setName(contactRequestBindingModel.getName().trim())
-                    .setEmail(decryptedEmail)
-                    .setPhoneNumber(decryptedPhone)
-                    .setMessage(contactRequestBindingModel.getMessage().trim())
-                    .setChecked(false)
-                    .setCreated(LocalDateTime.now())
-                    .setHotelInfoEntity(hotelInfo);
 
-            contactRequestRepository.save(contactRequest);
-
-            return genericSuccessResponse(SUCCESS_REDIRECT_URL);
-
-        } catch (Exception e) {
-            log.warn("Failed to decrypt.");
+        String decryptedEmail = encryptionService.decrypt(contactRequestBindingModel.getEmail());
+        String decryptedPhone = encryptionService.decrypt(contactRequestBindingModel.getPhoneNumber());
+        if (decryptedPhone.length() > 50) {
+            bindingResult.addError(new FieldError(CONTACT_REQUEST_BINDING_MODEL,
+                    "contactPhoneNumber", PHONE_NUMBER_TOO_LONG));
+        }
+        if (bindingResult.hasErrors()) {
             return genericFailResponse(bindingResult);
         }
+        HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
+        ContactRequestEntity contactRequest = new ContactRequestEntity()
+                .setName(contactRequestBindingModel.getName().trim())
+                .setEmail(decryptedEmail)
+                .setPhoneNumber(decryptedPhone)
+                .setMessage(contactRequestBindingModel.getMessage().trim())
+                .setChecked(false)
+                .setCreated(LocalDateTime.now())
+                .setHotelInfoEntity(hotelInfo);
+
+        contactRequestRepository.save(contactRequest);
+
+        return genericSuccessResponse(SUCCESS_REDIRECT_URL);
     }
 
     @Override
@@ -106,7 +107,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                         .stream()
                         .filter(contactRequest -> Objects.equals(contactRequest.getId(), id))
                         .findFirst()
-                        .orElseThrow(() -> new RuntimeException("No such contact request."))
+                        .orElseThrow(() -> new RuntimeException(NO_SUCH_REQUEST))
                         .setChecked(true)
         );
     }
@@ -138,7 +139,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         if (additionalInfo.length() > TEXT_MAXIMUM_LENGTH) {
-            redirectAttributes.addFlashAttribute("errorMessage", TEXT_TOO_LONG);
+            redirectAttributes.addFlashAttribute(ERROR_MESSAGE, TEXT_TOO_LONG);
             return "redirect:/contact/onlineReservation";
         }
 
@@ -150,8 +151,8 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .findFirst()
                 .orElseThrow(() -> new UsernameNotFoundException("User with email: " + userEmail + "not found!"));
 
-        if (additionalInfo.equals("Max 400 symbols") || additionalInfo.isBlank()) {
-            additionalInfo = "No Additional Info.";
+        if (additionalInfo.equals(MAXIMUM_400_SYMBOLS) || additionalInfo.isBlank()) {
+            additionalInfo = NO_ADDITIONAL_INFO;
         }
 
         OnlineReservationEntity onlineReservationEntity = new OnlineReservationEntity()
@@ -209,7 +210,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
 
     @EventListener(OnlineReservationEvent.class)
     protected void sendConfirmationEmailForOnlineReservation(OnlineReservationEvent event) {
-        log.info("Online confirmation email send for user with email: {}", event.getUserEmail());
+        log.info(ONLINE_RESERVATION_CONFIRMATION_MAIL_SEND, event.getUserEmail());
         mailService.sendConfirmationEmailForOnlineReservation(event.getUserEmail(), event.getUserFullName());
     }
 }

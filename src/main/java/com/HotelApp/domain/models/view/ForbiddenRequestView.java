@@ -3,6 +3,7 @@ package com.HotelApp.domain.models.view;
 import java.time.LocalDateTime;
 
 public class ForbiddenRequestView {
+
     private String url;
     private String method;
     private String ip;

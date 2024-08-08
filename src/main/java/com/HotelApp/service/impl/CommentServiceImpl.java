@@ -40,7 +40,10 @@ public class CommentServiceImpl implements CommentService {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(COMMENT_BINDING_MODEL, addCommentBindingModel);
-            redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + COMMENT_BINDING_MODEL, bindingResult);
+            redirectAttributes.addFlashAttribute(
+                    BINDING_RESULT_PATH + COMMENT_BINDING_MODEL,
+                    bindingResult
+            );
             return;
         }
 

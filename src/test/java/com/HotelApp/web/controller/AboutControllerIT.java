@@ -69,7 +69,7 @@ class AboutControllerIT {
 
         mockMvc.perform(get(ABOUT_URL))
                 .andExpect(status().isOk())
-                .andExpect(view().name("about"))
+                .andExpect(view().name(ABOUT_PAGE_VIEW))
                 .andExpect(model().attributeExists(COMMENTS))
                 .andExpect(model().attributeExists(COMMENT_BINDING_MODEL))
                 .andExpect(model().attribute(COMMENTS, instanceOf(Page.class)))

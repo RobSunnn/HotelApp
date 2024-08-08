@@ -4,6 +4,8 @@ public class TestConstants {
 
     public static final String ROLE_PREFIX = "ROLE_";
 
+    public static final String REDIRECT = "redirect:";
+
     public static final String ADMIN = "Admin";
 
     public static final String MODERATOR = "Moderator";
@@ -12,11 +14,15 @@ public class TestConstants {
 
     public static final String AUTHOR = "author";
 
-    public static final String TEST_EMAIL = "test@example.com";
+    public static final String TEST_EMAIL = "test@example.bg";
+
+    public static final String TEST_UPDATED_EMAIL = "updated@mail.bg";
 
     public static final String TEST_INVALID_EMAIL = "invalid-email.bg";
 
     public static final String TEST_PASSWORD = "password";
+
+    public static final String TEST_NEW_PASSWORD = "newPassword";
 
     public static final String TEST_WRONG_PASSWORD = "wrongPassword";
 
@@ -32,11 +38,15 @@ public class TestConstants {
 
     public static final String DEFAULT_MESSAGE = "defaultMessage";
 
+    public static final String APP_JSON = "application/json";
+
     public static final String CODE = "code";
 
     public static final String MOCK_FIRST_NAME = "Test";
 
     public static final String MOCK_LAST_NAME = "Testov";
+
+    public static final String MOCK_UPDATED_LAST_NAME = "UpdatedLastName";
 
     public static final String USER_FULL_NAME = "Test Testov";
 
@@ -94,11 +104,27 @@ public class TestConstants {
 
     public static final String GUEST_LEAVE_URL = "/guests/leave";
 
+    public static final String USER_PROFILE_URL = "/users/profile";
+
+    public static final String USER_DETAILS_URL = "/users/profile/details";
+
+    public static final String EDIT_USER_PROFILE_URL = "/users/profile/editUserProfile";
+
+    public static final String EDIT_USER_PROFILE_SUCCESS_URL = "/users/profile/editSuccess";
+
+    public static final String CHANGE_USER_PASSWORD_URL = "/users/profile/changePassword";
+
     public static final String ADMIN_VIEW = "hotel/admin-panel";
 
     public static final String GUEST_LEAVE_VIEW = "moderator/guest-leave";
 
     public static final String ADD_GUEST_VIEW = "moderator/add-guest";
+
+    public static final String USER_PROFILE_VIEW = "users/profile";
+
+    public static final String ABOUT_PAGE_VIEW = "about";
+
+    public static final String MODERATOR_VIEW = "moderator/moderator-panel";
 
     public static final String REFERER_URL = "/somePage";
 }

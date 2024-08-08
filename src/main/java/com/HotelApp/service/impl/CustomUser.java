@@ -8,10 +8,12 @@ import java.util.Collection;
 public class CustomUser extends User {
     private String fullName;
 
-    public CustomUser(String username,
-                      String password,
-                      Collection<? extends GrantedAuthority> authorities,
-                      String fullName) {
+    public CustomUser(
+            String username,
+            String password,
+            Collection<? extends GrantedAuthority> authorities,
+            String fullName
+    ) {
         super(username, password, authorities);
         this.fullName = fullName;
     }

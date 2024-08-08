@@ -6,6 +6,8 @@ public class SuccessConstants {
 
     public static final String SUCCESS_MESSAGE = "successMessage";
 
+    public static final String MESSAGE = "message";
+
     public static final String LOGIN_SUCCESS = "Login success";
 
     public static final String REDIRECT_URL = "redirectUrl";
@@ -25,6 +27,12 @@ public class SuccessConstants {
     public static final String ONLINE_RESERVATION_SUCCESS = "Thank you for your reservation!";
 
     public static final String BONUS_VOUCHER_SEND = "Bonus voucher send for: {}";
+
+    public static final String CACHE_MANAGER_BUILD = "Cache Manager Build";
+
+    public static final String CAFFEINE_BUILD = "Caffeine Build";
+
+    public static final String ONLINE_RESERVATION_CONFIRMATION_MAIL_SEND = "Online confirmation email send for user with email: {}";
 
     public static final String PICTURE_UPLOAD_SUCCESS = "Profile picture uploaded successfully.";
 

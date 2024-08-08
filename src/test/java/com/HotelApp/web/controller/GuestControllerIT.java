@@ -182,6 +182,7 @@ class GuestControllerIT {
                 .setFirstName(MOCK_FIRST_NAME)
                 .setLastName(MOCK_LAST_NAME)
                 .setAge(33)
+                .setEmail(TEST_EMAIL)
                 .setDocumentId(MOCK_GUEST_DOCUMENT)
                 .setRoom(room)
                 .setCheckInTime(LocalDateTime.now().minusDays(3))

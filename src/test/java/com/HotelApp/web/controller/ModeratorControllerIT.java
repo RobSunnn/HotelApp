@@ -1,5 +1,6 @@
 package com.HotelApp.web.controller;
 
+import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.service.impl.CustomUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
+import static com.HotelApp.common.constants.InfoConstants.*;
+import static com.HotelApp.service.constants.TestConstants.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,9 +32,9 @@ class ModeratorControllerIT {
     @BeforeEach
     void setUp() {
         CustomUser customUser = new CustomUser(
-                "moderator@test.bg", "password",
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_MODERATOR")),
-                "Moderator Full Name"
+                TEST_EMAIL, TEST_PASSWORD,
+                Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + RoleEnum.MODERATOR)),
+                USER_FULL_NAME
         );
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 customUser, null, customUser.getAuthorities());
@@ -40,33 +43,33 @@ class ModeratorControllerIT {
 
     @Test
     public void testModeratorPanel() throws Exception {
-        mockMvc.perform(get("/moderator"))
+        mockMvc.perform(get(MODERATOR_URL))
                 .andExpect(status().isOk())
-                .andExpect(view().name("moderator/moderator-panel"))
-                .andExpect(model().attribute("allNotApprovedComments", 0))
-                .andExpect(model().attribute("allContactRequests", 0))
-                .andExpect(model().attribute("allOnlineReservations", 0));
+                .andExpect(view().name(MODERATOR_VIEW))
+                .andExpect(model().attribute(NOT_APPROVED_COMMENTS_SIZE, 0))
+                .andExpect(model().attribute(CONTACT_REQUESTS_SIZE, 0))
+                .andExpect(model().attribute(ONLINE_RESERVATIONS_SIZE, 0));
     }
 
     @Test
     public void testAllNotApproveComments_ShouldRedirectToModeratorPanel_WhenCommentsAreEmpty() throws Exception {
-        mockMvc.perform(get("/moderator/comments"))
+        mockMvc.perform(get(MODERATOR_URL + "/comments"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/moderator"));
+                .andExpect(view().name(REDIRECT + MODERATOR_URL));
     }
 
     @Test
     public void testAllNotCheckedOnlineReservations_ShouldRedirectToModeratorPanel_WhenThereAreNoReservations() throws Exception {
-        mockMvc.perform(get("/moderator/onlineReservations"))
+        mockMvc.perform(get(MODERATOR_URL + "/onlineReservations"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/moderator"));
+                .andExpect(view().name(REDIRECT + MODERATOR_URL));
     }
 
     @Test
     public void testAllNotCheckedContactRequests_ShouldRedirectToModeratorPanel_WhenThereAreNoContactRequests() throws Exception {
-        mockMvc.perform(get("/moderator/contactRequests"))
+        mockMvc.perform(get(MODERATOR_URL + "/contactRequests"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/moderator"));
+                .andExpect(view().name(REDIRECT + MODERATOR_URL));
     }
 
     @Test

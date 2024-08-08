@@ -5,17 +5,11 @@ import java.time.LocalDateTime;
 public class ContactRequestView {
 
     private Long id;
-
     private String name;
-
     private String email;
-
     private String phoneNumber;
-
     private String message;
-
     private LocalDateTime created;
-
     private Boolean isChecked;
 
     public ContactRequestView() {

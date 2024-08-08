@@ -5,13 +5,9 @@ import java.time.LocalDateTime;
 public class CommentView {
 
     private Long id;
-
     private Boolean approved;
-
     private LocalDateTime created;
-
     private String commentContent;
-
     private String author;
 
     public CommentView() {

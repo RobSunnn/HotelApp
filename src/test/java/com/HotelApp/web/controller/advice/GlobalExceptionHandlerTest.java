@@ -15,7 +15,7 @@ import java.util.Set;
 
 import static com.HotelApp.common.constants.FailConstants.ERRORS;
 import static com.HotelApp.common.constants.SuccessConstants.SUCCESS;
-import static com.HotelApp.service.constants.TestConstants.DEFAULT_MESSAGE;
+import static com.HotelApp.constants.TestConstants.DEFAULT_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GlobalExceptionHandlerTest {
@@ -26,7 +26,7 @@ class GlobalExceptionHandlerTest {
     private final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
     @Test
-    public void testHandleValidationException() {
+    void testHandleValidationException() {
         Path path = Mockito.mock(Path.class);
         Mockito.when(path.toString()).thenReturn(FIELD_NAME);
 

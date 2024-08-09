@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.HotelApp.common.constants.AppConstants.*;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GuestServiceImplTest {
-
 
     @Mock
     private GuestRepository guestRepository;

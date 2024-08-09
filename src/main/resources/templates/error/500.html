@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Sorry something really bad happened</title>
+    <th:block th:replace="~{fragments :: head}"></th:block>
+    <title>Sorry, something really bad happened</title>
 </head>
-<body>
-
+<body class="error" style="background-image: url('/images/broken-image.jpg')">
+<th:block th:replace="~{fragments :: navbar}"></th:block>
+<div class="wrapper">
+    <div class="error-content">
+        <h2> Status code 500.</h2>
+        <img src="/images/500-error.png" alt="">
+        <h4>Sorry, something unexpected happened, please try again later.</h4>
+        <h3>Thank you for your patience.</h3>
+        <br>
+        <h2 class="error-heading">We are sorry, and we are working on the problem!</h2>
+        <a href="/" class="btn btn-primary">Go back</a>
+    </div>
+</div>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 </body>
 </html>

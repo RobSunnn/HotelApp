@@ -50,13 +50,6 @@
     border-radius: 5%;
 }
 
-#comments-form {
-    color: white;
-    width: 80%;
-    max-width: 34ch;
-    margin: 2em auto;
-}
-
 .comment-title {
     display: flex;
     justify-content: space-evenly;
@@ -85,11 +78,6 @@
     margin: 1em auto;
     transition: opacity 0.3s ease-in-out;
     width: 100%;
-}
-
-#about {
-    text-align: center;
-    margin-top: 10em;
 }
 
 .truncated {
@@ -124,10 +112,6 @@
     display: inline-block;
 }
 
-#commentContent {
-    width: 100%;
-}
-
 .message {
     color: white;
     text-align: center;
@@ -142,5 +126,18 @@
     transition: opacity 1.3s ease-in-out;
 }
 
+#commentContent {
+    width: 100%;
+}
 
+#about {
+    text-align: center;
+    margin-top: 10em;
+}
 
+#comments-form {
+    color: white;
+    width: 80%;
+    max-width: 34ch;
+    margin: 2em auto;
+}

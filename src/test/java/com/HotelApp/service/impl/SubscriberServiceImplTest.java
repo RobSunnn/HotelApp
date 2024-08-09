@@ -22,7 +22,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.HotelApp.common.constants.SuccessConstants.*;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.FieldConstants.DECRYPTED_EMAIL_FIELD;
+import static com.HotelApp.constants.FieldConstants.ENCRYPTED_EMAIL_FIELD;
+import static com.HotelApp.constants.TestConstants.*;
+import static com.HotelApp.constants.urlsAndViewsConstants.TEST_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,7 +33,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SubscriberServiceImplTest {
-
 
     @Mock
     private SubscriberRepository subscriberRepository;
@@ -59,7 +61,7 @@ class SubscriberServiceImplTest {
     }
 
     @Test
-    void testAddNewSubscriber() throws Exception {
+    void testAddNewSubscriber() {
         AddSubscriberBindingModel addSubscriberBindingModel = new AddSubscriberBindingModel();
         addSubscriberBindingModel.setSubscriberEmail(ENCRYPTED_EMAIL_FIELD);
 
@@ -97,7 +99,7 @@ class SubscriberServiceImplTest {
     }
 
     @Test
-    void testAddNewSubscriber_existingSubscriber() throws Exception {
+    void testAddNewSubscriber_existingSubscriber() {
         AddSubscriberBindingModel model = new AddSubscriberBindingModel();
         model.setSubscriberEmail(TEST_EMAIL);
         SubscriberEntity subscriber = new SubscriberEntity()

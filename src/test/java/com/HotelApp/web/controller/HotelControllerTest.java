@@ -17,8 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 
 import static com.HotelApp.common.constants.AppConstants.HOTEL_PROFIT;
+import static com.HotelApp.common.constants.AppConstants.ROLE_PREFIX;
 import static com.HotelApp.common.constants.InfoConstants.FORBIDDEN_REQUESTS_SIZE;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.TestConstants.*;
+import static com.HotelApp.constants.urlsAndViewsConstants.ADMIN_URL;
+import static com.HotelApp.constants.urlsAndViewsConstants.ADMIN_VIEW;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -43,7 +46,7 @@ class HotelControllerTest {
     }
 
     @Test
-    public void testAdminPanel() throws Exception {
+    void testAdminPanel() throws Exception {
         mockMvc.perform(get(ADMIN_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(ADMIN_VIEW))

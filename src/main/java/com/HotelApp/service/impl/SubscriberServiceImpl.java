@@ -1,6 +1,5 @@
 package com.HotelApp.service.impl;
 
-import com.HotelApp.common.constants.BindingConstants;
 import com.HotelApp.domain.entity.HotelInfoEntity;
 import com.HotelApp.domain.entity.SubscriberEntity;
 import com.HotelApp.domain.events.SendBonusVoucherEvent;
@@ -11,7 +10,6 @@ import com.HotelApp.service.MailService;
 import com.HotelApp.service.SubscriberService;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -19,17 +17,15 @@ import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
-import static com.HotelApp.common.constants.SuccessConstants.*;
-import static com.HotelApp.common.constants.ValidationConstants.INVALID_EMAIL;
-import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
-import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
+import static com.HotelApp.common.constants.SuccessConstants.BONUS_VOUCHER_SEND;
+import static com.HotelApp.common.constants.SuccessConstants.REFERER;
+import static com.HotelApp.util.ResponseUtil.genericFailResponse;
+import static com.HotelApp.util.ResponseUtil.genericSuccessResponse;
+
 
 @Service
 public class SubscriberServiceImpl implements SubscriberService {

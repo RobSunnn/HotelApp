@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static com.HotelApp.common.constants.AppConstants.ROLE_PREFIX;
 import static com.HotelApp.common.constants.ValidationConstants.USER_NOT_FOUND;
 
 @Service
@@ -34,14 +35,14 @@ public class AppUserDetailsService implements UserDetailsService {
                 userEntity.getPassword(),
                 userEntity.getRoles()
                         .stream()
-                        .map(AppUserDetailsService::mapRoles)
+                        .map(AppUserDetailsService::mapRole)
                         .toList(),
                 userEntity.getFullName()
         );
     }
 
-    private static GrantedAuthority mapRoles(RoleEntity userRoleEntity) {
-        return new SimpleGrantedAuthority("ROLE_" + userRoleEntity.getName().name());
+    private static GrantedAuthority mapRole(RoleEntity userRoleEntity) {
+        return new SimpleGrantedAuthority(ROLE_PREFIX + userRoleEntity.getName().name());
     }
 
 }

@@ -22,7 +22,6 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -48,8 +47,12 @@ public class UserTransformationService {
     private final EncryptionService encryptionService;
     private final RequestCache requestCache = new HttpSessionRequestCache();
 
-    public UserTransformationService(AppUserDetailsService userDetailsService,
-                                     HttpServletRequest request, HttpServletResponse response, EncryptionService encryptionService) {
+    public UserTransformationService(
+            AppUserDetailsService userDetailsService,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            EncryptionService encryptionService
+    ) {
         this.userDetailsService = userDetailsService;
         this.request = request;
         this.response = response;

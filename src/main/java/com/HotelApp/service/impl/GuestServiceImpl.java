@@ -27,8 +27,9 @@ import static com.HotelApp.common.constants.BindingConstants.GUEST_REGISTER_BIND
 import static com.HotelApp.common.constants.ValidationConstants.DOCUMENT_ID_EMPTY;
 import static com.HotelApp.common.constants.ValidationConstants.ROOM_NUMBER_REQUIRED;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
-import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
-import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
+import static com.HotelApp.util.ResponseUtil.genericFailResponse;
+import static com.HotelApp.util.ResponseUtil.genericSuccessResponse;
+
 
 @Service
 public class GuestServiceImpl implements GuestService {
@@ -149,7 +150,7 @@ public class GuestServiceImpl implements GuestService {
             return false;
         }
         try {
-            int i = Integer.parseInt(String.valueOf(number));
+           Integer.parseInt(String.valueOf(number));
         } catch (NumberFormatException nfe) {
             return false;
         }

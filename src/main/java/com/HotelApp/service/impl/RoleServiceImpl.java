@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.HotelApp.common.constants.FailConstants.MODERATOR_ROLE_NOT_FOUND;
+import static com.HotelApp.common.constants.FailConstants.USER_ROLE_NOT_FOUND;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -39,9 +42,9 @@ public class RoleServiceImpl implements RoleService {
         RoleEntity userRole = getUserRole();
         RoleEntity moderatorRole = getAllRoles()
                 .stream()
-                .filter(role -> role.getName().name().equals("MODERATOR"))
+                .filter(role -> role.getName().name().equals(RoleEnum.MODERATOR.name()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("MODERATOR role not found"));
+                .orElseThrow(() -> new IllegalStateException(MODERATOR_ROLE_NOT_FOUND));
 
         return List.of(userRole, moderatorRole);
     }
@@ -50,8 +53,8 @@ public class RoleServiceImpl implements RoleService {
     public RoleEntity getUserRole() {
         return getAllRoles()
                 .stream()
-                .filter(role -> role.getName().name().equals("USER"))
+                .filter(role -> role.getName().name().equals(RoleEnum.USER.name()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("USER role not found"));
+                .orElseThrow(() -> new IllegalStateException(USER_ROLE_NOT_FOUND));
     }
 }

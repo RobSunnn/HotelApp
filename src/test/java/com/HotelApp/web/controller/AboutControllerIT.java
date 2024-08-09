@@ -24,7 +24,9 @@ import static com.HotelApp.common.constants.AppConstants.COMMENTS;
 import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
 import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS;
 import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS_MESSAGE;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.FieldConstants.COMMENT_CONTENT_FIELD;
+import static com.HotelApp.constants.TestConstants.*;
+import static com.HotelApp.constants.urlsAndViewsConstants.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -107,7 +109,7 @@ class AboutControllerIT {
 
                     assertEquals(2, resultFromFlash.getErrorCount());
                     assertTrue(resultFromFlash.hasFieldErrors(AUTHOR));
-                    assertTrue(resultFromFlash.hasFieldErrors(COMMENT_CONTENT));
+                    assertTrue(resultFromFlash.hasFieldErrors(COMMENT_CONTENT_FIELD));
 
                 });
 

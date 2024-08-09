@@ -48,9 +48,11 @@ public class AboutController {
     }
 
     @PostMapping("/addComment")
-    public String addComment(@Valid AddCommentBindingModel addCommentBindingModel,
-                             BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes) {
+    public String addComment(
+            @Valid AddCommentBindingModel addCommentBindingModel,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
 
         commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
         return "redirect:/about";

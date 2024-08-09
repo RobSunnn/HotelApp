@@ -44,13 +44,19 @@ public class ContactController {
 
     @PostMapping("/subscribe")
     @ResponseBody
-    public ResponseEntity<?> subscribe(@Valid AddSubscriberBindingModel addSubscriberBindingModel, BindingResult bindingResult) {
+    public ResponseEntity<?> subscribe(
+            @Valid AddSubscriberBindingModel addSubscriberBindingModel,
+            BindingResult bindingResult
+    ) {
         return subscriberService.addNewSubscriber(addSubscriberBindingModel, bindingResult);
     }
 
     @PostMapping("/contactForm")
     @ResponseBody
-    public ResponseEntity<?> sendContactRequest(@Valid ContactRequestBindingModel contactRequestBindingModel, BindingResult bindingResult) {
+    public ResponseEntity<?> sendContactRequest(
+            @Valid ContactRequestBindingModel contactRequestBindingModel,
+            BindingResult bindingResult
+    ) {
         return contactRequestService.sendContactForm(contactRequestBindingModel, bindingResult);
     }
 

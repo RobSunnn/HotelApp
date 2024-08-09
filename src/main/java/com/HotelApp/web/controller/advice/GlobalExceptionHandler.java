@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
+import static com.HotelApp.util.ResponseUtil.genericFailResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

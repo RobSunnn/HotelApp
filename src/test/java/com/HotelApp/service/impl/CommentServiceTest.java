@@ -26,8 +26,8 @@ import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH
 import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
 import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS_MESSAGE;
 import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS;
-import static com.HotelApp.service.constants.TestConstants.TEST_AUTHOR;
-import static com.HotelApp.service.constants.TestConstants.TEST_COMMENT_CONTENT;
+import static com.HotelApp.constants.TestConstants.TEST_AUTHOR;
+import static com.HotelApp.constants.TestConstants.TEST_COMMENT_CONTENT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -53,7 +53,7 @@ class CommentServiceTest {
     private CommentEntity commentEntity;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         addCommentBindingModel = new AddCommentBindingModel()
                 .setAuthor(TEST_AUTHOR)
                 .setCommentContent(TEST_COMMENT_CONTENT);
@@ -61,7 +61,7 @@ class CommentServiceTest {
     }
 
     @Test
-    public void testAddCommentToDatabase_WithErrors() {
+    void testAddCommentToDatabase_WithErrors() {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
@@ -72,7 +72,7 @@ class CommentServiceTest {
     }
 
     @Test
-    public void testAddCommentToDatabase_NoErrors() {
+    void testAddCommentToDatabase_NoErrors() {
         commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
 
         verify(commentRepository, times(1)).save(any(CommentEntity.class));
@@ -80,7 +80,7 @@ class CommentServiceTest {
     }
 
     @Test
-    public void testApprove() {
+    void testApprove() {
         Long id = 1L;
         when(commentRepository.findById(id)).thenReturn(Optional.of(commentEntity));
         commentService.approve(id);
@@ -90,7 +90,7 @@ class CommentServiceTest {
     }
 
     @Test
-    public void testApproveAll() {
+    void testApproveAll() {
         List<CommentEntity> comments = new ArrayList<>();
         CommentEntity comment = new CommentEntity();
         comment.setApproved(false);
@@ -114,7 +114,7 @@ class CommentServiceTest {
     }
 
     @Test
-    public void testDoNotApprove_Success() {
+    void testDoNotApprove_Success() {
         Long id = 1L;
         when(commentRepository.findById(id)).thenReturn(Optional.of(commentEntity));
 
@@ -124,7 +124,7 @@ class CommentServiceTest {
     }
 
     @Test
-    public void testGetApprovedComments() {
+    void testGetApprovedComments() {
         Pageable pageable = PageRequest.of(0, 10);
         List<CommentEntity> comments = new ArrayList<>();
         comments.add(commentEntity);

@@ -69,14 +69,20 @@ public class ProfileController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/addProfileImage")
-    public String addProfilePicture(@RequestParam("profile-picture") MultipartFile image, RedirectAttributes redirectAttributes) {
+    public String addProfilePicture(
+            @RequestParam("profile-picture") MultipartFile image,
+            RedirectAttributes redirectAttributes
+    ) {
         return userService.addUserImage(image, redirectAttributes);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/editUserProfile")
     @ResponseBody
-    public ResponseEntity<?> editProfile(@Valid EditUserProfileBindingModel editUserProfileBindingModel, BindingResult bindingResult) {
+    public ResponseEntity<?> editProfile(
+            @Valid EditUserProfileBindingModel editUserProfileBindingModel,
+            BindingResult bindingResult
+    ) {
         return userService.editProfileInfo(editUserProfileBindingModel, bindingResult);
     }
 
@@ -84,7 +90,9 @@ public class ProfileController {
     @PostMapping("/changePassword")
     @ResponseBody
     public ResponseEntity<?> changePasswordOfUser(
-            @Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel, BindingResult bindingResult) {
+            @Valid ChangeUserPasswordBindingModel changeUserPasswordBindingModel,
+            BindingResult bindingResult
+    ) {
         return userService.changeUserPassword(changeUserPasswordBindingModel, bindingResult);
     }
 }

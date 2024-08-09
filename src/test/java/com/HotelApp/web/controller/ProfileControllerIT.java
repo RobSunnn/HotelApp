@@ -33,12 +33,14 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.AppConstants.ROLE_PREFIX;
 import static com.HotelApp.common.constants.AppConstants.SPRING_SECURITY_CONTEXT;
 import static com.HotelApp.common.constants.BindingConstants.CHANGE_PASSWORD_BINDING_MODEL;
 import static com.HotelApp.common.constants.BindingConstants.EDIT_USER_PROFILE_BINDING_MODEL;
 import static com.HotelApp.common.constants.FailConstants.ERRORS;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.TestConstants.*;
+import static com.HotelApp.constants.urlsAndViewsConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -150,7 +152,7 @@ class ProfileControllerIT {
     }
 
     @Test
-    public void editProfile_ShouldReturnSuccessResponse_WhenEditIsSuccessful() throws Exception {
+    void editProfile_ShouldReturnSuccessResponse_WhenEditIsSuccessful() throws Exception {
         EditUserProfileBindingModel model = new EditUserProfileBindingModel()
                 .setFirstName(MOCK_FIRST_NAME)
                 .setLastName(MOCK_UPDATED_LAST_NAME)
@@ -169,7 +171,7 @@ class ProfileControllerIT {
     }
 
     @Test
-    public void changePassword__ShouldReturnSuccessResponse_WhenChangePasswordIsSuccessful() throws Exception {
+    void changePassword__ShouldReturnSuccessResponse_WhenChangePasswordIsSuccessful() throws Exception {
         ChangeUserPasswordBindingModel model = new ChangeUserPasswordBindingModel()
                 .setOldPassword(encryptionService.encrypt(TEST_PASSWORD))
                 .setNewPassword(encryptionService.encrypt(TEST_NEW_PASSWORD))
@@ -187,7 +189,7 @@ class ProfileControllerIT {
     }
 
     @Test
-    public void changePassword__ShouldReturnFailResponse_WhenChangePasswordIsNotSuccessful() throws Exception {
+    void changePassword__ShouldReturnFailResponse_WhenChangePasswordIsNotSuccessful() throws Exception {
         ChangeUserPasswordBindingModel model = new ChangeUserPasswordBindingModel()
                 .setOldPassword(encryptionService.encrypt(""))
                 .setNewPassword(encryptionService.encrypt(""))

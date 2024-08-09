@@ -69,9 +69,7 @@ class HotelServiceImplTest {
     void testGetHotelInfo_whenNotFound() {
         when(hotelRepository.findById(1L)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            hotelService.getHotelInfo();
-        });
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> hotelService.getHotelInfo());
 
         assertEquals(HOTEL_INFO_NOT_FOUND, exception.getMessage());
         verify(hotelRepository).findById(1L);

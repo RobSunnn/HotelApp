@@ -9,30 +9,25 @@ import com.HotelApp.service.HotelService;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.HotelApp.common.constants.AppConstants.*;
-import static com.HotelApp.common.constants.FailConstants.ERRORS;
 import static com.HotelApp.common.constants.InfoConstants.*;
-import static com.HotelApp.common.constants.SuccessConstants.*;
+import static com.HotelApp.common.constants.SuccessConstants.PREVIOUS_URL;
+import static com.HotelApp.common.constants.SuccessConstants.REFERER;
 import static com.HotelApp.common.constants.ValidationConstants.HOTEL_INFO_NOT_FOUND;
 import static com.HotelApp.config.ApplicationBeanConfiguration.modelMapper;
 
 
 @Service
 public class HotelServiceImpl implements HotelService {
-    private static final String FIELD = "field";
-    private static final String DEFAULT_MESSAGE = "defaultMessage";
 
     private final HotelRepository hotelRepository;
     private final UserTransformationService userTransformationService;
@@ -213,35 +208,5 @@ public class HotelServiceImpl implements HotelService {
         counts.put(ALL_SUBSCRIBERS_COUNT, seeAllSubscribers().size());
         counts.put(ALL_HAPPY_GUESTS_COUNT, seeAllHappyGuests().size());
         return counts;
-    }
-
-    protected static ResponseEntity<?> genericSuccessResponse(String redirectUrl) {
-        Map<String, Object> response = new HashMap<>();
-        response.put(SUCCESS, true);
-        response.put(REDIRECT_URL, redirectUrl);
-        return ResponseEntity.ok().body(response);
-    }
-
-    protected static ResponseEntity<?> genericFailResponse(BindingResult bindingResult) {
-        Map<String, Object> response = new HashMap<>();
-        response.put(SUCCESS, false);
-        response.put(ERRORS, bindingResult.getAllErrors());
-        return ResponseEntity.badRequest().body(response);
-    }
-
-    public static ResponseEntity<Map<String, Object>> genericFailResponse(Map<String, String> errorMessages) {
-        Map<String, Object> response = new HashMap<>();
-        response.put(SUCCESS, false);
-
-        List<Map<String, String>> errors = new ArrayList<>();
-        for (Map.Entry<String, String> entry : errorMessages.entrySet()) {
-            Map<String, String> errorDetails = new HashMap<>();
-            errorDetails.put(FIELD, entry.getKey());
-            errorDetails.put(DEFAULT_MESSAGE, entry.getValue());
-            errors.add(errorDetails);
-        }
-
-        response.put(ERRORS, errors);
-        return ResponseEntity.badRequest().body(response);
     }
 }

@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

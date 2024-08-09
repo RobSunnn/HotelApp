@@ -47,7 +47,10 @@ public class AuthenticationRestController {
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/register", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> register(@Valid UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult) {
+    public ResponseEntity<?> register(
+            @Valid UserRegisterBindingModel userRegisterBindingModel,
+            BindingResult bindingResult
+    ) {
         return userService.registerUser(userRegisterBindingModel, bindingResult);
     }
 

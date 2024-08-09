@@ -37,14 +37,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.AppConstants.*;
 import static com.HotelApp.common.constants.BindingConstants.*;
 import static com.HotelApp.common.constants.FailConstants.ERROR_MESSAGE;
 import static com.HotelApp.common.constants.SuccessConstants.PICTURE_UPLOAD_SUCCESS;
 import static com.HotelApp.common.constants.SuccessConstants.SUCCESS_MESSAGE;
 import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
-import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
-import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
+import static com.HotelApp.util.ResponseUtil.genericFailResponse;
+import static com.HotelApp.util.ResponseUtil.genericSuccessResponse;
 
 
 @Service
@@ -52,7 +53,6 @@ public class UserServiceImpl implements UserService {
     private static final String REGISTER_SUCCESS_REDIRECT_URL = "/users/registrationSuccess";
     private static final String EDIT_PROFILE_SUCCESS_REDIRECT_URL = "/users/profile/editSuccess";
     private static final String CHANGE_PASSWORD_SUCCESS_REDIRECT_URL = "/users/profile";
-
 
     private final UserRepository userRepository;
     private final RoleService roleService;
@@ -130,7 +130,6 @@ public class UserServiceImpl implements UserService {
         return genericSuccessResponse(REGISTER_SUCCESS_REDIRECT_URL);
     }
 
-
     @Override
     public boolean checkIfEmailExist(String email) {
         Optional<UserEntity> user = userRepository.findByEmail(email);
@@ -164,9 +163,9 @@ public class UserServiceImpl implements UserService {
         }
 
         switch (command) {
-            case "Admin" -> user.setRoles(roleService.getAllRoles());
-            case "Moderator" -> user.setRoles(roleService.getModeratorRole());
-            case "User" -> user.setRoles(List.of(roleService.getUserRole()));
+            case ADMIN -> user.setRoles(roleService.getAllRoles());
+            case MODERATOR -> user.setRoles(roleService.getModeratorRole());
+            case USER -> user.setRoles(List.of(roleService.getUserRole()));
         }
         userRepository.save(user);
         userTransformationService.evictUserViewsCache();
@@ -214,7 +213,7 @@ public class UserServiceImpl implements UserService {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Thumbnails.of(rgbImage)
                     .size(500, 500)  // Resize the image to a max width/height of 500px
-                    .outputQuality(0.3)  // Adjust the quality (1.0 is max quality, 0.3 is 30% quality)
+                    .outputQuality(0.5)  // Adjust the quality (1.0 is max quality, 0.3 is 30% quality)
                     .outputFormat(extension)
                     .toOutputStream(outputStream);
 
@@ -260,7 +259,7 @@ public class UserServiceImpl implements UserService {
         if (checkIfEmailExist(decryptedEmail) && emailChanged) {
             bindingResult.addError(
                     new FieldError(
-                            USER_REGISTER_BINDING_MODEL, EMAIL, ValidationConstants.EMAIL_EXIST
+                            USER_REGISTER_BINDING_MODEL, EMAIL, EMAIL_EXIST
                     )
             );
         }
@@ -300,8 +299,7 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder().matches(decryptedOldPassword, user.getPassword())) {
             bindingResult.addError(
                     new FieldError(
-                            CHANGE_PASSWORD_BINDING_MODEL, "oldPassword",
-                            ValidationConstants.OLD_PASSWORD_MISMATCH
+                            CHANGE_PASSWORD_BINDING_MODEL, "oldPassword", OLD_PASSWORD_MISMATCH
                     )
             );
         }

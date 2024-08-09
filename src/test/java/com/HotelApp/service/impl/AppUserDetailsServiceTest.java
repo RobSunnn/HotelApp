@@ -16,7 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.common.constants.AppConstants.ROLE_PREFIX;
+import static com.HotelApp.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +44,7 @@ class AppUserDetailsServiceTest {
     }
 
     @Test
-    public void testLoadUserByUsername_UserFound() {
+    void testLoadUserByUsername_UserFound() {
         when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(userEntity));
 
         UserDetails userDetails = appUserDetailsService.loadUserByUsername(TEST_EMAIL);
@@ -59,7 +60,7 @@ class AppUserDetailsServiceTest {
     }
 
     @Test
-    public void testLoadUserByUsername_UserNotFound() {
+    void testLoadUserByUsername_UserNotFound() {
         when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.empty());
 
         assertThrows(UsernameNotFoundException.class, () -> appUserDetailsService.loadUserByUsername(TEST_EMAIL));

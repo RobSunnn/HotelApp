@@ -30,12 +30,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.HotelApp.common.constants.AppConstants.*;
 import static com.HotelApp.common.constants.FailConstants.ERROR_MESSAGE;
 import static com.HotelApp.common.constants.SuccessConstants.PICTURE_UPLOAD_SUCCESS;
 import static com.HotelApp.common.constants.SuccessConstants.SUCCESS_MESSAGE;
 import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.FieldConstants.FILE_JPG;
+import static com.HotelApp.constants.FieldConstants.TEST_EXCEPTION;
+import static com.HotelApp.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -73,13 +76,13 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testAddUserImage_MaxUploadSizeExceededException() {
+    void testAddUserImage_MaxUploadSizeExceededException() {
         when(image.getSize()).thenReturn(6 * 1024 * 1024L); // 6MB
         assertThrows(MaxUploadSizeExceededException.class, () -> userService.addUserImage(image, redirectAttributes));
     }
 
     @Test
-    public void testAddUserImage_EmptyFile() {
+    void testAddUserImage_EmptyFile() {
         when(image.getSize()).thenReturn(0L);
         when(image.isEmpty()).thenReturn(true);
 
@@ -89,7 +92,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testAddUserImage_FileNotAllowedException() {
+    void testAddUserImage_FileNotAllowedException() {
         when(image.getSize()).thenReturn(1024L);
         when(image.isEmpty()).thenReturn(false);
         when(image.getOriginalFilename()).thenReturn("file.exe");
@@ -98,7 +101,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testAddUserImage_Success() throws Exception {
+    void testAddUserImage_Success() throws Exception {
         when(image.getSize()).thenReturn(1024L);
         when(image.isEmpty()).thenReturn(false);
         when(image.getOriginalFilename()).thenReturn(FILE_JPG);
@@ -199,7 +202,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testAddUserImage_ExceptionHandling() throws Exception {
+    void testAddUserImage_ExceptionHandling() throws Exception {
         when(image.getSize()).thenReturn(1024L);
         when(image.isEmpty()).thenReturn(false);
         when(image.getOriginalFilename()).thenReturn(FILE_JPG);

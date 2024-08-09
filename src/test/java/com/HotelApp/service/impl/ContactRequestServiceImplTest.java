@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -26,7 +26,7 @@ class ContactRequestServiceImplTest {
     private ContactRequestServiceImpl contactRequestService;
 
     @Test
-    public void testClearCheckedContactRequests() {
+    void testClearCheckedContactRequests() {
         // Mock data
         List<ContactRequestEntity> mockRequests = new ArrayList<>();
         mockRequests.add(mockContactRequestEntityWithCheckedTrue());
@@ -42,7 +42,7 @@ class ContactRequestServiceImplTest {
     }
 
     @Test
-    public void testCheckedContactRequest() {
+    void testCheckedContactRequest() {
         ContactRequestEntity mockRequest = mockContactRequestEntityWithCheckedFalse();
         mockRequest.setId(1L);
 
@@ -55,12 +55,12 @@ class ContactRequestServiceImplTest {
     }
 
     @Test
-    public void testCheckedContactRequest_NonExistingId() {
+    void testCheckedContactRequest_NonExistingId() {
         assertThrows(RuntimeException.class, () -> contactRequestService.checkedContactRequest(1L));
     }
 
     @Test
-    public void testAllRequestsChecked() {
+    void testAllRequestsChecked() {
         // Mock data
         List<ContactRequestEntity> mockRequests = new ArrayList<>();
         mockRequests.add(mockContactRequestEntityWithCheckedFalse());

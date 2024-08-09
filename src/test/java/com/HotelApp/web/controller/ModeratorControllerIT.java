@@ -16,8 +16,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
+import static com.HotelApp.common.constants.AppConstants.REDIRECT;
+import static com.HotelApp.common.constants.AppConstants.ROLE_PREFIX;
 import static com.HotelApp.common.constants.InfoConstants.*;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.TestConstants.*;
+import static com.HotelApp.constants.urlsAndViewsConstants.MODERATOR_URL;
+import static com.HotelApp.constants.urlsAndViewsConstants.MODERATOR_VIEW;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,7 +46,7 @@ class ModeratorControllerIT {
     }
 
     @Test
-    public void testModeratorPanel() throws Exception {
+    void testModeratorPanel() throws Exception {
         mockMvc.perform(get(MODERATOR_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(MODERATOR_VIEW))
@@ -52,28 +56,28 @@ class ModeratorControllerIT {
     }
 
     @Test
-    public void testAllNotApproveComments_ShouldRedirectToModeratorPanel_WhenCommentsAreEmpty() throws Exception {
+    void testAllNotApproveComments_ShouldRedirectToModeratorPanel_WhenCommentsAreEmpty() throws Exception {
         mockMvc.perform(get(MODERATOR_URL + "/comments"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(REDIRECT + MODERATOR_URL));
     }
 
     @Test
-    public void testAllNotCheckedOnlineReservations_ShouldRedirectToModeratorPanel_WhenThereAreNoReservations() throws Exception {
+    void testAllNotCheckedOnlineReservations_ShouldRedirectToModeratorPanel_WhenThereAreNoReservations() throws Exception {
         mockMvc.perform(get(MODERATOR_URL + "/onlineReservations"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(REDIRECT + MODERATOR_URL));
     }
 
     @Test
-    public void testAllNotCheckedContactRequests_ShouldRedirectToModeratorPanel_WhenThereAreNoContactRequests() throws Exception {
+    void testAllNotCheckedContactRequests_ShouldRedirectToModeratorPanel_WhenThereAreNoContactRequests() throws Exception {
         mockMvc.perform(get(MODERATOR_URL + "/contactRequests"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(REDIRECT + MODERATOR_URL));
     }
 
     @Test
-    public void testGetAllFreeRoomsInHotel() throws Exception {
+    void testGetAllFreeRoomsInHotel() throws Exception {
         mockMvc.perform(get("/hotel/freeRooms"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("freeRooms"))
@@ -81,7 +85,7 @@ class ModeratorControllerIT {
     }
 
     @Test
-    public void testGetAllGuestsInHotel() throws Exception {
+    void testGetAllGuestsInHotel() throws Exception {
         mockMvc.perform(get("/hotel/allGuests"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("allGuests"))
@@ -89,7 +93,7 @@ class ModeratorControllerIT {
     }
 
     @Test
-    public void testGetAllSubscribersInHotel() throws Exception {
+    void testGetAllSubscribersInHotel() throws Exception {
         mockMvc.perform(get("/hotel/allSubscribers"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("allSubscribers"))
@@ -97,7 +101,7 @@ class ModeratorControllerIT {
     }
 
     @Test
-    public void testGetAllHappyGuests() throws Exception {
+    void testGetAllHappyGuests() throws Exception {
         mockMvc.perform(get("/hotel/allHappyGuests"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("allHappyGuests"))

@@ -5,7 +5,7 @@ function collapseNavbar() {
     let navbarCollapse = document.querySelector('.navbar-collapse');
 
     if (navbarCollapse.classList.contains('show')) {
-        navbarToggle.click(); // Programmatically click the toggler to collapse the navbar
+        navbarToggle.click(); // Programmatically click the toggle to collapse the navbar
     }
 }
 

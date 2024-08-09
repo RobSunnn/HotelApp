@@ -25,13 +25,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.HotelApp.common.constants.AppConstants.ROLE_PREFIX;
 import static com.HotelApp.common.constants.BindingConstants.BAD_CREDENTIALS;
 import static com.HotelApp.common.constants.BindingConstants.USER_REGISTER_BINDING_MODEL;
 import static com.HotelApp.common.constants.FailConstants.ERRORS;
 import static com.HotelApp.common.constants.SuccessConstants.LOGIN_SUCCESS;
 import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
-import static com.HotelApp.service.constants.TestConstants.*;
+import static com.HotelApp.constants.FieldConstants.ENCRYPTED_EMAIL_FIELD;
+import static com.HotelApp.constants.FieldConstants.ENCRYPTED_PASSWORD_FIELD;
+import static com.HotelApp.constants.TestConstants.*;
+import static com.HotelApp.constants.urlsAndViewsConstants.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -56,7 +60,7 @@ class AuthenticationRestControllerIT {
 
     @Test
     @WithAnonymousUser
-    public void testLoginInvalidCredentials() throws Exception {
+    void testLoginInvalidCredentials() throws Exception {
         mockMvc.perform(post(USER_LOGIN_URL)
                         .param(ENCRYPTED_EMAIL_FIELD, encryptionService.encrypt(TEST_EMAIL))
                         .param(ENCRYPTED_PASSWORD_FIELD, encryptionService.encrypt(TEST_PASSWORD))
@@ -67,7 +71,7 @@ class AuthenticationRestControllerIT {
 
     @Test
     @WithAnonymousUser
-    public void testLogin_Success() throws Exception {
+    void testLogin_Success() throws Exception {
         when(userDetailsService.loadUserByUsername(TEST_EMAIL)).thenReturn(
                 new CustomUser(
                         TEST_EMAIL,
@@ -87,8 +91,7 @@ class AuthenticationRestControllerIT {
 
     @Test
     @WithAnonymousUser
-    public void registerUser_Success() throws Exception {
-
+    void registerUser_Success() throws Exception {
         UserRegisterBindingModel userRegisterBindingModel = new UserRegisterBindingModel()
                 .setFirstName(MOCK_FIRST_NAME)
                 .setLastName(MOCK_LAST_NAME)
@@ -108,7 +111,7 @@ class AuthenticationRestControllerIT {
 
     @Test
     @WithAnonymousUser
-    public void registerUser_Fail() throws Exception {
+    void registerUser_Fail() throws Exception {
         UserRegisterBindingModel userRegisterBindingModel = new UserRegisterBindingModel()
                 .setEmail(encryptionService.encrypt(TEST_EMAIL))
                 .setPassword(encryptionService.encrypt(""))

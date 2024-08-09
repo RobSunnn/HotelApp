@@ -32,13 +32,12 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static com.HotelApp.common.constants.BindingConstants.CONTACT_REQUEST_BINDING_MODEL;
-import static com.HotelApp.common.constants.FailConstants.ERROR_MESSAGE;
-import static com.HotelApp.common.constants.FailConstants.NO_SUCH_REQUEST;
+import static com.HotelApp.common.constants.FailConstants.*;
 import static com.HotelApp.common.constants.SuccessConstants.ONLINE_RESERVATION_CONFIRMATION_MAIL_SEND;
 import static com.HotelApp.common.constants.ValidationConstants.PHONE_NUMBER_TOO_LONG;
 import static com.HotelApp.common.constants.ValidationConstants.TEXT_TOO_LONG;
-import static com.HotelApp.service.impl.HotelServiceImpl.genericFailResponse;
-import static com.HotelApp.service.impl.HotelServiceImpl.genericSuccessResponse;
+import static com.HotelApp.util.ResponseUtil.genericFailResponse;
+import static com.HotelApp.util.ResponseUtil.genericSuccessResponse;
 
 @EnableScheduling
 @Service
@@ -182,7 +181,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                         .stream()
                         .filter(onlineReservation -> onlineReservation.getId().equals(reservationId))
                         .findFirst()
-                        .orElseThrow(() -> new RuntimeException("Online Reservation not found."))
+                        .orElseThrow(() -> new RuntimeException(RESERVATION_NOT_FOUND))
                         .setChecked(true)
         );
     }

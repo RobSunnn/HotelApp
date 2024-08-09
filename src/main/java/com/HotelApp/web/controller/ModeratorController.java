@@ -26,7 +26,11 @@ public class ModeratorController {
 
     private final ContactRequestService contactRequestService;
 
-    public ModeratorController(HotelService hotelService, CommentService commentService, ContactRequestService contactRequestService) {
+    public ModeratorController(
+            HotelService hotelService,
+            CommentService commentService,
+            ContactRequestService contactRequestService
+    ) {
         this.hotelService = hotelService;
         this.commentService = commentService;
         this.contactRequestService = contactRequestService;

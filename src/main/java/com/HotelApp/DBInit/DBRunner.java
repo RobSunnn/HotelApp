@@ -17,10 +17,12 @@ public class DBRunner implements CommandLineRunner {
 
     private final CategoryService categoryService;
 
-    public DBRunner(HotelService hotelService,
-                    RoomService roomService,
-                    RoomTypesService roomTypesService,
-                    CategoryService categoryService) {
+    public DBRunner(
+            HotelService hotelService,
+            RoomService roomService,
+            RoomTypesService roomTypesService,
+            CategoryService categoryService
+    ) {
         this.hotelService = hotelService;
         this.roomService = roomService;
         this.roomTypesService = roomTypesService;

@@ -44,12 +44,10 @@ public class ApplicationSecurityConfiguration {
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .requestCache(
-                        requestCacheConfigurer -> requestCacheConfigurer
-                                .requestCache(requestCache())
+                        requestCacheConfigurer -> requestCacheConfigurer.requestCache(requestCache())
                 )
                 .exceptionHandling(
-                        exceptionHandling -> exceptionHandling
-                                .authenticationEntryPoint(authenticationEntryPoint())
+                        exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint())
                 )
                 .logout(
                         logout -> logout.logoutUrl("/logout")

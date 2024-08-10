@@ -15,4 +15,8 @@ public class FailConstants {
     public static final String MODERATOR_ROLE_NOT_FOUND = "MODERATOR role not found";
 
     public static final String USER_ROLE_NOT_FOUND = "USER role not found";
+
+    public static final String ERROR_INITIALIZING_KEYS = "Error initializing KeyService: {}";
+
+    public static final String ERROR_DESTROYING_KEYS = "Error destroying keys: {}";
 }

@@ -39,4 +39,8 @@ public class SuccessConstants {
     public static final String TRANSFORMING_USERS = "Transforming users to user views";
 
     public static final String EVICTING_USERS = "Evicting user views cache";
+
+    public static final String KEYS_ARE_GENERATED = "Keys are generated.";
+
+    public static final String KEYS_ARE_DESTROYED = "Keys are destroyed.";
 }

@@ -16,6 +16,11 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
+import static com.HotelApp.common.constants.FailConstants.ERROR_DESTROYING_KEYS;
+import static com.HotelApp.common.constants.FailConstants.ERROR_INITIALIZING_KEYS;
+import static com.HotelApp.common.constants.SuccessConstants.KEYS_ARE_DESTROYED;
+import static com.HotelApp.common.constants.SuccessConstants.KEYS_ARE_GENERATED;
+
 @Service
 public class KeyService {
 
@@ -29,16 +34,20 @@ public class KeyService {
     @PostConstruct
     public void init() {
         try {
-            // Check if key files exist, if not, generate them
-            if (!Files.exists(Paths.get(PRIVATE_KEY_FILE)) || !Files.exists(Paths.get(PUBLIC_KEY_FILE))) {
+            Path pathToKeys = Paths.get(PRIVATE_KEY_FILE);
+            // Check if keys folder and files exist, if not, generate them
+            if  (!Files.isDirectory(pathToKeys.getParent())) {
+                Files.createDirectory(pathToKeys.getParent());
+            }
+            if (!Files.exists(pathToKeys)) {
                 KeyGeneratorUtil.generateKeyPair();
-                log.info("Keys are generated.");
+                log.info(KEYS_ARE_GENERATED);
             }
             // Load the keys
             this.privateKey = loadPrivateKey();
             this.publicKey = loadPublicKey();
         } catch (Exception e) {
-            System.err.println("Error initializing KeyService: " + e.getMessage());
+            log.error(ERROR_INITIALIZING_KEYS, e.getMessage());
         }
     }
 
@@ -48,9 +57,9 @@ public class KeyService {
             // Check if key files exist, if existed, destroy them
             Files.deleteIfExists(Path.of(PRIVATE_KEY_FILE));
             Files.deleteIfExists(Path.of(PUBLIC_KEY_FILE));
-            log.info("Keys are destroyed.");
+            log.info(KEYS_ARE_DESTROYED);
         } catch (Exception e) {
-            log.info("Error destroying keys: {}", e.getMessage());
+            log.error(ERROR_DESTROYING_KEYS, e.getMessage());
         }
     }
 

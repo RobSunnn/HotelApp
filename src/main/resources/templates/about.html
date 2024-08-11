@@ -84,33 +84,34 @@
         </div>
     </div>
     <div class="form-container">
-        <section id="comments-form">
+        <section id="comments-form-section">
             <div class="text-center">
-                <form th:action="@{/about/addComment}" th:method="POST" th:object="${addCommentBindingModel}">
+                <form id="comments-form" th:action="@{/about/addComment}" th:method="POST">
                     <h2 class="mb-4">Leave a comment</h2>
                     <div class="form-content">
                         <div class="form-name">
                             <label for="author">Your Name or Nickname</label>
-                            <input type="text" class="form-control" id="author" th:field="*{author}"
-                                   th:errorclass="is-invalid"
+                            <input type="text" class="form-control" id="author"
                                    required minlength="2" maxlength="30"
                                    name="author" placeholder="Enter your name...">
-                            <small id="authorError" th:errors="*{author}"
+                            <small id="authorError"
                                    class="invalid-feedback text-white  bg-danger rounded"></small>
                         </div>
                         <div class="form-text-content">
                             <label for="commentContent">Your comment</label>
-                            <textarea class="form-control" id="commentContent" rows="4" th:field="*{commentContent}"
-                                      th:errorclass="is-invalid" required minlength="2" maxlength="250"
+                            <textarea class="form-control" id="commentContent" rows="4"
+                                      required minlength="2" maxlength="250"
                                       name="commentContent" placeholder="Maximum 250 symbols."></textarea>
-                            <small id="commentError" th:errors="*{commentContent}"
+                            <small id="commentContentError"
                                    class="invalid-feedback text-white  bg-danger rounded"></small>
                         </div>
                     </div>
                     <div class="form-button">
                         <br>
-                        <small th:if="${successCommentMessage}" th:text="${successCommentMessage}"
-                               class="alert alert-success"></small>
+                        <div id="successMessage" class="alert alert-success text-black rounded mt-3"
+                             style="display:none;">
+                            <small></small>
+                        </div>
                         <button type="submit" class="btn btn-success">Leave a comment</button>
                     </div>
                 </form>

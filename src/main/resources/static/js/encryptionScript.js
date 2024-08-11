@@ -50,6 +50,8 @@ async function sendData(action, data, csrfTokenElement) {
                     sessionStorage.setItem('successContactRequestMessage', "Your request was successful! Thank you.");
                 } else if (action.includes('subscribe')) {
                     sessionStorage.setItem('subscribeSuccess', "Thank you for subscribing!");
+                } else if (action.includes("addComment")) {
+                    sessionStorage.setItem("commentSuccess", "Thank you for your comment!");
                 }
                 window.location.href = responseData.redirectUrl;
             }

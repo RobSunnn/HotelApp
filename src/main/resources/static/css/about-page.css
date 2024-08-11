@@ -126,6 +126,10 @@
     transition: opacity 1.3s ease-in-out;
 }
 
+#controls {
+    width: 50%;
+}
+
 #commentContent {
     width: 100%;
 }
@@ -135,7 +139,7 @@
     margin-top: 10em;
 }
 
-#comments-form {
+#comments-form-section {
     color: white;
     width: 80%;
     max-width: 34ch;

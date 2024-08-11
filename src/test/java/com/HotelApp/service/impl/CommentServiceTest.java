@@ -16,16 +16,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH;
-import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
-import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS_MESSAGE;
-import static com.HotelApp.common.constants.SuccessConstants.COMMENT_SUCCESS;
 import static com.HotelApp.constants.TestConstants.TEST_AUTHOR;
 import static com.HotelApp.constants.TestConstants.TEST_COMMENT_CONTENT;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,9 +36,6 @@ class CommentServiceTest {
 
     @Mock
     private BindingResult bindingResult;
-
-    @Mock
-    private RedirectAttributes redirectAttributes;
 
     @InjectMocks
     private CommentServiceImpl commentService;
@@ -64,19 +56,15 @@ class CommentServiceTest {
     void testAddCommentToDatabase_WithErrors() {
         when(bindingResult.hasErrors()).thenReturn(true);
 
-        commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
-
-        verify(redirectAttributes).addFlashAttribute(COMMENT_BINDING_MODEL, addCommentBindingModel);
-        verify(redirectAttributes).addFlashAttribute(BINDING_RESULT_PATH + COMMENT_BINDING_MODEL, bindingResult);
+        commentService.addCommentToDatabase(addCommentBindingModel, bindingResult);
         verifyNoInteractions(commentRepository);
     }
 
     @Test
     void testAddCommentToDatabase_NoErrors() {
-        commentService.addCommentToDatabase(addCommentBindingModel, bindingResult, redirectAttributes);
+        commentService.addCommentToDatabase(addCommentBindingModel, bindingResult);
 
         verify(commentRepository, times(1)).save(any(CommentEntity.class));
-        verify(redirectAttributes).addFlashAttribute(COMMENT_SUCCESS, COMMENT_SUCCESS_MESSAGE);
     }
 
     @Test

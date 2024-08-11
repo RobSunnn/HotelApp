@@ -128,7 +128,7 @@ public class UserTransformationService {
 
     public boolean authenticateUser(String email, String password) {
         try {
-            String decryptedEmail = encryptionService.decrypt(email);
+            String decryptedEmail = encryptionService.decrypt(email).trim();
             String decryptedPassword = encryptionService.decrypt(password);
 
             // Load the user details

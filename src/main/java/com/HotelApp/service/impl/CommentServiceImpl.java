@@ -9,18 +9,19 @@ import com.HotelApp.service.CommentService;
 import com.HotelApp.service.HotelService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 
-import static com.HotelApp.common.constants.BindingConstants.BINDING_RESULT_PATH;
-import static com.HotelApp.common.constants.BindingConstants.COMMENT_BINDING_MODEL;
-import static com.HotelApp.common.constants.SuccessConstants.*;
+import static com.HotelApp.common.constants.SuccessConstants.COMMENT_NOT_FOUND;
+import static com.HotelApp.util.ResponseUtil.genericFailResponse;
+import static com.HotelApp.util.ResponseUtil.genericSuccessResponse;
 
 @Service
 public class CommentServiceImpl implements CommentService {
+    private static final String SUCCESS_REDIRECT_URL = "/about";
 
     private final CommentRepository commentRepository;
     private final HotelService hotelService;
@@ -32,24 +33,14 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public void addCommentToDatabase(
-            AddCommentBindingModel addCommentBindingModel,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
-
+    public ResponseEntity<?> addCommentToDatabase(AddCommentBindingModel addCommentBindingModel, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(COMMENT_BINDING_MODEL, addCommentBindingModel);
-            redirectAttributes.addFlashAttribute(
-                    BINDING_RESULT_PATH + COMMENT_BINDING_MODEL,
-                    bindingResult
-            );
-            return;
+            return genericFailResponse(bindingResult);
         }
-
         HotelInfoEntity hotelInfo = hotelService.getHotelInfo();
         commentRepository.save(mapAsComment(addCommentBindingModel, hotelInfo));
-        redirectAttributes.addFlashAttribute(COMMENT_SUCCESS, COMMENT_SUCCESS_MESSAGE);
+
+        return genericSuccessResponse(SUCCESS_REDIRECT_URL);
     }
 
     @Override

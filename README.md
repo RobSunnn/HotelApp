@@ -102,10 +102,6 @@
    <li class="task-list-item">
       <img height="30px" src="https://camo.githubusercontent.com/82c5c2ac0316801bf1319146af513a5eb32b5c6f0b35586c0a26154a1cf4bb96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d454344423646" alt="JavaScript"></img>
    </li>
-   
-   <li class="task-list-item">
-      <img height="30px" src="https://camo.githubusercontent.com/82c5c2ac0316801bf1319146af513a5eb32b5c6f0b35586c0a26154a1cf4bb96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d454344423646" alt="JavaScript"></img>
-   </li>
 
    <li class="task-list-item">
       <img height="30px" src="https://camo.githubusercontent.com/762331ec09cd1995232f4e374cb8c6ad57fceb161f2b238bfb06f3516b49321b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f48544d4c2d463137353435" alt="HTML5"></img>

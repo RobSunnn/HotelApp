@@ -77,18 +77,48 @@
 </details>
 <br>
 <h2>Built with:</h2>
+ <ul>
+    
+   <li class="task-list-item"> 
+      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/a3a9d6267c299b28e81e97f2516c16895599f2dcd8b9db1a22eb2d2fb9b32b46/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176612d454434323336" alt="Java">  
+   </li>
 
-  <code><img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/a3a9d6267c299b28e81e97f2516c16895599f2dcd8b9db1a22eb2d2fb9b32b46/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176612d454434323336" alt="Java"></code>
-  <code><img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/e5d9b25055cdc7a6a057583523c67a5b6dc6df64c186c92c52b503667812c901/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d426f6f742d253233364242313344" alt="Spring boot"></code>
-  <code><img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/00984cbaea44f396be8d203bbae1efd86a401f1246acaf7c13d101d01c10629c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d446174614a50412d253233364242313344" alt="Data"></code>
-  <code><img height="30px" src="https://camo.githubusercontent.com/40ad96b006840ae7ccdd5f6d05e73411fc5a8dfd3cb7edf49cddd5ab60a59522/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d53656375726974792d253233443433353334" alt="Security"></img></code>
-  <code><img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/aab9bd53c8115348fc30b096f26cb560e589ef791c9b4690143afcf7e2ba2373/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4d792d53514c2d463539323142" alt="MySQL"></code>
-  <code><img height="30px" src="https://camo.githubusercontent.com/82c5c2ac0316801bf1319146af513a5eb32b5c6f0b35586c0a26154a1cf4bb96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d454344423646" alt="JavaScript"></code>
-  <code><img height="30px" src="https://camo.githubusercontent.com/762331ec09cd1995232f4e374cb8c6ad57fceb161f2b238bfb06f3516b49321b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f48544d4c2d463137353435" alt="HTML5"></code>
-  <code><img height="30px" src="https://camo.githubusercontent.com/dfc5a811f71aea3c4e9c4e357940ffb5e72dda1720eba690a4df56dd7b91f35d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4353532d323936344632" alt="CSS3"></code>
-  <code><img height="30px" src="https://camo.githubusercontent.com/195a883a665d2d0d8f3faf0a5c066e4fdab045a4f1e189d6a8db1296431e457a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f426f6f7473747261702d383530454636" alt="Bootstrap"></code>
+   <li class="task-list-item">
+      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/e5d9b25055cdc7a6a057583523c67a5b6dc6df64c186c92c52b503667812c901/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d426f6f742d253233364242313344" alt="Spring boot">        
+   </li>
+
+   <li class="task-list-item">
+      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/00984cbaea44f396be8d203bbae1efd86a401f1246acaf7c13d101d01c10629c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d446174614a50412d253233364242313344" alt="Data">    
+   </li>
  
-  
+   <li class="task-list-item">
+      <img height="30px" src="https://camo.githubusercontent.com/40ad96b006840ae7ccdd5f6d05e73411fc5a8dfd3cb7edf49cddd5ab60a59522/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d53656375726974792d253233443433353334" alt="Security"></img>
+   </li>
+
+   <li class="task-list-item">
+      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/aab9bd53c8115348fc30b096f26cb560e589ef791c9b4690143afcf7e2ba2373/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4d792d53514c2d463539323142" alt="MySQL"></img>
+   </li>
+
+   <li class="task-list-item">
+      <img height="30px" src="https://camo.githubusercontent.com/82c5c2ac0316801bf1319146af513a5eb32b5c6f0b35586c0a26154a1cf4bb96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d454344423646" alt="JavaScript"></img>
+   </li>
+   
+   <li class="task-list-item">
+      <img height="30px" src="https://camo.githubusercontent.com/82c5c2ac0316801bf1319146af513a5eb32b5c6f0b35586c0a26154a1cf4bb96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d454344423646" alt="JavaScript"></img>
+   </li>
+
+   <li class="task-list-item">
+      <img height="30px" src="https://camo.githubusercontent.com/762331ec09cd1995232f4e374cb8c6ad57fceb161f2b238bfb06f3516b49321b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f48544d4c2d463137353435" alt="HTML5"></img>
+   </li>
+
+   <li class="task-list-item">
+     <img height="30px" src="https://camo.githubusercontent.com/dfc5a811f71aea3c4e9c4e357940ffb5e72dda1720eba690a4df56dd7b91f35d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4353532d323936344632" alt="CSS3"></img>
+   </li>
+
+   <li class="task-list-item">
+     <img height="30px" src="https://camo.githubusercontent.com/195a883a665d2d0d8f3faf0a5c066e4fdab045a4f1e189d6a8db1296431e457a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f426f6f7473747261702d383530454636" alt="Bootstrap"></img>
+   </li>
+
 <br><br><br>
 <h2>Installation:</h2>
 <h3>In order to run the app, clone the repository and set some enviroment variables or use the default values</h3>
@@ -126,7 +156,7 @@ spring:
       <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Custom messages if the data is invalid</strong></li>
    </ul>
 
-
+<br><br>
  <a href="#top">⬆️ Back to Top</a>
 
 

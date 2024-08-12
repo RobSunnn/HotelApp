@@ -19,7 +19,7 @@
     <img src="https://github.com/user-attachments/assets/e4bc7626-bf9e-4d76-acfa-aeba37887ae2" alt="Sample Image">
   <h3>Footer</h3>
     <img src="https://github.com/user-attachments/assets/e35559e5-3e4d-417e-96de-217bbf45a337" alt="Sample Image">
-    <a href="#top">Back to top</a>
+    <a href="#top">⬆️ Back to Top</a>
   </details>
 
   <details>
@@ -28,7 +28,7 @@
      <img src="https://github.com/user-attachments/assets/cb5b665c-01c4-44af-9f5d-6dcbeae33bec" alt="Sample Image">
     <h2>About page</h2>
      <img src="https://github.com/user-attachments/assets/2c926ced-341a-4813-bebc-e875fac0c5b1" alt="Sample Image">
-     <a href="#top">Back to top</a>
+     <a href="#top">⬆️ Back to Top</a>
   </details>
 
   <details>
@@ -38,7 +38,7 @@
      <img src="https://github.com/user-attachments/assets/a0aa3036-5a13-420a-ba95-95723939d52d" alt="Sample Image">
     <h3>Online reservation page</h3>
      <img src="https://github.com/user-attachments/assets/e8493c59-25ac-4edb-9fd5-aa75bd3132d2" alt="Sample Image">
-     <a href="#top">Back to top</a>
+     <a href="#top">⬆️ Back to Top</a>
   </details>
 
   <details>
@@ -50,7 +50,7 @@
      <img src="https://github.com/user-attachments/assets/7005d18b-505b-479f-a884-dff4d1d0b1dc" alt="Sample Image">
     <h3>Sample new online reservation</h3>
       <img src="https://github.com/user-attachments/assets/676f8991-2c6c-4f2a-9620-b865ab83caa3" alt="Sample Image">
-     <a href="#top">Back to top</a>
+     <a href="#top">⬆️ Back to Top</a>
   </details>
 
   <details>
@@ -60,7 +60,7 @@
      <img src="https://github.com/user-attachments/assets/2d519e55-268f-4cef-b7fe-bc31c7c72813" alt="Sample Image">
     <h3>User management page</h3>
      <img src="https://github.com/user-attachments/assets/f0f53bf5-96e4-4d31-ab1d-d0afbcc30856" alt="Sample Image">
-     <a href="#top">Back to top</a>
+     <a href="#top">⬆️ Back to Top</a>
   </details>
   
   <details>
@@ -71,7 +71,7 @@
     <h2>Easter egg</h2>
      <h4>The app have an easter egg and it is sending email with bonus voucher when someone subscribe for second time</h4>
      <img src="https://github.com/user-attachments/assets/e21151a2-36ed-47ce-bbd9-afacc3ecf2fa" alt="Sample Image">
-     <a href="#top">Back to top</a>
+     <a href="#top">⬆️ Back to Top</a>
   </details>
 
 </details>
@@ -108,24 +108,26 @@ spring:
 
 <h2>Testing and Exception Handling</h2>
 
-<h3 dir="auto"><em>Testing</em></h3>
-<ul class="contains-task-list">
-<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> Junit</li>
-<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> Mockito</li>
-<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> MailCrab</li>
-<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> H2Database</li>
-</ul>
+   <h3 dir="auto"><em>Testing</em></h3>
+   <ul class="contains-task-list">
+      <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> Junit</li>
+      <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> Mockito</li>
+      <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> MailCrab</li>
+      <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> H2Database</li>
+   </ul>
 
-<h3 dir="auto"><em>Thymeleaf Template Engine is utilized in this project for rendering dynamic HTML content by binding data from the server to the client templates.</em></h3>
-<ul class="contains-task-list">
-<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Exception handling</strong></li>
-<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Custom pages for the different types of exceptions</strong></li>
-<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Data validity checks</strong></li>
-<li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Custom messages if the data is invalid</strong></li>
-</ul>
+   <h3><em>The application incorporates custom exception handling to manage and address errors or unexpected situations that arise during runtime. These exceptions are tailored to handle specific cases and ensure that appropriate feedback is provided to users  when such issues occur.</em></h3>
+
+   <h3 dir="auto"><em>Thymeleaf Template Engine is utilized in this project for rendering dynamic HTML content by binding data from the server to the client templates.</em></h3>
+   <ul class="contains-task-list">
+      <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Exception handling</strong></li>
+      <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Custom pages for the different types of exceptions</strong></li>
+      <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Data validity checks</strong></li>
+      <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> <strong>Custom messages if the data is invalid</strong></li>
+   </ul>
 
 
- <a href="#top">Back to top</a>
+ <a href="#top">⬆️ Back to Top</a>
 
 
   

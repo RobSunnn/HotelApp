@@ -1,7 +1,8 @@
-package com.HotelApp.util;
+package com.HotelApp.web.interceptor;
 
 import com.HotelApp.domain.entity.ForbiddenRequestEntity;
 import com.HotelApp.repository.ForbiddenRequestRepository;
+import com.HotelApp.util.PublicIpFetcher;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

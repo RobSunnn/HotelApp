@@ -1,7 +1,7 @@
 package com.HotelApp.config;
 
 import com.HotelApp.repository.ForbiddenRequestRepository;
-import com.HotelApp.util.LoggingInterceptor;
+import com.HotelApp.web.interceptor.LoggingInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

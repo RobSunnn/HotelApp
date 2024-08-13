@@ -69,6 +69,7 @@ small {
 
 .is-invalid ~ .invalid-feedback {
     position: unset;
+    width: 70%;
     margin: 1em auto;
 }
 

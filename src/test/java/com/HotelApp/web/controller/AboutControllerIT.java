@@ -117,7 +117,7 @@ class AboutControllerIT {
 
         List<JsonNode> errorsList = new ArrayList<>();
         errorsNode.forEach(errorsList::add);
-        errorsList.sort(Comparator.comparing(node -> node.get(CODE).asText()));
+        errorsList.sort(Comparator.comparing(node -> node.get(DEFAULT_MESSAGE).asText()));
 
         assertEquals(2, errorsList.size());
 

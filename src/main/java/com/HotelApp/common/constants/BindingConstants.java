@@ -20,5 +20,4 @@ public class BindingConstants {
 
     public static final String CHANGE_PASSWORD_BINDING_MODEL = "changeUserPasswordBindingModel";
 
-    public static final String BINDING_RESULT_PATH = "org.springframework.validation.BindingResult.";
 }

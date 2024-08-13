@@ -44,7 +44,6 @@ import static com.HotelApp.util.ResponseUtil.genericSuccessResponse;
 public class ContactRequestServiceImpl implements ContactRequestService {
     private static final int TEXT_MAXIMUM_LENGTH = 400;
     private static final String NO_ADDITIONAL_INFO = "No Additional Info.";
-    private static final String MAXIMUM_400_SYMBOLS = "Max 400 symbols";
     private static final String SUCCESS_REDIRECT_URL = "/contact";
     private static final Logger log = LoggerFactory.getLogger(ContactRequestServiceImpl.class);
 
@@ -150,7 +149,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .findFirst()
                 .orElseThrow(() -> new UsernameNotFoundException("User with email: " + userEmail + "not found!"));
 
-        if (additionalInfo.equals(MAXIMUM_400_SYMBOLS) || additionalInfo.isBlank()) {
+        if (additionalInfo.isBlank()) {
             additionalInfo = NO_ADDITIONAL_INFO;
         }
 

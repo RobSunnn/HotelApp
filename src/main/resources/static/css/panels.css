@@ -59,6 +59,11 @@ option {
     color: white !important;
 }
 
+#add-guest-form .form-group {
+    width: 60%;
+    margin: 0 auto;
+}
+
 #cards-holder {
     display: flex;
     flex-grow: 1;

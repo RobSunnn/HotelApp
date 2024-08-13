@@ -44,7 +44,7 @@
             <input type="hidden" name="id"/>
             <button type="submit" class="btn btn-primary">Approve All</button>
         </form>
-        <form th:action="@{/moderator/commentNotApproved}" th:method="POST">
+        <form th:action="@{/moderator/commentNotApproved}" th:method="DELETE">
             <input type="hidden" id="notApprovedCommentId" name="id"/>
             <button type="submit" class="btn btn-danger">Don't Approve</button>
         </form>

@@ -8,8 +8,6 @@ public class FailConstants {
 
     public static final String NO_SUCH_REQUEST = "No such contact request.";
 
-    public static final String FAILED_TO_DECRYPT = "Failed to decrypt.";
-
     public static final String RESERVATION_NOT_FOUND = "Online Reservation not found.";
 
     public static final String MODERATOR_ROLE_NOT_FOUND = "MODERATOR role not found";

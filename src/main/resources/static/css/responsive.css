@@ -135,6 +135,10 @@
         white-space: normal;
     }
 
+    #add-guest-form .form-group {
+        width: 100%;
+    }
+
     #checkboxes-container {
         font-size: 0.9rem !important;
     }

@@ -18,10 +18,6 @@ public class SuccessConstants {
 
     public static final String USER_TOKEN = "userToken";
 
-    public static final String COMMENT_SUCCESS_MESSAGE = "Thank you for your comment!";
-
-    public static final String COMMENT_SUCCESS = "successCommentMessage";
-
     public static final String COMMENT_NOT_FOUND = "Comment not found";
 
     public static final String ONLINE_RESERVATION_SUCCESS = "Thank you for your reservation!";

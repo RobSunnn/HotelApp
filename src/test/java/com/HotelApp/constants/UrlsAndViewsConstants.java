@@ -1,6 +1,6 @@
 package com.HotelApp.constants;
 
-public class urlsAndViewsConstants {
+public class UrlsAndViewsConstants {
     public static final String ADMIN_URL = "/admin";
 
     public static final String ADD_COMMENT_URL = "/about/addComment";

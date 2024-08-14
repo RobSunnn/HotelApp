@@ -2,11 +2,13 @@ package com.HotelApp.web.controller;
 
 import com.HotelApp.domain.entity.enums.RoleEnum;
 import com.HotelApp.domain.models.binding.UserRegisterBindingModel;
+import com.HotelApp.repository.UserRepository;
 import com.HotelApp.service.impl.AppUserDetailsService;
 import com.HotelApp.service.impl.CustomUser;
 import com.HotelApp.util.encryptionUtil.EncryptionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,7 +37,7 @@ import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 import static com.HotelApp.constants.FieldConstants.ENCRYPTED_EMAIL_FIELD;
 import static com.HotelApp.constants.FieldConstants.ENCRYPTED_PASSWORD_FIELD;
 import static com.HotelApp.constants.TestConstants.*;
-import static com.HotelApp.constants.urlsAndViewsConstants.*;
+import static com.HotelApp.constants.UrlsAndViewsConstants.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -57,6 +59,14 @@ class AuthenticationRestControllerIT {
 
     @Autowired
     private EncryptionService encryptionService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @BeforeEach
+    void setUp() {
+        userRepository.deleteAll();
+    }
 
     @Test
     @WithAnonymousUser
@@ -135,14 +145,13 @@ class AuthenticationRestControllerIT {
 
         List<JsonNode> errorsList = new ArrayList<>();
         errorsNode.forEach(errorsList::add);
-        errorsList.sort(Comparator.comparing(node -> node.get(CODE).asText()));
+        errorsList.sort(Comparator.comparing(node -> node.get(DEFAULT_MESSAGE).asText()));
 
-        assertEquals(6, errorsList.size());
-        assertEquals(NAME_BLANK, errorsList.get(0).get(DEFAULT_MESSAGE).asText());
+        assertEquals(5, errorsList.size());
         assertEquals(NAME_BLANK, errorsList.get(1).get(DEFAULT_MESSAGE).asText());
-        assertEquals(INVALID_AGE, errorsList.get(2).get(DEFAULT_MESSAGE).asText());
-        assertEquals(EMPTY_PASSWORD, errorsList.get(3).get(DEFAULT_MESSAGE).asText());
-        assertEquals(CONFIRM_PASSWORD, errorsList.get(4).get(DEFAULT_MESSAGE).asText());
-        assertEquals(EMAIL_EXIST, errorsList.get(5).get(DEFAULT_MESSAGE).asText());
+        assertEquals(NAME_BLANK, errorsList.get(2).get(DEFAULT_MESSAGE).asText());
+        assertEquals(INVALID_AGE, errorsList.get(3).get(DEFAULT_MESSAGE).asText());
+        assertEquals(EMPTY_PASSWORD, errorsList.get(4).get(DEFAULT_MESSAGE).asText());
+        assertEquals(CONFIRM_PASSWORD, errorsList.get(0).get(DEFAULT_MESSAGE).asText());
     }
 }

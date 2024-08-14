@@ -42,7 +42,7 @@ import static com.HotelApp.common.constants.FailConstants.ERRORS;
 import static com.HotelApp.common.constants.ValidationConstants.*;
 import static com.HotelApp.constants.FieldConstants.*;
 import static com.HotelApp.constants.TestConstants.*;
-import static com.HotelApp.constants.urlsAndViewsConstants.*;
+import static com.HotelApp.constants.UrlsAndViewsConstants.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -154,17 +154,17 @@ class GuestControllerIT {
 
         List<JsonNode> errorsList = new ArrayList<>();
         errorsNode.forEach(errorsList::add);
-        errorsList.sort(Comparator.comparing(node -> node.get(CODE).asText()));
+        errorsList.sort(Comparator.comparing(node -> node.get(DEFAULT_MESSAGE).asText()));
 
         assertEquals(4, errorsList.size());
 
-        assertEquals(DOCUMENT_ID_EMPTY, errorsList.get(0).get(DEFAULT_MESSAGE).asText());
+        assertEquals(INVALID_EMAIL, errorsList.get(0).get(DEFAULT_MESSAGE).asText());
 
-        assertEquals(EMPTY_DAYS, errorsList.get(1).get(DEFAULT_MESSAGE).asText());
+        assertEquals(DOCUMENT_ID_EMPTY, errorsList.get(1).get(DEFAULT_MESSAGE).asText());
 
-        assertEquals(INVALID_EMAIL, errorsList.get(2).get(DEFAULT_MESSAGE).asText());
+        assertEquals(DOCUMENT_ID_EMPTY, errorsList.get(2).get(DEFAULT_MESSAGE).asText());
 
-        assertEquals(DOCUMENT_ID_EMPTY, errorsList.get(3).get(DEFAULT_MESSAGE).asText());
+        assertEquals(EMPTY_DAYS, errorsList.get(3).get(DEFAULT_MESSAGE).asText());
     }
 
     @Test

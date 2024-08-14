@@ -30,8 +30,6 @@ public class TestConstants {
 
     public static final String APP_JSON = "application/json";
 
-    public static final String CODE = "code";
-
     public static final String MOCK_FIRST_NAME = "Test";
 
     public static final String MOCK_LAST_NAME = "Testov";

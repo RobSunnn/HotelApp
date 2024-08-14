@@ -20,8 +20,8 @@ import static com.HotelApp.common.constants.AppConstants.REDIRECT;
 import static com.HotelApp.common.constants.AppConstants.ROLE_PREFIX;
 import static com.HotelApp.common.constants.InfoConstants.*;
 import static com.HotelApp.constants.TestConstants.*;
-import static com.HotelApp.constants.urlsAndViewsConstants.MODERATOR_URL;
-import static com.HotelApp.constants.urlsAndViewsConstants.MODERATOR_VIEW;
+import static com.HotelApp.constants.UrlsAndViewsConstants.MODERATOR_URL;
+import static com.HotelApp.constants.UrlsAndViewsConstants.MODERATOR_VIEW;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

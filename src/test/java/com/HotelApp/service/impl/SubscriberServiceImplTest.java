@@ -25,7 +25,7 @@ import static com.HotelApp.common.constants.SuccessConstants.*;
 import static com.HotelApp.constants.FieldConstants.DECRYPTED_EMAIL_FIELD;
 import static com.HotelApp.constants.FieldConstants.ENCRYPTED_EMAIL_FIELD;
 import static com.HotelApp.constants.TestConstants.*;
-import static com.HotelApp.constants.urlsAndViewsConstants.TEST_URL;
+import static com.HotelApp.constants.UrlsAndViewsConstants.TEST_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;

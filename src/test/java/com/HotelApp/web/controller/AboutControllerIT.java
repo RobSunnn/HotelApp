@@ -29,7 +29,7 @@ import static com.HotelApp.common.constants.FailConstants.ERRORS;
 import static com.HotelApp.common.constants.ValidationConstants.MESSAGE_BLANK;
 import static com.HotelApp.common.constants.ValidationConstants.NAME_BLANK;
 import static com.HotelApp.constants.TestConstants.*;
-import static com.HotelApp.constants.urlsAndViewsConstants.*;
+import static com.HotelApp.constants.UrlsAndViewsConstants.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

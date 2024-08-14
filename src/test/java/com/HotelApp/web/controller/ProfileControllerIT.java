@@ -40,7 +40,7 @@ import static com.HotelApp.common.constants.BindingConstants.EDIT_USER_PROFILE_B
 import static com.HotelApp.common.constants.FailConstants.ERRORS;
 import static com.HotelApp.config.ApplicationBeanConfiguration.passwordEncoder;
 import static com.HotelApp.constants.TestConstants.*;
-import static com.HotelApp.constants.urlsAndViewsConstants.*;
+import static com.HotelApp.constants.UrlsAndViewsConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

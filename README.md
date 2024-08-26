@@ -3,8 +3,8 @@
 
 <h2>Hotel app is a web-based hotel management system designed to simplify and enhance your hotel operations. Whether you’re managing a boutique hotel, a large resort, or a chain of properties, Hotel app offers an intuitive interface that brings together all essential hotel management tasks into one seamless platform.</h2>
 
-<details>
-   <summary>Screenshots</summary>
+
+   <h2>Screenshots</h2>
   <h2>Photos are just illustrative</h2>
   <br>
   
@@ -74,7 +74,6 @@
      <a href="#top">⬆️ Back to Top</a>
   </details>
 
-</details>
 <br>
 <h2>Built with:</h2>
  <ul>

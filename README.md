@@ -117,7 +117,7 @@
 <br><br><br>
 <h2>Installation:</h2>
 <h3>In order to run the app, clone the repository and set some enviroment variables or use the default values</h3>
-<div style="max-height: 200px; overflow-y: auto; padding: 10px; border: 1px solid #ddd; background-color: #f6f8fa;">
+<div style="max-height: 200px; overflow-y: auto; padding: 10px; border: 1px solid #ddd;">
   <pre>
   <code>
 spring:

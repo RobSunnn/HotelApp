@@ -79,7 +79,7 @@
  <ul>
     
    <li class="task-list-item"> 
-      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/a3a9d6267c299b28e81e97f2516c16895599f2dcd8b9db1a22eb2d2fb9b32b46/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176612d454434323336" alt="Java">  
+      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/3245d1b22e1659c3a95eac2b14dc9601f4eac7268e86189b90968b280df8311c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176612d454434323336" alt="Java">  
    </li>
 
    <li class="task-list-item">
@@ -91,7 +91,7 @@
    </li>
  
    <li class="task-list-item">
-      <img height="30px" src="https://camo.githubusercontent.com/40ad96b006840ae7ccdd5f6d05e73411fc5a8dfd3cb7edf49cddd5ab60a59522/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d53656375726974792d253233443433353334" alt="Security"></img>
+      <img height="30px" src="https://camo.githubusercontent.com/81a530cce72aeedfa8b988af7eab6622d162b7074096ae5a87431c6b3ec00ea5/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d53656375726974792d253233443433353334" alt="Security"></img>
    </li>
 
    <li class="task-list-item">
@@ -99,7 +99,7 @@
    </li>
 
    <li class="task-list-item">
-      <img height="30px" src="https://camo.githubusercontent.com/82c5c2ac0316801bf1319146af513a5eb32b5c6f0b35586c0a26154a1cf4bb96/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d454344423646" alt="JavaScript"></img>
+      <img height="30px" src="https://camo.githubusercontent.com/a5c9401ce9999209b8dc5cd596779c77e0db6755bfdff1783604e8f72eb9181c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d454344423646" alt="JavaScript"></img>
    </li>
 
    <li class="task-list-item">
@@ -107,7 +107,7 @@
    </li>
 
    <li class="task-list-item">
-     <img height="30px" src="https://camo.githubusercontent.com/dfc5a811f71aea3c4e9c4e357940ffb5e72dda1720eba690a4df56dd7b91f35d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4353532d323936344632" alt="CSS3"></img>
+     <img height="30px" src="https://camo.githubusercontent.com/0bc29fd5c002e6c8ac0bb673d594cdde6ab7667a779afcfe3e39b5ea918c4c4f/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4353532d323936344632" alt="CSS3"></img>
    </li>
 
    <li class="task-list-item">

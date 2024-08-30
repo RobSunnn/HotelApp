@@ -95,7 +95,7 @@
    </li>
 
    <li class="task-list-item">
-      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/aab9bd53c8115348fc30b096f26cb560e589ef791c9b4690143afcf7e2ba2373/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4d792d53514c2d463539323142" alt="MySQL"></img>
+      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/d1f42deda02609acd35acc1178178ce1e2588b3689ec9b7ce35f52f4f9720501/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4d792d53514c2d463539323142" alt="MySQL"></img>
    </li>
 
    <li class="task-list-item">

@@ -83,11 +83,11 @@
    </li>
 
    <li class="task-list-item">
-      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/e5d9b25055cdc7a6a057583523c67a5b6dc6df64c186c92c52b503667812c901/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d426f6f742d253233364242313344" alt="Spring boot">        
+      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/789413a4f5ad4da62f851cbd19e4956d414cd5ec10c8719edd60df0d9c99475e/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d426f6f742d253233364242313344" alt="Spring boot">        
    </li>
 
    <li class="task-list-item">
-      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/00984cbaea44f396be8d203bbae1efd86a401f1246acaf7c13d101d01c10629c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d446174614a50412d253233364242313344" alt="Data">    
+      <img height="30px" style="padding-right:10px;" src="https://camo.githubusercontent.com/d6d10cd9f8223700da11578367f50eae1ca58412d1f1582b0f67a0277c71b2e8/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f537072696e672d446174614a50412d253233364242313344" alt="Data">    
    </li>
  
    <li class="task-list-item">
@@ -103,7 +103,7 @@
    </li>
 
    <li class="task-list-item">
-      <img height="30px" src="https://camo.githubusercontent.com/762331ec09cd1995232f4e374cb8c6ad57fceb161f2b238bfb06f3516b49321b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f48544d4c2d463137353435" alt="HTML5"></img>
+      <img height="30px" src="https://camo.githubusercontent.com/a51fed7fbdc4134600fc0f1ca76bfa643a002d95a16443bc937175a2abcae4ba/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f48544d4c2d463137353435" alt="HTML5"></img>
    </li>
 
    <li class="task-list-item">
@@ -111,7 +111,7 @@
    </li>
 
    <li class="task-list-item">
-     <img height="30px" src="https://camo.githubusercontent.com/195a883a665d2d0d8f3faf0a5c066e4fdab045a4f1e189d6a8db1296431e457a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f426f6f7473747261702d383530454636" alt="Bootstrap"></img>
+     <img height="30px" src="https://camo.githubusercontent.com/175cb584ac8451b5b561237068fe02292902530c2270ab47accbc74a56658316/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f426f6f7473747261702d383530454636" alt="Bootstrap"></img>
    </li>
 
 <br><br><br>

@@ -1,5 +1,6 @@
 <a id="top"></a>
 <h1>🏨 Hotel Management System</h1>
+<h2>You can check it out here: <a href="https://hotel-ms.azurewebsites.net">hotel-ms.azurewebsites.net</a></h2>
 
 <h2>Hotel app is a web-based hotel management system designed to simplify and enhance your hotel operations. Whether you’re managing a boutique hotel, a large resort, or a chain of properties, Hotel app offers an intuitive interface that brings together all essential hotel management tasks into one seamless platform.</h2>
 
@@ -113,7 +114,7 @@
    <li class="task-list-item">
      <img height="30px" src="https://camo.githubusercontent.com/175cb584ac8451b5b561237068fe02292902530c2270ab47accbc74a56658316/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f426f6f7473747261702d383530454636" alt="Bootstrap"></img>
    </li>
-
+<!--
 <br><br><br>
 <h2>Installation:</h2>
 <h3>In order to run the app, clone the repository and set some enviroment variables or use the default values</h3>
@@ -130,7 +131,7 @@ spring:
   </pre>
 </div>
 <br>
-
+-->
 <h2>Testing and Exception Handling</h2>
 
    <h3 dir="auto"><em>Testing</em></h3>

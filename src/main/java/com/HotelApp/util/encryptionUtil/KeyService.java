@@ -24,8 +24,6 @@ import static com.HotelApp.common.constants.SuccessConstants.KEYS_ARE_GENERATED;
 @Service
 public class KeyService {
 
-    private static final String PRIVATE_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
     private static final Logger log = LoggerFactory.getLogger(KeyService.class);
 
     private PrivateKey privateKey;
@@ -34,18 +32,21 @@ public class KeyService {
     @PostConstruct
     public void init() {
         try {
-            Path pathToKeys = Paths.get(PRIVATE_KEY_FILE);
-            // Check if keys folder and files exist, if not, generate them
-            if  (!Files.isDirectory(pathToKeys.getParent())) {
-                Files.createDirectory(pathToKeys.getParent());
-            }
-            if (!Files.exists(pathToKeys)) {
-                KeyGeneratorUtil.generateKeyPair();
+            // Define the paths for key files in a temporary directory
+            Path privateKeyPath = Paths.get(System.getProperty("java.io.tmpdir"), "private_key.pem");
+            Path publicKeyPath = Paths.get(System.getProperty("java.io.tmpdir"), "public_key.pem");
+
+            // Generate keys if they do not exist
+            if (!Files.exists(privateKeyPath)) {
+                KeyGeneratorUtil.generateKeyPair(privateKeyPath, publicKeyPath);
                 log.info(KEYS_ARE_GENERATED);
+            } else {
+                log.info("Keys already exist, loading them.");
             }
+
             // Load the keys
-            this.privateKey = loadPrivateKey();
-            this.publicKey = loadPublicKey();
+            this.privateKey = loadPrivateKey(privateKeyPath);
+            this.publicKey = loadPublicKey(publicKeyPath);
         } catch (Exception e) {
             log.error(ERROR_INITIALIZING_KEYS, e.getMessage());
         }
@@ -54,17 +55,21 @@ public class KeyService {
     @PreDestroy
     public void destroy() {
         try {
-            // Check if key files exist, if existed, destroy them
-            Files.deleteIfExists(Path.of(PRIVATE_KEY_FILE));
-            Files.deleteIfExists(Path.of(PUBLIC_KEY_FILE));
+            // Define the paths for key files in the temporary directory
+            Path privateKeyPath = Paths.get(System.getProperty("java.io.tmpdir"), "private_key.pem");
+            Path publicKeyPath = Paths.get(System.getProperty("java.io.tmpdir"), "public_key.pem");
+
+            // Check if key files exist, if they do, delete them
+            Files.deleteIfExists(privateKeyPath);
+            Files.deleteIfExists(publicKeyPath);
             log.info(KEYS_ARE_DESTROYED);
         } catch (Exception e) {
             log.error(ERROR_DESTROYING_KEYS, e.getMessage());
         }
     }
 
-    private PrivateKey loadPrivateKey() throws Exception {
-        byte[] keyBytes = Files.readAllBytes(Paths.get(KeyService.PRIVATE_KEY_FILE));
+    private PrivateKey loadPrivateKey(Path privateKeyPath) throws Exception {
+        byte[] keyBytes = Files.readAllBytes(privateKeyPath);
         String privateKeyPEM = new String(keyBytes)
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
@@ -76,8 +81,8 @@ public class KeyService {
     }
 
 
-    private PublicKey loadPublicKey() throws Exception {
-        byte[] keyBytes = Files.readAllBytes(Paths.get(KeyService.PUBLIC_KEY_FILE));
+    private PublicKey loadPublicKey(Path publicKeyPath) throws Exception {
+        byte[] keyBytes = Files.readAllBytes(publicKeyPath);
         String publicKeyPEM = new String(keyBytes)
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")

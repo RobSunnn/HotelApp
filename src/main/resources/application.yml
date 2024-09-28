@@ -1,7 +1,7 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://${HOST:localhost}:${PORT:3306}/${DATABASE:hotel_app}?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC"
+    url: ${AZURE_MYSQL_CONNECTIONSTRING}
     username: ${DB_USER:root}
     password: ${DB_PASS:1234}
   servlet:

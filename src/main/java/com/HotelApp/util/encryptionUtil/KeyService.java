@@ -24,10 +24,8 @@ import static com.HotelApp.common.constants.SuccessConstants.KEYS_ARE_GENERATED;
 @Service
 public class KeyService {
 
-    private static final String KEYS_DIR = "target/classes/com/HotelApp/util/encryptionUtil/keys";
-    private static final String PRIVATE_KEY_FILE = KEYS_DIR + "/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = KEYS_DIR + "/public_key.pem";
-
+    private static final String PRIVATE_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
+    private static final String PUBLIC_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
     private static final Logger log = LoggerFactory.getLogger(KeyService.class);
 
     private PrivateKey privateKey;
@@ -66,10 +64,7 @@ public class KeyService {
     }
 
     private PrivateKey loadPrivateKey() throws Exception {
-        Path privateKeyPath = Paths.get(PRIVATE_KEY_FILE);
-
-        // Load the private key from the correct location
-        byte[] keyBytes = Files.readAllBytes(privateKeyPath);
+        byte[] keyBytes = Files.readAllBytes(Paths.get(KeyService.PRIVATE_KEY_FILE));
         String privateKeyPEM = new String(keyBytes)
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
@@ -82,10 +77,7 @@ public class KeyService {
 
 
     private PublicKey loadPublicKey() throws Exception {
-        Path publicKeyPath = Paths.get(PUBLIC_KEY_FILE);
-
-        // Load the public key from the correct location
-        byte[] keyBytes = Files.readAllBytes(publicKeyPath);
+        byte[] keyBytes = Files.readAllBytes(Paths.get(KeyService.PUBLIC_KEY_FILE));
         String publicKeyPEM = new String(keyBytes)
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")

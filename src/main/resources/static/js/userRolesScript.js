@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8080/admin';
+const baseUrl = '`${window.location.origin}/admin`';
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById('searchInput');
     const tableBody = document.querySelector('#table tbody');

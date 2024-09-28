@@ -20,13 +20,17 @@ spring:
       hibernate:
         format_sql: true
     defer-datasource-initialization: true
-mail:
-  hotel: "top@hotel.bg"
-  host: localhost
-  port: 1025
-  username: ${MAIL_USER:hotel}
-  password: ${MAIL_PASS:hotel}
-
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   servlet:
     session:

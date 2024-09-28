@@ -1,7 +1,7 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: ${z}
+    url: ${AZURE_MYSQL_CONNECTIONSTRING}
     username: ${DB_USER:root}
     password: ${DB_PASS:1234}
   servlet:

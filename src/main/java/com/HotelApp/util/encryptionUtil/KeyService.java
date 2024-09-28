@@ -24,8 +24,8 @@ import static com.HotelApp.common.constants.SuccessConstants.KEYS_ARE_GENERATED;
 @Service
 public class KeyService {
 
-    private static final String PRIVATE_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
+    private static final String PRIVATE_KEY_FILE = "target/classes/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
+    private static final String PUBLIC_KEY_FILE = "target/classes/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
     private static final Logger log = LoggerFactory.getLogger(KeyService.class);
 
     private PrivateKey privateKey;
@@ -34,12 +34,16 @@ public class KeyService {
     @PostConstruct
     public void init() {
         try {
-            Path pathToKeys = Paths.get(PRIVATE_KEY_FILE);
-            // Check if keys folder and files exist, if not, generate them
-            if  (!Files.isDirectory(pathToKeys.getParent())) {
-                Files.createDirectory(pathToKeys.getParent());
+            // Create paths for private and public keys
+            Path privateKeyPath = Paths.get(PRIVATE_KEY_FILE);
+            Path publicKeyPath = Paths.get(PUBLIC_KEY_FILE);
+
+            // Check if the keys directory exists, if not, create it
+            if (!Files.isDirectory(privateKeyPath.getParent())) {
+                Files.createDirectories(privateKeyPath.getParent());
             }
-            if (!Files.exists(pathToKeys)) {
+            // Generate keys if they do not exist
+            if (!Files.exists(privateKeyPath) || !Files.exists(publicKeyPath)) {
                 KeyGeneratorUtil.generateKeyPair();
                 log.info(KEYS_ARE_GENERATED);
             }

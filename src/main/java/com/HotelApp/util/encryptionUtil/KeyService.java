@@ -66,7 +66,10 @@ public class KeyService {
     }
 
     private PrivateKey loadPrivateKey() throws Exception {
-        byte[] keyBytes = Files.readAllBytes(Paths.get(KeyService.PRIVATE_KEY_FILE));
+        Path privateKeyPath = Paths.get(PRIVATE_KEY_FILE);
+
+        // Load the private key from the correct location
+        byte[] keyBytes = Files.readAllBytes(privateKeyPath);
         String privateKeyPEM = new String(keyBytes)
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
@@ -79,7 +82,10 @@ public class KeyService {
 
 
     private PublicKey loadPublicKey() throws Exception {
-        byte[] keyBytes = Files.readAllBytes(Paths.get(KeyService.PUBLIC_KEY_FILE));
+        Path publicKeyPath = Paths.get(PUBLIC_KEY_FILE);
+
+        // Load the public key from the correct location
+        byte[] keyBytes = Files.readAllBytes(publicKeyPath);
         String publicKeyPEM = new String(keyBytes)
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")

@@ -120,17 +120,6 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>target/classes/com/HotelApp/util/encryptionUtil/keys</directory>
-				<includes>
-					<include>**/*.pem</include>
-				</includes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

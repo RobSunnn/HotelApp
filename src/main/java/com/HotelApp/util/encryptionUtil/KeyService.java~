@@ -24,10 +24,8 @@ import static com.HotelApp.common.constants.SuccessConstants.KEYS_ARE_GENERATED;
 @Service
 public class KeyService {
 
-    private static final String KEYS_DIR = "target/classes/com/HotelApp/util/encryptionUtil/keys";
-    private static final String PRIVATE_KEY_FILE = KEYS_DIR + "/private_key.pem";
-    private static final String PUBLIC_KEY_FILE = KEYS_DIR + "/public_key.pem";
-
+    private static final String PRIVATE_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/private_key.pem";
+    private static final String PUBLIC_KEY_FILE = "src/main/java/com/HotelApp/util/encryptionUtil/keys/public_key.pem";
     private static final Logger log = LoggerFactory.getLogger(KeyService.class);
 
     private PrivateKey privateKey;

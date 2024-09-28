@@ -18,7 +18,7 @@ async function encryptData(value) {
 
 async function fetchPublicKey() {
     try {
-        const response = await fetch('http://localhost:8080/get-public-key');
+        const response = await fetch(`${window.location.origin}/get-public-key`);
         if (!response.ok) {
             throw new Error('Failed to fetch public key');
         }

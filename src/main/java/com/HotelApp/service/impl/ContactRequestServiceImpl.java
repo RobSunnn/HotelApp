@@ -93,7 +93,7 @@ public class ContactRequestServiceImpl implements ContactRequestService {
                 .setHotelInfoEntity(hotelInfo);
 
         contactRequestRepository.save(contactRequest);
-
+        log.info("You have a new contact request from: {}", contactRequestBindingModel.getEmail());
         return genericSuccessResponse(SUCCESS_REDIRECT_URL);
     }
 

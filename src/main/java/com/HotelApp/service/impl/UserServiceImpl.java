@@ -13,6 +13,8 @@ import com.HotelApp.service.UserService;
 import com.HotelApp.service.exception.FileNotAllowedException;
 import com.HotelApp.service.exception.ForbiddenUserException;
 import net.coobird.thumbnailator.Thumbnails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,6 +55,7 @@ public class UserServiceImpl implements UserService {
     private static final String REGISTER_SUCCESS_REDIRECT_URL = "/users/registrationSuccess";
     private static final String EDIT_PROFILE_SUCCESS_REDIRECT_URL = "/users/profile/editSuccess";
     private static final String CHANGE_PASSWORD_SUCCESS_REDIRECT_URL = "/users/profile";
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
     private final RoleService roleService;
@@ -127,6 +130,7 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(user);
+        log.info("User {} registered successfully", user.getEmail());
         return genericSuccessResponse(REGISTER_SUCCESS_REDIRECT_URL);
     }
 

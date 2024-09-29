@@ -7,6 +7,8 @@ import com.HotelApp.domain.models.view.CommentView;
 import com.HotelApp.repository.CommentRepository;
 import com.HotelApp.service.CommentService;
 import com.HotelApp.service.HotelService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import static com.HotelApp.util.ResponseUtil.genericSuccessResponse;
 @Service
 public class CommentServiceImpl implements CommentService {
     private static final String SUCCESS_REDIRECT_URL = "/about";
+    private static final Logger log = LoggerFactory.getLogger(CommentServiceImpl.class);
 
     private final CommentRepository commentRepository;
     private final HotelService hotelService;
@@ -49,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException(COMMENT_NOT_FOUND));
         comment.setApproved(true);
-
+        log.info("Comment approved: {}", comment.getCommentContent());
         commentRepository.save(comment);
     }
 

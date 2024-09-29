@@ -37,6 +37,8 @@ public class ApplicationMailConfiguration {
 
         properties.setProperty("mail.smtp.auth", "true");
         properties.setProperty("mail.transport.protocol", "smtp");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.debug", "false");
 
         return properties;
     }

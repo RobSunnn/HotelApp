@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DBRunner implements CommandLineRunner {
+    private static final int COUNT_ROOMS = 22;
     private final HotelService hotelService;
 
     private final RoomService roomService;
@@ -44,7 +45,7 @@ public class DBRunner implements CommandLineRunner {
             categoryService.initCategories();
         }
 
-        if (roomService.getCount() == 0) {
+        if (roomService.getCount() < COUNT_ROOMS) {
             roomService.initRooms(hotelService.getHotelInfo());
         }
     }

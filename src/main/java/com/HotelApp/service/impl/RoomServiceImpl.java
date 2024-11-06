@@ -8,6 +8,7 @@ import com.HotelApp.domain.models.view.RoomView;
 import com.HotelApp.repository.CategoriesRepository;
 import com.HotelApp.repository.RoomRepository;
 import com.HotelApp.service.RoomService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -46,8 +47,11 @@ public class RoomServiceImpl implements RoomService {
         return this.roomRepository.count();
     }
 
+    @Transactional
     @Override
     public void initRooms(HotelInfoEntity hotelInfo) {
+        clearAndResetTable();
+
         Object[][] rooms = {
                 {1, 5, BigDecimal.valueOf(50), CategoriesEnum.SINGLE},
                 {6, 10, BigDecimal.valueOf(80), CategoriesEnum.STUDIO},
@@ -67,5 +71,10 @@ public class RoomServiceImpl implements RoomService {
                 hotelInfo.getRooms().add(roomRepository.save(roomEntity));
             }
         }
+    }
+
+    private void clearAndResetTable() {
+        roomRepository.deleteAll();
+        roomRepository.resetIdSequence();
     }
 }
